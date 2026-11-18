@@ -97,6 +97,19 @@ def view(pattern, timeout=65):
     raise TimeoutError(f'Launcher did not show expected state: {pattern}')
 
 
+def allow_permission_if_asked():
+    """Android 13+ can still show the notification prompt if `pm grant` was refused."""
+    for node in nodes():
+        package = node.get('package') or ''
+        if 'permissioncontroller' not in package:
+            continue
+        if (node.get('text') or '').lower().startswith('allow'):
+            left, top, right, bottom = map(int, re.findall(r'\d+', node.get('bounds')))
+            adb('shell', 'input', 'tap', (left + right) // 2, (top + bottom) // 2)
+            time.sleep(.5)
+            return
+
+
 def never_shown(prefix, seconds=3):
     deadline = time.monotonic() + seconds
     while time.monotonic() < deadline:
@@ -118,6 +131,7 @@ def run():
         subprocess.run(['adb', 'shell', 'pm', 'grant', pkg, 'android.permission.POST_NOTIFICATIONS'],
                        capture_output=True, text=True, timeout=30)
     adb('shell', 'am', 'start', '-W', '-n', activity)
+    allow_permission_if_asked()
 
     tap('Start gateway')
     running = r'Gateway running · ' + arch + r' · Node (24\.[0-9.]+) · port (\d+)'
@@ -185,6 +199,12 @@ try:
     run()
 except Exception as error:
     print(f'::error::Android smoke ({abi}, API {expected_sdk}): {type(error).__name__}: {error}', flush=True)
+    try:
+        labels = sorted({re.sub(r'\b[A-Z2-9]{10}\b', '<code>', node.get('text') or '') for node in nodes()
+                         if node.get('text')})
+        print('Visible labels:', labels, flush=True)
+    except Exception as unreadable:
+        print('Visible labels unavailable:', type(unreadable).__name__, flush=True)
     # Diagnostics from Android, not the launcher UI (which contains one-time codes).
     subprocess.run(['adb', 'logcat', '-d', '-t', '1600', 'AndroidRuntime:E', 'linker:E', 'libc:F',
                     'DEBUG:F', 'OSSLLMAPI:E', 'ActivityManager:E', '*:S'])

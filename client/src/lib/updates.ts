@@ -8,7 +8,7 @@ export function openUpdates(): void {
 // Sideloaded editions must not offer an incompatible desktop update.
 const mode = import.meta.env.MODE
 export const MANUAL_EDITION = mode === 'win7' ? 'Windows 7 SP1 · Portable ZIP'
-  : mode === 'android' ? 'Android · armeabi-v7a APK' : null
+  : mode === 'android' ? 'Android · standalone APK' : null
 export const RELEASES_URL = mode === 'win7' ? 'https://github.com/zelvior/ossllmapi/releases?q=win7'
   : mode === 'android' ? 'https://github.com/zelvior/ossllmapi/releases?q=android'
   : 'https://github.com/zelvior/ossllmapi/releases/latest'

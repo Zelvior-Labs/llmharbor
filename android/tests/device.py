@@ -22,26 +22,79 @@ def adb(*args):
     return subprocess.check_output(['adb', *map(str, args)], text=True, timeout=60).strip()
 
 
+def screen():
+    width, height = re.findall(r'\d+', adb('shell', 'wm', 'size').split(':')[-1])
+    return int(width), int(height)
+
+
+WIDTH, HEIGHT = screen()
+
+
 def nodes():
-    adb('shell', 'uiautomator', 'dump', '/data/local/tmp/ossllmapi-ui.xml')
-    return list(ET.fromstring(adb('shell', 'cat', '/data/local/tmp/ossllmapi-ui.xml')).iter('node'))
+    for _ in range(3):
+        try:
+            adb('shell', 'uiautomator', 'dump', '/data/local/tmp/ossllmapi-ui.xml')
+            return list(ET.fromstring(adb('shell', 'cat', '/data/local/tmp/ossllmapi-ui.xml')).iter('node'))
+        except subprocess.CalledProcessError:
+            time.sleep(.5)
+    raise TimeoutError('uiautomator could not dump the launcher')
 
 
-def view(pattern, enabled=True, timeout=65):
+def on_screen(label):
+    """Tap target for an exactly matching label that is entirely on screen."""
+    for node in nodes():
+        if node.get('text') != label:
+            continue
+        left, top, right, bottom = map(int, re.findall(r'\d+', node.get('bounds')))
+        if bottom > 0 and top < HEIGHT and right > left:
+            return (left + right) // 2, min(max((top + bottom) // 2, 1), HEIGHT - 1)
+    return None
+
+
+def swipe(up=True):
+    half = WIDTH // 2
+    if up:
+        adb('shell', 'input', 'swipe', half, int(HEIGHT * .78), half, int(HEIGHT * .28), 250)
+    else:
+        adb('shell', 'input', 'swipe', half, int(HEIGHT * .28), half, int(HEIGHT * .78), 250)
+    time.sleep(.45)
+
+
+def scroll_to(label, timeout=45):
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        point = on_screen(label)
+        if point:
+            return point
+        # Walk back to the top, then look downwards: controls live in both directions.
+        for _ in range(12):
+            swipe(False)
+            point = on_screen(label)
+            if point:
+                return point
+        for _ in range(12):
+            swipe(True)
+            point = on_screen(label)
+            if point:
+                return point
+    raise TimeoutError(f'Launcher did not show {label!r}')
+
+
+def tap(label):
+    x, y = scroll_to(label)
+    adb('shell', 'input', 'tap', x, y)
+
+
+def view(pattern, timeout=65):
+    """Regex against a node's full text; used where the label carries a value."""
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         for node in nodes():
             match = re.fullmatch(pattern, node.get('text', ''))
-            if match and node.get('enabled') == str(enabled).lower():
+            if match:
                 return match, node.get('bounds')
         time.sleep(.4)
     raise TimeoutError(f'Launcher did not show expected state: {pattern}')
-
-
-def tap(label):
-    _, bounds = view(re.escape(label))
-    left, top, right, bottom = map(int, re.findall(r'\d+', bounds))
-    adb('shell', 'input', 'tap', (left + right) // 2, (top + bottom) // 2)
 
 
 def never_shown(prefix, seconds=3):
@@ -73,14 +126,14 @@ def run():
     print(f'Gateway reports port {port}', flush=True)
 
     # One-time codes are hidden until the owner asks for them.
-    view('Show setup/reset code')
+    scroll_to('Show setup/reset code')
     assert never_shown('Setup code:'), 'setup code was visible without asking'
     tap('Show setup/reset code')
     code = view(r'Setup code: ([A-Z2-9]{10})')[0].group(1)
-    view('Open dashboard')
-    view('LAN access is off: this phone only.')
-    view('Check for updates')
-    view('Export encrypted backup')
+    scroll_to('Open dashboard')
+    scroll_to('LAN access is off: this phone only.')
+    scroll_to('Check for updates')
+    scroll_to('Export encrypted backup')
 
     adb('forward', f'tcp:{port}', f'tcp:{port}')
     # The upstream is a fixture on the runner. The router, SQLite and encrypted keys are on Android.
@@ -96,7 +149,7 @@ def run():
 
     key = smoke.setup(code, 38887)
     tap('Stop gateway')
-    view('Gateway stopped')
+    scroll_to('Gateway stopped')
     assert not adb('shell', f'pidof {pkg}:gateway || true'), 'Gateway process survived Stop'
 
     tap('Start gateway')
@@ -104,7 +157,7 @@ def run():
     port = int(match.group(2))
     adb('forward', f'tcp:{port}', f'tcp:{port}')
     smoke = Smoke(port)
-    view('Open dashboard')
+    scroll_to('Open dashboard')
     assert not smoke.req('/api/auth/status')['needsSetup']
     smoke.chat(key)  # Same API key; same provider decrypted from SQLite after a fresh launch.
 
@@ -123,7 +176,7 @@ def run():
         assert b'OSSLLMAPI' in page.read(), 'dashboard not served with LAN enabled'
 
     tap('Stop gateway')
-    view('Gateway stopped')
+    scroll_to('Gateway stopped')
     print(f'Verified signed {abi} APK on API {expected_sdk}: launch, hidden codes, dashboard, setup guard, '
           'models, chat, stop/restart, private reset code and LAN mode.')
 

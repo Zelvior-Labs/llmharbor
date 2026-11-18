@@ -50,10 +50,10 @@ jobs:
             source android/scripts/preview-key.sh
             echo "ANDROID_SIGNING_MODE=preview" >> "$GITHUB_ENV"
           fi
+          echo "::add-mask::$APK_PASSWORD"
           {
             echo "APK_KEYSTORE=$APK_KEYSTORE"
             echo "APK_ALIAS=$APK_ALIAS"
-            echo "::add-mask::$APK_PASSWORD"
             echo "APK_PASSWORD=$APK_PASSWORD"
             echo "ANDROID_KEY_DIR=$APK_KEY_DIR"
           } >> "$GITHUB_ENV"

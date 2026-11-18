@@ -44,7 +44,7 @@ const openCommand = async (file: string) => { await run('/usr/bin/open', ['-b', 
 export async function launchMacTerminal(executable: string, key: string, open = openCommand): Promise<void> {
   const dir = fs.mkdtempSync('/tmp/freellmapi-');
   const socketPath = path.join(dir, 'session');
-  const command = path.join(dir, 'FreeLLMAPI.command');
+  const command = path.join(dir, 'OSSLLMAPI.command');
   const server = net.createServer(socket => {
     socket.on('error', () => {});
     socket.end(key);

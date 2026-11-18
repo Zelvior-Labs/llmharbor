@@ -4,7 +4,7 @@
 
 [← Back to README](../README.md) · [Documentation index](../README.md)
 
-Everything about getting FreeLLMAPI running: the one-liner, Docker Compose, local development, declarative config, production builds, the desktop app, where your data lives, and how to reset a password, read the logs, or uninstall.
+Everything about getting OSSLLMAPI running: the one-liner, Docker Compose, local development, declarative config, production builds, the desktop app, where your data lives, and how to reset a password, read the logs, or uninstall.
 
 - [Quick start (one-liner)](#quick-start-one-liner)
 - [Docker Compose](#docker-compose)
@@ -17,7 +17,7 @@ Everything about getting FreeLLMAPI running: the one-liner, Docker Compose, loca
 
 ## Quick start (one-liner)
 
-Docker required — sets up `~/freellmapi`, generates an encryption key, pulls the image, and starts the container:
+The upstream Docker installer requires Docker. It sets up `~/freellmapi`, generates an encryption key, pulls the image, and starts the container:
 
 ```bash
 curl -fsSL https://freellmapi.co/install.sh | bash
@@ -25,7 +25,7 @@ curl -fsSL https://freellmapi.co/install.sh | bash
 
 Prefer to read before you pipe to bash? [The script is here](https://freellmapi.co/install.sh). Re-running it is safe: your `.env` (and encryption key) is preserved and the container updates to `:latest`. Override the defaults with `FREELLMAPI_DIR`, `PORT`, or `HOST_BIND` env vars.
 
-On Windows, the easiest path is the desktop app from the **[Microsoft Store](https://apps.microsoft.com/detail/9PBN6G8K2B7F)** (signed, so Smart App Control allows it, and updated by the Store), or the unsigned **[`.exe` installer from Releases](https://github.com/tashfeenahmed/freellmapi/releases/latest)** ([below](#desktop-app)); the Docker steps work in WSL or any bash shell.
+For OSSLLMAPI on Windows, choose the [x86 or x64 release installer](https://github.com/zelvior/ossllmapi/releases/latest) ([details](#desktop-app)). The Docker steps also work in WSL.
 
 On Android, see the experimental [Termux installation guide](02-android-termux.md). It uses Node's built-in SQLite driver and does not require the Android NDK.
 
@@ -41,8 +41,8 @@ Runs the API and dashboard together on port 3001 and persists SQLite in a named 
 
 *On macOS / Linux (Bash):*
 ```bash
-git clone https://github.com/tashfeenahmed/freellmapi.git
-cd freellmapi
+git clone https://github.com/zelvior/ossllmapi.git
+cd ossllmapi
 
 # Generate an encryption key for at-rest key storage
 ENCRYPTION_KEY="$(openssl rand -hex 32)"
@@ -53,8 +53,8 @@ docker compose up -d
 
 *On Windows (PowerShell):*
 ```powershell
-git clone https://github.com/tashfeenahmed/freellmapi.git
-cd freellmapi
+git clone https://github.com/zelvior/ossllmapi.git
+cd ossllmapi
 
 $Bytes = New-Object Byte[] 32
 [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($Bytes)
@@ -73,7 +73,7 @@ docker compose up -d
 
 > **Providers unreachable from the container, but fine from the host?** A container has its own network stack, so two things that work on your machine do not carry over:
 >
-> - **A proxy on `127.0.0.1` is not your machine.** Inside the container, loopback is the container itself. If you reach providers through a proxy client on the host (Clash, v2rayN, sing-box, a corporate proxy), point FreeLLMAPI at the host instead: `PROXY_URL=socks5h://host.docker.internal:7890`. The bundled `docker-compose.yml` maps `host.docker.internal` to the host gateway, so this works on plain Linux Docker as well as Docker Desktop. The proxy also has to accept connections from outside loopback (in Clash, `allow-lan: true`).
+> - **A proxy on `127.0.0.1` is not your machine.** Inside the container, loopback is the container itself. If you reach providers through a proxy client on the host (Clash, v2rayN, sing-box, a corporate proxy), point OSSLLMAPI at the host instead: `PROXY_URL=socks5h://host.docker.internal:7890`. The bundled `docker-compose.yml` maps `host.docker.internal` to the host gateway, so this works on plain Linux Docker as well as Docker Desktop. The proxy also has to accept connections from outside loopback (in Clash, `allow-lan: true`).
 > - **An IPv6-only host needs IPv6 enabled in Docker.** The default bridge network is IPv4-only, so on a host with no IPv4 route the container cannot reach anything, DNS included. Enable it in `/etc/docker/daemon.json` with `"ipv6": true`, `"ip6tables": true` and a `"fixed-cidr-v6"` range, then restart Docker.
 >
 > To see which of these you are hitting, ask the container directly:
@@ -88,8 +88,8 @@ docker compose up -d
 
 *On macOS / Linux (Bash):*
 ```bash
-git clone https://github.com/tashfeenahmed/freellmapi.git
-cd freellmapi
+git clone https://github.com/zelvior/ossllmapi.git
+cd ossllmapi
 npm install
 ENCRYPTION_KEY="$(node -e 'console.log(require("crypto").randomBytes(32).toString("hex"))')"
 printf "ENCRYPTION_KEY=%s\nPORT=3001\n" "$ENCRYPTION_KEY" > .env
@@ -98,8 +98,8 @@ npm run dev
 
 *On Windows (PowerShell):*
 ```powershell
-git clone https://github.com/tashfeenahmed/freellmapi.git
-cd freellmapi
+git clone https://github.com/zelvior/ossllmapi.git
+cd ossllmapi
 npm install
 $ENCRYPTION_KEY = node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 "ENCRYPTION_KEY=$ENCRYPTION_KEY`nPORT=3001" | Out-File -Encoding utf8 .env
@@ -163,7 +163,7 @@ node server/dist/index.js     # server + dashboard both served on :3001
 
 ## Declarative startup config
 
-For repeatable Docker/server installs, FreeLLMAPI can apply a JSON config on
+For repeatable Docker/server installs, OSSLLMAPI can apply a JSON config on
 every boot. Set `FREEAPI_CONFIG_PATH=/path/to/freellmapi.config.json` or put the
 same JSON in `FREEAPI_CONFIG_JSON`. The config is idempotent: existing keys,
 custom providers, model edits, fallback rows, and routing settings are updated
@@ -232,7 +232,7 @@ than one endpoint is rejected rather than applied to an arbitrary one:
 
 ## Docker image & operations
 
-FreeLLMAPI publishes a single production image that contains the Express server and the built React dashboard:
+OSSLLMAPI publishes a single production image that contains the Express server and the built React dashboard:
 
 ```bash
 docker pull ghcr.io/tashfeenahmed/freellmapi:latest   # or pin a release, e.g. :v1.2.3
@@ -275,7 +275,7 @@ FREEAPI_DB_BACKUP_KEY=64-char-hex-backup-key
 FREEAPI_DB_BACKUP_INTERVAL_MS=300000
 ```
 
-When the database file is missing at startup, FreeLLMAPI restores the backup
+When the database file is missing at startup, OSSLLMAPI restores the backup
 before migrations run. While the server is running it uploads a fresh encrypted
 backup periodically. If `FREEAPI_DB_BACKUP_KEY` is omitted, the app uses
 `ENCRYPTION_KEY` for the backup envelope too.
@@ -288,22 +288,25 @@ A native menu-bar app lives in [`desktop/`](../desktop): the entire router +
 dashboard running locally from your tray, with a glass popover showing live
 request stats.
 
-![FreeLLMAPI desktop app](../../../repo-assets/desktop.png)
+![OSSLLMAPI desktop app](../../../repo-assets/desktop.png)
 
-**[Get it from the Microsoft Store](https://apps.microsoft.com/detail/9PBN6G8K2B7F)** on Windows, or **[download from Releases](https://github.com/tashfeenahmed/freellmapi/releases/latest)** — the macOS `.dmg` and the Windows `.exe` installer are built and attached to every release by the [`desktop-release`](../../../.github/workflows/desktop-release.yml) workflow. Or build it from this repo in a few minutes:
+**[Download OSSLLMAPI from GitHub Releases](https://github.com/zelvior/ossllmapi/releases/latest)**. Choose:
 
-**Mac downloads:** choose `arm64` for Apple Silicon or `x64` for Intel. Both require macOS 12 Monterey or later and include DMG and ZIP downloads.
+- **Windows:** `windows-x86` for 32-bit or `windows-x64` for 64-bit. The `-setup.exe` installs the app; the `.zip` is portable. [x86 source-build instructions](../../../desktop/README.md#32-bit-windows-build).
+- **Linux x64:** AppImage, DEB, RPM or tar.xz for the desktop app.
+- **Linux i686 (32-bit Intel):** the [server + browser dashboard package](../../../desktop/linux-browser/README.md), requiring distro Node.js 22.13+ (22.x) or 24.x with `node:sqlite`. There is no Electron build for Linux i686.
+- **macOS 12+:** `arm64` for Apple Silicon or `x64` for Intel. Both have a DMG and ZIP.
 
-**Updating:** the installed app updates itself on macOS, on Windows (the `Setup` installer) and from the Linux AppImage. **⋯ → Settings → Check for updates** (or the tray's **Check for Updates…**) downloads the new release and offers **Restart to update**; a full database backup, listed as *Pre-update* on the Backups page, is written before it installs. With **Automatic update check** on, new releases download in the background and install on the next restart or quit; the app never restarts on its own. The Linux `.deb`/`.rpm`/`.tar.xz` and the portable Windows `.zip` update by downloading the new release.
+**Updating:** automatic updates are supported on signed macOS builds, on Windows (the `Setup` installer) and from the Linux AppImage. **⋯ → Settings → Check for updates** (or the tray's **Check for Updates…**) downloads the new release and offers **Restart to update**; a full database backup, listed as *Pre-update* on the Backups page, is written before it installs. With **Automatic update check** on, new releases download in the background and install on the next restart or quit; the app never restarts on its own. The Linux `.deb`/`.rpm`/`.tar.xz` and the portable Windows `.zip` update by downloading the new release.
 
 > **Note for Windows users building from source:** Building the desktop app requires compiling native SQLite modules for Electron. You must have [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) installed (specifically the "Desktop development with C++" workload) and Python installed before running `npm install`.
 
 ```bash
 npm install
 npm install --prefix desktop  # install desktop dependencies
-npm run desktop:dist          # macOS  → desktop/dist-electron/FreeLLMAPI-…-macos-arm64.dmg
-npm run desktop:dist:mac:x64  # Intel Mac → desktop/dist-electron/FreeLLMAPI-…-macos-x64.dmg
-npm run desktop:dist:win      # Windows → "desktop/dist-electron/FreeLLMAPI-Setup-….exe"
+npm run desktop:dist          # macOS  → desktop/dist-electron/OSSLLMAPI-…-macos-arm64.dmg
+npm run desktop:dist:mac:x64  # Intel Mac → desktop/dist-electron/OSSLLMAPI-…-macos-x64.dmg
+npm run desktop:dist:win      # Windows → "desktop/dist-electron/OSSLLMAPI-…-windows-x64-setup.exe"
 ```
 
 > Locally built apps are unsigned, so Windows SmartScreen may warn on first run
@@ -330,14 +333,13 @@ another machine or into a container):
 
 | OS | Location |
 |----|----------|
-| Windows | `%APPDATA%\FreeLLMAPI\` (e.g. `C:\Users\<you>\AppData\Roaming\FreeLLMAPI\`) |
-| macOS | `~/Library/Application Support/FreeLLMAPI/` |
-| Linux | `~/.config/FreeLLMAPI/` |
+| Windows | `%APPDATA%\OSSLLMAPI\` (e.g. `C:\Users\<you>\AppData\Roaming\OSSLLMAPI\`) |
+| macOS | `~/Library/Application Support/OSSLLMAPI/` |
+| Linux | `~/.config/OSSLLMAPI/` |
 
 That folder holds `freeapi.db` (all keys, models, settings, encrypted at rest),
 `config.json` (window/theme/port/LAN preferences) and `logs/freeapi.log` (what
-the app would print to a terminal if it had one). Copy the first two to move an
-install. For the server (non-desktop) deployment, the equivalent state is the
+the app would print to a terminal if it had one). To migrate a desktop install, quit both apps and back up the **whole folder**, including hidden files such as `.encryption-key`, before copying it into the new OSSLLMAPI folder. Nothing is moved or deleted from an upstream FreeLLMAPI install automatically. For the server (non-desktop) deployment, the equivalent state is the
 `.env` file and the SQLite DB at `server/data/freeapi.db` (or wherever
 `FREEAPI_DB_PATH` points).
 
@@ -383,7 +385,7 @@ rather than clicking repeatedly.
 The desktop app has no terminal attached, so it also tees everything it prints
 to a file: `freeapi.log` in the `logs` folder inside the data directory listed
 [above](#credentials-and-where-your-data-lives) — for example
-`~/Library/Application Support/FreeLLMAPI/logs/freeapi.log` on macOS. It keeps
+`~/Library/Application Support/OSSLLMAPI/logs/freeapi.log` on macOS. It keeps
 the current file plus one rotated `freeapi.log.1`, 1 MB each. Open it in any
 text editor; the reset code above appears there too.
 
@@ -395,16 +397,16 @@ the top.
 
 **Desktop app**
 
-1. Quit from the tray menu (**Quit FreeLLMAPI**). If you turned on *Start at
+1. Quit from the tray menu (**Quit OSSLLMAPI**). If you turned on *Start at
    login* in the popover, switch it off first so no stale login item is left.
 2. Remove the application:
-   - **macOS** — drag `FreeLLMAPI.app` from `/Applications` to the Trash.
-   - **Windows** — *Settings → Apps → Installed apps → FreeLLMAPI → Uninstall*.
-   - **Linux** — delete the AppImage, `sudo apt remove freellmapi` for the `.deb`, or `sudo dnf remove freellmapi` for the `.rpm`.
+   - **macOS** — drag `OSSLLMAPI.app` from `/Applications` to the Trash.
+   - **Windows** — *Settings → Apps → Installed apps → OSSLLMAPI → Uninstall*.
+   - **Linux** — delete the AppImage, `sudo apt remove ossllmapi-desktop` for the `.deb`, or `sudo dnf remove ossllmapi-desktop` for the `.rpm`.
 3. Delete the data directory to remove your keys, settings and logs for good:
-   - **Windows** — `%APPDATA%\FreeLLMAPI\`
-   - **macOS** — `~/Library/Application Support/FreeLLMAPI/`
-   - **Linux** — `~/.config/FreeLLMAPI/`
+   - **Windows** — `%APPDATA%\OSSLLMAPI\`
+   - **macOS** — `~/Library/Application Support/OSSLLMAPI/`
+   - **Linux** — `~/.config/OSSLLMAPI/`
 
 **Docker**
 

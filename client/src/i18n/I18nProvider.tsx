@@ -100,6 +100,9 @@ function lookup(dictionary: Dictionary, key: string): unknown {
 }
 
 function interpolate(template: string, vars?: Record<string, string | number>): string {
+  // Keep upstream locale catalogs reusable. Only rebrand the translated
+  // template, never interpolated model names, paths or other user data.
+  template = template.replaceAll('FreeLLMAPI', 'OSSLLMAPI')
   if (!vars) return template
   return template.replace(/\{(\w+)\}/g, (_, name) => {
     const value = vars[name]

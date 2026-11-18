@@ -29,7 +29,7 @@ function loadNodeSqlite(): NodeSqliteModule {
     return runtimeRequire('node:sqlite') as NodeSqliteModule;
   } catch (cause) {
     throw new Error(
-      'Android/Termux requires Node.js 22.13 or newer for the built-in node:sqlite database driver.',
+      'This build requires Node.js 22.13+ with the built-in node:sqlite module.',
       { cause },
     );
   }
@@ -58,8 +58,7 @@ function wrapStatement(statement: NodeSqliteStatement): DbStatement {
 }
 
 /**
- * `node:sqlite` adapter used on Android, where better-sqlite3 does not publish
- * prebuilt binaries. It exposes only the small synchronous database contract
+ * `node:sqlite` adapter for Android and the standalone Linux browser build. It exposes only the small synchronous database contract
  * the server uses and implements better-sqlite3-style nested transactions with
  * savepoints.
  */

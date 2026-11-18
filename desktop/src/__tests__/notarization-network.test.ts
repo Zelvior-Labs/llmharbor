@@ -34,7 +34,7 @@ describe('Intel notarization network workaround', () => {
     expect(notarize.run).toContain('spctl -a -vv -t install');
     expect(notarize.run).toContain('refresh-mac-update-metadata.mjs');
     expect(workflow.jobs['macos-release'].needs).toBe('build');
-    expect(workflow.jobs.publish.needs).toEqual(['build', 'macos-release']);
+    expect(workflow.jobs.publish.needs).toEqual(['build', 'linux-browser', 'macos-release']);
   });
 
   // The actual workflow shell is exercised with a fake sudo/pfctl. This never

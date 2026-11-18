@@ -24,7 +24,7 @@ curl -fsSL https://freellmapi.co/install.sh | bash
 
 不放心直接管道给 bash？[脚本在这里](https://freellmapi.co/install.sh)。重复执行是安全的：你的 `.env`（以及加密密钥）会被保留，容器会更新到 `:latest`。可以用 `FREELLMAPI_DIR`、`PORT` 或 `HOST_BIND` 环境变量覆盖默认值。
 
-在 Windows 上，最省事的方式是桌面版 **[Releases 里的 `.exe` 安装包](https://github.com/tashfeenahmed/freellmapi/releases/latest)**（见[下文](#桌面应用)）；上面的 Docker 步骤在 WSL 或任意 bash shell 里同样可用。
+在 Windows 上，最省事的方式是桌面版 **[Releases 里的 `.exe` 安装包](https://github.com/zelvior/ossllmapi/releases/latest)**（见[下文](#桌面应用)）；上面的 Docker 步骤在 WSL 或任意 bash shell 里同样可用。
 
 在 Android 上，参见实验性的 [Termux 安装指南](02-android-termux.md)。它使用 Node 内置的 SQLite 驱动，不需要 Android NDK。
 
@@ -233,9 +233,11 @@ FREEAPI_DB_BACKUP_INTERVAL_MS=300000
 
 [`desktop/`](../../../desktop) 里有一个原生的菜单栏应用：整个路由器加仪表盘就在你的托盘里本地运行，还有一个玻璃质感的悬浮窗显示实时请求统计。
 
-![FreeLLMAPI 桌面应用](../../../repo-assets/desktop.png)
+![OSSLLMAPI 桌面应用](../../../repo-assets/desktop.png)
 
-**[从 Releases 下载](https://github.com/tashfeenahmed/freellmapi/releases/latest)** —— macOS 的 `.dmg` 和 Windows 的 `.exe` 安装包由 [`desktop-release`](../../../.github/workflows/desktop-release.yml) 工作流在每个版本发布时构建并附带。你也可以花几分钟从本仓库自己构建：
+32 位 Windows 请选 `windows-x86`；32 位 Intel Linux 请用[服务器和浏览器仪表盘](../../../desktop/linux-browser/README.md)，不是 Electron 桌面应用。
+
+**[从 Releases 下载](https://github.com/zelvior/ossllmapi/releases/latest)** —— macOS 的 `.dmg` 和 Windows 的 `.exe` 安装包由 [`desktop-release`](../../../.github/workflows/desktop-release.yml) 工作流在每个版本发布时构建并附带。你也可以花几分钟从本仓库自己构建：
 
 **Mac 下载：** Apple Silicon 请选择 `arm64`，Intel 请选择 `x64`。两者都要求 macOS 12 Monterey 或更高版本，并提供 DMG 和 ZIP 下载。
 
@@ -246,9 +248,9 @@ FREEAPI_DB_BACKUP_INTERVAL_MS=300000
 ```bash
 npm install
 npm install --prefix desktop  # 安装桌面端依赖
-npm run desktop:dist          # macOS  → desktop/dist-electron/FreeLLMAPI-…-macos-arm64.dmg
-npm run desktop:dist:mac:x64  # Intel Mac → desktop/dist-electron/FreeLLMAPI-…-macos-x64.dmg
-npm run desktop:dist:win      # Windows → "desktop/dist-electron/FreeLLMAPI-Setup-….exe"
+npm run desktop:dist          # macOS  → desktop/dist-electron/OSSLLMAPI-…-macos-arm64.dmg
+npm run desktop:dist:mac:x64  # Intel Mac → desktop/dist-electron/OSSLLMAPI-…-macos-x64.dmg
+npm run desktop:dist:win      # Windows → "desktop/dist-electron/OSSLLMAPI-…-windows-x64-setup.exe"
 ```
 
 > 本地构建出来的应用没有签名，所以 Windows SmartScreen 首次运行时可能会警告（点「更多信息」→「仍要运行」）；macOS 构建则不会触发 Gatekeeper 提示。
@@ -269,8 +271,8 @@ npm run desktop:dist:win      # Windows → "desktop/dist-electron/FreeLLMAPI-Se
 
 | 操作系统 | 位置 |
 |----|----------|
-| Windows | `%APPDATA%\FreeLLMAPI\`（例如 `C:\Users\<你>\AppData\Roaming\FreeLLMAPI\`） |
-| macOS | `~/Library/Application Support/FreeLLMAPI/` |
-| Linux | `~/.config/FreeLLMAPI/` |
+| Windows | `%APPDATA%\OSSLLMAPI\`（例如 `C:\Users\<你>\AppData\Roaming\OSSLLMAPI\`） |
+| macOS | `~/Library/Application Support/OSSLLMAPI/` |
+| Linux | `~/.config/OSSLLMAPI/` |
 
 这个文件夹里有 `freeapi.db`（全部密钥、模型和设置，加密存储）和 `config.json`（窗口、主题、端口、局域网偏好）。搬迁安装时两个都要复制。对于服务器（非桌面）部署，对应的状态是 `.env` 文件和位于 `server/data/freeapi.db`（或者 `FREEAPI_DB_PATH` 指向的位置）的 SQLite 数据库。

@@ -42,8 +42,12 @@ function betterSqliteFactory(resolvedPath: string): Db {
   return new BetterSqlite(resolvedPath) as Db;
 }
 
-export function defaultDbFactory(platform: NodeJS.Platform = process.platform): DbFactory {
-  return platform === 'android' ? nodeSqliteFactory : betterSqliteFactory;
+export function defaultDbFactory(
+  platform: NodeJS.Platform = process.platform,
+  driver = process.env.FREEAPI_SQLITE_DRIVER,
+): DbFactory {
+  // The standalone Linux browser bundle has no native npm addons.
+  return platform === 'android' || driver === 'node:sqlite' ? nodeSqliteFactory : betterSqliteFactory;
 }
 
 export function connectDb(

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OSSLLMAPI</string>
+    <string name="subtitle">网关与仪表盘都在本机\n版本 %1$s · %2$s</string>
+
+    <string name="start_gateway">启动网关</string>
+    <string name="starting_gateway">正在启动网关…</string>
+    <string name="open_dashboard">打开仪表盘</string>
+    <string name="stop_gateway">停止网关</string>
+    <string name="show_code">显示设置/重置码</string>
+    <string name="hide_code">隐藏验证码</string>
+
+    <string name="status_running">网关运行中 · %1$s · Node %2$s · 端口 %3$d</string>
+    <string name="status_stopped">网关已停止</string>
+    <string name="start_error">上次启动问题：%1$s</string>
+
+    <string name="section_api">API</string>
+    <string name="copy_api">复制 API 基础地址</string>
+    <string name="api_offline">启动网关后可获取地址。</string>
+
+    <string name="section_status">实时状态</string>
+    <string name="status_offline">网关运行时显示实时统计。</string>
+    <string name="status_providers">提供方：%1$d · 密钥：%2$d</string>
+    <string name="status_health">健康密钥：%1$d / %2$d</string>
+    <string name="status_requests">最近 24 小时请求：%1$d</string>
+    <string name="status_uptime">运行时间：%1$s</string>
+    <string name="status_keys_failing">所有提供方密钥均失败。请在仪表盘的“密钥”中处理。</string>
+
+    <string name="section_network">网络</string>
+    <string name="lan_toggle">允许我的 Wi-Fi 中的其他设备访问（局域网）</string>
+    <string name="copy_lan">复制局域网地址</string>
+    <string name="lan_off">局域网访问已关闭：仅限本机。</string>
+    <string name="lan_on">局域网仪表盘：%1$s</string>
+    <string name="lan_offline">网关运行时显示局域网地址。</string>
+    <string name="lan_warning">局域网访问仅适用于可信网络。能访问该地址的设备仍需仪表盘登录，API 客户端仍需统一 API 密钥。</string>
+
+    <string name="section_background">保持运行</string>
+    <string name="boot_toggle">开机时启动网关</string>
+    <string name="keep_toggle">Android 释放内存后重启</string>
+    <string name="battery_button">允许后台使用电池</string>
+    <string name="eco_toggle">省电模式：每 15 分钟检查一次密钥</string>
+
+    <string name="section_update">更新</string>
+    <string name="update_hint">更新来自项目的 GitHub 预发布。APK 会校验已发布的 SHA-256，并且必须与当前安装使用同一证书签名，Android 才会接受。</string>
+    <string name="check_updates">检查更新</string>
+    <string name="update_title">更新</string>
+    <string name="update_prompt">下载版本 %1$s（%2$s）？</string>
+    <string name="download_install">下载并安装</string>
+    <string name="signing_certificate">签名证书 SHA-256：%1$s</string>
+    <string name="copy_certificate">复制证书指纹</string>
+
+    <string name="section_backup">备份</string>
+    <string name="backup_hint">备份包含数据库及其密钥，并用以你选择的密码加密。没有该密码将无法恢复，请妥善保存。</string>
+    <string name="export_backup">导出加密备份</string>
+    <string name="restore_backup">恢复到全新安装</string>
+    <string name="passphrase_hint">密码（至少 8 个字符）</string>
+    <string name="passphrase_explain">此密码用于加密备份文件，无法找回。</string>
+
+    <string name="section_diagnostics">诊断</string>
+    <string name="diagnostics_hint">日志包只含启动日志和设备信息，绝不包含验证码、密钥或数据库内容。</string>
+    <string name="export_diagnostics">导出诊断</string>
+
+    <string name="help_text">启动网关后打开仪表盘。首个账户需要设置码。在“密钥”中添加提供方密钥，本机其他应用使用统一 API 密钥。若 Android Go 释放内存，请再次启动网关；账户和密钥会保留。</string>
+
+    <string name="reveal_title">显示一次性验证码</string>
+    <string name="reveal_body">确认是你本人后显示设置码或重置码。</string>
+    <string name="setup_code">设置码：%1$s</string>
+    <string name="reset_code">重置码：%1$s</string>
+    <string name="no_code">暂无待用验证码。该仪表盘账户已存在。</string>
+
+    <string name="notification_channel">本地网关</string>
+    <string name="notification_title">OSSLLMAPI</string>
+    <string name="notification_starting">正在启动本地网关…</string>
+    <string name="notification_running">正在端口 %1$d 运行</string>
+    <string name="alert_channel">网关提醒</string>
+    <string name="alert_keys_failing">所有提供方密钥均失败。请打开仪表盘更换。</string>
+
+    <string name="widget_running">网关运行中</string>
+    <string name="widget_stopped">网关已停止</string>
+    <string name="tile_running">网关开</string>
+    <string name="tile_stopped">网关关</string>
+</resources>

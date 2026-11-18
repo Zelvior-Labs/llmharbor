@@ -111,5 +111,41 @@ with tempfile.TemporaryDirectory() as tmp:
         proc.terminate()
         proc.wait(timeout=15)
 
+# 6. Eco mode: the launcher snapshot exists, is non-secret and admits uncertainty.
+with tempfile.TemporaryDirectory() as tmp:
+    proc = run(tmp, 'local', 'eco')
+    try:
+        current = state(tmp, proc)
+        smoke = Smoke(current['port'])
+        key = smoke.setup(current['setup'], upstream())
+        smoke.chat(key)
+        status = Path(tmp) / 'status.json'
+        deadline = time.monotonic() + 40
+        while time.monotonic() < deadline:
+            try:
+                snapshot = json.loads(status.read_text())
+            except (FileNotFoundError, json.JSONDecodeError):
+                time.sleep(.2)
+                continue
+            # Snapshots refresh every 20 s; wait for one taken after the chat.
+            if snapshot.get('requestsLastDay', 0) >= 1:
+                break
+            time.sleep(.5)
+        else:
+            raise AssertionError('gateway never published a status.json with the chat counted')
+        assert snapshot['eco'] is True and snapshot['port'] == current['port']
+        assert snapshot['startedAt'].endswith('Z') and snapshot['uptimeSec'] >= 0
+        assert set(snapshot['keys']) == {'enabled', 'healthy', 'failing'}
+        assert snapshot['keys']['enabled'] >= 1 and snapshot['providers'] >= 1
+        assert not snapshot['allKeysFailing'], 'a never-checked key is not a failing key'
+        raw = status.read_text()
+        assert key not in raw, 'status.json leaked the unified API key'
+        assert status.stat().st_mode & 0o077 == 0, 'status.json is world readable'
+        assert '(battery saver)' in (Path(tmp) / 'logs' / 'gateway.log').read_text(), \
+            'eco mode never reached the Node process'
+    finally:
+        proc.terminate()
+        proc.wait(timeout=15)
+
 print('Bundle passed: setup protection, keystore-supplied key, port fallback, LAN mode, host guard, '
-      'provider routing and encrypted-key persistence.')
+      'provider routing, encrypted-key persistence and the eco-mode status snapshot.')

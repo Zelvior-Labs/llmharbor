@@ -26,7 +26,7 @@ curl -fsSL https://freellmapi.co/install.sh | bash
 
 在 Windows 上，最省事的方式是桌面版 **[Releases 里的 `.exe` 安装包](https://github.com/zelvior/ossllmapi/releases/latest)**（见[下文](#桌面应用)）；上面的 Docker 步骤在 WSL 或任意 bash shell 里同样可用。
 
-在 Android 11 或更高版本上，[独立的 OSSLLMAPI APK](../../../android/README.md) 无需电脑或 Termux 即可运行网关和仪表盘；发布版提供 ARMv7、ARM64 和 x86_64 三种构建。若想使用命令行安装，参见实验性的 [Termux 安装指南](02-android-termux.md)。
+在 Android 8.0 或更高版本上，[独立的 OSSLLMAPI APK](../../../android/README.md) 无需电脑或 Termux 即可运行网关和仪表盘；发布版提供 ARMv7、ARM64 和 x86_64 三种构建。若想使用命令行安装，参见实验性的 [Termux 安装指南](02-android-termux.md)。
 
 打开 http://localhost:3001 ，在 **密钥** 页添加你的提供方密钥，按喜好调整 **回退链** 的顺序，然后在 **密钥** 页顶部拿到你的统一 API 密钥。这个统一密钥就是你的 OpenAI SDK 要指向的东西。
 

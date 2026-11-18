@@ -27,7 +27,7 @@ Prefer to read before you pipe to bash? [The script is here](https://freellmapi.
 
 For OSSLLMAPI on Windows, choose the [x86 or x64 release installer](https://github.com/zelvior/ossllmapi/releases/latest) ([details](#desktop-app)). The Docker steps also work in WSL.
 
-For Android 11 or later, the [standalone OSSLLMAPI APK](../../../android/README.md) runs the gateway and dashboard without a PC or Termux; the release ships ARMv7, ARM64 and x86_64 builds. For a shell-based installation instead, see the experimental [Termux installation guide](02-android-termux.md). It uses Node's built-in SQLite driver and does not require the Android NDK.
+For Android 8.0 or later, the [standalone OSSLLMAPI APK](../../../android/README.md) runs the gateway and dashboard without a PC or Termux; the release ships ARMv7, ARM64 and x86_64 builds. For a shell-based installation instead, see the experimental [Termux installation guide](02-android-termux.md). It uses Node's built-in SQLite driver and does not require the Android NDK.
 
 Open http://localhost:3001, add your provider keys on the **Keys** page, reorder the **Fallback Chain** to taste, and grab your unified API key from the **Keys** page header. That unified key is what you point your OpenAI SDK at.
 

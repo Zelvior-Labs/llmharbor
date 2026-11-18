@@ -87,6 +87,23 @@ it('regenerates on the confirming click and reveals the fresh key', async () => 
   expect(code.textContent).toContain('sk-fresh-key-after-regen')
 })
 
+it('offers a pairing QR only while the key is revealed', async () => {
+  vi.mocked(apiFetch).mockImplementation(async path =>
+    path === '/api/settings/api-key/regenerate'
+      ? { apiKey: 'sk-qr-key-456' }
+      : { apiKey: 'sk-qr-key-456' })
+  await mount()
+
+  // Nothing to scan while the key is masked.
+  expect(container.querySelector('svg[role="img"]')).toBeNull()
+
+  await click(findButton('Regenerate')!)
+  await click(findButton('Confirm')!)
+  const qr = container.querySelector('svg[role="img"]')
+  expect(qr).toBeTruthy()
+  expect(qr!.querySelector('title')!.textContent).toContain('API key')
+})
+
 it('keeps the key masked when the user disarms the confirmation', async () => {
   vi.mocked(apiFetch).mockImplementation(async path =>
     path === '/api/settings/api-key' ? { apiKey: 'sk-secret-value-123' } : { ok: true })

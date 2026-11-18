@@ -9,7 +9,7 @@ namespace node { int Start(int argc, char** argv); }
 extern "C" JNIEXPORT jint JNICALL
 Java_io_github_zelvior_ossllmapi_mobile_GatewayService_runNode(
     JNIEnv* env, jclass, jstring script, jstring data, jstring temp,
-    jstring key, jboolean lan, jint heap) {
+    jstring key, jboolean lan, jboolean eco, jint heap) {
   const char* js = env->GetStringUTFChars(script, nullptr);
   const char* home = env->GetStringUTFChars(data, nullptr);
   const char* tmp = env->GetStringUTFChars(temp, nullptr);
@@ -24,7 +24,7 @@ Java_io_github_zelvior_ossllmapi_mobile_GatewayService_runNode(
   int megabytes = heap < 64 ? 64 : (heap > 512 ? 512 : heap);
   const std::vector<std::string> args = {
       "node", "--max-old-space-size=" + std::to_string(megabytes), js, home,
-      lan ? "lan" : "local"};
+      lan ? "lan" : "local", eco ? "eco" : "normal"};
   env->ReleaseStringUTFChars(script, js);
   env->ReleaseStringUTFChars(data, home);
   env->ReleaseStringUTFChars(temp, tmp);

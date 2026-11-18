@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { QRCodeSVG } from 'qrcode.react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '@/lib/api'
 import { copyText } from '@/lib/clipboard'
@@ -71,6 +72,19 @@ export function UnifiedKeySection() {
           {t('keys.regenerate')}
         </ConfirmButton>
       </div>
+
+      {showKey && apiKey && (
+        // Pairing without retyping: the QR carries the base URL and the key as
+        // two lines, so a phone or laptop camera can copy them across.
+        <div className="mb-4 flex items-center gap-4 rounded-xl border bg-muted/40 p-3">
+          <QRCodeSVG value={`${baseUrl}\n${apiKey}`} size={112} marginSize={2} level="M"
+            title={t('keys.unifiedKey')} />
+          <div className="min-w-0 text-xs text-muted-foreground">
+            <div className="mb-1 font-medium text-foreground">{t('keys.unifiedKey')}</div>
+            <code className="block break-all font-mono">{baseUrl}</code>
+          </div>
+        </div>
+      )}
 
       {isError ? (
         <div className="rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-xs text-destructive">

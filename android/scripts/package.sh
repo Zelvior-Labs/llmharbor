@@ -55,7 +55,7 @@ for font in geist geist-mono; do cp "node_modules/@fontsource-variable/$font/LIC
 
 # Resources, Java and DEX are identical for every ABI; only native libraries differ.
 "$tools/aapt2" compile --dir android/res -o "$work/resources.zip"
-"$tools/aapt2" link -I "$jar" --manifest android/AndroidManifest.xml --min-sdk-version 30 --target-sdk-version 35 \
+"$tools/aapt2" link -I "$jar" --manifest android/AndroidManifest.xml --min-sdk-version 26 --target-sdk-version 35 \
   --version-code "$code" --version-name "$version" --rename-manifest-package "$pkg" \
   --custom-package io.github.zelvior.ossllmapi.mobile --java "$work/gen" \
   -A "$out/assets" -o "$work/base-unsigned.apk" "$work/resources.zip"
@@ -103,7 +103,7 @@ for abi in $abis; do
   grep -Fq 'Number of signers: 1' "$work/signature-$abi.txt"
   "$tools/aapt" dump badging "$apk" > "$work/badging-$abi.txt"
   grep -F "package: name='$pkg' versionCode='$code' versionName='$version'" "$work/badging-$abi.txt"
-  grep -Fx "sdkVersion:'30'" "$work/badging-$abi.txt"
+  grep -Fx "sdkVersion:'26'" "$work/badging-$abi.txt"
   grep -Fx "targetSdkVersion:'35'" "$work/badging-$abi.txt"
   grep -Fx "native-code: '$abi'" "$work/badging-$abi.txt"
   grep -F "uses-permission: name='android.permission.REQUEST_INSTALL_PACKAGES'" "$work/badging-$abi.txt"

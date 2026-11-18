@@ -16,6 +16,7 @@ process.umask(0o077);
 if (!process.argv[2]) throw Error('Missing app data directory');
 const home = resolve(process.argv[2]);
 const lan = process.argv[3] === 'lan';
+const eco = process.argv[4] === 'eco';
 const FIRST_PORT = 31415;
 const LAST_PORT = 31430;
 const data = join(home, 'data');
@@ -90,6 +91,14 @@ for (let candidate = FIRST_PORT; candidate <= LAST_PORT; candidate += 1) {
 }
 if (!port) throw Error(`No free port between ${FIRST_PORT} and ${LAST_PORT}`);
 
+// Battery saver: a phone should not wake the radio every five minutes for a
+// health sweep the user cannot see. Opt-in from the launcher.
+if (eco) {
+  process.env.HEALTH_CHECK_INTERVAL_MS ??= '900000';
+  process.env.CATALOG_SYNC_DISABLED ??= '1';
+  process.env.OSSLLMAPI_ECO = '1';
+}
+
 const addresses = lan ? lanAddresses() : [];
 Object.assign(process.env, {
   HOME: home, NODE_ENV: 'production', ENCRYPTION_KEY: key,
@@ -102,8 +111,10 @@ Object.assign(process.env, {
 // Not an HTTP endpoint: other apps can reach loopback TCP but not this socket
 // under our Android UID's filesDir. Stale sockets never report a live gateway.
 const sock = join(home, 'control.sock');
+const startedAt = Date.now();
+const statusFile = join(home, 'status.json');
 channel('ossllmapi.listening').subscribe(({ port: actual }) => {
-  record(`[gateway] listening on ${host}:${actual}${lan ? ' (LAN)' : ''}`);
+  record(`[gateway] listening on ${host}:${actual}${lan ? ' (LAN)' : ''}${eco ? ' (battery saver)' : ''}`);
   rmSync(sock, { force: true });
   createServer(socket => {
     socket.on('error', () => {}); // Launcher can close/resume at any time.
@@ -114,6 +125,38 @@ channel('ossllmapi.listening').subscribe(({ port: actual }) => {
       setup: getSetupCode(), reset: reset && resetCodeMatches(reset) ? reset : null,
     }) + '\n');
   }).listen(sock);
+  // A non-secret snapshot for the launcher: counts and health, never keys,
+  // labels, codes or request contents.
+  let db;
+  const write = () => {
+    if (!db) return;
+    try {
+      const keys = db.prepare("SELECT platform, status FROM api_keys WHERE enabled = 1").all();
+      const healthy = keys.filter(key => key.status === 'healthy').length;
+      const requests = db.prepare("SELECT COUNT(*) AS count FROM requests WHERE created_at >= datetime('now', '-1 day')").get();
+      // 'unknown' means never checked, which is not a failure: an alert the
+      // moment a key is added would train users to ignore it.
+      const failing = keys.filter(key => key.status === 'invalid' || key.status === 'error').length;
+      const snapshot = {
+        version: process.env.FREEAPI_VERSION ?? '',
+        port: actual, lan, eco, startedAt: new Date(startedAt).toISOString(),
+        uptimeSec: Math.round((Date.now() - startedAt) / 1000),
+        providers: new Set(keys.map(key => key.platform)).size,
+        keys: { enabled: keys.length, healthy, failing },
+        requestsLastDay: Number(requests?.count ?? 0),
+        allKeysFailing: keys.length > 0 && failing === keys.length,
+      };
+      const staging = statusFile + '.new';
+      writeFileSync(staging, JSON.stringify(snapshot), { mode: 0o600 });
+      renameSync(staging, statusFile);
+    } catch { /* status is best effort */ }
+  };
+  // The database module is TypeScript: loading it is async, so the first
+  // snapshot is written when it resolves rather than on the next tick.
+  import('../server/src/db/index.ts')
+    .then(module => { db = module.getDb(); write(); })
+    .catch(() => {});
+  setInterval(write, 20000).unref();
 });
 
 for (const signal of ['SIGTERM', 'SIGINT']) {

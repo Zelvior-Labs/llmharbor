@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import type { ChatMessage } from '@freellmapi/shared/types.js';
+import { normalizeImageInJs } from './image-normalize-js.js';
 
 // Inbound image normalization. Vision payloads ride inline as base64 data
 // URLs, and agents replay their ENTIRE history every turn — one real Codex
@@ -93,8 +94,8 @@ async function loadSharp(): Promise<Sharp | null> {
   } catch (err: any) {
     sharpModule = null;
     console.warn(
-      '[ImageNormalize] sharp is unavailable, inbound images will not be resized ' +
-      `(set IMAGE_NORMALIZE=off to silence this): ${err?.message ?? err}`,
+      '[ImageNormalize] sharp is unavailable; oversized JPEG/PNG images will be resized ' +
+      `by the built-in pure-JS path instead (set IMAGE_NORMALIZE=off to silence this): ${err?.message ?? err}`,
     );
   }
   return sharpModule;
@@ -266,6 +267,31 @@ async function normalizeDataUrl(sharp: Sharp, candidate: Candidate, opts: Resolv
   }
 }
 
+/** sharp-free equivalent for hosts (the Android APK) that cannot load libvips. */
+async function normalizeDataUrlJs(
+  candidate: Candidate,
+  opts: ResolvedOptions,
+): Promise<{ url: string; before: number; after: number } | null> {
+  const { payload, mime } = candidate;
+  if (mime !== 'image/jpeg' && mime !== 'image/png') return null;
+  try {
+    const buffer = Buffer.from(payload, 'base64');
+    if (buffer.length === 0) return null;
+    const out = await normalizeImageInJs(buffer, mime, {
+      maxDimension: opts.maxDimension,
+      quality: opts.quality,
+    });
+    if (!out) return null;
+    return {
+      url: `data:${out.mime};base64,${out.buffer.toString('base64')}`,
+      before: buffer.length,
+      after: out.buffer.length,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export interface ImageNormalizeSummary {
   messages: ChatMessage[];
   /** Number of images actually re-encoded. */
@@ -298,13 +324,14 @@ export async function normalizeMessageImages(
   // Text-only and small-image requests never load the native module (#1469).
   if (work.length === 0) return summary;
 
-  // No sharp (missing prebuild, unsupported platform or CPU): pass everything
-  // through untouched rather than failing the request.
+  // No sharp (missing prebuild, unsupported platform or CPU): the pure-JS
+  // path handles JPEG/PNG within its own size ceiling and everything else
+  // rides through untouched rather than failing the request.
   const sharp = await loadSharp();
-  if (!sharp) return summary;
 
   for (const { slot, candidate } of work) {
-    const result = await normalizeDataUrl(sharp, candidate, opts);
+    const result = sharp ? await normalizeDataUrl(sharp, candidate, opts)
+      : await normalizeDataUrlJs(candidate, opts);
     if (!result) continue;
     slot.set(result.url);
     summary.normalized += 1;

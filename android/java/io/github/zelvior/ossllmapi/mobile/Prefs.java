@@ -7,6 +7,7 @@ final class Prefs {
     static final String LAN = "lan";
     static final String BOOT = "boot";
     static final String KEEP = "keep";
+    static final String ECO = "eco";
 
     private Prefs() {}
 

@@ -1,31 +1,17 @@
 name: Desktop release
 
-# Builds the menu-bar desktop app installers (Windows .exe + macOS .dmg) and,
-# on a version tag, attaches them to the GitHub Release. Closes #318 — the
-# dist:win build config already existed; this is the missing publish step.
-#
-# Triggers:
-#   - workflow_dispatch        manual build (artifacts only)
-#   - push tags 'v*'           build + attach the installers to the release
-#   - pull_request (desktop)   build-only smoke test so the Windows build can't
-#                              silently rot (only when desktop/CI files change)
-#
-# Tagged runs check desktop/package.json against the tag before building — see
-# #948, where v0.8.2 through v0.8.4 shipped installers stamped 0.8.1 because
-# nobody bumped that file.
-#
-# Release recipe (installers first, then public):
-#   1. gh release create vX.Y.Z --draft --target <merge sha> --title vX.Y.Z --notes-file notes.md
-#   2. git tag vX.Y.Z <merge sha> && git push origin vX.Y.Z
-#   3. this workflow attaches every installer to the draft, then the `publish`
-#      job flips it to published once all of them are there.
-# A draft is invisible to users, so the release page never shows only the
-# automatic source archives while the ~15 minute build is still running.
-# Fallbacks below create a DRAFT for a tag pushed without a release, for the
-# same reason; `publish` takes care of it.
+# PRs and ordinary manual runs build artifacts only. A version tag, or a
+# manual run with publish checked, releases this exact commit after all jobs
+# pass. Only the publisher may write a release; a partial set stays private.
 
 on:
   workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish this commit as the desktop/package.json version after all checks pass
+        required: false
+        type: boolean
+        default: false
   push:
     tags:
       - 'v*'
@@ -35,11 +21,11 @@ on:
       - '.github/workflows/desktop-release.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
-    name: Build (${{ matrix.os }})
+    name: Build (${{ matrix.label || matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -55,6 +41,16 @@ jobs:
               desktop/dist-electron/*.zip
               desktop/dist-electron/*.blockmap
               desktop/dist-electron/latest.yml
+          - os: windows-2022
+            label: windows-2022, x86
+            arch: ia32
+            ebArgs: --win nsis zip --ia32 --config electron-builder.ia32.yml
+            artifact: windows-installer-ia32
+            glob: |
+              desktop/dist-electron/ia32/*-windows-x86-setup.exe
+              desktop/dist-electron/ia32/*-windows-x86.zip
+              desktop/dist-electron/ia32/*-windows-x86-setup.exe.blockmap
+              desktop/dist-electron/ia32/latest-ia32.yml
           - os: macos-latest
             arch: arm64
             ebArgs: --mac --arm64
@@ -136,6 +132,19 @@ jobs:
         shell: bash
         run: bash desktop/scripts/retry-network-step.sh npm ci
 
+      # Build the dashboard on the runner's native Node: its Vite/Tailwind
+      # toolchain has no Windows ia32 binaries. The resulting assets are JS/CSS.
+      - name: Build client
+        run: npm run build -w client
+
+      # Install desktop dependencies under the target runtime so npm selects
+      # the x86 sharp binary and electron-builder rebuilds SQLite for x86.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        if: matrix.arch == 'ia32'
+        with:
+          node-version: '20'
+          architecture: x86
+
       # `npm ci` rather than `install`: install rewrites desktop/package-lock.json
       # in place, which would quietly repair a stale lockfile version before the
       # lockfile-sync assertion in src/__tests__/version.test.ts ever sees it.
@@ -150,10 +159,9 @@ jobs:
       - name: Run desktop tests
         run: npm --prefix desktop test
 
-      - name: Build client + desktop bundles
+      - name: Build desktop bundles
         shell: bash
         run: |
-          npm run build -w client
           npm --prefix desktop run build:all
           # Stage client/dist into desktop/ so electron-builder's extraResources
           # source stays inside desktop/ (no `../`). Belt-and-suspenders with the
@@ -166,7 +174,7 @@ jobs:
 
       - name: Validate macOS signing credentials
         id: maccreds
-        if: runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/')
+        if: runner.os == 'macOS' && (startsWith(github.ref, 'refs/tags/') || inputs.publish == true)
         shell: bash
         env:
           CSC_LINK: ${{ secrets.MACOS_CSC_LINK }}
@@ -301,7 +309,7 @@ jobs:
       - name: Package installer
         shell: bash
         env:
-          # Pull-request and manual artifact builds stay unsigned. Tagged macOS
+          # Pull-request and artifact-only builds stay unsigned. Published macOS
           # release builds sign + notarize when the Apple secrets are configured
           # (so the downloaded DMG opens without Gatekeeper's "damaged" quarantine
           # block) and fall back to an unsigned DMG when they aren't.
@@ -311,7 +319,7 @@ jobs:
           # returns as soon as it is set, so leaving that pair configured would
           # silently shadow the API key — the two cannot coexist. The API key
           # also does not expire the way an app-specific password does.
-          CSC_IDENTITY_AUTO_DISCOVERY: ${{ runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/') && steps.maccreds.outputs.signed == 'true' && 'true' || 'false' }}
+          CSC_IDENTITY_AUTO_DISCOVERY: ${{ runner.os == 'macOS' && (startsWith(github.ref, 'refs/tags/') || inputs.publish == true) && steps.maccreds.outputs.signed == 'true' && 'true' || 'false' }}
           # No CSC_LINK / CSC_KEY_PASSWORD: the step above imported the
           # certificate into a keychain of our own and exported CSC_KEYCHAIN +
           # CSC_NAME through $GITHUB_ENV. Setting CSC_LINK here would send
@@ -345,7 +353,7 @@ jobs:
           cd desktop
           # --publish never: the publish provider in electron-builder.yml exists
           # so latest*.yml update metadata gets GENERATED, not so electron-builder
-          # uploads. The "Attach installer to release" step below owns publishing.
+          # uploads. The final publish job owns publishing.
           # Preserve successful downloads/unpacked builds between transient
           # GitHub HTTP 5xx failures. Real packaging failures still fail fast.
           bash scripts/retry-network-step.sh npx --no-install electron-builder ${{ matrix.ebArgs }} --publish never
@@ -357,7 +365,19 @@ jobs:
       - name: Smoke-test Windows GPU sandbox recovery
         if: runner.os == 'Windows'
         shell: pwsh
-        run: ./desktop/scripts/smoke-win-gpu-sandbox.ps1 desktop/dist-electron
+        run: ./desktop/scripts/smoke-win-gpu-sandbox.ps1 desktop/dist-electron ${{ matrix.arch }}
+
+      - name: Verify Windows x86 ZIP and update feed
+        if: matrix.arch == 'ia32'
+        shell: pwsh
+        env:
+          ELECTRON_RUN_AS_NODE: '1'
+        run: |
+          $dist = 'desktop/dist-electron/ia32'
+          $app = Join-Path $env:RUNNER_TEMP 'x86-zip'
+          Expand-Archive -Path "$dist/*-windows-x86.zip" -DestinationPath $app
+          & (Join-Path $app 'OSSLLMAPI.exe') desktop/scripts/smoke-win-ia32.mjs $dist | Out-Host
+          exit $LASTEXITCODE
 
       - name: Smoke-test packaged macOS backend
         if: runner.os == 'macOS'
@@ -368,8 +388,8 @@ jobs:
           set -euo pipefail
           app_dir=desktop/dist-electron/mac
           if [ "$EXPECTED_ARCH" = arm64 ]; then app_dir="$app_dir-arm64"; fi
-          app="$app_dir/FreeLLMAPI.app"
-          ELECTRON_RUN_AS_NODE=1 "$app/Contents/MacOS/FreeLLMAPI" \
+          app="$app_dir/OSSLLMAPI.app"
+          ELECTRON_RUN_AS_NODE=1 "$app/Contents/MacOS/OSSLLMAPI" \
             desktop/scripts/smoke-mac-package.mjs "$app" "$EXPECTED_ARCH"
 
       # electron-builder notarizes and staples the .app, then wraps it in a DMG
@@ -438,119 +458,35 @@ jobs:
           path: ${{ matrix.glob }}
           if-no-files-found: error
 
-      # Upload the assets and nothing else. softprops/action-gh-release always
-      # PATCHes the release (name, body, draft state, target commitish) before it
-      # uploads, and that PATCH started coming back
-      # "403 Resource not accessible by integration" on the v0.9.6 rebuilds —
-      # every platform, while `GITHUB_TOKEN Permissions` in the same logs read
-      # `Contents: write` and the release was not immutable. Asset upload itself
-      # has never been refused: it is what attached the v0.9.6 Windows and Linux
-      # installers. So upload directly and leave the release metadata, which this
-      # job has no business rewriting, exactly as the release author left it.
-      - name: Attach installer to release
-        # The macOS finalizer uploads both architectures and ONE manifest.
-        if: runner.os != 'macOS' && startsWith(github.ref, 'refs/tags/')
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GLOB: ${{ matrix.glob }}
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-          files=()
-          while IFS= read -r pattern; do
-            [ -n "$pattern" ] || continue
-            files+=($pattern)
-          done <<< "$GLOB"
-          if [ ${#files[@]} -eq 0 ]; then
-            echo "::error::no installers matched the patterns for this platform"
-            exit 1
-          fi
-          printf 'attaching %s\n' "${files[@]}"
-          # The release is created before the tag is pushed (see the release
-          # recipe), so it exists by now; create it rather than dropping the
-          # installers on the floor if someone pushed a tag on its own.
-          if ! gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
-            echo "::warning::no release for $GITHUB_REF_NAME yet — creating a draft"
-            gh release create "$GITHUB_REF_NAME" --draft --title "$GITHUB_REF_NAME" --generate-notes
-          fi
-          gh release upload "$GITHUB_REF_NAME" "${files[@]}" --clobber
-
-      # Microsoft Store package (#1933). Windows Smart App Control blocks the
-      # unsigned NSIS .exe; the Store signs MSIX packages itself, so the Store
-      # copy runs with Smart App Control on. Built last, into its own folder,
-      # so nothing here can touch the .exe, zip or latest.yml uploaded above.
-      # It is NOT attached to the GitHub release: an unsigned MSIX will not
-      # install outside the Store. The `store` job below submits it.
-      - name: Package Microsoft Store MSIX
-        if: runner.os == 'Windows'
-        shell: bash
-        run: |
-          set -e
-          # Same project-root trick as "Package installer" (the root
-          # package.json is already moved aside by then).
-          [ ! -f package.json ] || mv package.json "$RUNNER_TEMP/root-package.json"
-          cd desktop
-          bash scripts/retry-network-step.sh npx --no-install electron-builder --win appx --x64 \
-            -c.directories.buildResources=store-assets -c.directories.output=dist-store --publish never
-          ls -l dist-store/*.msix
-
-      - name: Upload Microsoft Store package
-        if: runner.os == 'Windows'
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: windows-store-package
-          path: desktop/dist-store/*.msix
-          if-no-files-found: error
-
-  # Sends the Store MSIX to Partner Center (product 9PBN6G8K2B7F) on a version
-  # tag. Off unless the repository variable MSSTORE_SUBMIT is set:
-  #   draft  upload the package and leave the submission as a DRAFT; someone
-  #          clicks "Submit for certification" in Partner Center
-  #   auto   upload and submit for certification straight away
-  # Needs the MSSTORE_TENANT_ID / MSSTORE_SELLER_ID / MSSTORE_CLIENT_ID /
-  # MSSTORE_CLIENT_SECRET secrets (an Entra app with the Manager role in
-  # Partner Center). The FIRST submission has to be finished by hand in
-  # Partner Center (listing, screenshots, age rating, privacy policy URL,
-  # runFullTrust justification); after that this job can carry new versions.
-  # Store certification then takes 1-3 days, independent of the GitHub release.
-  store:
-    name: Submit to Microsoft Store
-    if: startsWith(github.ref, 'refs/tags/') && (vars.MSSTORE_SUBMIT == 'draft' || vars.MSSTORE_SUBMIT == 'auto')
-    needs: [build]
-    runs-on: windows-latest
+  linux-browser:
+    name: Linux i686 server and browser dashboard
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          name: windows-store-package
-          path: store-package
-      - uses: microsoft/setup-msstore-cli@3b2ec9136230357ce9abc02b9d056626fb248d3f # v1.4
-      - name: Configure Store credentials
-        shell: bash
-        env:
-          TENANT_ID: ${{ secrets.MSSTORE_TENANT_ID }}
-          SELLER_ID: ${{ secrets.MSSTORE_SELLER_ID }}
-          CLIENT_ID: ${{ secrets.MSSTORE_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.MSSTORE_CLIENT_SECRET }}
+          node-version: '22'
+      - name: Package server and static dashboard on x64
         run: |
-          msstore reconfigure --tenantId "$TENANT_ID" --sellerId "$SELLER_ID" \
-            --clientId "$CLIENT_ID" --clientSecret "$CLIENT_SECRET" --output-stream stdout
-      - name: Publish to the Store
-        shell: bash
-        env:
-          MODE: ${{ vars.MSSTORE_SUBMIT }}
+          npm ci --ignore-scripts
+          npm --prefix desktop ci --ignore-scripts
+          npm run build -w client
+          npm --prefix desktop run dist:linux:x86-server
+      - name: Run the extracted archive with 32-bit distro Node, without npm or Electron
         run: |
-          set -euo pipefail
-          ls -l store-package
-          # Pass the .msix FILE: given a directory, msstore looks for a source
-          # project and fails with "could not find a project publisher".
-          shopt -s nullglob
-          pkgs=(store-package/*.msix)
-          if [ "${#pkgs[@]}" -ne 1 ]; then echo "::error::expected exactly one .msix, found ${#pkgs[@]}"; exit 1; fi
-          # ~160 MB package; the default 100 s blob upload timeout is too tight.
-          args=(publish "${pkgs[0]}" --appId 9PBN6G8K2B7F --uploadTimeout 1800 --output-stream stdout)
-          if [ "$MODE" != auto ]; then args+=(--noCommit); fi
-          msstore "${args[@]}"
+          docker build --platform linux/386 -t ossllmapi-i686-test - <<'EOF'
+          FROM alpine:3.22
+          RUN apk add --no-cache nodejs ca-certificates
+          EOF
+          docker run --rm --platform linux/386 --network none --user 65534:65534 \
+            -v "$PWD/desktop/dist-electron/browser:/downloads:ro" \
+            -v "$PWD/desktop/scripts/smoke-linux-browser.mjs:/smoke.mjs:ro" \
+            ossllmapi-i686-test sh -ec 'cd /tmp; tar -xzf /downloads/*.tar.gz; node /smoke.mjs /tmp/OSSLLMAPI-* ia32'
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: linux-i686-server
+          path: desktop/dist-electron/browser/*.tar.gz
+          if-no-files-found: error
 
   macos-release:
     name: Verify and combine macOS artifacts
@@ -579,48 +515,47 @@ jobs:
           name: macos-update-metadata
           path: artifacts/latest-mac.yml
           if-no-files-found: error
-      - name: Attach both macOS installers to release
-        if: startsWith(github.ref, 'refs/tags/')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          if ! gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
-            gh release create "$GITHUB_REF_NAME" --draft --title "$GITHUB_REF_NAME" --generate-notes
-          fi
-          # Upload payloads first, then the manifest that advertises them.
-          gh release upload "$GITHUB_REF_NAME" \
-            artifacts/macos-installer-*/*.dmg \
-            artifacts/macos-installer-*/*.zip \
-            artifacts/macos-installer-*/*.blockmap --clobber
-          gh release upload "$GITHUB_REF_NAME" artifacts/latest-mac.yml --clobber
 
-  # Only once every platform has attached its installers does the release go
-  # public. A release created published (the old recipe) is left alone.
   publish:
-    name: Publish release
-    if: startsWith(github.ref, 'refs/tags/')
-    needs: [build, macos-release]
-    runs-on: ubuntu-latest
+    name: Publish verified OSSLLMAPI downloads
+    if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.publish == true)
+    needs: [build, linux-browser, macos-release]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    concurrency: desktop-release-publisher
     steps:
-      - name: Publish the draft once installers are attached
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+      - run: npm --prefix desktop ci --ignore-scripts
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          path: artifacts
+      - name: Validate every expected filename and update feed before upload
+        run: node desktop/scripts/stage-release.mjs artifacts release
+      - name: Attach to draft, verify uploads, then publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-        shell: bash
         run: |
           set -euo pipefail
-          draft="$(gh release view "$GITHUB_REF_NAME" --json isDraft --jq .isDraft)"
-          count="$(gh release view "$GITHUB_REF_NAME" --json assets --jq '.assets | length')"
-          echo "release $GITHUB_REF_NAME: draft=$draft assets=$count"
-          if [ "$count" -lt 5 ]; then
-            echo "::error::only $count asset(s) attached — not publishing"
-            exit 1
+          tag="v$(node -p 'require("./desktop/package.json").version')"
+          sha=$(git rev-parse HEAD)
+          if git show-ref --verify --quiet "refs/tags/$tag"; then
+            test "$(git rev-parse "refs/tags/$tag^{commit}")" = "$sha" || { echo "::error::$tag already points to another commit"; exit 1; }
           fi
-          if [ "$draft" = "true" ]; then
-            gh release edit "$GITHUB_REF_NAME" --draft=false
-            echo "published $GITHUB_REF_NAME"
+          if gh release view "$tag" --json isDraft >/dev/null 2>&1; then
+            test "$(gh release view "$tag" --json isDraft --jq .isDraft)" = true || { echo "::error::refusing to replace a published release"; exit 1; }
           else
-            echo "already published; nothing to do"
+            gh release create "$tag" --draft --target "$sha" --title "OSSLLMAPI $tag" --generate-notes
           fi
+          gh release upload "$tag" release/* --clobber
+          # A successful upload alone does not rule out stale assets on a draft.
+          (cd release && find . -type f -printf '%f\t%s\n' | sort) > expected.txt
+          gh release view "$tag" --json assets --jq '.assets[] | [.name, .size] | @tsv' | sort > actual.txt
+          diff -u expected.txt actual.txt
+          gh release edit "$tag" --target "$sha" --draft=false

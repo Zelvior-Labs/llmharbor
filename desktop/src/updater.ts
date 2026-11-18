@@ -21,9 +21,7 @@ export type { UpdateState };
 
 const { autoUpdater } = electronUpdater;
 
-const RELEASES_URL = 'https://github.com/tashfeenahmed/freellmapi/releases/latest';
-// The Store's own page for this app: Store installs get their updates there.
-const STORE_URL = 'ms-windows-store://pdp/?productid=9PBN6G8K2B7F';
+const RELEASES_URL = 'https://github.com/zelvior/ossllmapi/releases/latest';
 const BACKGROUND_INTERVAL_MS = 6 * 60 * 60 * 1000;
 const FIRST_BACKGROUND_CHECK_MS = 60 * 1000;
 
@@ -255,7 +253,7 @@ export async function installUpdate(): Promise<UpdateState> {
 export async function checkFromTray(): Promise<void> {
   const locale = hooks?.getLocale() ?? 'en';
   if (state.phase === 'unsupported') {
-    await shell.openExternal(state.reason === 'store' ? STORE_URL : RELEASES_URL);
+    await shell.openExternal(RELEASES_URL);
     return;
   }
   if (state.phase === 'ready') {

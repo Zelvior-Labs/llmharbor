@@ -31,10 +31,11 @@ describe('node:sqlite Android fallback', () => {
     for (const dir of tempDirs.splice(0)) fs.rmSync(dir, { recursive: true, force: true });
   });
 
-  it('is selected only for Android', () => {
+  it('is selected on Android or when explicitly requested by the headless build', () => {
     expect(defaultDbFactory('android')).toBe(nodeSqliteFactory);
     expect(defaultDbFactory('darwin')).not.toBe(nodeSqliteFactory);
     expect(defaultDbFactory('linux')).not.toBe(nodeSqliteFactory);
+    expect(defaultDbFactory('linux', 'node:sqlite')).toBe(nodeSqliteFactory);
   });
 
   itWithSqlite('runs the complete application migration set', () => {

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Linux/Android SDK build; no Gradle, emulator libraries or host node_modules in the APK.
-set -euo pipefail
+set -Eeuo pipefail
+trap 'echo "::error file=android/scripts/package.sh,line=$LINENO::Package step failed: $BASH_COMMAND" >&2' ERR
 cd "$(dirname "$0")/../.."
 preview=$(node -p 'require("./android/version.json").preview')
 base=$(node -p 'require("./desktop/package.json").version')
@@ -71,7 +72,8 @@ apk="$out/apks/OSSLLMAPI-$version-android-$abi.apk"
   --v4-signing-enabled false --out "$apk" "$work/aligned.apk"
 "$tools/zipalign" -c 4 "$apk"
 "$tools/apksigner" verify --verbose --print-certs "$apk" | tee "$work/signature.txt"
-grep -Fq 'Verified using v2 scheme (APK Signature Scheme v2): true' "$work/signature.txt"
+# Android 11 verifies v3 first and does not re-verify v2 after a valid v3 signature.
+grep -Fq 'Verified using v3 scheme (APK Signature Scheme v3): true' "$work/signature.txt"
 "$tools/aapt" dump badging "$apk" > "$work/badging.txt"
 grep -F "package: name='$pkg'" "$work/badging.txt"; grep -Fx "sdkVersion:'30'" "$work/badging.txt"
 grep -Fx "native-code: 'armeabi-v7a'" "$work/badging.txt"; ! grep -Fqx application-debuggable "$work/badging.txt" || exit 1

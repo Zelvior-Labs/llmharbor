@@ -69,7 +69,8 @@ def run():
 
 try:
     run()
-except Exception:
+except Exception as error:
+    print(f'::error::Android 11 smoke: {type(error).__name__}: {error}', flush=True)
     # Diagnostics from Android, not the launcher UI (which contains one-time codes).
     subprocess.run(['adb', 'logcat', '-d', '-t', '1600', 'AndroidRuntime:E', 'linker:E', 'libc:F', 'DEBUG:F', 'OSSLLMAPI:E', '*:S'])
     raise

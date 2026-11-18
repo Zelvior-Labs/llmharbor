@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OSSLLMAPI</string>
+    <string name="subtitle">Gateway and dashboard on this phone\nVersion %1$s · %2$s</string>
+
+    <string name="start_gateway">Start gateway</string>
+    <string name="starting_gateway">Starting gateway…</string>
+    <string name="open_dashboard">Open dashboard</string>
+    <string name="stop_gateway">Stop gateway</string>
+    <string name="show_code">Show setup/reset code</string>
+    <string name="hide_code">Hide code</string>
+
+    <string name="status_running">Gateway running · %1$s · Node %2$s · port %3$d</string>
+    <string name="status_stopped">Gateway stopped</string>
+    <string name="start_error">Last start problem: %1$s</string>
+
+    <string name="section_api">API</string>
+    <string name="copy_api">Copy API base URL</string>
+    <string name="api_offline">Start the gateway to get its URL.</string>
+
+    <string name="section_network">Network</string>
+    <string name="lan_toggle">Allow other devices on my Wi-Fi (LAN)</string>
+    <string name="copy_lan">Copy LAN URL</string>
+    <string name="lan_off">LAN access is off: this phone only.</string>
+    <string name="lan_on">LAN dashboard: %1$s</string>
+    <string name="lan_offline">LAN URL appears when the gateway runs.</string>
+    <string name="lan_warning">LAN access is for trusted networks. A device that reaches this URL still needs your dashboard login, and API clients still need the unified API key.</string>
+
+    <string name="section_background">Keeping it running</string>
+    <string name="boot_toggle">Start the gateway when the phone boots</string>
+    <string name="keep_toggle">Restart after Android frees memory</string>
+    <string name="battery_button">Allow background battery use</string>
+
+    <string name="section_update">Updates</string>
+    <string name="update_hint">Updates come from the project\'s GitHub pre-releases. The APK is checked against its published SHA-256 and must be signed by the same certificate as this install before Android will accept it.</string>
+    <string name="check_updates">Check for updates</string>
+    <string name="update_title">Updates</string>
+    <string name="update_prompt">Download version %1$s (%2$s)?</string>
+    <string name="download_install">Download and install</string>
+
+    <string name="section_backup">Backup</string>
+    <string name="backup_hint">A backup holds the database and its key, encrypted with a passphrase you choose. Without that passphrase the file cannot be restored, so store it safely.</string>
+    <string name="export_backup">Export encrypted backup</string>
+    <string name="restore_backup">Restore backup into a fresh install</string>
+    <string name="passphrase_hint">Passphrase (at least 8 characters)</string>
+    <string name="passphrase_explain">This passphrase encrypts the backup file. It cannot be recovered.</string>
+
+    <string name="section_diagnostics">Diagnostics</string>
+    <string name="diagnostics_hint">The log bundle holds start-up logs and device details, never codes, keys or database contents.</string>
+    <string name="export_diagnostics">Export diagnostics</string>
+
+    <string name="help_text">Start the gateway, then open the dashboard. The first account needs the setup code. Add provider keys under Keys, and use the unified API key for other apps on this phone. If Android Go frees memory, start the gateway again; accounts and keys are kept.</string>
+
+    <string name="reveal_title">Show one-time codes</string>
+    <string name="reveal_body">Confirm it is you to reveal the setup or reset code.</string>
+    <string name="setup_code">Setup code: %1$s</string>
+    <string name="reset_code">Reset code: %1$s</string>
+    <string name="no_code">No code is pending. This dashboard account already exists.</string>
+
+    <string name="notification_channel">Local gateway</string>
+    <string name="notification_title">OSSLLMAPI</string>
+    <string name="notification_starting">Starting the local gateway…</string>
+    <string name="notification_running">Running on port %1$d</string>
+
+    <string name="widget_running">Gateway running</string>
+    <string name="widget_stopped">Gateway stopped</string>
+    <string name="tile_running">Gateway on</string>
+    <string name="tile_stopped">Gateway off</string>
+</resources>

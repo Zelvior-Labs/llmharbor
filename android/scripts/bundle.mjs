@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { cpSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
+import { cpSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 const root = fileURLToPath(new URL('../../', import.meta.url));
@@ -11,6 +11,15 @@ rmSync(dest, { recursive: true, force: true });
 mkdirSync(dest, { recursive: true });
 cpSync(join(root, 'android/build/dashboard'), join(dest, 'dashboard'), { recursive: true });
 readFileSync(join(dest, 'dashboard/index.html'));
+// Source maps and editor droppings only inflate the APK.
+function prune(dir) {
+  for (const entry of readdirSync(dir)) {
+    const target = join(dir, entry);
+    if (statSync(target).isDirectory()) { prune(target); continue; }
+    if (entry.endsWith('.map') || entry === '.DS_Store') rmSync(target, { force: true });
+  }
+}
+prune(join(dest, 'dashboard'));
 await build({
   entryPoints: [join(root, 'android/gateway.mjs')], outfile: join(dest, 'gateway.mjs'),
   bundle: true, platform: 'node', target: 'node24', format: 'esm', legalComments: 'linked',

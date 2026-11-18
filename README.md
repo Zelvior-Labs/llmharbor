@@ -175,7 +175,7 @@ Prefer to read before you pipe to bash? [The script is here](https://freellmapi.
 
 Open http://localhost:3001, add your provider keys on the **Keys** page, reorder the **Fallback Chain** to taste, and grab your unified API key from the **Keys** page header. That unified key is what you point your OpenAI SDK at.
 
-For the OSSLLMAPI Windows installers, see [Desktop app](#desktop-app). On Android 11 Go (32-bit ARMv7), use the [standalone APK](android/README.md) to run the API and dashboard on your phone. The experimental [Termux guide](docs/en/install/02-android-termux.md) is a separate option.
+For the OSSLLMAPI Windows installers, see [Desktop app](#desktop-app). On Android 11 or later (ARMv7, ARM64 or x86_64), use the [standalone APK](android/README.md) to run the API and dashboard on your phone. The experimental [Termux guide](docs/en/install/02-android-termux.md) is a separate option.
 
 Everything else — Docker Compose, local development, declarative startup config, production builds, LAN access, and backups — is in **[docs/en/install/01-install.md](docs/en/install/01-install.md)**.
 

@@ -64,7 +64,7 @@ function AuthForm({ mode, onAuthed }: { mode: 'setup' | 'login'; onAuthed: () =>
   const [setupCode, setSetupCode] = useState('')
   // Revealed only after the server asks for it (remote first-run setup). A
   // browser on the same machine as the server never sees this field.
-  const [codeRequired, setCodeRequired] = useState(false)
+  const [codeRequired, setCodeRequired] = useState(import.meta.env.MODE === 'android')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const [attempted, setAttempted] = useState(false)
@@ -178,10 +178,10 @@ function AuthForm({ mode, onAuthed }: { mode: 'setup' | 'login'; onAuthed: () =>
                 autoComplete="off"
                 value={setupCode}
                 onChange={e => setSetupCode(e.target.value)}
-                placeholder={t('auth.setupCodePlaceholder')}
+                placeholder={import.meta.env.MODE === 'android' ? undefined : t('auth.setupCodePlaceholder')}
                 aria-describedby="auth-setup-code-hint"
               />
-              <p id="auth-setup-code-hint" className="text-xs text-muted-foreground">{t('auth.setupCodeHint')}</p>
+              <p id="auth-setup-code-hint" className="text-xs text-muted-foreground">{import.meta.env.MODE === 'android' ? 'Open OSSLLMAPI on this phone to see your code.' : t('auth.setupCodeHint')}</p>
             </div>
           )}
           {/* A server rejection is the one error nobody can predict; it gets the same
@@ -282,7 +282,7 @@ function ForgotPasswordForm({ onBack, onAuthed }: { onBack: () => void; onAuthed
 
         {step === 'request' && (
           <div className="mt-1 space-y-3">
-            <p className="text-xs text-muted-foreground mb-4">{t('auth.forgotPasswordDescription')}</p>
+            <p className="text-xs text-muted-foreground mb-4">{import.meta.env.MODE === 'android' ? 'Request a code, then open the OSSLLMAPI app to read it.' : t('auth.forgotPasswordDescription')}</p>
             {error && <p className="text-destructive text-xs">{error}</p>}
             <Button className="w-full" disabled={busy} onClick={requestCode}>
               {busy ? t('auth.requestingResetCode') : t('auth.requestResetCode')}
@@ -292,8 +292,8 @@ function ForgotPasswordForm({ onBack, onAuthed }: { onBack: () => void; onAuthed
 
         {step === 'reset' && (
           <form onSubmit={submitReset} className="space-y-3 mt-4" noValidate>
-            <p className="text-xs text-muted-foreground">{t('auth.resetCodeHint')}</p>
-            <p className="text-xs text-muted-foreground">{t('auth.resetCodeDockerHint')}</p>
+            <p className="text-xs text-muted-foreground">{import.meta.env.MODE === 'android' ? 'Your reset code is shown in the OSSLLMAPI app.' : t('auth.resetCodeHint')}</p>
+            {import.meta.env.MODE !== 'android' && <p className="text-xs text-muted-foreground">{t('auth.resetCodeDockerHint')}</p>}
             <div className="space-y-1.5">
               <Label className="text-xs" htmlFor="reset-code">{t('auth.resetCode')}</Label>
               <Input
@@ -302,7 +302,7 @@ function ForgotPasswordForm({ onBack, onAuthed }: { onBack: () => void; onAuthed
                 autoComplete="off"
                 value={resetCode}
                 onChange={e => setResetCode(e.target.value)}
-                placeholder={t('auth.resetCodePlaceholder')}
+                placeholder={import.meta.env.MODE === 'android' ? undefined : t('auth.resetCodePlaceholder')}
                 aria-invalid={attempted && !!codeError}
               />
               {attempted && <FieldError error={codeError} />}

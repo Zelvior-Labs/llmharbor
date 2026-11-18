@@ -5,8 +5,10 @@ export function openUpdates(): void {
   window.dispatchEvent(new Event(OPEN_UPDATES_EVENT))
 }
 
-// Build-time: the Windows 7 portable preview must never offer a modern installer.
-export const WIN7_PORTABLE = import.meta.env.MODE === 'win7'
-export const RELEASES_URL = WIN7_PORTABLE
-  ? 'https://github.com/zelvior/ossllmapi/releases?q=win7'
+// Sideloaded editions must not offer an incompatible desktop update.
+const mode = import.meta.env.MODE
+export const MANUAL_EDITION = mode === 'win7' ? 'Windows 7 SP1 · Portable ZIP'
+  : mode === 'android' ? 'Android · armeabi-v7a APK' : null
+export const RELEASES_URL = mode === 'win7' ? 'https://github.com/zelvior/ossllmapi/releases?q=win7'
+  : mode === 'android' ? 'https://github.com/zelvior/ossllmapi/releases?q=android'
   : 'https://github.com/zelvior/ossllmapi/releases/latest'

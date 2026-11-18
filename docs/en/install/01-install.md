@@ -292,7 +292,8 @@ request stats.
 
 **[Download OSSLLMAPI from GitHub Releases](https://github.com/zelvior/ossllmapi/releases/latest)**. Choose:
 
-- **Windows:** `windows-x86` for 32-bit or `windows-x64` for 64-bit. The `-setup.exe` installs the app; the `.zip` is portable. [x86 source-build instructions](../../../desktop/README.md#32-bit-windows-build).
+- **Windows 7 SP1:** use the [separate Windows 7 portable desktop ZIP](../../../desktop/win7/README.md). Choose `windows7-x86` (32-bit) or `windows7-x64` (64-bit), extract it, then launch `OSSLLMAPI.exe`. No installer or Node.js required.
+- **Windows 10/11:** `windows-x86` for 32-bit or `windows-x64` for 64-bit. The `-setup.exe` installs the app; the `.zip` is portable. [x86 source-build instructions](../../../desktop/README.md#32-bit-windows-build).
 - **Linux x64:** AppImage, DEB, RPM or tar.xz for the desktop app.
 - **Linux i686 (32-bit Intel):** the [server + browser dashboard package](../../../desktop/linux-browser/README.md), requiring distro Node.js 22.13+ (22.x) or 24.x with `node:sqlite`. There is no Electron build for Linux i686.
 - **macOS 12+:** `arm64` for Apple Silicon or `x64` for Intel. Both have a DMG and ZIP.

@@ -1,13 +1,13 @@
 # OSSLLMAPI for Android · standalone preview
 
-A signed APK for Android 11 (API 30) and later. Both the gateway and the dashboard are inside the
+A signed APK for Android 8.0 (API 26) and later. Both the gateway and the dashboard are inside the
 app: no PC, Termux, Node installation, root access or first-run runtime download. The dashboard
 opens in your phone's browser so uploads, downloads and the clipboard work normally.
 
 | APK | Use it for |
 | --- | --- |
 | `…-android-arm64-v8a.apk` | Most phones from the last few years. |
-| `…-android-armeabi-v7a.apk` | 32-bit phones, including many Android 11 Go devices. |
+| `…-android-armeabi-v7a.apk` | 32-bit phones, including many Android Go devices. |
 | `…-android-x86_64.apk` | Emulators, Chromebooks and x86 tablets. |
 
 Android refuses an APK whose CPUs do not match the device, so try `arm64-v8a` first on a modern
@@ -24,9 +24,10 @@ phone and `armeabi-v7a` on an older or low-RAM one.
    **`http://127.0.0.1:31415/v1`** and the **unified API key** from Keys — not the dashboard password or
    your upstream key. Cloud models still need connectivity; the APK routes requests, it is not an
    offline model.
-4. Prefer smaller images and fewer parallel requests on a low-memory phone: images pass through
-   without native `sharp` resizing. If Android frees the service, tap **Start gateway** again; accounts,
-   provider keys and settings survive.
+4. Oversized images are downscaled before they leave the phone (pure JavaScript, no native `sharp`), and
+   **Battery saver** stretches key checks to every 15 minutes. If Android frees the service, tap
+   **Start gateway** again, or use the app's long-press shortcuts; accounts, provider keys and settings
+   survive.
 
 ## What the app does on its own
 
@@ -54,6 +55,16 @@ phone and `armeabi-v7a` on an older or low-RAM one.
 - **Hidden one-time codes.** Setup and reset codes stay hidden until the owner confirms with the device
   PIN, pattern or biometrics, are re-hidden after a minute, and never appear in notifications or logs.
   The screen is `FLAG_SECURE`, so codes do not leak into screenshots or the Recents thumbnail.
+- **Live status on the launcher.** The app renders a `status.json` snapshot the gateway refreshes every
+  20 seconds — provider and key counts, healthy keys, requests in the last 24 hours, uptime — so a dead
+  provider key is visible without opening the dashboard.
+- **Eco mode.** Stretches key-health checks to 15 minutes and pauses background catalog sync; when *every*
+  provider key is failing the app posts an alert notification instead of waiting for you to notice.
+- **Long-press and themed icons.** Long-pressing the icon offers Start gateway, Open dashboard and Stop
+  gateway. On Android 13+ the icon participates in themed icons, and the launcher is translated into
+  Chinese (simplified), Spanish, German and Brazilian Portuguese.
+- **QR pairing.** The dashboard's Keys page shows the base URL and unified key as a QR code, so a phone
+  or laptop can pair without retyping the key.
 - **Keystore-wrapped data key.** The SQLite encryption key is wrapped by a non-exportable Android
   Keystore key and handed to the gateway in its process environment, so no plaintext key sits on disk.
 
@@ -71,7 +82,21 @@ exported/imported your provider keys and checked the new one, run only one gatew
 any plaintext key export. `SHA256SUMS.txt` is published beside the APKs, and the stable desktop
 release/feed stays separate.
 
-Builders who want **in-place updates** sign with their own durable key and a stable ID: set
+Builders who want **in-place updates** sign with their own durable key and a stable ID.
+
+```sh
+./android/scripts/android-signing-key.sh init --out durable.p12
+```
+
+generates a PKCS12 (RSA 4096, 30-year validity), prints the four secret values and the certificate
+SHA-256 that the launcher shows under **Updates**, and refuses to overwrite an existing keystore. Keep an
+offline copy of `durable.p12` and its password: losing them means every future APK is a different app that
+cannot install over this one, and leaking them means someone else can sign an update Android will trust.
+To rotate, generate a new key, publish one release signed with the old key, and keep the old secret until
+users have moved. `show durable.p12` prints the alias, validity and fingerprint, and the base64 to paste
+into the secret.
+
+Locally, or if you prefer your own toolchain, set
 `ANDROID_SIGNING_MODE=durable ANDROID_PACKAGE_ID=…` and point `APK_KEYSTORE`/`APK_ALIAS`/`APK_PASSWORD`
 at that keystore. CI does the same when these repository secrets exist:
 
@@ -79,7 +104,8 @@ at that keystore. CI does the same when these repository secrets exist:
 | --- | --- |
 | `ANDROID_KEYSTORE_B64` | base64 of a PKCS12 keystore holding the durable key |
 | `ANDROID_KEYSTORE_PASSWORD` | its password |
-| `ANDROID_KEY_ALIAS` | key alias inside the keystore |
+| `ANDROID_KEY_ALIAS` | key alias inside the keystore (`init` uses `ossllmapi`) |
+| `ANDROID_KEY_PASSWORD` | key password (PKCS12 usually matches the store password) |
 
 Optionally set the repository variable `ANDROID_PACKAGE_ID` (default
 `io.github.zelvior.ossllmapi.android`). Without the secret the workflow falls back to
@@ -110,8 +136,14 @@ The tagged workflow runs the same signed APKs it publishes through installation,
 behaviour, dashboard rendering, first-run security, authenticated models, a chat routed to a controlled
 upstream, stop/restart persistence, password reset and LAN mode. `armeabi-v7a` is exercised on an
 Android 11 system image through its ARM native bridge; `x86_64` runs natively on Android 14, which also
-covers the newer foreground-service rules. Neither is a physical Android Go test, and `arm64-v8a` is
-covered by packaging assertions (ELF class, ABI, manifest, signature) rather than a device run.
+covers the newer foreground-service rules; an Android 9 image holds the API 26 floor, where the
+runtime-permission, notification-channel and signing-info APIs all take their legacy path. Translations
+are checked for key and placeholder parity rather than compiled away: `python3 android/scripts/check-strings.py`.
+Emulators still are not Android Go devices, so a self-hosted runner job
+(`.github/workflows/android-device.yml`) installs the same artifact on an attached arm64 phone and records
+`dumpsys meminfo` plus lowmemorykiller events; see
+[the device-runner guide](../docs/en/install/03-android-device-runner.md). `arm64-v8a` otherwise remains
+covered by packaging assertions (ELF class, ABI, manifest, signature) rather than a hosted device run.
 
 Runtime: the **full**, not lite, [nodejs-mobile v24.22.1-0 community build](https://github.com/fogtape/nodejs-mobile/releases/tag/v24.22.1-0).
 `version.json` pins the archive digest. `libnode.so` and NDK libc++ are packaged as native libraries and

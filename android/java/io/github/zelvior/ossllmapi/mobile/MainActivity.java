@@ -6,9 +6,14 @@ import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,8 +41,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -48,13 +56,14 @@ import java.util.zip.ZipOutputStream;
 public final class MainActivity extends Activity {
     private static final int REQ_EXPORT = 11, REQ_RESTORE = 12, REQ_DIAGNOSTICS = 13, REQ_CREDENTIAL = 14;
     private static final long REVEAL_MS = 60_000;
+    private static final String ACTION_SHORTCUT = "io.github.zelvior.ossllmapi.mobile.SHORTCUT";
 
     private final Handler ui = new Handler(Looper.getMainLooper());
     private final ExecutorService io = Executors.newSingleThreadExecutor();
     private LinearLayout panel;
-    private TextView status, apiUrl, lanUrl, codes, hint;
+    private TextView status, apiUrl, lanUrl, codes, hint, live;
     private Button start, open, stop, reveal, copyApi, copyLan, battery;
-    private CheckBox lanCheck, bootCheck, keepCheck;
+    private CheckBox lanCheck, bootCheck, keepCheck, ecoCheck;
     private boolean visible, pending, openWhenReady;
     private long startTime, revealUntil;
     private char[] pendingPassphrase;
@@ -69,6 +78,7 @@ public final class MainActivity extends Activity {
             && checkSelfPermission("android.permission.POST_NOTIFICATIONS") != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[] {"android.permission.POST_NOTIFICATIONS"}, 21);
         }
+        publishShortcuts();
         handleIntent(getIntent());
     }
 
@@ -79,7 +89,45 @@ public final class MainActivity extends Activity {
     }
 
     private void handleIntent(Intent intent) {
-        if (intent != null && Gateway.ACTION_OPEN.equals(intent.getAction())) openWhenReady = true;
+        if (intent == null) return;
+        if (Gateway.ACTION_OPEN.equals(intent.getAction())) openWhenReady = true;
+        if (ACTION_SHORTCUT.equals(intent.getAction())) {
+            String choice = intent.getStringExtra("shortcut");
+            if ("start".equals(choice)) {
+                startTime = SystemClock.elapsedRealtime();
+                try { Gateway.start(this); } catch (RuntimeException refused) { startTime = 0; }
+            } else if ("stop".equals(choice)) {
+                Gateway.stop(this);
+            } else if ("open".equals(choice)) {
+                openWhenReady = true;
+            }
+            poll(false);
+        }
+    }
+
+    /** Long-press shortcuts: start, open the dashboard or stop without opening the app. */
+    private void publishShortcuts() {
+        ShortcutManager manager = getSystemService(ShortcutManager.class);
+        if (manager == null) return;
+        List<ShortcutInfo> shortcuts = new ArrayList<>();
+        shortcuts.add(shortcut("start", R.string.start_gateway, "start"));
+        shortcuts.add(shortcut("open", R.string.open_dashboard, "open"));
+        shortcuts.add(shortcut("stop", R.string.stop_gateway, "stop"));
+        try {
+            manager.setDynamicShortcuts(shortcuts);
+        } catch (RuntimeException ignored) {
+            // Some launchers cap or refuse dynamic shortcuts.
+        }
+    }
+
+    private ShortcutInfo shortcut(String id, int label, String choice) {
+        Intent intent = new Intent(this, MainActivity.class)
+            .setAction(ACTION_SHORTCUT).putExtra("shortcut", choice);
+        return new ShortcutInfo.Builder(this, id)
+            .setShortLabel(getString(label))
+            .setIcon(Icon.createWithResource(this, R.drawable.router_icon))
+            .setIntent(intent)
+            .build();
     }
 
     private void build() {
@@ -139,6 +187,10 @@ public final class MainActivity extends Activity {
         hint = label("", 13);
         hint.setVisibility(View.GONE);
 
+        section(R.string.section_status);
+        live = label(getString(R.string.status_offline), 15);
+        live.setTextIsSelectable(true);
+
         section(R.string.section_network);
         lanCheck = check(R.string.lan_toggle, Prefs.get(this, Prefs.LAN));
         lanCheck.setOnCheckedChangeListener((view, checked) -> {
@@ -162,11 +214,27 @@ public final class MainActivity extends Activity {
         bootCheck.setOnCheckedChangeListener((view, checked) -> Prefs.set(this, Prefs.BOOT, checked));
         keepCheck = check(R.string.keep_toggle, Prefs.get(this, Prefs.KEEP));
         keepCheck.setOnCheckedChangeListener((view, checked) -> Prefs.set(this, Prefs.KEEP, checked));
+        ecoCheck = check(R.string.eco_toggle, Prefs.get(this, Prefs.ECO));
+        ecoCheck.setOnCheckedChangeListener((view, checked) -> {
+            Prefs.set(this, Prefs.ECO, checked);
+            if (Gateway.running(this)) {
+                toast(checked ? "Restarting in battery saver" : "Restarting with normal key checks");
+                Gateway.stop(this);
+                ui.postDelayed(() -> {
+                    try { Gateway.start(this); } catch (RuntimeException ignored) { }
+                }, 1200);
+            }
+            poll(false);
+        });
         battery = button(R.string.battery_button, view -> requestBatteryExemption());
 
         section(R.string.section_update);
         label(getString(R.string.update_hint), 13);
         button(R.string.check_updates, view -> checkForUpdates());
+        TextView certificate = label(getString(R.string.signing_certificate, fingerprint()), 11);
+        certificate.setTypeface(Typeface.MONOSPACE);
+        certificate.setTextIsSelectable(true);
+        button(R.string.copy_certificate, view -> copy(fingerprint(), "Certificate fingerprint copied"));
 
         section(R.string.section_backup);
         label(getString(R.string.backup_hint), 13);
@@ -224,19 +292,20 @@ public final class MainActivity extends Activity {
         pending = true;
         io.execute(() -> {
             final JSONObject fresh = Gateway.state(this);
+            final JSONObject snapshot = fresh == null ? null : Gateway.status(this);
             final String error = fresh == null ? startupError() : "";
             ui.post(() -> {
                 pending = false;
                 if (!visible) return;
                 state = fresh;
-                applyState(fresh, error, launchBrowser);
+                applyState(fresh, snapshot, error, launchBrowser);
             });
         });
     }
 
     private final Runnable pollRefresh = () -> poll(false);
 
-    private void applyState(JSONObject fresh, String error, boolean launchBrowser) {
+    private void applyState(JSONObject fresh, JSONObject snapshot, String error, boolean launchBrowser) {
         boolean online = fresh != null;
         long elapsed = startTime == 0 ? 0 : SystemClock.elapsedRealtime() - startTime;
         boolean starting = !online && startTime != 0 && elapsed < 45_000;
@@ -255,12 +324,29 @@ public final class MainActivity extends Activity {
             JSONArray lan = fresh.optJSONArray("lan");
             lanUrl.setText(lan == null || lan.length() == 0 ? getString(R.string.lan_off)
                 : getString(R.string.lan_on, lan.optString(0)));
+            StringBuilder counts = new StringBuilder();
+            int enabledKeys = snapshot == null ? 0 : snapshot.optJSONObject("keys") == null ? 0
+                : snapshot.optJSONObject("keys").optInt("enabled");
+            int healthyKeys = snapshot == null ? 0 : snapshot.optJSONObject("keys") == null ? 0
+                : snapshot.optJSONObject("keys").optInt("healthy");
+            counts.append(getString(R.string.status_providers,
+                snapshot == null ? 0 : snapshot.optInt("providers"), enabledKeys)).append('\n');
+            counts.append(getString(R.string.status_health, healthyKeys, enabledKeys)).append('\n');
+            counts.append(getString(R.string.status_requests,
+                snapshot == null ? 0 : snapshot.optInt("requestsLastDay"))).append('\n');
+            counts.append(getString(R.string.status_uptime, duration(
+                snapshot == null ? 0 : snapshot.optLong("uptimeSec"))));
+            if (snapshot != null && snapshot.optBoolean("allKeysFailing")) {
+                counts.append('\n').append(getString(R.string.status_keys_failing));
+            }
+            live.setText(counts.toString());
             if (openWhenReady && launchBrowser) openWhenReady = false;
         } else {
             status.setText(starting ? getString(R.string.starting_gateway)
                 : getString(R.string.status_stopped));
             apiUrl.setText(R.string.api_offline);
             lanUrl.setText(R.string.lan_offline);
+            live.setText(R.string.status_offline);
             if (!error.isEmpty()) {
                 hint.setText(getString(R.string.start_error, error));
                 hint.setVisibility(View.VISIBLE);
@@ -609,6 +695,30 @@ public final class MainActivity extends Activity {
         if (clipboard == null || value.isEmpty()) return;
         clipboard.setPrimaryClip(ClipData.newPlainText("OSSLLMAPI", value));
         toast(message);
+    }
+
+    private static String duration(long seconds) {
+        if (seconds < 60) return seconds + "s";
+        if (seconds < 3600) return (seconds / 60) + "m";
+        return (seconds / 3600) + "h " + ((seconds % 3600) / 60) + "m";
+    }
+
+    /** SHA-256 of the certificate Android will check before installing an update. */
+    private String fingerprint() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(),
+                Build.VERSION.SDK_INT >= 28 ? PackageManager.GET_SIGNING_CERTIFICATES : PackageManager.GET_SIGNATURES);
+            Signature[] signatures = Build.VERSION.SDK_INT >= 28
+                ? (info.signingInfo == null ? null : info.signingInfo.getApkContentsSigners())
+                : info.signatures;
+            if (signatures == null || signatures.length == 0) return "unknown";
+            byte[] hash = MessageDigest.getInstance("SHA-256").digest(signatures[0].toByteArray());
+            StringBuilder out = new StringBuilder(hash.length * 2);
+            for (byte value : hash) out.append(String.format("%02x", value));
+            return out.toString();
+        } catch (Exception unreadable) {
+            return "unknown";
+        }
     }
 
     private void toast(String message) {

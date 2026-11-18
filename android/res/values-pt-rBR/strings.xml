@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OSSLLMAPI</string>
+    <string name="subtitle">Gateway e painel neste telefone\nVersão %1$s · %2$s</string>
+
+    <string name="start_gateway">Iniciar gateway</string>
+    <string name="starting_gateway">Iniciando o gateway…</string>
+    <string name="open_dashboard">Abrir painel</string>
+    <string name="stop_gateway">Parar gateway</string>
+    <string name="show_code">Mostrar código de configuração/redefinição</string>
+    <string name="hide_code">Ocultar código</string>
+
+    <string name="status_running">Gateway ativo · %1$s · Node %2$s · porta %3$d</string>
+    <string name="status_stopped">Gateway parado</string>
+    <string name="start_error">Último problema ao iniciar: %1$s</string>
+
+    <string name="section_api">API</string>
+    <string name="copy_api">Copiar URL base da API</string>
+    <string name="api_offline">Inicie o gateway para obter a URL.</string>
+
+    <string name="section_status">Status ao vivo</string>
+    <string name="status_offline">Os números ao vivo aparecem enquanto o gateway está ativo.</string>
+    <string name="status_providers">Provedores: %1$d · Chaves: %2$d</string>
+    <string name="status_health">Chaves funcionando: %1$d de %2$d</string>
+    <string name="status_requests">Requisições, últimas 24 h: %1$d</string>
+    <string name="status_uptime">Tempo ativo: %1$s</string>
+    <string name="status_keys_failing">Todas as chaves de provedor estão falhando. Abra Chaves no painel.</string>
+
+    <string name="section_network">Rede</string>
+    <string name="lan_toggle">Permitir outros aparelhos no meu Wi-Fi (LAN)</string>
+    <string name="copy_lan">Copiar URL da LAN</string>
+    <string name="lan_off">O acesso pela LAN está desligado: só este telefone.</string>
+    <string name="lan_on">Painel na LAN: %1$s</string>
+    <string name="lan_offline">A URL da LAN aparece quando o gateway está ativo.</string>
+    <string name="lan_warning">O acesso pela LAN é para redes confiáveis. Um aparelho que alcançar esta URL ainda precisa do login do painel, e clientes de API ainda precisam da chave unificada.</string>
+
+    <string name="section_background">Manter ativo</string>
+    <string name="boot_toggle">Iniciar o gateway ao ligar o telefone</string>
+    <string name="keep_toggle">Reiniciar quando o Android liberar memória</string>
+    <string name="battery_button">Permitir uso de bateria em segundo plano</string>
+    <string name="eco_toggle">Economia de bateria: verificar chaves a cada 15 minutos</string>
+
+    <string name="section_update">Atualizações</string>
+    <string name="update_hint">As atualizações vêm das pré-versões do GitHub do projeto. O APK é conferido pelo SHA-256 publicado e precisa ser assinado com o mesmo certificado desta instalação para o Android aceitar.</string>
+    <string name="check_updates">Verificar atualizações</string>
+    <string name="update_title">Atualizações</string>
+    <string name="update_prompt">Baixar a versão %1$s (%2$s)?</string>
+    <string name="download_install">Baixar e instalar</string>
+    <string name="signing_certificate">SHA-256 do certificado de assinatura: %1$s</string>
+    <string name="copy_certificate">Copiar impressão digital do certificado</string>
+
+    <string name="section_backup">Backup</string>
+    <string name="backup_hint">O backup contém o banco de dados e sua chave, criptografados com uma senha escolhida por você. Sem essa senha o arquivo não pode ser restaurado, então guarde-a bem.</string>
+    <string name="export_backup">Exportar backup criptografado</string>
+    <string name="restore_backup">Restaurar backup em uma instalação nova</string>
+    <string name="passphrase_hint">Senha (mínimo 8 caracteres)</string>
+    <string name="passphrase_explain">Esta senha criptografa o arquivo de backup. Ela não pode ser recuperada.</string>
+
+    <string name="section_diagnostics">Diagnóstico</string>
+    <string name="diagnostics_hint">O pacote de logs inclui registros de inicialização e dados do aparelho, nunca códigos, chaves ou conteúdo do banco.</string>
+    <string name="export_diagnostics">Exportar diagnóstico</string>
+
+    <string name="help_text">Inicie o gateway e abra o painel. A primeira conta precisa do código de configuração. Adicione chaves de provedor em Chaves e use a chave unificada para outros apps neste telefone. Se o Android Go liberar memória, inicie o gateway de novo; contas e chaves são mantidas.</string>
+
+    <string name="reveal_title">Mostrar códigos de uso único</string>
+    <string name="reveal_body">Confirme que é você para ver o código de configuração ou de redefinição.</string>
+    <string name="setup_code">Código de configuração: %1$s</string>
+    <string name="reset_code">Código de redefinição: %1$s</string>
+    <string name="no_code">Nenhum código pendente. A conta do painel já existe.</string>
+
+    <string name="notification_channel">Gateway local</string>
+    <string name="notification_title">OSSLLMAPI</string>
+    <string name="notification_starting">Iniciando o gateway local…</string>
+    <string name="notification_running">Ativo na porta %1$d</string>
+    <string name="alert_channel">Alertas do gateway</string>
+    <string name="alert_keys_failing">Todas as chaves de provedor estão falhando. Abra o painel para substituí-las.</string>
+
+    <string name="widget_running">Gateway ativo</string>
+    <string name="widget_stopped">Gateway parado</string>
+    <string name="tile_running">Gateway ligado</string>
+    <string name="tile_stopped">Gateway desligado</string>
+</resources>

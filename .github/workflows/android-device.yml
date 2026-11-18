@@ -1,0 +1,91 @@
+name: Android physical device
+# Runs the same launcher/API smoke test as CI on a real phone attached to a
+# self-hosted runner. Phones cannot be emulated here: Android Go memory
+# pressure, OEM battery killers and real Keystore hardware only exist on a
+# device. See docs/en/install/02-android-device-runner.md.
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Run id of a successful "Android standalone preview" build to install
+        required: true
+      abi:
+        description: APK to install
+        required: false
+        default: arm64-v8a
+      note:
+        description: Free-form note stored in the job summary
+        required: false
+        default: ''
+  workflow_call:
+    inputs:
+      run_id:
+        required: true
+        type: string
+      abi:
+        required: false
+        type: string
+        default: arm64-v8a
+permissions:
+  contents: read
+  actions: read
+jobs:
+  physical:
+    name: Install and exercise on the attached phone
+    # The runner label set is what an operator configures; nothing here is
+    # shared with the hosted emulator jobs.
+    runs-on: [self-hosted, android, arm64]
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Download the signed APKs from that run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ inputs.run_id }}
+        run: |
+          gh run download "$RUN_ID" --repo "$GITHUB_REPOSITORY" -n android-apks -D downloads
+          cd downloads && sha256sum --check SHA256SUMS.txt
+      - name: Confirm one healthy device is attached
+        run: |
+          adb start-server
+          count=$(adb devices | awk '$2 == "device"' | wc -l)
+          test "$count" -eq 1 || { echo "expected exactly one device, found $count"; adb devices; exit 1; }
+          adb shell getprop ro.build.version.release
+          adb shell getprop ro.build.version.sdk
+          adb shell getprop ro.product.cpu.abilist
+          adb shell cat /proc/meminfo | head -3
+      - name: Run the launcher and API smoke test
+        env:
+          ABI: ${{ inputs.abi }}
+          APK_DIR: downloads
+        run: |
+          export EXPECTED_SDK=$(adb shell getprop ro.build.version.sdk | tr -d '\r')
+          python3 android/tests/device.py
+      - name: Record what the phone did under load
+        if: always()
+        run: |
+          pkg=$(cat downloads/package-id)
+          adb shell dumpsys meminfo "$pkg" > meminfo.txt || true
+          adb logcat -d -v time > logcat.txt || true
+          grep -iE 'lowmemorykiller|am_kill|ActivityManager: Killing' logcat.txt | tail -40 || true
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: physical-device-logs
+          path: |
+            meminfo.txt
+            logcat.txt
+          if-no-files-found: warn
+      - name: Summarise
+        if: always()
+        run: |
+          {
+            echo "### Physical device run"
+            echo
+            echo "- APK: \`${{ inputs.abi }}\`"
+            echo "- Device API: $(adb shell getprop ro.build.version.sdk | tr -d '\r')"
+            echo "- MemTotal: $(adb shell cat /proc/meminfo | awk '/MemTotal/{print $2\" kB\"}')"
+            echo "- Note: ${{ inputs.note }}"
+          } >> "$GITHUB_STEP_SUMMARY"

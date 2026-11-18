@@ -46,7 +46,7 @@ final class UpdateChecker {
         }
     }
 
-    private static final String RELEASES = "https://api.github.com/repos/zelvior/ossllmapi/releases?per_page=40";
+    private static final String RELEASES = "https://api.github.com/repos/zelvior/ossllmapi/releases?per_page=10";
     private static final Handler UI = new Handler(Looper.getMainLooper());
 
     private UpdateChecker() {}
@@ -71,7 +71,7 @@ final class UpdateChecker {
         final Context app = context.getApplicationContext();
         new Thread(() -> {
             try {
-                if (Build.VERSION.SDK_INT >= 26 && !app.getPackageManager().canRequestPackageInstalls()) {
+                if (!app.getPackageManager().canRequestPackageInstalls()) {
                     Intent allow = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
                         Uri.parse("package:" + app.getPackageName()));
                     allow.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -107,7 +107,7 @@ final class UpdateChecker {
 
     private static Candidate find(Context context) throws Exception {
         JSONArray releases = new JSONArray(new String(fetchBytes(RELEASES, 2 * 1024 * 1024), StandardCharsets.UTF_8));
-        long installed = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).getLongVersionCode();
+        long installed = installedCode(context);
         List<String> abis = Arrays.asList(Build.SUPPORTED_ABIS);
         Candidate best = null;
         long bestCode = installed;
@@ -160,13 +160,14 @@ final class UpdateChecker {
 
     private static void verifyInstallable(Context context, File apk) throws Exception {
         PackageManager manager = context.getPackageManager();
-        PackageInfo archive = manager.getPackageArchiveInfo(apk.getAbsolutePath(), PackageManager.GET_SIGNING_CERTIFICATES);
+        int flags = Build.VERSION.SDK_INT >= 28 ? PackageManager.GET_SIGNING_CERTIFICATES : PackageManager.GET_SIGNATURES;
+        PackageInfo archive = manager.getPackageArchiveInfo(apk.getAbsolutePath(), flags);
         if (archive == null) throw new IOException("The download is not a readable APK.");
         if (!context.getPackageName().equals(archive.packageName)) {
             throw new IOException("That release is for " + archive.packageName + ", not this install.");
         }
-        PackageInfo installed = manager.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNING_CERTIFICATES);
-        if (archive.getLongVersionCode() <= installed.getLongVersionCode()) {
+        PackageInfo installed = manager.getPackageInfo(context.getPackageName(), flags);
+        if (versionCodeOf(archive) <= versionCodeOf(installed)) {
             throw new IOException("The download is not newer than this install.");
         }
         if (!fingerprint(archive).equals(fingerprint(installed))) {
@@ -175,9 +176,11 @@ final class UpdateChecker {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static String fingerprint(PackageInfo info) throws Exception {
-        if (info.signingInfo == null) return "";
-        Signature[] signatures = info.signingInfo.getApkContentsSigners();
+        Signature[] signatures = Build.VERSION.SDK_INT >= 28
+            ? (info.signingInfo == null ? null : info.signingInfo.getApkContentsSigners())
+            : info.signatures;
         if (signatures == null || signatures.length == 0) return "";
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         List<String> values = new ArrayList<>();
@@ -200,13 +203,26 @@ final class UpdateChecker {
                 while ((read = in.read(buffer)) > 0) out.write(buffer, 0, read);
                 session.fsync(out);
             }
+            int mutability = Build.VERSION.SDK_INT >= 31 ? PendingIntent.FLAG_MUTABLE : 0;
             PendingIntent status = PendingIntent.getBroadcast(context, id,
                 new Intent(context, InstallReceiver.class).setAction(InstallReceiver.ACTION_STATUS),
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+                PendingIntent.FLAG_UPDATE_CURRENT | mutability);
             session.commit(status.getIntentSender());
         } finally {
             session.close();
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    static long installedCode(Context context) throws Exception {
+        PackageManager manager = context.getPackageManager();
+        PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+        return versionCodeOf(info);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static long versionCodeOf(PackageInfo info) {
+        return Build.VERSION.SDK_INT >= 28 ? info.getLongVersionCode() : info.versionCode;
     }
 
     private static byte[] fetchBytes(String url, int limit) throws IOException {
@@ -218,6 +234,14 @@ final class UpdateChecker {
         connection.setRequestProperty("Accept", "application/vnd.github+json");
         try {
             int status = connection.getResponseCode();
+            if (status == 403 || status == 429) {
+                String remaining = connection.getHeaderField("X-RateLimit-Remaining");
+                if ("0".equals(remaining)) {
+                    throw new IOException("GitHub's unauthenticated rate limit is used up. "
+                        + "Try again later, or install the newest APK from the releases page.");
+                }
+                throw new IOException("GitHub refused the request (HTTP " + status + ").");
+            }
             if (status != 200) throw new IOException("GitHub answered HTTP " + status + ".");
             try (InputStream in = connection.getInputStream()) {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();

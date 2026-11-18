@@ -26,7 +26,10 @@ await build({
   external: ['better-sqlite3', 'sharp'],
   define: {
     'process.env.OSSLLMAPI_ANDROID_APP': '"1"', 'process.env.FREEAPI_VERSION': JSON.stringify(version),
-    'process.env.FREEAPI_SQLITE_DRIVER': '"node:sqlite"', 'process.env.IMAGE_NORMALIZE': '"off"',
+    'process.env.FREEAPI_SQLITE_DRIVER': '"node:sqlite"',
+    // No libvips on a phone, so the pure-JS path resizes; 1568 is the cap the
+    // strictest vision provider applies anyway.
+    'process.env.IMAGE_NORMALIZE_MAX_DIMENSION': '"1568"',
   },
   banner: { js: "import { createRequire as __createRequire } from 'node:module'; const require = __createRequire(import.meta.url);" },
 });

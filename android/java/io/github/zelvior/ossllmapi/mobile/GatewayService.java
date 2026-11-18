@@ -25,10 +25,14 @@ public final class GatewayService extends Service {
     static final String STOP = "io.github.zelvior.ossllmapi.mobile.STOP";
     private static final String CHANNEL = "gateway";
     private static final int NOTIFICATION = 1;
+    private static final int NOTIFICATION_ALERT = 2;
+    private static final String CHANNEL_ALERTS = "alerts";
 
-    private static native int runNode(String entry, String home, String temp, String key, boolean lan, int heapMb);
+    private static native int runNode(String entry, String home, String temp, String key,
+                                      boolean lan, boolean eco, int heapMb);
 
     private boolean launched;
+    private boolean keysAlerted;
     private volatile boolean alive;
     private PowerManager.WakeLock startup;
 
@@ -48,6 +52,7 @@ public final class GatewayService extends Service {
             startForeground(NOTIFICATION, notification(getString(R.string.notification_starting)));
             acquireWakeLock();
             final boolean lan = Prefs.get(this, Prefs.LAN);
+            final boolean eco = Prefs.get(this, Prefs.ECO);
             final int heapMb = heapMegabytes();
             new Thread(() -> watch(), "ossllmapi-status").start();
             new Thread(null, () -> {
@@ -59,7 +64,7 @@ public final class GatewayService extends Service {
                     File entry = installGateway();
                     System.loadLibrary("gateway");
                     runNode(entry.getAbsolutePath(), getFilesDir().getAbsolutePath(),
-                        getCacheDir().getAbsolutePath(), key, lan, heapMb);
+                        getCacheDir().getAbsolutePath(), key, lan, eco, heapMb);
                 } catch (Throwable failure) {
                     recordError(describe(failure));
                     // No exception bodies/arguments in public logs: neither codes nor keys belong there.
@@ -86,6 +91,7 @@ public final class GatewayService extends Service {
                 Widgets.refresh(this);
                 GatewayTileService.requestRefresh(this);
             }
+            alertIfKeysFailing(Gateway.status(this));
             if (state != null) releaseWakeLock();
             try {
                 Thread.sleep(3000);
@@ -93,6 +99,30 @@ public final class GatewayService extends Service {
                 return;
             }
         }
+    }
+
+    /** One notification when every enabled provider key stops working, cleared on recovery. */
+    private void alertIfKeysFailing(JSONObject status) {
+        boolean failing = status != null && status.optBoolean("allKeysFailing");
+        if (failing == keysAlerted) return;
+        keysAlerted = failing;
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (!failing) {
+            manager.cancel(NOTIFICATION_ALERT);
+            return;
+        }
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ALERTS,
+            getString(R.string.alert_channel), NotificationManager.IMPORTANCE_DEFAULT);
+        manager.createNotificationChannel(channel);
+        manager.notify(NOTIFICATION_ALERT, new Notification.Builder(this, CHANNEL_ALERTS)
+            .setSmallIcon(R.drawable.router_icon)
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText(getString(R.string.alert_keys_failing))
+            .setContentIntent(PendingIntent.getActivity(this, 0,
+                new Intent(this, MainActivity.class).setAction(Gateway.ACTION_OPEN),
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
+            .setAutoCancel(true)
+            .build());
     }
 
     private Notification notification(String text) {

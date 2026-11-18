@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OSSLLMAPI</string>
+    <string name="subtitle">Gateway und Dashboard auf diesem Telefon\nVersion %1$s · %2$s</string>
+
+    <string name="start_gateway">Gateway starten</string>
+    <string name="starting_gateway">Gateway wird gestartet…</string>
+    <string name="open_dashboard">Dashboard öffnen</string>
+    <string name="stop_gateway">Gateway stoppen</string>
+    <string name="show_code">Einrichtungs-/Zurücksetzungscode anzeigen</string>
+    <string name="hide_code">Code ausblenden</string>
+
+    <string name="status_running">Gateway läuft · %1$s · Node %2$s · Port %3$d</string>
+    <string name="status_stopped">Gateway gestoppt</string>
+    <string name="start_error">Letztes Startproblem: %1$s</string>
+
+    <string name="section_api">API</string>
+    <string name="copy_api">API-Basis-URL kopieren</string>
+    <string name="api_offline">Starte das Gateway, um die URL zu erhalten.</string>
+
+    <string name="section_status">Live-Status</string>
+    <string name="status_offline">Live-Zahlen erscheinen, solange das Gateway läuft.</string>
+    <string name="status_providers">Anbieter: %1$d · Schlüssel: %2$d</string>
+    <string name="status_health">Funktionierende Schlüssel: %1$d von %2$d</string>
+    <string name="status_requests">Anfragen, letzte 24 Std.: %1$d</string>
+    <string name="status_uptime">Laufzeit: %1$s</string>
+    <string name="status_keys_failing">Alle Anbieterschlüssel schlagen fehl. Öffne „Schlüssel“ im Dashboard.</string>
+
+    <string name="section_network">Netzwerk</string>
+    <string name="lan_toggle">Andere Geräte in meinem WLAN zulassen (LAN)</string>
+    <string name="copy_lan">LAN-URL kopieren</string>
+    <string name="lan_off">LAN-Zugriff ist aus: nur dieses Telefon.</string>
+    <string name="lan_on">LAN-Dashboard: %1$s</string>
+    <string name="lan_offline">Die LAN-URL erscheint, wenn das Gateway läuft.</string>
+    <string name="lan_warning">LAN-Zugriff ist für vertrauenswürdige Netze gedacht. Ein Gerät, das diese URL erreicht, braucht weiterhin die Dashboard-Anmeldung, und API-Clients brauchen weiterhin den einheitlichen API-Schlüssel.</string>
+
+    <string name="section_background">Am Laufen halten</string>
+    <string name="boot_toggle">Gateway beim Start des Telefons starten</string>
+    <string name="keep_toggle">Neu starten, wenn Android Speicher freigibt</string>
+    <string name="battery_button">Akkuverbrauch im Hintergrund erlauben</string>
+    <string name="eco_toggle">Akku sparen: Schlüssel alle 15 Minuten prüfen</string>
+
+    <string name="section_update">Updates</string>
+    <string name="update_hint">Updates stammen aus den GitHub-Vorabversionen des Projekts. Das APK wird gegen seine veröffentlichte SHA-256 geprüft und muss mit demselben Zertifikat wie diese Installation signiert sein, bevor Android es annimmt.</string>
+    <string name="check_updates">Nach Updates suchen</string>
+    <string name="update_title">Updates</string>
+    <string name="update_prompt">Version %1$s (%2$s) herunterladen?</string>
+    <string name="download_install">Herunterladen und installieren</string>
+    <string name="signing_certificate">SHA-256 des Signaturzertifikats: %1$s</string>
+    <string name="copy_certificate">Zertifikatsfingerabdruck kopieren</string>
+
+    <string name="section_backup">Sicherung</string>
+    <string name="backup_hint">Eine Sicherung enthält die Datenbank und ihren Schlüssel, verschlüsselt mit einem selbst gewählten Passwort. Ohne dieses Passwort lässt sie sich nicht wiederherstellen, also bewahre es sicher auf.</string>
+    <string name="export_backup">Verschlüsselte Sicherung exportieren</string>
+    <string name="restore_backup">Sicherung in eine neue Installation einspielen</string>
+    <string name="passphrase_hint">Passwort (mindestens 8 Zeichen)</string>
+    <string name="passphrase_explain">Dieses Passwort verschlüsselt die Sicherungsdatei. Es kann nicht wiederhergestellt werden.</string>
+
+    <string name="section_diagnostics">Diagnose</string>
+    <string name="diagnostics_hint">Das Protokollpaket enthält Startprotokolle und Gerätedaten, niemals Codes, Schlüssel oder Datenbankinhalte.</string>
+    <string name="export_diagnostics">Diagnose exportieren</string>
+
+    <string name="help_text">Starte das Gateway und öffne das Dashboard. Das erste Konto braucht den Einrichtungscode. Füge Anbieterschlüssel unter „Schlüssel“ hinzu und nutze den einheitlichen API-Schlüssel für andere Apps auf diesem Telefon. Wenn Android Go Speicher freigibt, starte das Gateway erneut; Konten und Schlüssel bleiben erhalten.</string>
+
+    <string name="reveal_title">Einmalcodes anzeigen</string>
+    <string name="reveal_body">Bestätige deine Identität, um den Einrichtungs- oder Zurücksetzungscode zu sehen.</string>
+    <string name="setup_code">Einrichtungscode: %1$s</string>
+    <string name="reset_code">Zurücksetzungscode: %1$s</string>
+    <string name="no_code">Kein Code offen. Das Dashboard-Konto existiert bereits.</string>
+
+    <string name="notification_channel">Lokales Gateway</string>
+    <string name="notification_title">OSSLLMAPI</string>
+    <string name="notification_starting">Lokales Gateway wird gestartet…</string>
+    <string name="notification_running">Läuft auf Port %1$d</string>
+    <string name="alert_channel">Gateway-Warnungen</string>
+    <string name="alert_keys_failing">Alle Anbieterschlüssel schlagen fehl. Öffne das Dashboard, um sie zu ersetzen.</string>
+
+    <string name="widget_running">Gateway läuft</string>
+    <string name="widget_stopped">Gateway gestoppt</string>
+    <string name="tile_running">Gateway an</string>
+    <string name="tile_stopped">Gateway aus</string>
+</resources>

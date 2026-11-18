@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OSSLLMAPI</string>
+    <string name="subtitle">Pasarela y panel en este teléfono\nVersión %1$s · %2$s</string>
+
+    <string name="start_gateway">Iniciar pasarela</string>
+    <string name="starting_gateway">Iniciando la pasarela…</string>
+    <string name="open_dashboard">Abrir panel</string>
+    <string name="stop_gateway">Detener pasarela</string>
+    <string name="show_code">Mostrar código de configuración/restablecimiento</string>
+    <string name="hide_code">Ocultar código</string>
+
+    <string name="status_running">Pasarela activa · %1$s · Node %2$s · puerto %3$d</string>
+    <string name="status_stopped">Pasarela detenida</string>
+    <string name="start_error">Último problema al iniciar: %1$s</string>
+
+    <string name="section_api">API</string>
+    <string name="copy_api">Copiar URL base de la API</string>
+    <string name="api_offline">Inicia la pasarela para obtener su URL.</string>
+
+    <string name="section_status">Estado en vivo</string>
+    <string name="status_offline">Los datos en vivo aparecen mientras la pasarela está activa.</string>
+    <string name="status_providers">Proveedores: %1$d · Claves: %2$d</string>
+    <string name="status_health">Claves correctas: %1$d de %2$d</string>
+    <string name="status_requests">Solicitudes, últimas 24 h: %1$d</string>
+    <string name="status_uptime">Tiempo activo: %1$s</string>
+    <string name="status_keys_failing">Todas las claves de proveedor fallan. Abre Claves en el panel.</string>
+
+    <string name="section_network">Red</string>
+    <string name="lan_toggle">Permitir otros dispositivos de mi Wi-Fi (LAN)</string>
+    <string name="copy_lan">Copiar URL de LAN</string>
+    <string name="lan_off">El acceso por LAN está desactivado: solo este teléfono.</string>
+    <string name="lan_on">Panel en LAN: %1$s</string>
+    <string name="lan_offline">La URL de LAN aparece cuando la pasarela está activa.</string>
+    <string name="lan_warning">El acceso por LAN es para redes de confianza. Un dispositivo que llegue a esta URL aún necesita tu sesión del panel, y los clientes de API siguen necesitando la clave unificada.</string>
+
+    <string name="section_background">Mantenerla activa</string>
+    <string name="boot_toggle">Iniciar la pasarela al encender el teléfono</string>
+    <string name="keep_toggle">Reiniciar cuando Android libere memoria</string>
+    <string name="battery_button">Permitir uso de batería en segundo plano</string>
+    <string name="eco_toggle">Ahorro de batería: comprobar claves cada 15 minutos</string>
+
+    <string name="section_update">Actualizaciones</string>
+    <string name="update_hint">Las actualizaciones vienen de las preversiones de GitHub del proyecto. El APK se comprueba con su SHA-256 publicado y debe estar firmado con el mismo certificado que esta instalación para que Android lo acepte.</string>
+    <string name="check_updates">Buscar actualizaciones</string>
+    <string name="update_title">Actualizaciones</string>
+    <string name="update_prompt">¿Descargar la versión %1$s (%2$s)?</string>
+    <string name="download_install">Descargar e instalar</string>
+    <string name="signing_certificate">SHA-256 del certificado de firma: %1$s</string>
+    <string name="copy_certificate">Copiar huella del certificado</string>
+
+    <string name="section_backup">Copia de seguridad</string>
+    <string name="backup_hint">La copia contiene la base de datos y su clave, cifradas con una contraseña que elijas. Sin esa contraseña no se puede restaurar, así que guárdala bien.</string>
+    <string name="export_backup">Exportar copia cifrada</string>
+    <string name="restore_backup">Restaurar copia en una instalación nueva</string>
+    <string name="passphrase_hint">Contraseña (mínimo 8 caracteres)</string>
+    <string name="passphrase_explain">Esta contraseña cifra el archivo de copia. No se puede recuperar.</string>
+
+    <string name="section_diagnostics">Diagnóstico</string>
+    <string name="diagnostics_hint">El paquete de registros incluye registros de inicio y datos del dispositivo, nunca códigos, claves ni el contenido de la base de datos.</string>
+    <string name="export_diagnostics">Exportar diagnóstico</string>
+
+    <string name="help_text">Inicia la pasarela y abre el panel. La primera cuenta necesita el código de configuración. Añade claves de proveedor en Claves y usa la clave unificada para otras apps de este teléfono. Si Android Go libera memoria, inicia la pasarela otra vez; las cuentas y claves se conservan.</string>
+
+    <string name="reveal_title">Mostrar códigos de un solo uso</string>
+    <string name="reveal_body">Confirma tu identidad para ver el código de configuración o de restablecimiento.</string>
+    <string name="setup_code">Código de configuración: %1$s</string>
+    <string name="reset_code">Código de restablecimiento: %1$s</string>
+    <string name="no_code">No hay ningún código pendiente. La cuenta del panel ya existe.</string>
+
+    <string name="notification_channel">Pasarela local</string>
+    <string name="notification_title">OSSLLMAPI</string>
+    <string name="notification_starting">Iniciando la pasarela local…</string>
+    <string name="notification_running">Activa en el puerto %1$d</string>
+    <string name="alert_channel">Avisos de la pasarela</string>
+    <string name="alert_keys_failing">Todas las claves de proveedor fallan. Abre el panel para reemplazarlas.</string>
+
+    <string name="widget_running">Pasarela activa</string>
+    <string name="widget_stopped">Pasarela detenida</string>
+    <string name="tile_running">Pasarela on</string>
+    <string name="tile_stopped">Pasarela off</string>
+</resources>

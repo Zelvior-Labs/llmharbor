@@ -14,3 +14,4 @@
 | --- | --- |
 | [01-install.md](01-install.md) | 安装与部署：一行命令快速开始、Docker Compose、本地开发、声明式启动配置、Docker 镜像、桌面应用，以及数据存放位置。 |
 | [02-android-termux.md](02-android-termux.md) | 实验性的 Android（Termux）安装：在设备本地运行，使用 Node 内置的 SQLite 驱动而非 `better-sqlite3`（无需 NDK 工具链）。涵盖要求（Android 7+、Node 22.13+）、安装与局域网访问、用唤醒锁保持进程运行、故障排查与更新。 |
+| [03-android-device-runner.md](03-android-device-runner.md) | 用自托管 runner 通过 ADB 在真机上运行 Android 冒烟测试：模拟器无法覆盖的场景（Android Go 内存压力、arm64 硬件）、runner 与手机设置、触发工作流，以及如何阅读 `meminfo`/`logcat` 证据。 |

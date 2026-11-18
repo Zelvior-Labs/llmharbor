@@ -18,6 +18,14 @@
     <string name="copy_api">Copy API base URL</string>
     <string name="api_offline">Start the gateway to get its URL.</string>
 
+    <string name="section_status">Live status</string>
+    <string name="status_offline">Live counts appear while the gateway runs.</string>
+    <string name="status_providers">Providers: %1$d · Keys: %2$d</string>
+    <string name="status_health">Healthy keys: %1$d of %2$d</string>
+    <string name="status_requests">Requests, last 24 h: %1$d</string>
+    <string name="status_uptime">Uptime: %1$s</string>
+    <string name="status_keys_failing">All provider keys are failing. Open Keys in the dashboard.</string>
+
     <string name="section_network">Network</string>
     <string name="lan_toggle">Allow other devices on my Wi-Fi (LAN)</string>
     <string name="copy_lan">Copy LAN URL</string>
@@ -30,6 +38,7 @@
     <string name="boot_toggle">Start the gateway when the phone boots</string>
     <string name="keep_toggle">Restart after Android frees memory</string>
     <string name="battery_button">Allow background battery use</string>
+    <string name="eco_toggle">Battery saver: check keys every 15 minutes</string>
 
     <string name="section_update">Updates</string>
     <string name="update_hint">Updates come from the project\'s GitHub pre-releases. The APK is checked against its published SHA-256 and must be signed by the same certificate as this install before Android will accept it.</string>
@@ -37,6 +46,8 @@
     <string name="update_title">Updates</string>
     <string name="update_prompt">Download version %1$s (%2$s)?</string>
     <string name="download_install">Download and install</string>
+    <string name="signing_certificate">Signing certificate SHA-256: %1$s</string>
+    <string name="copy_certificate">Copy certificate fingerprint</string>
 
     <string name="section_backup">Backup</string>
     <string name="backup_hint">A backup holds the database and its key, encrypted with a passphrase you choose. Without that passphrase the file cannot be restored, so store it safely.</string>
@@ -61,6 +72,8 @@
     <string name="notification_title">OSSLLMAPI</string>
     <string name="notification_starting">Starting the local gateway…</string>
     <string name="notification_running">Running on port %1$d</string>
+    <string name="alert_channel">Gateway alerts</string>
+    <string name="alert_keys_failing">All provider keys are failing. Open the dashboard to replace them.</string>
 
     <string name="widget_running">Gateway running</string>
     <string name="widget_stopped">Gateway stopped</string>

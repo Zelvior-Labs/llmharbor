@@ -1,0 +1,95 @@
+name: Windows 7 portable preview
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['win7-v*'] # Deliberately not a v* desktop release / update feed.
+  pull_request:
+    paths:
+      - 'desktop/**'
+      - 'client/**'
+      - 'server/**'
+      - 'shared/**'
+      - '.github/workflows/windows7.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Package and launch (${{ matrix.arch }}, Server 2022)
+    runs-on: windows-2022
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86, x64]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+      - name: Check release tag
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        run: |
+          $version = python desktop/win7/package.py --version
+          if ($env:GITHUB_REF_NAME -ne "win7-v$version") { throw "Expected tag win7-v$version" }
+      - name: Build dashboard and gateway (x64 build tools, no native npm addons)
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash desktop/scripts/retry-network-step.sh npm ci --ignore-scripts
+          bash desktop/scripts/retry-network-step.sh npm --prefix desktop ci --ignore-scripts
+          npm run build -w client -- --mode win7 --outDir ../desktop/dist-electron/windows7/client --emptyOutDir
+          npm --prefix desktop run bundle:win7
+      - name: Package checksum-pinned Electron-Legacy
+        run: python desktop/win7/package.py ${{ matrix.arch }}
+      - name: Launch extracted ZIP, exercise dashboard, SQLite, API and update isolation
+        shell: pwsh
+        run: |
+          $zip = Get-Item 'desktop/dist-electron/windows7/OSSLLMAPI-*-windows7-${{ matrix.arch }}.zip'
+          $temp = Join-Path $env:RUNNER_TEMP 'win7 smoke'
+          Expand-Archive -LiteralPath $zip.FullName -DestinationPath $temp
+          node desktop/win7/smoke.mjs (Join-Path $temp $zip.BaseName) ${{ matrix.arch }}
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: win7-${{ matrix.arch }}
+          path: desktop/dist-electron/windows7/OSSLLMAPI-*-windows7-${{ matrix.arch }}.zip
+          compression-level: 0
+          if-no-files-found: error
+
+  prerelease:
+    name: Publish both verified Windows 7 ZIPs (never latest)
+    if: startsWith(github.ref, 'refs/tags/win7-v')
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: win7-*
+          path: downloads
+          merge-multiple: true
+      - name: Publish a new preview and its checksums
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          version=$(python desktop/win7/package.py --version)
+          tag="win7-v$version"
+          test "$tag" = "$GITHUB_REF_NAME"
+          cd downloads
+          files=("OSSLLMAPI-$version-windows7-x86.zip" "OSSLLMAPI-$version-windows7-x64.zip")
+          for file in "${files[@]}"; do test -s "$file"; done
+          sha256sum "${files[@]}" > SHA256SUMS.txt
+          sed '/^## Build (/,$d' ../desktop/win7/README.md > "$RUNNER_TEMP/notes.md"
+          gh release create "$tag" "${files[@]}" SHA256SUMS.txt --verify-tag --prerelease --latest=false \
+            --title "OSSLLMAPI for Windows 7 SP1 ($version)" --notes-file "$RUNNER_TEMP/notes.md"

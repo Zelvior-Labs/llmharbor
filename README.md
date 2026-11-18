@@ -189,7 +189,8 @@ A native menu-bar app lives in [`desktop/`](./desktop): the entire router + dash
 
 | System | Download |
 | --- | --- |
-| Windows | `windows-x86` for 32-bit Windows or `windows-x64` for 64-bit Windows. Choose `-setup.exe` to install, or `.zip` for a portable copy. |
+| **Windows 7 SP1** | Separate [portable desktop preview](desktop/win7/README.md): **`windows7-x86.zip`** or **`windows7-x64.zip`**. Extract the ZIP and run `OSSLLMAPI.exe`. Not the regular setup below. |
+| Windows 10/11 | `windows-x86` for 32-bit Windows or `windows-x64` for 64-bit Windows. Choose `-setup.exe` to install, or `.zip` for a portable copy. |
 | Linux x64 | `linux-x64.AppImage`, `.deb`, `.rpm` or `.tar.xz` (desktop app). |
 | **32-bit Intel Linux** | `linux-i686-server.tar.gz`: the local API and browser dashboard, **not Electron**. Requires distro Node.js with `node:sqlite`. [Install and run →](desktop/linux-browser/README.md) |
 | macOS 12+ | `macos-arm64` for Apple Silicon or `macos-x64` for Intel. DMG or ZIP; no 32-bit macOS build. |

@@ -12,7 +12,7 @@ import { getDashboardWindow, openDashboard } from './window.js';
 import { todayStats, hourlyRequests, successRateToday } from './stats.js';
 import { normalizeLocale, nativeStrings, type NativeLocale } from './i18n.js';
 import { installGpuRecovery } from './gpu-recovery-host.js';
-import { initUpdater, getUpdateState, checkForUpdates, downloadUpdate, installUpdate, checkFromTray } from './updater.js';
+import { profileDirectory, initUpdater, getUpdateState, checkForUpdates, downloadUpdate, installUpdate, checkFromTray } from '#desktop-edition';
 import { gatewayBaseUrl, parseBaseUrlKind } from './base-urls.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -22,7 +22,7 @@ const DEFAULT_PORT = 31415;
 // (the popover/dashboard glass) needs GPU compositing; with hardware
 // acceleration disabled, transparent windows render an opaque white.
 app.setName('OSSLLMAPI');
-app.setPath('userData', path.join(app.getPath('appData'), 'OSSLLMAPI'));
+app.setPath('userData', path.join(app.getPath('appData'), profileDirectory));
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();

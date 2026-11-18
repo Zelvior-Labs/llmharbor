@@ -11,11 +11,15 @@
   "private": true,
   "type": "module",
   "main": "build/main.mjs",
+  "imports": {
+    "#desktop-edition": { "win7": "./win7/edition.ts", "default": "./src/edition.ts" }
+  },
   "scripts": {
     "bundle:server": "node scripts/bundle-server.mjs",
     "build:main": "node scripts/bundle-main.mjs",
     "build:preload": "esbuild src/preload.ts src/preload-popover.ts --bundle --platform=node --format=cjs --external:electron --outdir=build --out-extension:.js=.cjs",
     "build:all": "npm run bundle:server && npm run build:main && npm run build:preload",
+    "bundle:win7": "node scripts/bundle-server.mjs --win7 && node scripts/bundle-main.mjs --win7 && npm run build:preload",
     "stage:client": "node scripts/stage-client.mjs",
     "rebuild:native": "electron-rebuild -f -w better-sqlite3",
     "dev": "npm run build:all && electron .",

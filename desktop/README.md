@@ -12,7 +12,9 @@ On macOS, choose **arm64** for Apple Silicon (M-series) or **x64** for Intel.
 Both require **macOS 12 Monterey or later**. Each architecture has a DMG
 installer and a ZIP containing the app.
 
-Windows installers end in `-windows-x86-setup.exe` (32-bit) or `-windows-x64-setup.exe` (64-bit); the matching `.zip` is portable. These are GitHub downloads, not the upstream Microsoft Store product.
+**Windows 7 SP1:** Use the [separate Windows 7 portable preview](win7/README.md) (x86 or x64). Extract the ZIP and run `OSSLLMAPI.exe`; the standard installers and their shortcuts will not work on Windows 7.
+
+Windows 10/11 installers end in `-windows-x86-setup.exe` (32-bit) or `-windows-x64-setup.exe` (64-bit); the matching `.zip` is portable. These are GitHub downloads, not the upstream Microsoft Store product.
 
 Linux x64 has an AppImage, DEB, RPM and tar.xz. On a **32-bit Intel Linux PC**, use the [`linux-i686-server.tar.gz` browser package](linux-browser/README.md), not an Electron installer. To build it on a Linux x64 host after `npm ci` and `npm --prefix desktop ci --ignore-scripts`, run `npm run build -w client && npm --prefix desktop run dist:linux:x86-server`. Output: `desktop/dist-electron/browser/`.
 

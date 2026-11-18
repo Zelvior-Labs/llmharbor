@@ -1,0 +1,9 @@
+{
+  "repository": "Alex313031/electron-legacy",
+  "electron": "44.10.2",
+  "preview": 1,
+  "sha256": {
+    "ia32": "ec2fd85846b0642c60f29c93a70b68da1ee3ff2e04cdc3e2caf012d42cfcddbc",
+    "x64": "afabfca8e377378cd850e53f04c20c2074a531041b231b60bbb9d6dc2464d08c"
+  }
+}

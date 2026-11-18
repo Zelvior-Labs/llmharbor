@@ -78,6 +78,12 @@ final class UpdateChecker {
                     app.startActivity(allow);
                     throw new IOException("Allow OSSLLMAPI to install unknown apps, then tap Check for updates again.");
                 }
+                if (app.getPackageName().matches(".*\\.p\\d+$")) {
+                    // Version-locked previews carry a per-build ID, so no download could
+                    // ever install over this one: say so before spending the user's data.
+                    throw new IOException("This preview is signed with a one-time key, so Android cannot update it in place. "
+                        + "Download the newest APK from the releases page and install it beside this one.");
+                }
                 String sums = new String(fetchBytes(candidate.sumsUrl, 256 * 1024), StandardCharsets.UTF_8);
                 String expected = null;
                 for (String line : sums.split("\n")) {

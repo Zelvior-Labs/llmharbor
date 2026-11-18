@@ -1,4 +1,5 @@
 import './env.js';
+import { channel } from 'node:diagnostics_channel';
 import { createApp } from './app.js';
 import { initDb, getDb } from './db/index.js';
 import { startHealthChecker, checkAllKeys } from './services/health.js';
@@ -121,6 +122,8 @@ async function main() {
   // headersTimeout must stay above keepAliveTimeout or Node times the
   // keep-alive socket out while the next request's headers are in flight.
   const tuneKeepAlive = (s: ReturnType<typeof app.listen>) => {
+    // Embedders must not mistake another app already using PORT for this server.
+    s.once('listening', () => channel('ossllmapi.listening').publish(s.address()));
     s.keepAliveTimeout = 75_000;
     s.headersTimeout = 76_000;
   };

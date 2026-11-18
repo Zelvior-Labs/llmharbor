@@ -8,7 +8,7 @@ import { UPDATE_CHECK_CHANGED_EVENT } from '@/components/update-reminder'
 import { apiFetch } from '@/lib/api'
 import { checkDesktopUpdates, hasDesktopUpdater, useDesktopUpdater } from '@/lib/desktop-updater'
 import { useDockerUpdate } from '@/lib/docker-update'
-import { RELEASES_URL, WIN7_PORTABLE } from '@/lib/updates'
+import { RELEASES_URL, MANUAL_EDITION } from '@/lib/updates'
 import { useI18n } from '@/i18n'
 
 type Installation = 'source' | 'docker' | 'desktop' | 'unknown'
@@ -65,7 +65,7 @@ function UpdatesContent() {
   // Runs on open and on every retry; state is only set once answers are back.
   useEffect(() => {
     let cancelled = false
-    if (WIN7_PORTABLE) return
+    if (MANUAL_EDITION) return
     if (hasDesktopUpdater()) {
       void checkDesktopUpdates()
     } else {
@@ -78,7 +78,7 @@ function UpdatesContent() {
 
   useEffect(() => {
     let cancelled = false
-    if (!WIN7_PORTABLE) apiFetch<{ enabled: boolean }>('/api/settings/update-check')
+    if (!MANUAL_EDITION) apiFetch<{ enabled: boolean }>('/api/settings/update-check')
       .then(r => { if (!cancelled) setAutoCheck(r.enabled) })
       .catch(() => { /* leave the switch out rather than claim a state */ })
     apiFetch<{ version: string | null }>('/api/settings/version')
@@ -122,7 +122,7 @@ function UpdatesContent() {
   )
 
   function body(): ReactNode {
-    if (WIN7_PORTABLE) return <Status icon="info" title="Windows 7 SP1 · Portable ZIP" detail={releaseNotes} />
+    if (MANUAL_EDITION) return <Status icon="info" title={MANUAL_EDITION} detail={releaseNotes} />
     if (desktop) {
       const state = desktop.state
       switch (state.phase) {

@@ -20,7 +20,7 @@ import { openCommandPalette } from '@/components/command-palette-state'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { SettingsDialog } from '@/components/settings-dialog'
 import { UpdatesDialog } from '@/components/updates-dialog'
-import { OPEN_UPDATES_EVENT, WIN7_PORTABLE } from '@/lib/updates'
+import { OPEN_UPDATES_EVENT, MANUAL_EDITION } from '@/lib/updates'
 import { Toaster } from '@/components/toaster'
 import { UpdateReminder } from '@/components/update-reminder'
 import { NewBuildPrompt } from '@/components/new-build-prompt'
@@ -508,7 +508,7 @@ function App() {
                 </PageContainer>
                 <Toaster />
                 <CommandPalette />
-                {!WIN7_PORTABLE && <UpdateReminder />}
+                {!MANUAL_EDITION && <UpdateReminder />}
                 <NewBuildPrompt />
               </AppShell>
             </AuthGate>

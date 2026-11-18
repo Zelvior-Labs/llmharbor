@@ -18,6 +18,8 @@ let mintedAtMs = 0;
 export function generateResetCode(accountEmail?: string | null): string {
   const code = _code.generate();
   mintedAtMs = Date.now();
+  // Displayed by the native launcher over app-private IPC, never in logcat.
+  if (process.env.OSSLLMAPI_ANDROID_APP === '1') return code;
   console.log('');
   console.log('  Password-reset code: ' + code);
   if (accountEmail) console.log('  Account email: ' + accountEmail);

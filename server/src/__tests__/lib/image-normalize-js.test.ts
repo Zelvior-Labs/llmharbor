@@ -43,28 +43,31 @@ describe('pure-JS image normalization', () => {
     expect(imageSize(Buffer.from('not an image'))).toBeNull();
   });
 
+  // Encoding and resampling are pure JavaScript, so these fixtures stay just
+  // over the cap rather than at photo resolution: a bigger one exceeds the
+  // default 5 s test timeout on a loaded CI runner.
   it('downscales a large JPEG to the cap and beats the original size', async () => {
-    const original = jpegOf(2500, 1500);
+    const original = jpegOf(1600, 1200);
     const result = await normalizeImageInJs(original, 'image/jpeg', { maxDimension: 1024, quality: 80 });
     expect(result).not.toBeNull();
     expect(result!.mime).toBe('image/jpeg');
     expect(result!.buffer.length).toBeLessThan(original.length);
-    expect(imageSize(result!.buffer)).toEqual({ width: 1024, height: 614 });
-  });
+    expect(imageSize(result!.buffer)).toEqual({ width: 1024, height: 768 });
+  }, 20_000);
 
   it('turns an opaque screenshot PNG into JPEG', async () => {
     const original = pngOf(1200, 900, 255);
     const result = await normalizeImageInJs(original, 'image/png', { maxDimension: 800, quality: 85 });
     expect(result?.mime).toBe('image/jpeg');
     expect(result!.buffer.length).toBeLessThan(original.length);
-  });
+  }, 20_000);
 
   it('keeps a genuinely transparent PNG as PNG', async () => {
     const original = pngOf(1000, 800, 120);
     const result = await normalizeImageInJs(original, 'image/png', { maxDimension: 500, quality: 85 });
     expect(result?.mime).toBe('image/png');
     expect(imageSize(result!.buffer)).toEqual({ width: 500, height: 400 });
-  });
+  }, 20_000);
 
   it('refuses images past the decoding ceiling instead of risking the heap', async () => {
     const header = Buffer.alloc(33);

@@ -106,7 +106,7 @@ headerSent = false
 
 ### Error Mapping (exhaustion)
 
-| FreeLLM kind | Anthropic type |
+| OSLLM kind | Anthropic type |
 |--------------|----------------|
 | `auth` | `api_error` |
 | `bad_request` | `invalid_request_error` |

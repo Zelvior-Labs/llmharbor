@@ -1,4 +1,4 @@
-import type { ChatMessage } from '@freellmapi/shared/types.js';
+import type { ChatMessage } from '@ossllmapi/shared/types.js';
 import { contentToString } from '../lib/content.js';
 import { providerHttpError, type CompletionOptions, type ProviderFetchOptions } from './base.js';
 import { OpenAICompatProvider } from './openai-compat.js';

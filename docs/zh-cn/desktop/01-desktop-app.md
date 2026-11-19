@@ -12,7 +12,7 @@
 bundle:server → build:main / build:preload → stage:client → electron-builder
 ```
 
-- `scripts/bundle-server.mjs` esbuild `define: { 'process.env.FREELLMAPI_COMMIT_SHA', 'process.env.FREELLMAPI_INSTALL_METHOD' }` 取自 `GITHUB_SHA`（40 位十六进制）；在 `server-host.ts` 中镜像进运行时的 `process.env`，以便 `routes/update.ts` 正确解析。
+- `scripts/bundle-server.mjs` esbuild `define: { 'process.env.OSSLLMAPI_COMMIT_SHA', 'process.env.OSSLLMAPI_INSTALL_METHOD' }` 取自 `GITHUB_SHA`（40 位十六进制）；在 `server-host.ts` 中镜像进运行时的 `process.env`，以便 `routes/update.ts` 正确解析。
 - `build/main.mjs` 打包 `src/main.ts`（`--platform=node --format=esm --external:electron --external:./server.mjs`），`build/preload` 对应 `preload.ts`/`preload-popover.ts`。
 - `scripts/stage-client.mjs` 将 `client/dist` 复制到 `build/client-dist` 或已打包应用中的 `Resources/client-dist`；开发环境经 `FREEAPI_REPO` 覆盖。
 

@@ -113,12 +113,12 @@ export async function startServer(opts: StartOptions): Promise<ServerHandle> {
   // mirror the inlined literals into the real process.env — without this the
   // packaged app's update check resolves {sha: null, installation: 'unknown'}
   // and reports 'unsupported'.
-  const buildSha = process.env.FREELLMAPI_COMMIT_SHA;
-  const buildInstall = process.env.FREELLMAPI_INSTALL_METHOD;
+  const buildSha = process.env.OSSLLMAPI_COMMIT_SHA;
+  const buildInstall = process.env.OSSLLMAPI_INSTALL_METHOD;
   if (buildSha && buildInstall) {
     Object.assign(process.env, {
-      FREELLMAPI_COMMIT_SHA: buildSha,
-      FREELLMAPI_INSTALL_METHOD: buildInstall,
+      OSSLLMAPI_COMMIT_SHA: buildSha,
+      OSSLLMAPI_INSTALL_METHOD: buildInstall,
     });
   }
   process.env.CLIENT_DIST = opts.clientDist;

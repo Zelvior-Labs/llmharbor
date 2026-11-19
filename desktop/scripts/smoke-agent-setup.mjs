@@ -12,7 +12,7 @@ import { build } from 'esbuild';
 import electron from 'electron';
 
 const desktop = fileURLToPath(new URL('../', import.meta.url));
-const home = fs.mkdtempSync(path.join(os.tmpdir(), 'freellmapi-agent-test-'));
+const home = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-agent-test-'));
 const bin = path.join(home, 'agent bin');
 const dot = path.join(home, 'appdata');
 const env = { ...process.env, HOME: home, USERPROFILE: home, APPDATA: dot, LOCALAPPDATA: dot,
@@ -42,7 +42,7 @@ try {
   // A launched fixture must actually authenticate to the running gateway.
   const probe = path.join(home, 'probe.cjs');
   fs.writeFileSync(probe, `(async () => { const r = await fetch(${JSON.stringify(origin + '/v1/models')},
-    { headers: { Authorization: 'Bearer ' + process.env.FREELLMAPI_API_KEY } });
+    { headers: { Authorization: 'Bearer ' + process.env.OSSLLMAPI_API_KEY } });
     require('node:fs').writeFileSync(require('node:path').join(${JSON.stringify(home)}, process.argv[2] + '.result'), String(r.status));
   })().catch(() => process.exit(1));`);
   const fixture = (id) => process.platform === 'win32'

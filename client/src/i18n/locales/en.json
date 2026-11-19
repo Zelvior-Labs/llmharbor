@@ -60,7 +60,7 @@
     "emailChanged": "Email changed successfully.",
     "passwordReset": "Password reset successfully. Please sign in.",
     "resetCodeDockerHint": "Running in Docker? The code is in the container log: docker logs <container>.",
-    "desktopSessionFailed": "The dashboard could not sign in to the local server. Quit FreeLLMAPI and open it again."
+    "desktopSessionFailed": "The dashboard could not sign in to the local server. Quit OSLLMAPI and open it again."
   },
   "common": {
     "save": "Save",
@@ -110,7 +110,7 @@
     "sectionPreview": "Preview",
     "generalDescription": "Language and appearance of this dashboard.",
     "startAtLogin": "Start on system startup",
-    "startAtLoginHelp": "Launch FreeLLMAPI automatically when you sign into your computer.",
+    "startAtLoginHelp": "Launch OSLLMAPI automatically when you sign into your computer.",
     "advancedDescription": "Thresholds and safety switches for the compression pipeline.",
     "compressionTitle": "Prompt compression",
     "compressionDescription": "Reduce request size before routing while preserving code, errors, paths, numbers, and tool definitions.",
@@ -162,16 +162,16 @@
     "notGitInstall": "This installation does not include commit information.",
     "checkFailed": "Could not check for updates.",
     "autoUpdateCheck": "Automatic update check",
-    "restartAfterUpdate": "Restart FreeLLMAPI after the build completes.",
+    "restartAfterUpdate": "Restart OSLLMAPI after the build completes.",
     "downloadUpdate": "Download update",
     "downloadingUpdate": "Downloading… {percent}%",
     "restartToUpdate": "Restart to update",
-    "updateReadyHint": "Downloaded. FreeLLMAPI backs up your data, restarts and opens the new version.",
+    "updateReadyHint": "Downloaded. OSLLMAPI backs up your data, restarts and opens the new version.",
     "updateInstallFailed": "The update could not be installed.",
     "updateNow": "Update now",
-    "updatingContainer": "Pulling the new image and restarting. This page reloads when FreeLLMAPI is back.",
+    "updatingContainer": "Pulling the new image and restarting. This page reloads when OSLLMAPI is back.",
     "updateNowFailed": "The updater did not accept the request. Check that the watchtower container is running.",
-    "updateNowTimeout": "FreeLLMAPI has not restarted after 5 minutes. Check the watchtower container's logs."
+    "updateNowTimeout": "OSLLMAPI has not restarted after 5 minutes. Check the watchtower container's logs."
   },
   "models": {
     "title": "Models",
@@ -194,7 +194,7 @@
     "monthlyTokenBudget": "Monthly token budget",
     "remaining": "remaining",
     "used": "used",
-    "usedScopeHint": "Chat requests only, since the start of this calendar month, summed over every model in the active chain — custom endpoints included. Traffic you send to a provider outside FreeLLMAPI is not counted.",
+    "usedScopeHint": "Chat requests only, since the start of this calendar month, summed over every model in the active chain — custom endpoints included. Traffic you send to a provider outside OSLLMAPI is not counted.",
     "legendRemainingTitle": "Remaining / monthly budget for {name} ({platform})",
     "noPublishedQuota": "+{count} with no published quota",
     "noPublishedQuotaTitle": "These models have no documented monthly token budget, so there is no remaining figure to show.",
@@ -805,7 +805,7 @@
     "endpoint": "Endpoint",
     "documentation": "Documentation",
     "connect": {
-      "button": "Connect to FreeLLMAPI",
+      "button": "Connect to OSLLMAPI",
       "details": "Setup details",
       "gateway": "Local gateway",
       "saved": "Configuration saved",
@@ -817,7 +817,7 @@
       "files": "Configuration files",
       "writeError": "Check the file permissions and the existing configuration, then try again.",
       "missing": "Install the CLI or add it to your PATH, then try again.",
-      "intro": "Connect your coding tools to your FreeLLMAPI gateway.",
+      "intro": "Connect your coding tools to your OSLLMAPI gateway.",
       "all": "All agents",
       "find": "Find an agent…",
       "cursor": "Cursor reaches your gateway from its cloud service. Enter your own publicly reachable HTTPS endpoint."
@@ -1239,7 +1239,7 @@
   "update": {
     "available": "New version available",
     "dismiss": "Dismiss",
-    "newBuild": "A newer version of FreeLLMAPI is installed.",
+    "newBuild": "A newer version of OSLLMAPI is installed.",
     "reload": "Reload"
   },
   "freeTier": {

@@ -1,4 +1,4 @@
-# FreeLLMAPI documentation
+# OSLLMAPI documentation
 
 Pick a language:
 

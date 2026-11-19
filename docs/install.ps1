@@ -1,4 +1,4 @@
-# The upstream freellmapi.co installer installs a different product. Direct
+# The upstream ossllmapi.co installer installs a different product. Direct
 # users of this fork's Windows shim to the correct build without executing
 # downloaded scripts or silently installing the wrong architecture.
 # Stock Win7 PowerShell may run on a CLR without Is64BitOperatingSystem.

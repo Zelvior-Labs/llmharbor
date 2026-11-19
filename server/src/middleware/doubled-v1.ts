@@ -9,7 +9,7 @@ const DOUBLED_V1 = /^(?:\/v1)+(?=\/v1(?:[/?]|$))/;
  *
  * Anthropic-style clients (Claude Desktop's third-party gateway, Claude Code,
  * the Anthropic SDK) treat the configured base URL as an origin and append
- * `/v1/models`, `/v1/messages` etc. themselves. FreeLLMAPI also advertises an
+ * `/v1/models`, `/v1/messages` etc. themselves. OSLLMAPI also advertises an
  * OpenAI-style base URL ending in `/v1`, and when that one is pasted into an
  * Anthropic client every call lands on `/v1/v1/...` and 404s. No route is ever
  * legitimately served under `/v1/v1`, so rewriting is unambiguous.

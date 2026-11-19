@@ -1,6 +1,6 @@
 // Bundles desktop/src/server-host.ts (and through it the whole server) into
 // build/server.mjs. esbuild resolves the server's `.js`-suffixed TS imports
-// and flattens the @freellmapi/shared workspace symlink. Native better-sqlite3
+// and flattens the @ossllmapi/shared workspace symlink. Native better-sqlite3
 // and sharp stay external and are packaged from desktop/node_modules.
 import { build } from 'esbuild';
 import path from 'node:path';
@@ -25,8 +25,8 @@ await build({
       'process.env.FREEAPI_SQLITE_DRIVER': JSON.stringify('node:sqlite'),
       'process.env.IMAGE_NORMALIZE': JSON.stringify('off'),
     }),
-    'process.env.FREELLMAPI_COMMIT_SHA': JSON.stringify(hasBuildIdentity ? githubSha : ''),
-    'process.env.FREELLMAPI_INSTALL_METHOD': JSON.stringify(hasBuildIdentity ? 'desktop' : ''),
+    'process.env.OSSLLMAPI_COMMIT_SHA': JSON.stringify(hasBuildIdentity ? githubSha : ''),
+    'process.env.OSSLLMAPI_INSTALL_METHOD': JSON.stringify(hasBuildIdentity ? 'desktop' : ''),
   },
   // Some inlined CJS deps (express internals) reference `require` at runtime;
   // give the ESM bundle a working one.

@@ -13,7 +13,7 @@ export interface GeneratedFile {
   format: 'json' | 'toml' | 'yaml' | 'yaml-entries' | 'env';
   /** Structured patch, deep-merged into the existing document (json, yaml). */
   value?: Record<string, unknown>;
-  /** Literal text, merged as a marked `# freellmapi:start/end` block (toml, yaml, env). */
+  /** Literal text, merged as a marked `# ossllmapi:start/end` block (toml, yaml, env). */
   content?: string;
   sensitive?: boolean;
   /** json only: arrays merged item by item instead of replaced whole, keyed by

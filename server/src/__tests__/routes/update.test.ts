@@ -141,8 +141,8 @@ describe('Update API', () => {
       const execMock = vi.fn(async () => ({ stdout: `${REMOTE_SHA}\n` }));
       const { app } = createTestApp({
         env: {
-          FREELLMAPI_COMMIT_SHA: LOCAL_SHA.toUpperCase(),
-          FREELLMAPI_INSTALL_METHOD: 'docker',
+          OSSLLMAPI_COMMIT_SHA: LOCAL_SHA.toUpperCase(),
+          OSSLLMAPI_INSTALL_METHOD: 'docker',
         },
         fetch: fetchMock,
         execFile: execMock,
@@ -158,7 +158,7 @@ describe('Update API', () => {
     it('uses an explicitly configured update-check token for authenticated rate limits', async () => {
       const fetchMock = vi.fn(async () => response(compareBody('identical')));
       const { app } = createTestApp({
-        env: { FREELLMAPI_UPDATE_GITHUB_TOKEN: 'test-token' },
+        env: { OSSLLMAPI_UPDATE_GITHUB_TOKEN: 'test-token' },
         fetch: fetchMock,
       });
 
@@ -197,7 +197,7 @@ describe('Update API', () => {
           return response(compareBody('identical'));
         });
         const { app } = createTestApp({
-          env: { FREELLMAPI_INSTALL_METHOD: installation, FREELLMAPI_COMMIT_SHA: LOCAL_SHA },
+          env: { OSSLLMAPI_INSTALL_METHOD: installation, OSSLLMAPI_COMMIT_SHA: LOCAL_SHA },
           fetch: fetchMock,
         });
 
@@ -223,7 +223,7 @@ describe('Update API', () => {
           return response(compareBody('ahead'));
         });
         const { app } = createTestApp({
-          env: { FREELLMAPI_INSTALL_METHOD: installation, FREELLMAPI_COMMIT_SHA: LOCAL_SHA },
+          env: { OSSLLMAPI_INSTALL_METHOD: installation, OSSLLMAPI_COMMIT_SHA: LOCAL_SHA },
           fetch: fetchMock,
         });
 
@@ -238,7 +238,7 @@ describe('Update API', () => {
           return response(compareBody('ahead'));
         });
         const { app } = createTestApp({
-          env: { FREELLMAPI_INSTALL_METHOD: installation, FREELLMAPI_COMMIT_SHA: LOCAL_SHA },
+          env: { OSSLLMAPI_INSTALL_METHOD: installation, OSSLLMAPI_COMMIT_SHA: LOCAL_SHA },
           fetch: fetchMock,
         });
 
@@ -260,7 +260,7 @@ describe('Update API', () => {
           return response({ message: 'rate limited' }, 403);
         });
         const { app } = createTestApp({
-          env: { FREELLMAPI_INSTALL_METHOD: installation, FREELLMAPI_COMMIT_SHA: LOCAL_SHA },
+          env: { OSSLLMAPI_INSTALL_METHOD: installation, OSSLLMAPI_COMMIT_SHA: LOCAL_SHA },
           fetch: fetchMock,
         });
 
@@ -277,7 +277,7 @@ describe('Update API', () => {
       const fetchMock = vi.fn();
       const execMock = vi.fn(async () => ({ stdout: `${LOCAL_SHA}\n` }));
       const { app, logger } = createTestApp({
-        env: { FREELLMAPI_UPDATE_CHECK: ' OFF ' },
+        env: { OSSLLMAPI_UPDATE_CHECK: ' OFF ' },
         fetch: fetchMock,
         execFile: execMock,
       });
@@ -450,7 +450,7 @@ describe('Update API', () => {
     it('resolves Git identity lazily from the current working directory', async () => {
       const execMock = vi.fn(async () => ({ stdout: `${LOCAL_SHA}\n` }));
       const { app } = createTestApp({
-        env: { FREELLMAPI_COMMIT_SHA: 'invalid' },
+        env: { OSSLLMAPI_COMMIT_SHA: 'invalid' },
         execFile: execMock,
       });
       expect(execMock).not.toHaveBeenCalled();
@@ -502,7 +502,7 @@ describe('Update API', () => {
       const fetchMock = vi.fn();
       const execMock = vi.fn(async () => ({ stdout: `${LOCAL_SHA}\n` }));
       const { app } = createTestApp({
-        env: { FREELLMAPI_INSTALL_METHOD: 'docker' },
+        env: { OSSLLMAPI_INSTALL_METHOD: 'docker' },
         fetch: fetchMock,
         execFile: execMock,
       });
@@ -579,7 +579,7 @@ describe('Update API', () => {
       const fetchMock = vi.fn();
       const execMock = vi.fn(async () => ({ stdout: `${LOCAL_SHA}\n` }));
       const { app } = createTestApp({
-        env: { FREELLMAPI_UPDATE_CHECK: 'off' },
+        env: { OSSLLMAPI_UPDATE_CHECK: 'off' },
         fetch: fetchMock,
         execFile: execMock,
       });
@@ -737,16 +737,16 @@ describe('Update API', () => {
 
   describe('POST /api/update/apply (Docker self-update)', () => {
     const sidecar = {
-      FREELLMAPI_INSTALL_METHOD: 'docker',
-      FREELLMAPI_COMMIT_SHA: LOCAL_SHA,
-      FREELLMAPI_SELF_UPDATE_URL: 'http://watchtower:8080/',
-      FREELLMAPI_SELF_UPDATE_TOKEN: 'wt-token',
+      OSSLLMAPI_INSTALL_METHOD: 'docker',
+      OSSLLMAPI_COMMIT_SHA: LOCAL_SHA,
+      OSSLLMAPI_SELF_UPDATE_URL: 'http://watchtower:8080/',
+      OSSLLMAPI_SELF_UPDATE_TOKEN: 'wt-token',
     };
 
     it.each([
-      ['a source install', { FREELLMAPI_SELF_UPDATE_URL: 'http://watchtower:8080', FREELLMAPI_SELF_UPDATE_TOKEN: 'wt-token' }],
-      ['a container without the sidecar', { FREELLMAPI_INSTALL_METHOD: 'docker', FREELLMAPI_COMMIT_SHA: LOCAL_SHA }],
-      ['a container with a URL but no token', { FREELLMAPI_INSTALL_METHOD: 'docker', FREELLMAPI_SELF_UPDATE_URL: 'http://watchtower:8080' }],
+      ['a source install', { OSSLLMAPI_SELF_UPDATE_URL: 'http://watchtower:8080', OSSLLMAPI_SELF_UPDATE_TOKEN: 'wt-token' }],
+      ['a container without the sidecar', { OSSLLMAPI_INSTALL_METHOD: 'docker', OSSLLMAPI_COMMIT_SHA: LOCAL_SHA }],
+      ['a container with a URL but no token', { OSSLLMAPI_INSTALL_METHOD: 'docker', OSSLLMAPI_SELF_UPDATE_URL: 'http://watchtower:8080' }],
     ])('refuses %s without calling anything', async (_label, env) => {
       const fetchMock = vi.fn(async () => response({}, 202));
       const { app } = createTestApp({ env, fetch: fetchMock });
@@ -785,7 +785,7 @@ describe('Update API', () => {
       const { app } = createTestApp({ env: sidecar });
       expect((await httpGet(app, '/api/update/status')).body.selfUpdate).toBe(true);
 
-      const { app: plain } = createTestApp({ env: { FREELLMAPI_INSTALL_METHOD: 'docker', FREELLMAPI_COMMIT_SHA: LOCAL_SHA } });
+      const { app: plain } = createTestApp({ env: { OSSLLMAPI_INSTALL_METHOD: 'docker', OSSLLMAPI_COMMIT_SHA: LOCAL_SHA } });
       expect((await httpGet(plain, '/api/update/status')).body).not.toHaveProperty('selfUpdate');
     });
   });

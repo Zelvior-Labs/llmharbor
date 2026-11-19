@@ -17,13 +17,13 @@ Everything about getting OSSLLMAPI running: the one-liner, Docker Compose, local
 
 ## Quick start (one-liner)
 
-The upstream Docker installer requires Docker. It sets up `~/freellmapi`, generates an encryption key, pulls the image, and starts the container:
+The upstream Docker installer requires Docker. It sets up `~/ossllmapi`, generates an encryption key, pulls the image, and starts the container:
 
 ```bash
-curl -fsSL https://freellmapi.co/install.sh | bash
+curl -fsSL https://ossllmapi.co/install.sh | bash
 ```
 
-Prefer to read before you pipe to bash? [The script is here](https://freellmapi.co/install.sh). Re-running it is safe: your `.env` (and encryption key) is preserved and the container updates to `:latest`. Override the defaults with `FREELLMAPI_DIR`, `PORT`, or `HOST_BIND` env vars.
+Prefer to read before you pipe to bash? [The script is here](https://ossllmapi.co/install.sh). Re-running it is safe: your `.env` (and encryption key) is preserved and the container updates to `:latest`. Override the defaults with `OSSLLMAPI_DIR`, `PORT`, or `HOST_BIND` env vars.
 
 For OSSLLMAPI on Windows, choose the [x86 or x64 release installer](https://github.com/zelvior/ossllmapi/releases/latest) ([details](#desktop-app)). The Docker steps also work in WSL.
 
@@ -31,7 +31,7 @@ For Android 8.0 or later, the [standalone OSSLLMAPI APK](../../../android/README
 
 Open http://localhost:3001, add your provider keys on the **Keys** page, reorder the **Fallback Chain** to taste, and grab your unified API key from the **Keys** page header. That unified key is what you point your OpenAI SDK at.
 
-Your install keeps itself updated from the signed catalog feed. The current full catalog is listed at [freellmapi.co/models](https://freellmapi.co/models.html).
+Your install keeps itself updated from the signed catalog feed. The current full catalog is listed at [ossllmapi.co/models](https://ossllmapi.co/models.html).
 
 ## Docker Compose
 
@@ -79,7 +79,7 @@ docker compose up -d
 > To see which of these you are hitting, ask the container directly:
 >
 > ```bash
-> docker compose exec freellmapi node -e "fetch('https://generativelanguage.googleapis.com/').then(r=>console.log('ok',r.status)).catch(e=>console.log('fail',e.cause?.code||e.message))"
+> docker compose exec ossllmapi node -e "fetch('https://generativelanguage.googleapis.com/').then(r=>console.log('ok',r.status)).catch(e=>console.log('fail',e.cause?.code||e.message))"
 > ```
 
 ## Local development
@@ -164,7 +164,7 @@ node server/dist/index.js     # server + dashboard both served on :3001
 ## Declarative startup config
 
 For repeatable Docker/server installs, OSSLLMAPI can apply a JSON config on
-every boot. Set `FREEAPI_CONFIG_PATH=/path/to/freellmapi.config.json` or put the
+every boot. Set `FREEAPI_CONFIG_PATH=/path/to/ossllmapi.config.json` or put the
 same JSON in `FREEAPI_CONFIG_JSON`. The config is idempotent: existing keys,
 custom providers, model edits, fallback rows, and routing settings are updated
 instead of duplicated.
@@ -172,7 +172,7 @@ instead of duplicated.
 ```json
 {
   "admin": { "email": "ops@example.com", "password": "change-me-min-8-chars" },
-  "license": "premium license key from freellmapi.co",
+  "license": "premium license key from ossllmapi.co",
   "keys": [
     { "platform": "groq", "key": "gsk_...", "label": "main" },
     { "platform": "google", "key": "AIza...", "enabled": true }
@@ -207,7 +207,7 @@ Two optional top-level fields cover first-run provisioning:
   listener starts, an `admin` entry also closes the unauthenticated
   first-run setup window entirely: no setup code is minted and
   `POST /api/auth/setup` answers 409 from the first request on.
-- **`license`** is a Premium key from freellmapi.co. It is validated against
+- **`license`** is a Premium key from ossllmapi.co. It is validated against
   the license service before being stored — the same contract as the
   dashboard's Premium page — then a live-tier catalog sync starts right away.
   Activation runs in the background so an unreachable license service never
@@ -235,7 +235,7 @@ than one endpoint is rejected rather than applied to an arbitrary one:
 OSSLLMAPI publishes a single production image that contains the Express server and the built React dashboard:
 
 ```bash
-docker pull ghcr.io/tashfeenahmed/freellmapi:latest   # or pin a release, e.g. :v1.2.3
+docker pull ghcr.io/tashfeenahmed/ossllmapi:latest   # or pin a release, e.g. :v1.2.3
 ```
 
 The image is multi-arch (`linux/amd64` + `linux/arm64`, so it runs on a Raspberry Pi). Published tags: `latest` (the newest release), `main` (the default branch), `v*.*.*` (git release tags), and `sha-<commit>`.
@@ -244,7 +244,7 @@ The included `docker-compose.yml` is the recommended install path:
 
 ```bash
 docker compose up -d
-docker compose logs -f freellmapi
+docker compose logs -f ossllmapi
 ```
 
 **Updating:** `docker compose pull && docker compose up -d` (your volume and `.env` carry over). To update from the dashboard instead, set `WATCHTOWER_TOKEN` in `.env` (e.g. `openssl rand -hex 32`) and start with the opt-in profile:
@@ -253,23 +253,23 @@ docker compose logs -f freellmapi
 docker compose --profile autoupdate up -d
 ```
 
-Settings → **Check for updates** then shows **Update now** when a newer release exists: a [Watchtower](https://github.com/nicholas-fedor/watchtower) sidecar pulls the image and recreates the `freellmapi` container, and the dashboard reloads when it is back. Watchtower runs with only its token-protected update endpoint, never updates on a schedule, publishes no port and only touches the `freellmapi` container — but it mounts the Docker socket, which is root-equivalent on the host, so the profile stays off unless you start it.
+Settings → **Check for updates** then shows **Update now** when a newer release exists: a [Watchtower](https://github.com/nicholas-fedor/watchtower) sidecar pulls the image and recreates the `ossllmapi` container, and the dashboard reloads when it is back. Watchtower runs with only its token-protected update endpoint, never updates on a schedule, publishes no port and only touches the `ossllmapi` container — but it mounts the Docker socket, which is root-equivalent on the host, so the profile stays off unless you start it.
 
 By default the container's port is bound to `127.0.0.1` (localhost only). To reach the dashboard/API from another machine on your network, publish it on all interfaces with `HOST_BIND=0.0.0.0 docker compose up -d` — only on a trusted LAN, since the proxy is single-user.
 
 Plain HTTP over a LAN address works as-is: the security headers that only apply to HTTPS (`upgrade-insecure-requests`, `Cross-Origin-Opener-Policy`, `Origin-Agent-Cluster`) are emitted only when the request actually arrived over TLS — or over loopback, which browsers already treat as a secure context. Behind an HTTPS reverse proxy they come back on automatically, as long as the proxy forwards `X-Forwarded-Proto`. `CSP_UPGRADE_INSECURE_REQUESTS=true|false` overrides the upgrade directive if your setup needs it.
 
-SQLite data is stored in the `freellmapi-data` volume at `/app/server/data`.
+SQLite data is stored in the `ossllmapi-data` volume at `/app/server/data`.
 Keep the same `.env` `ENCRYPTION_KEY` and volume when upgrading, because
 provider keys are encrypted at rest. If your host only persists a specific
-directory, set `FREEAPI_DB_PATH=/that/path/freellmapi.db`.
+directory, set `FREEAPI_DB_PATH=/that/path/ossllmapi.db`.
 
 On hosts with ephemeral disks, configure an encrypted backup target:
 
 ```env
-FREEAPI_DB_BACKUP_PATH=/app/server/data/freellmapi.db.backup
+FREEAPI_DB_BACKUP_PATH=/app/server/data/ossllmapi.db.backup
 # or:
-FREEAPI_DB_BACKUP_URL=https://example.com/freellmapi.db.backup
+FREEAPI_DB_BACKUP_URL=https://example.com/ossllmapi.db.backup
 FREEAPI_DB_BACKUP_TOKEN=optional-bearer-token
 FREEAPI_DB_BACKUP_KEY=64-char-hex-backup-key
 FREEAPI_DB_BACKUP_INTERVAL_MS=300000
@@ -322,7 +322,7 @@ build signs the dashboard in automatically with a hidden local account, so
 you're never prompted for credentials and never need one.
 
 The only credential you need is your **unified API key** — the
-`freellmapi-…` token your OpenAI/Anthropic client points at. Get it from:
+`ossllmapi-…` token your OpenAI/Anthropic client points at. Get it from:
 
 - the tray popover — click the tray icon, then **Copy Key**, or
 - the dashboard **Keys** page header (tray → **Open Dashboard**).
@@ -340,7 +340,7 @@ another machine or into a container):
 
 That folder holds `freeapi.db` (all keys, models, settings, encrypted at rest),
 `config.json` (window/theme/port/LAN preferences) and `logs/freeapi.log` (what
-the app would print to a terminal if it had one). To migrate a desktop install, quit both apps and back up the **whole folder**, including hidden files such as `.encryption-key`, before copying it into the new OSSLLMAPI folder. Nothing is moved or deleted from an upstream FreeLLMAPI install automatically. For the server (non-desktop) deployment, the equivalent state is the
+the app would print to a terminal if it had one). To migrate a desktop install, quit both apps and back up the **whole folder**, including hidden files such as `.encryption-key`, before copying it into the new OSSLLMAPI folder. Nothing is moved or deleted from an upstream OSLLMAPI install automatically. For the server (non-desktop) deployment, the equivalent state is the
 `.env` file and the SQLite DB at `server/data/freeapi.db` (or wherever
 `FREEAPI_DB_PATH` points).
 
@@ -377,9 +377,9 @@ rather than clicking repeatedly.
 
 | Install method | Where the log goes |
 |----------------|--------------------|
-| Docker Compose | `docker compose logs -f freellmapi` |
+| Docker Compose | `docker compose logs -f ossllmapi` |
 | Plain Docker | `docker logs -f <container>` (`docker ps` lists the name) |
-| One-liner install | `cd ~/freellmapi && docker compose logs -f freellmapi` |
+| One-liner install | `cd ~/ossllmapi && docker compose logs -f ossllmapi` |
 | `npm run dev` / `node server/dist/index.js` | the terminal the server is running in |
 | Desktop app | `<data dir>/logs/freeapi.log` — tray icon → right-click → **Open Logs Folder** |
 
@@ -412,9 +412,9 @@ the top.
 **Docker**
 
 ```bash
-docker compose down -v            # -v also drops the freellmapi-data volume
-docker image rm ghcr.io/tashfeenahmed/freellmapi:latest
-rm -rf ~/freellmapi               # the one-liner's directory: .env + compose file
+docker compose down -v            # -v also drops the ossllmapi-data volume
+docker image rm ghcr.io/tashfeenahmed/ossllmapi:latest
+rm -rf ~/ossllmapi               # the one-liner's directory: .env + compose file
 ```
 
 Leave off `-v` if you want to keep the database for a later reinstall.

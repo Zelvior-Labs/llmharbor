@@ -106,7 +106,7 @@ headerSent = false
 
 ### 错误映射（耗尽）
 
-| FreeLLM 类别 | Anthropic 类型 |
+| OSLLM 类别 | Anthropic 类型 |
 |--------------|----------------|
 | `auth` | `api_error` |
 | `bad_request` | `invalid_request_error` |

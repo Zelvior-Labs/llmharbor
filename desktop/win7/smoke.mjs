@@ -69,7 +69,7 @@ try {
   }
   await until('signed-in React dashboard', () => evaluate(`!!(window.__FREEAPI_DESKTOP__ && document.querySelector('#root nav'))`));
   const result = await evaluate(`(async () => {
-    const session = localStorage.getItem('freellmapi_dashboard_token');
+    const session = localStorage.getItem('ossllmapi_dashboard_token');
     const headers = { Authorization: 'Bearer ' + session };
     const { apiKey } = await (await fetch('/api/settings/api-key', { headers })).json();
     const models = await fetch('/v1/models', { headers: { Authorization: 'Bearer ' + apiKey } });
@@ -78,7 +78,7 @@ try {
       updater: await window.__FREEAPI_UPDATER__.check() };
   })()`);
   assert.deepEqual(result, { shell: version, server: version, alive: true, api: true, updater: { phase: 'unsupported', reason: 'package' } });
-  await evaluate(`window.dispatchEvent(new Event('freellmapi:open-updates'))`);
+  await evaluate(`window.dispatchEvent(new Event('ossllmapi:open-updates'))`);
   await until('manual Win7 download link', () => evaluate(`!!document.querySelector('a[href="https://github.com/zelvior/ossllmapi/releases?q=win7"]')`));
   assert.ok(statSync(join(profile, 'freeapi.db')).size > 0);
   assert.match(readFileSync(join(profile, '.encryption-key'), 'utf8').trim(), /^[0-9a-f]{64}$/);

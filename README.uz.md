@@ -3,15 +3,16 @@
 # OSSLLMAPI
 
 **Oyiga 10,1 milliard token. 87 ta bepul LLM provayderi. 1313 ta bepul model endpointi. OpenAI bilan mos bitta endpoint.**
+**Bu loyiha — Zelvior Labs tomonidan yaratilgan [freellmapi](https://github.com/tashfeenahmed/freellmapi/) loyihasining o'zgartirilgan versiyasi.**
 
 O'nlab provayderlarning bepul tariflarini, shuningdek, OpenAI bilan mos keladigan istalgan chat, embedding, rasm va audio endpointlaringizni bitta `/v1` API orqasida birlashtiring. Kalitlar shifrlangan holda saqlanadi. Router har bir so'rov uchun eng yaxshi mavjud modelni tanlaydi, provayder limitga yetganda keyingisiga o'tadi va har bir kalitning sarfini kuzatib boradi, shunda siz hech bir bepul tarif limitidan oshib ketmaysiz.
 
-[![CI](https://github.com/tashfeenahmed/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/tashfeenahmed/ossllmapi/actions/workflows/ci.yml)
-[![GitHub stars](https://img.shields.io/github/stars/tashfeenahmed/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/tashfeenahmed/ossllmapi/stargazers)
+[![CI](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml)
+[![GitHub stars](https://img.shields.io/github/stars/zelvior/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/zelvior/ossllmapi/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#hissa-qoshish)
-[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/tashfeenahmed/ossllmapi/pkgs/container/ossllmapi)
-[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/tashfeenahmed/ossllmapi)
+[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/ossllmapi/pkgs/container/ossllmapi)
+[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/ossllmapi)
 
 **[ossllmapi.co](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · to'liq katalogni ko'ring: 736 ta model oilasi, 1313 ta bepul endpoint
 

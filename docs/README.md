@@ -1,5 +1,7 @@
 # OSLLMAPI documentation
 
+**OSSLLMAPI is a modified version of [freellmapi](https://github.com/tashfeenahmed/freellmapi/), made by Zelvior Labs.**
+
 Pick a language:
 
 - **English:** [docs/en/README.md](en/README.md)

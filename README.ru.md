@@ -3,15 +3,16 @@
 # OSSLLMAPI
 
 **10,1 миллиарда токенов в месяц. 87 бесплатных LLM-провайдеров. 1313 бесплатных модельных эндпоинтов. Один OpenAI-совместимый API.**
+**Это модифицированная версия [freellmapi](https://github.com/tashfeenahmed/freellmapi/), созданная Zelvior Labs.**
 
 Объединяйте бесплатные тарифы десятков провайдеров, а также собственные OpenAI-совместимые эндпоинты для чата, эмбеддингов, генерации изображений и работы с аудио через единый API `/v1`. Ключи хранятся в зашифрованном виде. Маршрутизатор выбирает наиболее подходящую доступную модель, при ограничении запросов переключается на другого провайдера и учитывает расход по каждому ключу, помогая соблюдать бесплатные квоты.
 
-[![CI](https://github.com/tashfeenahmed/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/tashfeenahmed/ossllmapi/actions/workflows/ci.yml)
-[![GitHub stars](https://img.shields.io/github/stars/tashfeenahmed/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/tashfeenahmed/ossllmapi/stargazers)
+[![CI](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml)
+[![GitHub stars](https://img.shields.io/github/stars/zelvior/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/zelvior/ossllmapi/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
-[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/tashfeenahmed/ossllmapi/pkgs/container/ossllmapi)
-[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/tashfeenahmed/ossllmapi)
+[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/ossllmapi/pkgs/container/ossllmapi)
+[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/ossllmapi)
 
 **[ossllmapi.co](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · полный каталог: 736 семейств моделей и 1313 бесплатных эндпоинтов
 

@@ -3,15 +3,16 @@
 # OSSLLMAPI
 
 **每月 101 亿词元。87 家免费 LLM 提供方。1,313 个免费模型端点。一个 OpenAI 兼容端点。**
+**本项目是 [freellmapi](https://github.com/tashfeenahmed/freellmapi/) 的修改版本，由 Zelvior Labs 制作。**
 
 把几十家提供方的免费额度，连同任意自建的 OpenAI 兼容聊天、嵌入、图像和音频端点，一起聚合到单个 `/v1` API 之后。密钥加密存储。路由器为每个请求挑选当前可用的最佳模型，某家提供方触发限流时自动转移到下一家，并按密钥跟踪用量，让你始终待在各家的免费额度之内。
 
-[![CI](https://github.com/tashfeenahmed/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/tashfeenahmed/ossllmapi/actions/workflows/ci.yml)
-[![GitHub stars](https://img.shields.io/github/stars/tashfeenahmed/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/tashfeenahmed/ossllmapi/stargazers)
+[![CI](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml)
+[![GitHub stars](https://img.shields.io/github/stars/zelvior/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/zelvior/ossllmapi/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#参与贡献)
-[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/tashfeenahmed/ossllmapi/pkgs/container/ossllmapi)
-[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/tashfeenahmed/ossllmapi)
+[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/ossllmapi/pkgs/container/ossllmapi)
+[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/ossllmapi)
 
 **[ossllmapi.co](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · 浏览完整目录：736 个模型系列，1,313 个免费端点
 
@@ -316,10 +317,6 @@ print("Routed via:", resp.headers.get("x-routed-via"))
 
 `npm install && npm run dev` 就能起来：服务在 :3001，仪表盘在 :5173，两边都有热更新。PR 应当包含测试、保持现有测试套件通过（`npm test`），并遵循仓库里已有的 `.editorconfig` 和 tsconfig 默认配置。数据库迁移流程和完整的贡献者循环见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-### 贡献者
-
-约 130 位贡献者的头像墙维护在[英文 README](README.md#contributors) 里。它几乎每次合并都会变动，所以只保留一份，不在各语言版本中重复。
-
 ## 免责声明
 
 **本项目用于个人实验和学习，不适用于生产环境。** 免费额度的存在是为了让开发者拿来做原型；它们不是稳定、有支持的推理基础设施，也不该被当成这种东西。如果你要在 OSLLMAPI 之上做真正的产品，上线前请换成付费 API。你和每家上游提供方之间的关系，受你注册账号时接受的条款约束；流量经由本项目代理时这些条款依然适用，遵守它们是你的责任。
@@ -330,6 +327,3 @@ print("Routed via:", resp.headers.get("x-routed-via"))
 
 [MIT](LICENSE)
 
----
-
-<sub>本页最初的中文翻译由 [@Robs87](https://github.com/Robs87) 在 [#244](https://github.com/tashfeenahmed/ossllmapi/pull/244) 中贡献，本版本已针对当前 README 重新翻译。</sub>

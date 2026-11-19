@@ -3,15 +3,16 @@
 # OSSLLMAPI
 
 **Ayda 10,1 milyar token. 87 ücretsiz LLM sağlayıcısı. 1.313 ücretsiz model uç noktası. OpenAI uyumlu tek bir uç nokta.**
+**Bu proje, Zelvior Labs tarafından oluşturulmuş [freellmapi](https://github.com/tashfeenahmed/freellmapi/)'nın değiştirilmiş bir versiyonudur.**
 
 Onlarca sağlayıcının ücretsiz kullanım kotalarını ve özel OpenAI uyumlu sohbet, gömme (embedding), görüntü ve ses uç noktalarını tek bir `/v1` API’sinde birleştirin. Anahtarlar şifreli saklanır. Yönlendirici, her istek için kullanılabilir en iyi modeli seçer; bir sağlayıcı hız sınırına ulaştığında sıradakine geçer ve ücretsiz kotaları aşmamak için kullanımı anahtar bazında izler.
 
-[![CI](https://github.com/tashfeenahmed/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/tashfeenahmed/ossllmapi/actions/workflows/ci.yml)
-[![GitHub stars](https://img.shields.io/github/stars/tashfeenahmed/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/tashfeenahmed/ossllmapi/stargazers)
+[![CI](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml)
+[![GitHub stars](https://img.shields.io/github/stars/zelvior/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/zelvior/ossllmapi/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
-[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/tashfeenahmed/ossllmapi/pkgs/container/ossllmapi)
-[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/tashfeenahmed/ossllmapi)
+[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/ossllmapi/pkgs/container/ossllmapi)
+[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/ossllmapi)
 
 **[ossllmapi.co](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · tüm kataloğa göz atın: 736 model ailesi, 1.313 ücretsiz uç nokta
 

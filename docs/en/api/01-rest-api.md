@@ -35,7 +35,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="http://localhost:3001/v1",
-    api_key="freellmapi-your-unified-key",
+    api_key="ossllmapi-your-unified-key",
 )
 
 resp = client.chat.completions.create(
@@ -50,7 +50,7 @@ print("Routed via:", resp.headers.get("x-routed-via"))
 
 ```bash
 curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer freellmapi-your-unified-key" \
+  -H "Authorization: Bearer ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "auto",
@@ -72,7 +72,7 @@ These rank **every enabled model**, ignoring your chain order. Common synonyms r
 
 ```bash
 curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer freellmapi-your-unified-key" \
+  -H "Authorization: Bearer ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "auto:fast",
@@ -84,7 +84,7 @@ curl http://localhost:3001/v1/chat/completions \
 
 ```bash
 curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer freellmapi-your-unified-key" \
+  -H "Authorization: Bearer ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "auto:coding",
@@ -108,7 +108,7 @@ Each catalog entry also carries `execution_status`, a live answer to "would a re
 
 ```bash
 curl "http://localhost:3001/v1/models?execution_status=ready" \
-  -H "Authorization: Bearer freellmapi-your-unified-key"
+  -H "Authorization: Bearer ossllmapi-your-unified-key"
 ```
 
 ## Streaming
@@ -196,7 +196,7 @@ Gemini SDKs and Gemini CLI can use the native `/v1beta` surface:
 
 ```bash
 curl "http://localhost:3001/v1beta/models/gemini-2.5-flash:generateContent" \
-  -H "x-goog-api-key: freellmapi-your-unified-key" \
+  -H "x-goog-api-key: ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{"contents":[{"role":"user","parts":[{"text":"hello"}]}]}'
 ```
@@ -279,7 +279,7 @@ HuggingFace models route through the **fal queue** (`router.huggingface.co/fal-a
 
 ```bash
 curl http://localhost:3001/v1/videos/generations \
-  -H "Authorization: Bearer freellmapi-your-unified-key" \
+  -H "Authorization: Bearer ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{"model":"auto","prompt":"a sunrise over a quiet lake","duration":6}' \
   --output video.mp4
@@ -312,11 +312,11 @@ Only hops that already **failed** can appear. The hop actually serving your requ
 
 HTTP headers only carry printable ASCII, so a model id with characters outside that range (a Chinese name from a relay catalog, for example) is percent-encoded in the header — run the value through `decodeURIComponent` (or `urllib.parse.unquote`) to read it back.
 
-The opt-in response cache can be toggled per request with `X-FreeLLM-Cache: on|off` — an exact-match in-memory LRU for identical requests, streaming included (a streamed hit replays the stored SSE verbatim) (canonical SHA-256 keys over the full request, TTL and temperature gates, saved-token stats on the dashboard). Off by default; cache hits consume zero provider quota.
+The opt-in response cache can be toggled per request with `X-OSLLM-Cache: on|off` — an exact-match in-memory LRU for identical requests, streaming included (a streamed hit replays the stored SSE verbatim) (canonical SHA-256 keys over the full request, TTL and temperature gates, saved-token stats on the dashboard). Off by default; cache hits consume zero provider quota.
 
-When [prompt compression](../compression/01-compression-pipeline.md) is enabled, `X-FreeLLM-Compress: off|on|lossless|standard|aggressive` can disable or lower the configured mode for one request. It cannot raise the operator's configured mode. The response reports the effective mode and estimated savings, for example `X-FreeLLM-Compress: standard; saved~=1840`.
+When [prompt compression](../compression/01-compression-pipeline.md) is enabled, `X-OSLLM-Compress: off|on|lossless|standard|aggressive` can disable or lower the configured mode for one request. It cannot raise the operator's configured mode. The response reports the effective mode and estimated savings, for example `X-OSLLM-Compress: standard; saved~=1840`.
 
-`X-FreeLLM-Task-Type: code|chat|auto` tells the router what kind of turn this is, so it can bias the routing weights: `code` trades some of the speed weight for intelligence (a wrong answer costs more than a slow one), `chat` does the reverse. It is a soft preference only — capability gates, the failover chain and the model catalog are untouched, and the shift is 30% of one axis by default. The default is `auto`: tool-bearing requests and messages carrying unambiguous code markers (a fenced block, a declaration, a stack frame, a `file.ts:214` reference) are treated as `code`, and everything else keeps the preset weights exactly as configured. The `fastest`, `reliable` and `custom` routing strategies ignore the header — those are an explicit operator choice about where on the axis to sit.
+`X-OSLLM-Task-Type: code|chat|auto` tells the router what kind of turn this is, so it can bias the routing weights: `code` trades some of the speed weight for intelligence (a wrong answer costs more than a slow one), `chat` does the reverse. It is a soft preference only — capability gates, the failover chain and the model catalog are untouched, and the shift is 30% of one axis by default. The default is `auto`: tool-bearing requests and messages carrying unambiguous code markers (a fenced block, a declaration, a stack frame, a `file.ts:214` reference) are treated as `code`, and everything else keeps the preset weights exactly as configured. The `fastest`, `reliable` and `custom` routing strategies ignore the header — those are an explicit operator choice about where on the axis to sit.
 
 How far the shift goes is operator-tunable: `GET /api/settings/task-weight-share` reads the current fraction and `PUT /api/settings/task-weight-share` with `{"share": 0..1}` sets it (default `0.3`). `0` disables the bias while leaving the header itself accepted, and `null` clears the setting back to the default. It takes effect on the next request, with no restart.
 
@@ -334,7 +334,7 @@ print(len(resp.data), "vectors of", len(resp.data[0].embedding), "dims")
 
 ```bash
 curl http://localhost:3001/v1/embeddings \
-  -H "Authorization: Bearer freellmapi-your-unified-key" \
+  -H "Authorization: Bearer ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{"model": "auto", "input": "hello world"}'
 ```
@@ -356,11 +356,11 @@ The default family, per-provider toggles, and priorities live on the dashboard's
 
 ## Anthropic / Claude clients
 
-FreeLLMAPI also speaks Anthropic's Messages API, so anything built for Claude — including **Claude Code** and the official Anthropic SDKs — can run against your free pool. Point the client at your server's **origin** (Anthropic clients append `/v1/messages` themselves) and authenticate with your unified key. Both `x-api-key` and `Authorization: Bearer` are accepted.
+OSLLMAPI also speaks Anthropic's Messages API, so anything built for Claude — including **Claude Code** and the official Anthropic SDKs — can run against your free pool. Point the client at your server's **origin** (Anthropic clients append `/v1/messages` themselves) and authenticate with your unified key. Both `x-api-key` and `Authorization: Bearer` are accepted.
 
 ```bash
 curl http://localhost:3001/v1/messages \
-  -H "x-api-key: freellmapi-your-unified-key" \
+  -H "x-api-key: ossllmapi-your-unified-key" \
   -H "anthropic-version: 2023-06-01" \
   -H "Content-Type: application/json" \
   -d '{
@@ -376,7 +376,7 @@ caller's `system` turn, exactly as on `/v1/chat/completions`.
 
 Claude model names map to your free pool on the **Keys → Anthropic** tab: each family (`default`, `opus`, `sonnet`, `haiku`) routes to `auto` (the router picks a free model) or a model you pin. `POST /v1/messages/count_tokens` and a content-negotiated `GET /v1/models` (Anthropic shape when `anthropic-version` is sent) are implemented too. Streaming, system prompts, tool use, and image input all translate across the same router as the OpenAI endpoints.
 
-**Claude Code auto-mode classifier compatibility (related to #1589).** Upstream-supplied `safeguard_results` are preserved unchanged in the JSON response and streaming `message_delta`. When an upstream sends none, the field stays absent; FreeLLMAPI never fabricates classifier verdicts.
+**Claude Code auto-mode classifier compatibility (related to #1589).** Upstream-supplied `safeguard_results` are preserved unchanged in the JSON response and streaming `message_delta`. When an upstream sends none, the field stays absent; OSLLMAPI never fabricates classifier verdicts.
 
 The client's `safeguards` body field and `anthropic-beta` header are accepted as internal request metadata, but **neither is forwarded to the current OpenAI-compatible upstreams**. Those APIs may reject unsupported fields. There is no native Anthropic upstream adapter here, so this response-metadata support does **not** establish eligibility for Anthropic's no-charge server-side classifier. An eligible native gateway must forward the request field and header together, as described in the [official gateway requirements](https://code.claude.com/docs/en/auto-mode-classifier-billing#make-the-session-eligible).
 
@@ -399,14 +399,14 @@ This does **not** disable auto-mode safety checks or permissions. Claude Code st
 *On macOS / Linux (Bash):*
 ```bash
 export ANTHROPIC_BASE_URL=http://localhost:3001
-export ANTHROPIC_AUTH_TOKEN=freellmapi-your-unified-key   # NOT ANTHROPIC_API_KEY
+export ANTHROPIC_AUTH_TOKEN=ossllmapi-your-unified-key   # NOT ANTHROPIC_API_KEY
 claude
 ```
 
 *On Windows (PowerShell):*
 ```powershell
 $env:ANTHROPIC_BASE_URL="http://localhost:3001"
-$env:ANTHROPIC_AUTH_TOKEN="freellmapi-your-unified-key"
+$env:ANTHROPIC_AUTH_TOKEN="ossllmapi-your-unified-key"
 claude
 ```
 
@@ -421,7 +421,7 @@ Authenticate with your unified proxy key (the same `Authorization: Bearer`
 every `/v1` route takes).
 
 ```bash
-curl http://localhost:3001/v1/usage -H "Authorization: Bearer $FREELLMAPI_KEY"
+curl http://localhost:3001/v1/usage -H "Authorization: Bearer $OSSLLMAPI_KEY"
 ```
 
 ```json
@@ -489,7 +489,7 @@ proxy key may call this route; client-profile keys get `403`.
   "items": [
     {
       "id": 14,
-      "filename": "freellmapi-20260825-040000-enc.sql",
+      "filename": "ossllmapi-20260825-040000-enc.sql",
       "filesize": 2418688,
       "isFull": true,
       "source": "scheduled",
@@ -548,7 +548,7 @@ time. Each threshold fires once per key per UTC month, so a key cannot flood the
 log. This mirrors LiteLLM's budget alerts and OpenRouter's per-key spend-limit
 alert: the warning arrives while requests still flow, before the hard `429`.
 Set `BUDGET_ALERT_WEBHOOK_URL` to also POST each alert as JSON
-(`type: freellmapi.key_budget_threshold`) to a webhook, such as a Slack or
+(`type: ossllmapi.key_budget_threshold`) to a webhook, such as a Slack or
 Discord workflow.
 
 Embeddings additionally relay the upstream providers' own back-off. A provider

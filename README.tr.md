@@ -3,17 +3,18 @@
 # OSSLLMAPI
 
 **Ayda 10,1 milyar token. 87 ücretsiz LLM sağlayıcısı. 1.313 ücretsiz model uç noktası. OpenAI uyumlu tek bir uç nokta.**
+**Bu proje, Zelvior Labs tarafından oluşturulmuş [freellmapi](https://github.com/tashfeenahmed/freellmapi/)'nın değiştirilmiş bir versiyonudur.**
 
 Onlarca sağlayıcının ücretsiz kullanım kotalarını ve özel OpenAI uyumlu sohbet, gömme (embedding), görüntü ve ses uç noktalarını tek bir `/v1` API’sinde birleştirin. Anahtarlar şifreli saklanır. Yönlendirici, her istek için kullanılabilir en iyi modeli seçer; bir sağlayıcı hız sınırına ulaştığında sıradakine geçer ve ücretsiz kotaları aşmamak için kullanımı anahtar bazında izler.
 
-[![CI](https://github.com/tashfeenahmed/freellmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/tashfeenahmed/freellmapi/actions/workflows/ci.yml)
-[![GitHub stars](https://img.shields.io/github/stars/tashfeenahmed/freellmapi?style=flat&logo=github&color=yellow)](https://github.com/tashfeenahmed/freellmapi/stargazers)
+[![CI](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml)
+[![GitHub stars](https://img.shields.io/github/stars/zelvior/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/zelvior/ossllmapi/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
-[![Docker image](https://img.shields.io/badge/ghcr.io-freellmapi-2496ED?logo=docker&logoColor=white)](https://github.com/tashfeenahmed/freellmapi/pkgs/container/freellmapi)
-[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/tashfeenahmed/freellmapi)
+[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/ossllmapi/pkgs/container/ossllmapi)
+[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/ossllmapi)
 
-**[freellmapi.co](https://freellmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · tüm kataloğa göz atın: 736 model ailesi, 1.313 ücretsiz uç nokta
+**[ossllmapi.co](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · tüm kataloğa göz atın: 736 model ailesi, 1.313 ücretsiz uç nokta
 
 [English](README.md) · **Türkçe** · [简体中文](README.zh-cn.md) · [Русский](README.ru.md) · [O'zbekcha](README.uz.md)
 
@@ -21,14 +22,14 @@ Onlarca sağlayıcının ücretsiz kullanım kotalarını ve özel OpenAI uyumlu
   <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/macos-tr.svg" height="48" alt="macOS için indir"></a>
   <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/windows-tr.svg" height="48" alt="Windows için indir"></a>
   <a href="docs/en/install/01-install.md#docker-compose"><img src="repo-assets/badges/docker-tr.svg" height="48" alt="Docker ile kendi ortamınızda çalıştırın"></a>
-  <a href="https://play.google.com/store/apps/details?id=co.freellmapi.app"><img src="repo-assets/badges/play-store-tr.svg" height="48" alt="Google Play’den edinin"></a>
+  <a href="https://play.google.com/store/apps/details?id=co.ossllmapi.app"><img src="repo-assets/badges/play-store-tr.svg" height="48" alt="Google Play’den edinin"></a>
   <a href="https://apps.apple.com/app/id6804648934"><img src="repo-assets/badges/app-store-tr.svg" height="48" alt="App Store’dan indirin"></a>
 </p>
 
-![FreeLLMAPI paneli — aylık token bütçesiyle Modeller sayfası](repo-assets/github-hero.png)
+![OSLLMAPI paneli — aylık token bütçesiyle Modeller sayfası](repo-assets/github-hero.png)
 
 Yönlendiriciniz model kataloğunu imzalı bir akıştan kendisi günceller: yeni ücretsiz modeller, kota değişiklikleri ve uyumluluk düzeltmeleri `git pull` gerekmeden gelir. Ücretsiz kurulumlar aylık anlık görüntüyü alır; modeller canlı akışa eklendikten 30 gün sonra bu kurulumlara ulaşır. Premium yönlendiriciler ise aynı gün alır.
-**[freellmapi.co ile canlı kataloğa geçin](https://freellmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_top#pricing)** (yılda 19 ABD doları; istediğiniz zaman iptal edin).
+**[ossllmapi.co ile canlı kataloğa geçin](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_top#pricing)** (yılda 19 ABD doları; istediğiniz zaman iptal edin).
 
 </div>
 
@@ -62,9 +63,9 @@ Yönlendiriciniz model kataloğunu imzalı bir akıştan kendisi günceller: yen
 
 Günümüzde önde gelen yapay zekâ laboratuvarları ayda birkaç milyon token, günde birkaç bin istek sunan ücretsiz planlar sağlıyor. Tek başlarına sınırlı olsalar da bir araya geldiklerinde, küçük ve hızlı modellerden oldukça yetenekli modellere kadar **736 model ailesi / 1.313 sağlayıcı uç noktası** üzerinden **ayda yaklaşık 10,1 milyar token** çıkarım kapasitesine ulaşıyorlar.
 
-Bunları elle birleştirmek zahmetli: seksen yedi farklı SDK, seksen yedi farklı hız sınırı ve bir isteğin başarısız olabileceği seksen yedi ayrı yer. FreeLLMAPI hepsini OpenAI uyumlu tek bir uç noktada toplar. Herhangi bir OpenAI istemci kitaplığını yerel sunucunuza yönlendirin; istekler, anahtar eklediğiniz sağlayıcılar arasında istemciye yansımadan yönlendirilir.
+Bunları elle birleştirmek zahmetli: seksen yedi farklı SDK, seksen yedi farklı hız sınırı ve bir isteğin başarısız olabileceği seksen yedi ayrı yer. OSLLMAPI hepsini OpenAI uyumlu tek bir uç noktada toplar. Herhangi bir OpenAI istemci kitaplığını yerel sunucunuza yönlendirin; istekler, anahtar eklediğiniz sağlayıcılar arasında istemciye yansımadan yönlendirilir.
 
-Ücretsiz planlar da her hafta değişiyor: sağlayıcılar yeni modeller çıkarıyor, eskilerini kaldırıyor ve kotaları haber vermeden değiştiriyor. FreeLLMAPI bunları sizin için takip eder. Yönlendirici, imzalı model kataloğunu [freellmapi.co](https://freellmapi.co) üzerinden kendisi alır; kurulumunuz `git pull` gerekmeden güncel kalır. Güncellemelerin ne kadar hızlı geldiği için [Premium (canlı katalog)](#premium-live-catalog) bölümüne bakın.
+Ücretsiz planlar da her hafta değişiyor: sağlayıcılar yeni modeller çıkarıyor, eskilerini kaldırıyor ve kotaları haber vermeden değiştiriyor. OSLLMAPI bunları sizin için takip eder. Yönlendirici, imzalı model kataloğunu [ossllmapi.co](https://ossllmapi.co) üzerinden kendisi alır; kurulumunuz `git pull` gerekmeden güncel kalır. Güncellemelerin ne kadar hızlı geldiği için [Premium (canlı katalog)](#premium-live-catalog) bölümüne bakın.
 
 ![Ücretsiz planlar bir arada — 87 sağlayıcıdan ayda yaklaşık 10,1 milyar token](repo-assets/i18n/tr/free-tier.png)
 
@@ -102,7 +103,7 @@ Bunları elle birleştirmek zahmetli: seksen yedi farklı SDK, seksen yedi farkl
 
 Ayrıca **özel** sağlayıcı desteği vardır: Anahtarlar (Keys) sayfasından sohbet, gömme, görüntü veya ses modellerini herhangi bir OpenAI uyumlu uç noktaya yönlendirin (llama.cpp, LM Studio, vLLM, yerel Ollama veya uzak bir ağ geçidi).
 
-Model bazında hız sınırları, bağlam pencereleri ve ücretsiz token bütçelerini içeren tam ve güncel liste **[freellmapi.co/models](https://freellmapi.co/models.html)** adresindedir.
+Model bazında hız sınırları, bağlam pencereleri ve ücretsiz token bütçelerini içeren tam ve güncel liste **[ossllmapi.co/models](https://ossllmapi.co/models.html)** adresindedir.
 
 <a id="compatible-clis--coding-agents"></a>
 
@@ -131,7 +132,7 @@ Model bazında hız sınırları, bağlam pencereleri ve ücretsiz token bütçe
 Çoğu ajan, canlı kataloğunuzu okuyup mevcut yapılandırmayı yedekleyen ve yeni ayarları onunla birleştiren tek bir komutla yapılandırılabilir:
 
 ```bash
-npx freellmapi setup-claude --url http://localhost:3001 --api-key <unified-key>
+npx ossllmapi setup-claude --url http://localhost:3001 --api-key <unified-key>
 ```
 
 **[Desteklenen tüm ajanlar ve kurulum komutları →](docs/en/clients/02-supported-agents.md)** · [Araçlara özel ayarlar, MCP sunucusu ve URL tokenları →](docs/en/clients/01-agent-clients.md)
@@ -159,12 +160,12 @@ Temmuz 2026 tarihli herkese açık belgelere dayanır; düzeltmelerinizi bekliyo
 - **Akıllı yönlendirme, altı strateji** — modellerin canlı hız, yetenek ve güvenilirlik puanları zincirinizi sıralar. Otomatik yedek modele geçiş, 429/5xx hatalarında bekleme süreleri ve anahtar döndürmeyle sıradaki modeli dener. [Yönlendirme ayrıntıları →](docs/en/architecture/00-high-level-index.md#how-it-works)
 - **Birleştirilmiş modeller ve profiller** — birden çok sağlayıcıdaki aynı model tek girdide toplanır; hata durumunda geçiş kesin olarak bu grup içinde yapılır. Adlandırılmış yedek zincir profilleri (kodlama veya görsel işleme zinciri gibi) panelden ya da istek başına `auto:<profile>` ile seçilebilir. Özel zincirler zincir yöneticisinden yeniden adlandırılabilir.
 - **Anahtar bazında hız sınırı takibi** — her `(platform, model, key)` için RPM/RPD/TPM/TPD sayaçları, sağlayıcının bildirdiği üst sınırları öğrenerek yönlendirmenin kotaları aşmasını önler.
-- **Kendini güncelleyen model kataloğu** — yönlendirici, freellmapi.co üzerinden imzalı kataloğu günde iki kez eşitler. Yeni modeller, kota değişiklikleri ve sağlayıcı uyumluluk düzeltmeleri otomatik gelir. Ücretsiz kurulumlar, modellerin canlı akışa katıldıktan 30 gün sonra eklendiği aylık görüntüyü izler; Premium aynı gün alır. [Premium →](#premium-live-catalog)
+- **Kendini güncelleyen model kataloğu** — yönlendirici, ossllmapi.co üzerinden imzalı kataloğu günde iki kez eşitler. Yeni modeller, kota değişiklikleri ve sağlayıcı uyumluluk düzeltmeleri otomatik gelir. Ücretsiz kurulumlar, modellerin canlı akışa katıldıktan 30 gün sonra eklendiği aylık görüntüyü izler; Premium aynı gün alır. [Premium →](#premium-live-catalog)
 - **Modele bağlı oturumlar ve bağlam aktarımı** — konuşmalar 30 dakika boyunca aynı modelde kalır. Sohbet sırasında model değişirse isteğe bağlı kısa bir aktarım notu konuşmanın tutarlılığını korur. [Ayrıntılar →](docs/en/clients/01-agent-clients.md#context-handoff)
 - **İstem sıkıştırma (isteğe bağlı)** — hata durumunda isteği engellemeden sürdüren ortak işlem hattı; önbellek araması ve yönlendirmeden önce yinelenen istemleri kaldırabilir, araç çıktısını filtreleyebilir, tekrarlanan JSON’u sıkıştırabilir ve eski bağlamı kısaltabilir. [Ayrıntılar →](docs/en/compression/01-compression-pipeline.md)
-- **Şifreli anahtarlar, tek erişim tokenı** — sağlayıcı anahtarları SQLite içinde AES-256-GCM ile şifrelenir, her istek için bellekte çözülür. Uygulamalarınız yalnızca tek bir birleşik `freellmapi-…` bearer tokenı görür.
+- **Şifreli anahtarlar, tek erişim tokenı** — sağlayıcı anahtarları SQLite içinde AES-256-GCM ile şifrelenir, her istek için bellekte çözülür. Uygulamalarınız yalnızca tek bir birleşik `ossllmapi-…` bearer tokenı görür.
 - **Yönetim paneli ve analizler** — anahtar yönetimi, zincir sıralaması, deneme alanı ve 24 saat–90 günlük dönemlerde p50/p95/TTFT analizleri için React arayüzü. Oturum açma koruması, açık/koyu temalar ve [60 dil](#languages).
-- **ChatGPT uyumlu MCP sunucusu ve etkileşimli belgeler** — ChatGPT ve diğer MCP istemcileri FreeLLMAPI ile çıkarım yapabilir, kullanılabilir modelleri listeleyebilir, sağlayıcı sağlığı/kullanım/önbellek/yönlendirme üst verilerini inceleyebilir ve `/mcp` üzerinden stratejiyi yönetebilir. Bağımlılık gerektirmeyen OpenAPI görüntüleyicisi `/v1/docs` adresindedir. [ChatGPT ve kodlama ajanları →](docs/en/clients/01-agent-clients.md#mcp-server)
+- **ChatGPT uyumlu MCP sunucusu ve etkileşimli belgeler** — ChatGPT ve diğer MCP istemcileri OSLLMAPI ile çıkarım yapabilir, kullanılabilir modelleri listeleyebilir, sağlayıcı sağlığı/kullanım/önbellek/yönlendirme üst verilerini inceleyebilir ve `/mcp` üzerinden stratejiyi yönetebilir. Bağımlılık gerektirmeyen OpenAPI görüntüleyicisi `/v1/docs` adresindedir. [ChatGPT ve kodlama ajanları →](docs/en/clients/01-agent-clients.md#mcp-server)
 - **İşletimi kolaylaştıran özellikler** — isteğe bağlı yanıt önbelleği, şifreli veritabanı yedekleri, düzenli anahtar sağlık kontrolleri, toplu anahtar içe/dışa aktarımı ve bildirimsel başlangıç yapılandırması. [Kurulum ve dağıtım →](docs/en/install/01-install.md)
 - **Node 20+ çalışan her yerde çalışır** — Windows, macOS, Linux sunucuları veya Raspberry Pi dâhil küçük ARM tek kart bilgisayarlar. PM2, systemd ya da tercih ettiğiniz süreç yöneticisiyle boşta yaklaşık 40 MB RSS bellek kullanımı.
 
@@ -174,13 +175,13 @@ Kapsam bilinçli olarak dar tutulmuştur; [henüz desteklenmeyen özelliklere](d
 
 ## Hızlı başlangıç
 
-**Tek satırda kurulum** (Docker gerekir; `~/freellmapi` dizinini hazırlar, şifreleme anahtarı oluşturur, imajı indirir ve konteyneri başlatır):
+**Tek satırda kurulum** (Docker gerekir; `~/ossllmapi` dizinini hazırlar, şifreleme anahtarı oluşturur, imajı indirir ve konteyneri başlatır):
 
 ```bash
-curl -fsSL https://freellmapi.co/install.sh | bash
+curl -fsSL https://ossllmapi.co/install.sh | bash
 ```
 
-Bash’e aktarmadan önce okumak ister misiniz? [Betik burada](https://freellmapi.co/install.sh). Yeniden çalıştırmak güvenlidir: `.env` dosyanız ve şifreleme anahtarınız korunur, konteyner `:latest` sürümüne güncellenir.
+Bash’e aktarmadan önce okumak ister misiniz? [Betik burada](https://ossllmapi.co/install.sh). Yeniden çalıştırmak güvenlidir: `.env` dosyanız ve şifreleme anahtarınız korunur, konteyner `:latest` sürümüne güncellenir.
 
 http://localhost:3001 adresini açın, **Anahtarlar (Keys)** sayfasına sağlayıcı anahtarlarınızı ekleyin, **Yedek Model Zinciri (Fallback Chain)** sırasını istediğiniz gibi düzenleyin ve **Anahtarlar** sayfasının üst kısmından birleşik API anahtarınızı alın. OpenAI SDK’nızda bu birleşik anahtarı kullanın.
 
@@ -194,7 +195,7 @@ Docker Compose, yerel geliştirme, bildirimsel başlangıç yapılandırması, �
 
 [`desktop/`](./desktop) dizinindeki yerel menü çubuğu uygulaması, yönlendiriciyi ve yönetim panelini sistem tepsisinden çalıştırır; cam görünümlü açılır panelde canlı istek istatistiklerini gösterir.
 
-![FreeLLMAPI masaüstü uygulaması](repo-assets/desktop.png)
+![OSLLMAPI masaüstü uygulaması](repo-assets/desktop.png)
 
 **[Releases bölümünden indirin](https://github.com/zelvior/ossllmapi/releases/latest)** — her sürüme macOS `.dmg` ve Windows `.exe` yükleyicileri eklenir. Hesap veya parola oluşturmanız gerekmez; ihtiyacınız olan tek kimlik bilgisi tepsi panelindeki birleşik API anahtarıdır. Kaynaktan derleme adımları ve veri konumları: [masaüstü uygulaması rehberi](docs/en/install/01-install.md#desktop-app).
 
@@ -204,13 +205,13 @@ macOS 12 Monterey ve sonrası için **arm64 (Apple Silicon)** veya **x64 (Intel)
 
 ## OpenAI uyumlu istemcilerle kullanım
 
-OpenAI uyumlu bir temel URL’ye bağlanabilen tüm istemciler çalışır: adresi `http://localhost:3001/v1` olarak ayarlayın ve paneldeki birleşik anahtarı kullanın. Tüm yapılandırma üreticileri `--dry-run` seçeneğini destekler. `npx freellmapi launch` (Claude Code) ve `launch-codex` (Codex), kimlik bilgilerini yapılandırma dosyalarına hiç yazmaz. Yönlendirici, ajanlarınızın oturum sırasında inceleyebileceği bir MCP sunucusu olarak da çalışır.
+OpenAI uyumlu bir temel URL’ye bağlanabilen tüm istemciler çalışır: adresi `http://localhost:3001/v1` olarak ayarlayın ve paneldeki birleşik anahtarı kullanın. Tüm yapılandırma üreticileri `--dry-run` seçeneğini destekler. `npx ossllmapi launch` (Claude Code) ve `launch-codex` (Codex), kimlik bilgilerini yapılandırma dosyalarına hiç yazmaz. Yönlendirici, ajanlarınızın oturum sırasında inceleyebileceği bir MCP sunucusu olarak da çalışır.
 
-**ChatGPT**, özel bir Secure MCP Tunnel üzerinden aynı yerel yönlendiriciye bağlanır. `ask_freellmapi` MCP aracı, ChatGPT’nin istediği görevi `/v1/chat/completions` üzerinden yönlendirir; yanıtı kullanılan model, yedek modele geçiş, önbellek, yürütme ve token üst verileriyle döndürür. Temel URL ve bearer kimlik doğrulaması tünel istemcisinin yapılandırmasında tutulur. Varsayılan model `MCP_INFERENCE_DEFAULT_MODEL` ile ayarlanır (belirtilmezse `auto`). Anahtarları Git’e veya MCP URL’sine eklemeyin. **[ChatGPT kurulumu →](docs/en/clients/01-agent-clients.md#chatgpt-private-secure-mcp-tunnel)**
+**ChatGPT**, özel bir Secure MCP Tunnel üzerinden aynı yerel yönlendiriciye bağlanır. `ask_ossllmapi` MCP aracı, ChatGPT’nin istediği görevi `/v1/chat/completions` üzerinden yönlendirir; yanıtı kullanılan model, yedek modele geçiş, önbellek, yürütme ve token üst verileriyle döndürür. Temel URL ve bearer kimlik doğrulaması tünel istemcisinin yapılandırmasında tutulur. Varsayılan model `MCP_INFERENCE_DEFAULT_MODEL` ile ayarlanır (belirtilmezse `auto`). Anahtarları Git’e veya MCP URL’sine eklemeyin. **[ChatGPT kurulumu →](docs/en/clients/01-agent-clients.md#chatgpt-private-secure-mcp-tunnel)**
 
-Sağlayıcı anahtarlarını panel oturum tokenıyla (`FREELLMAPI_DASHBOARD_TOKEN` veya `--token`) terminalden de yönetebilirsiniz: `npx freellmapi keys add|list|remove|test <platform>`. Buradaki `keys test`, kayıtlı anahtarları yeniden sınar. Bkz. [CLI rehberi](cli/README.md#provider-keys).
+Sağlayıcı anahtarlarını panel oturum tokenıyla (`OSSLLMAPI_DASHBOARD_TOKEN` veya `--token`) terminalden de yönetebilirsiniz: `npx ossllmapi keys add|list|remove|test <platform>`. Buradaki `keys test`, kayıtlı anahtarları yeniden sınar. Bkz. [CLI rehberi](cli/README.md#provider-keys).
 
-FreeLLMAPI, yerelde çalışmayı esas alan ve tek kullanıcı için tasarlanmış bir uygulamadır. Sağlayıcı anahtarlarınız SQLite veritabanınızda şifreli saklanır; istekler makinenizden etkinleştirdiğiniz sağlayıcılara gider.
+OSLLMAPI, yerelde çalışmayı esas alan ve tek kullanıcı için tasarlanmış bir uygulamadır. Sağlayıcı anahtarlarınız SQLite veritabanınızda şifreli saklanır; istekler makinenizden etkinleştirdiğiniz sağlayıcılara gider.
 
 <a id="languages"></a>
 
@@ -230,19 +231,19 @@ Tam dil listesi [`client/src/i18n/locale-config.ts`](./client/src/i18n/locale-co
 
 ## Premium (canlı katalog)
 
-Yönlendirici model kataloğunu kendisi güncel tutar: günde iki kez [freellmapi.co](https://freellmapi.co) üzerinden imzalı kataloğu alır, yeni modelleri, kota değişikliklerini ve sağlayıcılara özgü uyumluluk düzeltmelerini yerel veritabanınıza uygular. Etkinleştirme/devre dışı bırakma seçimleriniz ve özel sağlayıcılarınız değişmez. Her indirme uygulanmadan önce sabitlenmiş Ed25519 anahtarıyla doğrulanır.
+Yönlendirici model kataloğunu kendisi güncel tutar: günde iki kez [ossllmapi.co](https://ossllmapi.co) üzerinden imzalı kataloğu alır, yeni modelleri, kota değişikliklerini ve sağlayıcılara özgü uyumluluk düzeltmelerini yerel veritabanınıza uygular. Etkinleştirme/devre dışı bırakma seçimleriniz ve özel sağlayıcılarınız değişmez. Her indirme uygulanmadan önce sabitlenmiş Ed25519 anahtarıyla doğrulanır.
 
-Katalog şu anda **87 sağlayıcı**, **736 model ailesi**, **1.313 ücretsiz sağlayıcı/model uç noktası** (1.137 sohbet, 29 görsel, 41 ses, 68 gömme, 19 ses dökümü, 6 video, 13 karar) ve listelenen ücretsiz planlarda **ayda yaklaşık 10,1 milyar token** kapasitesini izler. Tam liste: **[freellmapi.co/models](https://freellmapi.co/models.html)**.
+Katalog şu anda **87 sağlayıcı**, **736 model ailesi**, **1.313 ücretsiz sağlayıcı/model uç noktası** (1.137 sohbet, 29 görsel, 41 ses, 68 gömme, 19 ses dökümü, 6 video, 13 karar) ve listelenen ücretsiz planlarda **ayda yaklaşık 10,1 milyar token** kapasitesini izler. Tam liste: **[ossllmapi.co/models](https://ossllmapi.co/models.html)**.
 
 Ücretsiz kurulumlar aynı imzalı kataloğun aylık anlık görüntüsünü alır. Bir model, canlı akışa eklendikten 30 gün sonra bu görüntüye katılır; bu nedenle ücretsiz sürüm şu anda yaklaşık 303 model geridedir. Hiçbir şeyin süresi dolmaz ve hiçbir özellik kısıtlanmaz; modeller yalnızca daha geç gelir.
 
 Premium, çalıştırdığınız tüm yönlendiricilerde imzalı kataloğu canlı tutar. Bir sağlayıcı güçlü bir ücretsiz model yayımladığında, kotasını sessizce daralttığında veya iletişim biçimini bozduğunda, canlı akışı kullanan yönlendiriciler düzeltmeyi yayımladığımız gün alır.
 
-**[freellmapi.co ile canlı kataloğa geçin →](https://freellmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_bottom#pricing)**
+**[ossllmapi.co ile canlı kataloğa geçin →](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_bottom#pricing)**
 
 - Yılda 19 ABD doları veya tek seferlik 49 ABD dolarıyla ömür boyu kullanım. Stripe üzerinden ödeme; istediğiniz zaman kendiniz iptal edebilirsiniz.
 - Tek bir `fla_` anahtarı çalıştırdığınız tüm yönlendiricileri kapsar: masaüstü, ev sunucusu, Raspberry Pi.
-- Panelde **Premium** bölümünden etkinleştirin; iptal ve faturalandırma işlemlerini [freellmapi.co/manage](https://freellmapi.co/manage) üzerinden kendiniz yönetin.
+- Panelde **Premium** bölümünden etkinleştirin; iptal ve faturalandırma işlemlerini [ossllmapi.co/manage](https://ossllmapi.co/manage) üzerinden kendiniz yönetin.
 - Yönlendirici her zaman MIT lisanslı ve tamamen ücretsiz kalır. Premium yalnızca canlı katalog akışını kapsar; kataloğun çalışır kalmasını sağlayan günlük model testlerini ve bakımını finanse eder.
 
 Katalog sunucusu istemlerinizi, model yanıtlarınızı veya sağlayıcı anahtarlarınızı hiçbir zaman görmez. Her iki durumda da yönlendirici tamamen sizin ortamınızda çalışır.
@@ -256,7 +257,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="http://localhost:3001/v1",
-    api_key="freellmapi-your-unified-key",
+    api_key="ossllmapi-your-unified-key",
 )
 
 resp = client.chat.completions.create(
@@ -311,7 +312,7 @@ Tek istek, en iyi ücretsiz model: yönlendirici, geçerli bir anahtarı olan ve
 
 **Parola gerekiyor mu?** Masaüstü uygulamasında gerekmez. Panel gizli bir yerel hesapla otomatik oturum açar; oluşturmanız veya hatırlamanız gereken bir parola yoktur. Tepsi simgesi → **Paneli Aç (Open Dashboard)** yolunu kullanın ya da aynı bilgisayarda herhangi bir tarayıcıdan açın (örneğin http://127.0.0.1:31415); ikisi de otomatik giriş yapar. Yerel ağ üzerinden başka bir cihazla bağlanıldığında giriş formu gösterilir. Sunucu kurulumlarında (Docker, tek satırlık kurulum, `npm run dev`) e-posta ve parola kullanan bir hesap vardır.
 
-**Sunucu kurulumundaki parolamı unuttum.** Giriş sayfasında **Parolamı unuttum (Forgot password?)** seçeneğine tıklayın. Bağlantı göndermek için e-posta hizmeti bulunmadığından tek kullanımlık kod sunucu günlüğüne yazılır. Kodu `docker compose logs -f freellmapi` ile, sunucunun çalıştığı terminalden veya masaüstü günlük dosyasından okuyup sıfırlama formuna girin. Kod 15 dakika geçerlidir.
+**Sunucu kurulumundaki parolamı unuttum.** Giriş sayfasında **Parolamı unuttum (Forgot password?)** seçeneğine tıklayın. Bağlantı göndermek için e-posta hizmeti bulunmadığından tek kullanımlık kod sunucu günlüğüne yazılır. Kodu `docker compose logs -f ossllmapi` ile, sunucunun çalıştığı terminalden veya masaüstü günlük dosyasından okuyup sıfırlama formuna girin. Kod 15 dakika geçerlidir.
 
 **Günlükler nerede?** Docker kurulumunda konteyner günlüklerinde, kaynaktan çalıştırmada terminalde, masaüstünde ise `<data dir>/logs/freeapi.log` dosyasındadır. Masaüstünde tepsi menüsündeki **Günlük Klasörünü Aç (Open Logs Folder)** seçeneğiyle ulaşabilirsiniz.
 
@@ -522,7 +523,7 @@ Katkılarınızı bekliyoruz! Geliştirme süreci, PR beklentileri ve AI/LLM des
 
 ## Sorumluluk reddi
 
-**Bu proje kişisel deneme ve öğrenme içindir; üretim ortamları için değildir.** Ücretsiz planlar geliştiricilerin prototip oluşturması için sunulur; kararlı ve destek garantisi olan bir çıkarım altyapısı değildir. FreeLLMAPI üzerine gerçek bir ürün geliştiriyorsanız yayımlamadan önce ücretli bir API’ye geçin. Sağlayıcılarla ilişkiniz, hesap oluştururken kabul ettiğiniz koşullara tabidir. Trafiği bu proje üzerinden yönlendirdiğinizde de bu koşullar geçerlidir ve bunlara uymak sizin sorumluluğunuzdadır.
+**Bu proje kişisel deneme ve öğrenme içindir; üretim ortamları için değildir.** Ücretsiz planlar geliştiricilerin prototip oluşturması için sunulur; kararlı ve destek garantisi olan bir çıkarım altyapısı değildir. OSLLMAPI üzerine gerçek bir ürün geliştiriyorsanız yayımlamadan önce ücretli bir API’ye geçin. Sağlayıcılarla ilişkiniz, hesap oluştururken kabul ettiğiniz koşullara tabidir. Trafiği bu proje üzerinden yönlendirdiğinizde de bu koşullar geçerlidir ve bunlara uymak sizin sorumluluğunuzdadır.
 
 Sağlayıcıların hizmet koşullarında kişisel, tek kullanıcılı bir vekil sunucunun nasıl değerlendirildiğine ilişkin Mayıs 2026 tarihli inceleme için [hizmet koşulları değerlendirmesine](docs/en/architecture/00-high-level-index.md#terms-of-service-review) bakın.
 

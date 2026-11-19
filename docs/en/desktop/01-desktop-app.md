@@ -12,7 +12,7 @@
 bundle:server → build:main / build:preload → stage:client → electron-builder
 ```
 
-- `scripts/bundle-server.mjs` esbuild `define: { 'process.env.FREELLMAPI_COMMIT_SHA', 'process.env.FREELLMAPI_INSTALL_METHOD' }` from `GITHUB_SHA` (40-hex); mirrored into live `process.env` in `server-host.ts` so `routes/update.ts` resolves.
+- `scripts/bundle-server.mjs` esbuild `define: { 'process.env.OSSLLMAPI_COMMIT_SHA', 'process.env.OSSLLMAPI_INSTALL_METHOD' }` from `GITHUB_SHA` (40-hex); mirrored into live `process.env` in `server-host.ts` so `routes/update.ts` resolves.
 - `build/main.mjs` bundles `src/main.ts` (`--platform=node --format=esm --external:electron --external:./server.mjs`), `build/preload` for `preload.ts`/`preload-popover.ts`.
 - `scripts/stage-client.mjs` copies `client/dist` → `build/client-dist` or `Resources/client-dist` in packaged app; dev override via `FREEAPI_REPO`.
 

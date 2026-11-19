@@ -19,7 +19,7 @@ const { events, autoUpdater } = vi.hoisted(() => {
 });
 
 vi.mock('electron', () => ({
-  app: { getVersion: () => '0.0.0', getName: () => 'FreeLLMAPI', isReady: () => true, on: vi.fn(), whenReady: vi.fn(() => Promise.resolve()) },
+  app: { getVersion: () => '0.0.0', getName: () => 'OSLLMAPI', isReady: () => true, on: vi.fn(), whenReady: vi.fn(() => Promise.resolve()) },
   BrowserWindow: { fromWebContents: vi.fn(() => null), getAllWindows: vi.fn(() => []) },
   dialog: { showMessageBox: vi.fn(async () => ({ response: 0 })) },
   Notification: class { show() {} },

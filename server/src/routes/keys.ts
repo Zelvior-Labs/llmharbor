@@ -33,7 +33,7 @@ import {
   triggerBuiltinModelDiscovery,
 } from '../services/builtin-model-discovery.js';
 import type { Db } from '../db/types.js';
-import type { Platform } from '@freellmapi/shared/types.js';
+import type { Platform } from '@ossllmapi/shared/types.js';
 import { parseModelScope } from '../lib/model-scope.js';
 import { KEY_PROXY_URL_ERROR, KEY_PROXY_URL_MAX, decryptProxyUrl, encryptProxyUrl, isValidKeyProxyUrl, maskProxyUrl } from '../lib/key-proxy.js';
 import { isLoopbackRequest } from '../lib/loopback.js';
@@ -711,7 +711,7 @@ keysRouter.get('/export', (req: Request, res: Response) => {
     });
     const content = lines.join('\n\n') + '\n';
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    res.setHeader('Content-Disposition', 'attachment; filename="freellmapi-keys.env"');
+    res.setHeader('Content-Disposition', 'attachment; filename="ossllmapi-keys.env"');
     res.send(content);
     return;
   }
@@ -738,7 +738,7 @@ keysRouter.get('/export', (req: Request, res: Response) => {
     );
     const content = [header, ...lines].join('\n') + '\n';
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    res.setHeader('Content-Disposition', 'attachment; filename="freellmapi-keys.csv"');
+    res.setHeader('Content-Disposition', 'attachment; filename="ossllmapi-keys.csv"');
     res.send(content);
     return;
   }
@@ -747,11 +747,11 @@ keysRouter.get('/export', (req: Request, res: Response) => {
   const jsonExport = {
     version: 1,
     exportedAt: new Date().toISOString(),
-    source: 'freellmapi',
+    source: 'ossllmapi',
     keys: decryptedKeys,
   };
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('Content-Disposition', 'attachment; filename="freellmapi-keys.json"');
+  res.setHeader('Content-Disposition', 'attachment; filename="ossllmapi-keys.json"');
   res.json(jsonExport);
 });
 

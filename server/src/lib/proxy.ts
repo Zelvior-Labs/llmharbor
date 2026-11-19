@@ -5,7 +5,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import { getSetting } from '../db/index.js';
 import { decrypt, encrypt } from './crypto.js';
 import { assertProviderUrlAllowed, isLoopbackOrPrivateHostname } from './url-guard.js';
-import type { ProxyMode } from '@freellmapi/shared/types.js';
+import type { ProxyMode } from '@ossllmapi/shared/types.js';
 
 // #590 (per-key proxy): the SAME provider may be reached through different
 // exit IPs per key (geo-ban / risk-control avoidance). Providers are process
@@ -414,7 +414,7 @@ export function getProxyMode(): ProxyMode {
   return _proxyMode;
 }
 
-/** Set the bearer token used only to authenticate FreeLLMAPI to a Fetch Relay.
+/** Set the bearer token used only to authenticate OSLLMAPI to a Fetch Relay.
  * The environment wins so headless deployments never expose or overwrite it
  * through the dashboard. This token is separate from the provider's
  * Authorization header, which is preserved for the upstream request. */

@@ -1,4 +1,4 @@
-import type { ChatCompletionChunk, ChatCompletionResponse } from '@freellmapi/shared/types.js';
+import type { ChatCompletionChunk, ChatCompletionResponse } from '@ossllmapi/shared/types.js';
 import { BaseProvider, type KeyValidationResult } from './base.js';
 
 /** User-entered keyId:keySecret; neither half is a bearer token. */

@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 // GitHub rewrites spaces in an uploaded asset's name to dots while
 // electron-builder writes them into the manifest as dashes, so any installer
 // name with a space is one the updater can never fetch (v0.13.4's
-// "FreeLLMAPI.Setup.0.13.4.exe" vs latest.yml's "FreeLLMAPI-Setup-0.13.4.exe").
+// "OSLLMAPI.Setup.0.13.4.exe" vs latest.yml's "OSLLMAPI-Setup-0.13.4.exe").
 
 const yaml = createRequire(import.meta.url)('js-yaml');
 const desktopRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');

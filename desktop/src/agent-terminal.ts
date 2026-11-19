@@ -42,7 +42,7 @@ const openCommand = async (file: string) => { await run('/usr/bin/open', ['-b', 
 // Hand the key to just this command over a one-use socket in a 0700 directory.
 // Neither the command file nor the process arguments contain the credential.
 export async function launchMacTerminal(executable: string, key: string, open = openCommand): Promise<void> {
-  const dir = fs.mkdtempSync('/tmp/freellmapi-');
+  const dir = fs.mkdtempSync('/tmp/ossllmapi-');
   const socketPath = path.join(dir, 'session');
   const command = path.join(dir, 'OSSLLMAPI.command');
   const server = net.createServer(socket => {
@@ -61,9 +61,9 @@ export async function launchMacTerminal(executable: string, key: string, open = 
     fs.writeFileSync(command, [
       '#!/bin/sh',
       'cd "$HOME" || exit 1',
-      'FREELLMAPI_API_KEY=$(/usr/bin/nc -d -U ' + shQuote(socketPath) + ') || exit 1',
-      '[ -n "$FREELLMAPI_API_KEY" ] || exit 1',
-      'export FREELLMAPI_API_KEY',
+      'OSSLLMAPI_API_KEY=$(/usr/bin/nc -d -U ' + shQuote(socketPath) + ') || exit 1',
+      '[ -n "$OSSLLMAPI_API_KEY" ] || exit 1',
+      'export OSSLLMAPI_API_KEY',
       'export PATH=' + shQuote(path.dirname(executable)) + ':"$PATH"',
       'exec ' + shQuote(executable),
       '',
@@ -85,9 +85,9 @@ export async function launchAgent(executable: string, key: string): Promise<void
   // Use an inherited environment and a constant command. Paths with spaces or
   // PowerShell metacharacters are passed as a value, never parsed as source.
   await run(powershell, ['-NoLogo', '-NoProfile', '-NonInteractive', '-Command',
-    "$ErrorActionPreference = 'Stop'; Start-Process -FilePath $env:FREELLMAPI_AGENT_EXE -WindowStyle Normal",
+    "$ErrorActionPreference = 'Stop'; Start-Process -FilePath $env:OSSLLMAPI_AGENT_EXE -WindowStyle Normal",
   ], {
     cwd: os.homedir(), windowsHide: true,
-    env: { ...process.env, FREELLMAPI_API_KEY: key, FREELLMAPI_AGENT_EXE: executable },
+    env: { ...process.env, OSSLLMAPI_API_KEY: key, OSSLLMAPI_AGENT_EXE: executable },
   });
 }

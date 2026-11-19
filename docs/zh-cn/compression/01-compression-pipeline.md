@@ -4,7 +4,7 @@
 
 [← 返回 README](../README.md) · [文档索引](../README.md) · [API 参考](../api/01-rest-api.md)
 
-长的编程智能体会话反复发送系统提示词、文件读取、命令输出和工具 schema。FreeLLMAPI 能在缓存查找、词元预算和路由之前先压缩请求上下文，这样路由器看到的是缩减后的估算值，更多小上下文模型就能保持符合条件。提供方响应绝不重写。
+长的编程智能体会话反复发送系统提示词、文件读取、命令输出和工具 schema。OSLLMAPI 能在缓存查找、词元预算和路由之前先压缩请求上下文，这样路由器看到的是缩减后的估算值，更多小上下文模型就能保持符合条件。提供方响应绝不重写。
 
 同一条管线跑在 Chat Completions、Responses、Anthropic Messages 和 Anthropic 词元计数上。压缩**默认关闭**。
 
@@ -13,7 +13,7 @@
 在仪表盘 **设置 → 提示词压缩** 里选个模式，或用环境变量引导初始模式：
 
 ```env
-FREELLMAPI_COMPRESSION=lossless
+OSSLLMAPI_COMPRESSION=lossless
 ```
 
 一旦仪表盘里保存过设置，存储的设置优先于环境变量。
@@ -29,7 +29,7 @@ FREELLMAPI_COMPRESSION=lossless
 
 ## 逐请求控制
 
-随 `X-FreeLLM-Compress` 发下列值之一：
+随 `X-OSLLM-Compress` 发下列值之一：
 
 ```text
 off | on | lossless | standard | aggressive
@@ -38,7 +38,7 @@ off | on | lossless | standard | aggressive
 请求头可关闭压缩或降低操作者配置的模式，但不能提高它。`on` 用配置的模式。响应报告生效模式和估算节省：
 
 ```text
-X-FreeLLM-Compress: standard; saved~=1840
+X-OSLLM-Compress: standard; saved~=1840
 ```
 
 节省用和路由相同的估算 `chars / 4` 核算，所以头部刻意用 `~=`。
@@ -70,8 +70,8 @@ X-FreeLLM-Compress: standard; saved~=1840
 
 额外的 JSON 过滤器定义可从下列位置加载：
 
-- `~/.freellmapi/filters/*.json` 供用户自有过滤器；
-- 项目里的 `.freellmapi/filters.json`，仅当**信任项目过滤器文件**启用时。
+- `~/.ossllmapi/filters/*.json` 供用户自有过滤器；
+- 项目里的 `.ossllmapi/filters.json`，仅当**信任项目过滤器文件**启用时。
 
 项目过滤器默认关闭，因为仓库可能不受信。
 

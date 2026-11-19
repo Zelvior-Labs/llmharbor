@@ -54,7 +54,7 @@ function detectLocale(): Locale {
     return DEFAULT_LOCALE
   }
 
-  const stored = window.localStorage.getItem('freellmapi.locale')
+  const stored = window.localStorage.getItem('ossllmapi.locale')
   if (stored && supportedLocaleSet.has(stored)) return stored as Locale
 
   const legacyLanguage = (navigator as { userLanguage?: string }).userLanguage
@@ -102,7 +102,7 @@ function lookup(dictionary: Dictionary, key: string): unknown {
 function interpolate(template: string, vars?: Record<string, string | number>): string {
   // Keep upstream locale catalogs reusable. Only rebrand the translated
   // template, never interpolated model names, paths or other user data.
-  template = template.replaceAll('FreeLLMAPI', 'OSSLLMAPI')
+  template = template.replaceAll('OSLLMAPI', 'OSSLLMAPI')
   if (!vars) return template
   return template.replace(/\{(\w+)\}/g, (_, name) => {
     const value = vars[name]
@@ -122,7 +122,7 @@ export function I18nProvider({ children, initialLocale }: I18nProviderProps) {
   )
 
   useEffect(() => {
-    window.localStorage.setItem('freellmapi.locale', locale)
+    window.localStorage.setItem('ossllmapi.locale', locale)
     document.documentElement.lang = locale
     document.documentElement.dir = RTL_LOCALES.has(locale) ? 'rtl' : 'ltr'
   }, [locale])

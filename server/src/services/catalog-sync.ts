@@ -6,7 +6,7 @@ import { MEDIA_PLATFORMS, TRANSCRIPTION_PLATFORMS, VIDEO_PLATFORMS } from './med
 import { SEARCH_ENGINE_PLATFORMS, SEARCH_MODALITY } from './search.js';
 import { DECISION_MODALITY, CATALOG_DECISION_PLATFORMS } from './decision.js';
 import { EMBEDDING_PLATFORMS } from './embeddings.js';
-import type { Platform } from '@freellmapi/shared/types.js';
+import type { Platform } from '@ossllmapi/shared/types.js';
 import type { Scheduler } from '../lib/scheduler.js';
 import {
   applyAllModelOverrides,
@@ -40,7 +40,7 @@ const MEDIA_MODALITIES = new Set(['image', 'audio']);
  * app version added via migrations.
  */
 
-const DEFAULT_BASE_URL = 'https://api.freellmapi.co';
+const DEFAULT_BASE_URL = 'https://api.ossllmapi.co';
 
 // The Ed25519 public key the production catalog is signed with. The private
 // half was generated on the catalog host and has never left it. Self-hosters
@@ -79,7 +79,7 @@ let fallbackFetch: FetchLike | null = null;
  * Register a second network stack for calls to the catalog service. The
  * desktop app passes Electron's net.fetch (Chromium: the OS certificate
  * verifier and system proxy, same as a browser). On some Windows PCs Node's
- * fetch could not complete the TLS handshake to api.freellmapi.co, so license
+ * fetch could not complete the TLS handshake to api.ossllmapi.co, so license
  * activation always showed "HTTP 502" while the same URL opened fine in a
  * browser. Server and Docker installs never set this.
  */

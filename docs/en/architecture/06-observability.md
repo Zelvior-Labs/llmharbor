@@ -87,7 +87,7 @@ the cache. Streamed frames omit it (the header carries it there).
 
 `requests.caller` records the surface: today every inference path writes `http`
 (the OpenAI-compatible proxy, `/v1/responses`, `/v1/messages`, the Ollama and
-Gemini wires, fusion sub-calls, and `ask_freellmapi`). The MCP inference tool
+Gemini wires, fusion sub-calls, and `ask_ossllmapi`). The MCP inference tool
 deliberately loops through the same local `/v1/chat/completions` route, so it
 inherits identical routing, fallback, cache, token accounting, and error
 handling instead of maintaining a second inference implementation. The other
@@ -207,8 +207,8 @@ interface AttemptTraceRecord {
 | `X-Fallback-Trail` | `platform/model keyN=class; …` (max 10, 1KB) |
 | `X-Fallback-Detail` | **Opt-in**: `platform/model keyN=outcome t=start+dur msg=summary; …` (2KB) |
 | `Retry-After` | Seconds until soonest cooldown expiry (429 exhaustions) |
-| `X-FreeLLM-Cache` | `HIT` / `MISS` (response cache) |
-| `X-FreeLLM-Compress` | Compression pipeline metadata |
+| `X-OSLLM-Cache` | `HIT` / `MISS` (response cache) |
+| `X-OSLLM-Compress` | Compression pipeline metadata |
 
 ---
 

@@ -1,8 +1,8 @@
 # FreeTTS: local personal text-to-speech
 
-Add your own key from [FreeTTS API Keys](https://freetts.org/dashboard?section=api-keys) on the Keys page, or import `FREETTS_API_KEY` from a local environment file. The key remains in your local encrypted database. No shared or hosted FreeTTS credential is bundled with FreeLLMAPI.
+Add your own key from [FreeTTS API Keys](https://freetts.org/dashboard?section=api-keys) on the Keys page, or import `FREETTS_API_KEY` from a local environment file. The key remains in your local encrypted database. No shared or hosted FreeTTS credential is bundled with OSLLMAPI.
 
-The signed catalog delivers one audio entry, `neural-tts`; this is FreeLLMAPI's logical engine ID, not a native FreeTTS model selector. FreeTTS selects neural voices through its `voice` parameter. Individual voices are not separate catalog models. The existing Premium-now/Free-after-30-days catalog rule is unchanged; importing a key never seeds an entry early.
+The signed catalog delivers one audio entry, `neural-tts`; this is OSLLMAPI's logical engine ID, not a native FreeTTS model selector. FreeTTS selects neural voices through its `voice` parameter. Individual voices are not separate catalog models. The existing Premium-now/Free-after-30-days catalog rule is unchanged; importing a key never seeds an entry early.
 
 Call the local `/v1/audio/speech` endpoint with `model: "neural-tts"`, plain-text `input`, `response_format: "mp3"`, and an optional native voice such as `en-US-JennyNeural` or `en-GB-SoniaNeural`. The default, and generic OpenAI voice names such as `alloy`, select Jenny. The adapter requests MP3 only, preserves the spoken FreeTTS watermark, and rejects substitutions or malformed audio. The current conservative provider request ceiling is 1,000 characters; conflicting higher numbers in the docs are not silently assumed.
 

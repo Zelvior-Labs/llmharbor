@@ -7,7 +7,7 @@ import { mintDashboardToken } from '../helpers/auth.js';
 
 // Upstream safeguard response metadata compatibility (related to #1589).
 //
-// FreeLLMAPI converts Anthropic → internal OpenAI-shaped chat and routes it
+// OSLLMAPI converts Anthropic → internal OpenAI-shaped chat and routes it
 // through the normal fallback loop; it is not a raw proxy to api.anthropic.com,
 // so an upstream that DOES return `safeguard_results` needs the field carried
 // through the response, and the client's `safeguards` request field + the

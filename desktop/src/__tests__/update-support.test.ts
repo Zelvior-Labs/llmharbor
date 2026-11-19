@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { updateSupport, updaterProxy } from '../update-support.js';
 
-const base = { isPackaged: true, execPath: '/Applications/FreeLLMAPI.app/Contents/MacOS/FreeLLMAPI', productName: 'FreeLLMAPI' };
+const base = { isPackaged: true, execPath: '/Applications/OSLLMAPI.app/Contents/MacOS/OSLLMAPI', productName: 'OSLLMAPI' };
 
 describe('updateSupport', () => {
   it('leaves a dev build alone unless a test feed is configured', () => {
@@ -11,19 +11,19 @@ describe('updateSupport', () => {
 
   it('updates an installed mac app but not one running from the mounted dmg', () => {
     expect(updateSupport({ ...base, platform: 'darwin' })).toBeNull();
-    expect(updateSupport({ ...base, platform: 'darwin', execPath: '/Volumes/FreeLLMAPI/FreeLLMAPI.app/Contents/MacOS/FreeLLMAPI' }))
+    expect(updateSupport({ ...base, platform: 'darwin', execPath: '/Volumes/OSLLMAPI/OSLLMAPI.app/Contents/MacOS/OSLLMAPI' }))
       .toEqual({ phase: 'unsupported', reason: 'package' });
   });
 
   it('updates the NSIS install on Windows but not the portable zip', () => {
-    const execPath = 'C:\\Users\\me\\AppData\\Local\\Programs\\FreeLLMAPI\\FreeLLMAPI.exe';
-    const installed = (file: string) => file.endsWith('Uninstall FreeLLMAPI.exe');
+    const execPath = 'C:\\Users\\me\\AppData\\Local\\Programs\\OSLLMAPI\\OSLLMAPI.exe';
+    const installed = (file: string) => file.endsWith('Uninstall OSLLMAPI.exe');
     expect(updateSupport({ ...base, platform: 'win32', execPath }, installed)).toBeNull();
     expect(updateSupport({ ...base, platform: 'win32', execPath }, () => false)).toEqual({ phase: 'unsupported', reason: 'package' });
   });
 
   it('leaves a Microsoft Store install to the Store, whatever else is true', () => {
-    const execPath = 'C:\\Program Files\\WindowsApps\\TashAhmed.FreeLLMAPI_0.16.30.0_x64__6nczed04ys4da\\app\\FreeLLMAPI.exe';
+    const execPath = 'C:\\Program Files\\WindowsApps\\TashAhmed.OSLLMAPI_0.16.30.0_x64__6nczed04ys4da\\app\\OSLLMAPI.exe';
     expect(updateSupport({ ...base, platform: 'win32', execPath, windowsStore: true }, () => true))
       .toEqual({ phase: 'unsupported', reason: 'store' });
     expect(updateSupport({ ...base, platform: 'win32', execPath, windowsStore: true, feed: 'http://127.0.0.1:8099/' }))
@@ -31,8 +31,8 @@ describe('updateSupport', () => {
   });
 
   it('updates the AppImage on Linux and leaves deb/rpm to the package manager', () => {
-    expect(updateSupport({ ...base, platform: 'linux', execPath: '/tmp/.mount_x/freellmapi-desktop', appImage: '/home/me/FreeLLMAPI.AppImage' })).toBeNull();
-    expect(updateSupport({ ...base, platform: 'linux', execPath: '/opt/FreeLLMAPI/freellmapi-desktop' })).toEqual({ phase: 'unsupported', reason: 'package' });
+    expect(updateSupport({ ...base, platform: 'linux', execPath: '/tmp/.mount_x/ossllmapi-desktop', appImage: '/home/me/OSLLMAPI.AppImage' })).toBeNull();
+    expect(updateSupport({ ...base, platform: 'linux', execPath: '/opt/OSLLMAPI/ossllmapi-desktop' })).toEqual({ phase: 'unsupported', reason: 'package' });
   });
 });
 

@@ -56,7 +56,7 @@ Revision history for `docs/`, derived from git commits touching this directory. 
 | `3ea33cb` | 2026-07-31 | docs(i18n): translate install.md and api.md into zh-CN (#690) |
 | `41527f2` | 2026-07-31 | docs(i18n): add translated-docs tree + zh-CN README (#689) |
 | `c8be5a6` | 2026-07-31 | docs(i18n): pin zh glossary, land two agreed zh-CN fixes (#683) |
-| `36eea7b` | 2026-07-30 | cli: publish freellmapi to npm (#672) |
+| `36eea7b` | 2026-07-30 | cli: publish ossllmapi to npm (#672) |
 | `e0befba` | 2026-07-29 | feat(custom): per-endpoint identity for relay models (#659) |
 | `d695bbc` | 2026-07-28 | fix(server): make X-Routed-Via header-safe (#639) |
 | `19168ac` | 2026-07-27 | Add end-to-end coding-agent compatibility suite (#629) |

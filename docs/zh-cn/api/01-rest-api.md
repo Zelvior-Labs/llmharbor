@@ -30,7 +30,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="http://localhost:3001/v1",
-    api_key="freellmapi-your-unified-key",
+    api_key="ossllmapi-your-unified-key",
 )
 
 resp = client.chat.completions.create(
@@ -45,7 +45,7 @@ print("Routed via:", resp.headers.get("x-routed-via"))
 
 ```bash
 curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer freellmapi-your-unified-key" \
+  -H "Authorization: Bearer ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "auto",
@@ -67,7 +67,7 @@ curl http://localhost:3001/v1/chat/completions \
 
 ```bash
 curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer freellmapi-your-unified-key" \
+  -H "Authorization: Bearer ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "auto:fast",
@@ -79,7 +79,7 @@ curl http://localhost:3001/v1/chat/completions \
 
 ```bash
 curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer freellmapi-your-unified-key" \
+  -H "Authorization: Bearer ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "auto:coding",
@@ -168,7 +168,7 @@ Gemini 系列 SDK 和 Gemini CLI 可以使用原生的 `/v1beta` 接口：
 
 ```bash
 curl "http://localhost:3001/v1beta/models/gemini-2.5-flash:generateContent" \
-  -H "x-goog-api-key: freellmapi-your-unified-key" \
+  -H "x-goog-api-key: ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{"contents":[{"role":"user","parts":[{"text":"hello"}]}]}'
 ```
@@ -225,9 +225,9 @@ print(resp.choices[0].message.content)
 
 HTTP 头只能携带可打印的 ASCII 字符，所以模型 id 里超出这个范围的字符（比如中转目录里的中文名称）在响应头中会被百分号编码。把这个值丢给 `decodeURIComponent`（或 `urllib.parse.unquote`）就能还原。
 
-可选开启的响应缓存能按请求用 `X-FreeLLM-Cache: on|off` 开关。它是一个针对完全相同的请求（包括流式）做精确匹配的内存 LRU（流式命中会原样重放存储的 SSE）（以整个请求的规范化 SHA-256 为键，带 TTL 和温度门槛，节省量统计显示在仪表盘上）。默认关闭；缓存命中不消耗任何提供方额度。
+可选开启的响应缓存能按请求用 `X-OSLLM-Cache: on|off` 开关。它是一个针对完全相同的请求（包括流式）做精确匹配的内存 LRU（流式命中会原样重放存储的 SSE）（以整个请求的规范化 SHA-256 为键，带 TTL 和温度门槛，节省量统计显示在仪表盘上）。默认关闭；缓存命中不消耗任何提供方额度。
 
-启用[提示词压缩](../compression/01-compression-pipeline.md)后，`X-FreeLLM-Compress: off|on|lossless|standard|aggressive` 可以对单次请求关闭或调低已配置的模式，但不能高于运维方配置的模式。响应会报告实际生效的模式和预估节省量，例如 `X-FreeLLM-Compress: standard; saved~=1840`。
+启用[提示词压缩](../compression/01-compression-pipeline.md)后，`X-OSLLM-Compress: off|on|lossless|standard|aggressive` 可以对单次请求关闭或调低已配置的模式，但不能高于运维方配置的模式。响应会报告实际生效的模式和预估节省量，例如 `X-OSLLM-Compress: standard; saved~=1840`。
 
 ## 嵌入
 
@@ -243,7 +243,7 @@ print(len(resp.data), "vectors of", len(resp.data[0].embedding), "dims")
 
 ```bash
 curl http://localhost:3001/v1/embeddings \
-  -H "Authorization: Bearer freellmapi-your-unified-key" \
+  -H "Authorization: Bearer ossllmapi-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{"model": "auto", "input": "hello world"}'
 ```
@@ -265,11 +265,11 @@ curl http://localhost:3001/v1/embeddings \
 
 ## Anthropic 与 Claude 客户端
 
-FreeLLMAPI 同样会讲 Anthropic 的 Messages API，所以任何为 Claude 写的东西，包括 **Claude Code** 和官方 Anthropic SDK，都能跑在你的免费池上。把客户端指向你服务器的 **根地址**（Anthropic 客户端会自己拼上 `/v1/messages`），用统一密钥认证即可。`x-api-key` 和 `Authorization: Bearer` 两种方式都接受。
+OSLLMAPI 同样会讲 Anthropic 的 Messages API，所以任何为 Claude 写的东西，包括 **Claude Code** 和官方 Anthropic SDK，都能跑在你的免费池上。把客户端指向你服务器的 **根地址**（Anthropic 客户端会自己拼上 `/v1/messages`），用统一密钥认证即可。`x-api-key` 和 `Authorization: Bearer` 两种方式都接受。
 
 ```bash
 curl http://localhost:3001/v1/messages \
-  -H "x-api-key: freellmapi-your-unified-key" \
+  -H "x-api-key: ossllmapi-your-unified-key" \
   -H "anthropic-version: 2023-06-01" \
   -H "Content-Type: application/json" \
   -d '{
@@ -288,14 +288,14 @@ Claude 的模型名在 **密钥 → Anthropic** 标签页里映射到你的免�
 *在 macOS / Linux 上（Bash）：*
 ```bash
 export ANTHROPIC_BASE_URL=http://localhost:3001
-export ANTHROPIC_AUTH_TOKEN=freellmapi-your-unified-key   # 不是 ANTHROPIC_API_KEY
+export ANTHROPIC_AUTH_TOKEN=ossllmapi-your-unified-key   # 不是 ANTHROPIC_API_KEY
 claude
 ```
 
 *在 Windows 上（PowerShell）：*
 ```powershell
 $env:ANTHROPIC_BASE_URL="http://localhost:3001"
-$env:ANTHROPIC_AUTH_TOKEN="freellmapi-your-unified-key"
+$env:ANTHROPIC_AUTH_TOKEN="ossllmapi-your-unified-key"
 claude
 ```
 

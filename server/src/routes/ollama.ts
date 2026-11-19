@@ -4,7 +4,7 @@ import { z } from 'zod';
 import type {
   ChatMessage,
   ChatToolDefinition,
-} from '@freellmapi/shared/types.js';
+} from '@ossllmapi/shared/types.js';
 import { isLoopbackRequest } from '../lib/loopback.js';
 import { getSetting, getUnifiedApiKey } from '../db/index.js';
 import { buildModelListing } from '../services/model-listing.js';
@@ -73,7 +73,7 @@ function ollamaModel(model: ReturnType<typeof buildModelListing>['models'][numbe
     digest: '',
     details: {
       parent_model: '',
-      format: 'freellmapi',
+      format: 'ossllmapi',
       family: model.ownedBy,
       families: [model.ownedBy],
       parameter_size: 'remote',
@@ -95,9 +95,9 @@ ollamaRouter.get('/api/tags', (req, res) => {
     digest: '',
     details: {
       parent_model: '',
-      format: 'freellmapi',
-      family: 'freellmapi',
-      families: ['freellmapi'],
+      format: 'ossllmapi',
+      family: 'ossllmapi',
+      families: ['ossllmapi'],
       parameter_size: 'remote',
       quantization_level: 'remote',
     },
@@ -133,14 +133,14 @@ ollamaRouter.post('/api/show', (req, res) => {
       template: '{{ .Prompt }}',
       details: {
         parent_model: '',
-        format: 'freellmapi',
-        family: 'freellmapi',
-        families: ['freellmapi'],
+        format: 'ossllmapi',
+        family: 'ossllmapi',
+        families: ['ossllmapi'],
         parameter_size: 'remote',
         quantization_level: 'remote',
       },
       model_info: {
-        'general.architecture': 'freellmapi',
+        'general.architecture': 'ossllmapi',
         'general.context_length': autoContextWindow ?? 128000,
       },
       capabilities: ['completion', 'tools'],

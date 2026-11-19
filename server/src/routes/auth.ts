@@ -210,7 +210,7 @@ authRouter.post('/setup', (req: Request, res: Response) => {
       error: {
         message: phone ? 'Enter the setup code shown in the OSSLLMAPI Android app.' :
           'A setup code is required to create the first account from a remote device. ' +
-          'Check the server logs for the code, or open the dashboard from a browser on the machine running FreeLLMAPI.',
+          'Check the server logs for the code, or open the dashboard from a browser on the machine running OSLLMAPI.',
         type: 'setup_code_required',
       },
     });

@@ -238,7 +238,7 @@ describe('Ollama emulation', () => {
         {
           role: 'tool',
           tool_name: 'read_file',
-          content: '# FreeLLMAPI',
+          content: '# OSLLMAPI',
         },
       ],
     });

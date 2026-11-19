@@ -1,4 +1,6 @@
-# FreeLLMAPI documentation
+# OSLLMAPI documentation
+
+**OSSLLMAPI is a modified version of [freellmapi](https://github.com/tashfeenahmed/freellmapi/), made by Zelvior Labs.**
 
 Pick a language:
 

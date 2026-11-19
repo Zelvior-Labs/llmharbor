@@ -303,7 +303,7 @@ if (!app.requestSingleInstanceLock()) {
 
     // License activation and catalog sync retry through Chromium's network
     // stack (OS certificate store + system proxy) when Node's fetch can't
-    // reach api.freellmapi.co, which some Windows PCs hit as "HTTP 502".
+    // reach api.ossllmapi.co, which some Windows PCs hit as "HTTP 502".
     setCatalogFallbackFetch((input, init) => net.fetch(String(input), init));
 
     try {

@@ -773,7 +773,7 @@ export async function handleResponses(req: Request, res: Response): Promise<void
   // Session identity before compression can rewrite the first user turn (#1889).
   const sessionMessages = sessionIdentityMessages(messages);
   const compressionResult = compressRequest(messages, {
-    header: req.headers['x-ossllm-compress'],
+    header: req.headers['x-osllm-compress'],
     tools,
     cacheControlPrefixLength: hasCacheControl ? messages.length : 0,
   });

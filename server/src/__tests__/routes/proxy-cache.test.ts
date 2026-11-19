@@ -152,13 +152,13 @@ describe('Response cache (proxy integration)', () => {
     const first = await chat();
     expect(first.status).toBe(200);
     expect(first.body.choices[0].message.content).toBe('the answer is four');
-    expect(first.headers.get('x-ossllm-cache')).toBe('MISS');
+    expect(first.headers.get('x-osllm-cache')).toBe('MISS');
     expect(counter.calls).toBe(1);
 
     const second = await chat();
     expect(second.status).toBe(200);
     expect(second.body.choices[0].message.content).toBe('the answer is four');
-    expect(second.headers.get('x-ossllm-cache')).toBe('HIT');
+    expect(second.headers.get('x-osllm-cache')).toBe('HIT');
     expect(second.headers.get('x-routed-via')).toBe('cache');
     // The provider was NOT hit again; the whole point.
     expect(counter.calls).toBe(1);
@@ -188,7 +188,7 @@ describe('Response cache (proxy integration)', () => {
     // Same prompt with response_format json_object must be a MISS, not a
     // replay of the cached plain-text answer.
     const jsonReq = await chat({ response_format: { type: 'json_object' } });
-    expect(jsonReq.headers.get('x-ossllm-cache')).toBe('MISS');
+    expect(jsonReq.headers.get('x-osllm-cache')).toBe('MISS');
     expect(counter.calls).toBe(2);
     // Same prompt, different seed / stop → also fresh generations.
     await chat({ seed: 42 });
@@ -196,7 +196,7 @@ describe('Response cache (proxy integration)', () => {
     expect(counter.calls).toBe(4);
     // But an exact repeat (with a knob present) is still a HIT.
     const repeat = await chat({ seed: 42 });
-    expect(repeat.headers.get('x-ossllm-cache')).toBe('HIT');
+    expect(repeat.headers.get('x-osllm-cache')).toBe('HIT');
     expect(counter.calls).toBe(4);
   });
 
@@ -204,13 +204,13 @@ describe('Response cache (proxy integration)', () => {
     const counter = mockGroq('sampler-sensitive');
     await chat(); // plain → MISS, populates
     const topK = await chat({ top_k: 1 });
-    expect(topK.headers.get('x-ossllm-cache')).toBe('MISS');
+    expect(topK.headers.get('x-osllm-cache')).toBe('MISS');
     await chat({ min_p: 0.2 });
     await chat({ repetition_penalty: 1.3 });
     await chat({ parallel_tool_calls: false });
     expect(counter.calls).toBe(5);
     const repeat = await chat({ top_k: 1 });
-    expect(repeat.headers.get('x-ossllm-cache')).toBe('HIT');
+    expect(repeat.headers.get('x-osllm-cache')).toBe('HIT');
     expect(counter.calls).toBe(5);
   });
 
@@ -227,9 +227,9 @@ describe('Response cache (proxy integration)', () => {
     try {
       const counter = mockGroq('forced-on');
       const first = await chat({}, { 'X-OSLLM-Cache': 'on' });
-      expect(first.headers.get('x-ossllm-cache')).toBe('MISS');
+      expect(first.headers.get('x-osllm-cache')).toBe('MISS');
       const second = await chat({}, { 'X-OSLLM-Cache': 'on' });
-      expect(second.headers.get('x-ossllm-cache')).toBe('HIT');
+      expect(second.headers.get('x-osllm-cache')).toBe('HIT');
       expect(counter.calls).toBe(1);
     } finally {
       process.env.RESPONSE_CACHE = 'on';
@@ -253,14 +253,14 @@ describe('Response cache (proxy integration)', () => {
 
     const first = await chat({ stream: true });
     expect(first.status).toBe(200);
-    expect(first.headers.get('x-ossllm-cache')).toBe('MISS');
+    expect(first.headers.get('x-osllm-cache')).toBe('MISS');
     expect(first.raw).toContain('streamed four');
     expect(first.raw.endsWith('data: [DONE]\n\n')).toBe(true);
     expect(counter.streamCalls).toBe(1);
 
     const second = await chat({ stream: true });
     expect(second.status).toBe(200);
-    expect(second.headers.get('x-ossllm-cache')).toBe('HIT');
+    expect(second.headers.get('x-osllm-cache')).toBe('HIT');
     expect(second.headers.get('x-routed-via')).toBe('cache');
     expect(second.headers.get('content-type')).toContain('text/event-stream');
     // Identical SSE bytes, and no second provider stream.
@@ -273,11 +273,11 @@ describe('Response cache (proxy integration)', () => {
     await chat();                  // JSON MISS, populates the JSON store
     const streamed = await chat({ stream: true });
     // The JSON entry is never replayed as SSE: the stream is a MISS of its own.
-    expect(streamed.headers.get('x-ossllm-cache')).toBe('MISS');
+    expect(streamed.headers.get('x-osllm-cache')).toBe('MISS');
     expect(counter.streamCalls).toBe(1);
     // ...and storing it did not disturb the JSON entry.
     const json = await chat();
-    expect(json.headers.get('x-ossllm-cache')).toBe('HIT');
+    expect(json.headers.get('x-osllm-cache')).toBe('HIT');
     expect(json.body.choices[0].message.content).toBe('four');
     expect(counter.calls).toBe(1);
   });
@@ -289,7 +289,7 @@ describe('Response cache (proxy integration)', () => {
     expect(counter.streamCalls).toBe(1);
     // Nothing was stored, so the repeat goes back to the provider.
     const second = await chat({ stream: true });
-    expect(second.headers.get('x-ossllm-cache')).toBe('MISS');
+    expect(second.headers.get('x-osllm-cache')).toBe('MISS');
     expect(counter.streamCalls).toBe(2);
   });
 
@@ -297,13 +297,13 @@ describe('Response cache (proxy integration)', () => {
     const counter = mockGroq('half an ans', { failMidStream: true });
     const first = await chat({ stream: true });
     // Headers were already flushed and content forwarded before the break.
-    expect(first.headers.get('x-ossllm-cache')).toBe('MISS');
+    expect(first.headers.get('x-osllm-cache')).toBe('MISS');
     expect(first.raw).toContain('half an ans');
     expect(first.raw).toContain('stream_error'); // the break is surfaced to the client
     const before = counter.streamCalls;
     // Nothing was stored, so the repeat goes back to the provider.
     const second = await chat({ stream: true });
-    expect(second.headers.get('x-ossllm-cache')).toBe('MISS');
+    expect(second.headers.get('x-osllm-cache')).toBe('MISS');
     expect(counter.streamCalls).toBeGreaterThan(before);
   });
 
@@ -312,9 +312,9 @@ describe('Response cache (proxy integration)', () => {
     try {
       const counter = mockGroq('uncached');
       const first = await chat({ stream: true });
-      expect(first.headers.get('x-ossllm-cache')).toBe('OFF');
+      expect(first.headers.get('x-osllm-cache')).toBe('OFF');
       const second = await chat({ stream: true });
-      expect(second.headers.get('x-ossllm-cache')).toBe('OFF');
+      expect(second.headers.get('x-osllm-cache')).toBe('OFF');
       expect(counter.streamCalls).toBe(2);
       const stats = await request(app, 'GET', '/api/cache/stats');
       expect(stats.body.entries).toBe(0);

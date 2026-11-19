@@ -50,10 +50,6 @@ Pick the release that matches your device. Windows 7 SP1 users must take the por
 - **Android 11+ (armeabi-v7a, armeabi-v8a)** → .apk: https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.2
 - **Android 11 (armeabi-v7a)** → .apk: https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.1
 
-## FAQ (https://ossllmapi.vercel.app/faq.html)
-
-Common questions: OSSLLMAPI is free (MIT, self-hosted); it runs on old hardware (screenshots taken on Windows 7 x86); it fails over on rate limits; you send one unified key, not each provider's key; you don't rewrite your client; usage is tracked per key against the 10.1B free-tier cap; keys are encrypted at rest; and you pick the build that matches your OS.
-
 ## My Links (https://ossllmapi.vercel.app/links.html)
 
 Eleven links to OSSLLMAPI and Zelvior Labs: npm (https://www.npmjs.com/~zelnpm), ORCID (https://orcid.org/0009-0009-2376-367X), YouTube (https://youtube.com/@zelviorhere), Linktree (https://linktr.ee/zelvior), Discord (https://discord.gg/UQfzQzymc), Donations (https://nowpayments.io/donation/zelviorhere), X (https://x.com/zelviorhere), Org site (https://zelviorlabs.vercel.app), Blog (https://zelvior.blogspot.com), Org (https://github.com/Zelvior-Labs), User (https://github.com/zelvior).
@@ -64,3 +60,6 @@ Eleven links to OSSLLMAPI and Zelvior Labs: npm (https://www.npmjs.com/~zelnpm),
 - Source: https://github.com/zelvior/ossllmapi
 - License: MIT — a modified version of tashfeenahmed/freellmapi, made by Zelvior Labs
 - Premium live catalog: https://ossllmapi.co ($19/yr)
+- Contact / feedback: zelvior@proton.me
+
+The site uses a grey carbon-fibre theme with a clean, technical (oxide.computer-style) UI: Lucide icons throughout, grid layouts, separated pages, and a fully responsive layout for every screen size and device.

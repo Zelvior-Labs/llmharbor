@@ -1,0 +1,37 @@
+# OSSLLMAPI
+
+> OSSLLMAPI is a modified version of freellmapi by Zelvior Labs: one OpenAI-compatible `/v1` API in front of the free tiers of 87 LLM providers and 1,313 free model endpoints — about 10.1 billion free tokens a month — with encrypted key storage, per-key usage tracking, automatic failover, and chat, embedding, image and audio endpoints. Free and open source (MIT).
+
+## What it is
+
+- **One API, every free LLM**: 87 free LLM providers, 1,313 free model endpoints, behind a single OpenAI-compatible `/v1` base URL (`http://localhost:3001/v1` by default).
+- **OpenAI-compatible surface**: chat completions, embeddings, image generation and audio, plus an MCP server — existing OpenAI SDK code works unchanged.
+- **Router intelligence**: every request is routed to the best available model from your fallback chain; when a provider is rate-limited or over its free-tier cap, the next provider takes the request automatically.
+- **Encrypted keys**: provider keys are encrypted at rest; clients only ever see one unified API key minted in the dashboard.
+- **Per-key budgets**: token usage is tracked per key against every provider's free-tier cap.
+- **Self-updating catalog**: the router updates its model catalog from a signed feed. Free installs get a monthly snapshot; premium routers get the live catalog the same day.
+
+## Platforms
+
+Desktop apps for Windows, macOS and Linux; Android APK; iOS IPA; Docker image (ghcr.io/ossllmapi); CLI on npm. Downloads: https://github.com/zelvior/ossllmapi/releases/latest
+
+## Install
+
+Point any OpenAI-compatible client at `http://localhost:3001/v1` with the unified key from the dashboard. Documentation: https://github.com/zelvior/ossllmapi/blob/main/docs/en/README.md
+
+## Pricing
+
+Free (MIT, self-hosted). Premium live catalog at https://ossllmapi.co ($19/yr, cancel anytime).
+
+## Details
+
+- Website: https://ossllmapi.vercel.app
+- Source: https://github.com/zelvior/ossllmapi
+- License: MIT — a modified version of tashfeenahmed/freellmapi, made by Zelvior Labs
+- Maintainer: Zelvior Labs (https://zelviorlabs.vercel.app)
+
+## Pages
+
+- [Home](https://ossllmapi.vercel.app/)
+- [Privacy](https://ossllmapi.vercel.app/privacy.html)
+- [Terms](https://ossllmapi.vercel.app/terms.html)

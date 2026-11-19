@@ -25,3 +25,9 @@ update-hermes.sh
 
 # Monetization planning — private, never committed
 monetization/
+
+# taste-skill (design tooling) install artifacts — the built site lives in site/
+.agents/
+agent/
+.claude/skills/
+skills-lock.json

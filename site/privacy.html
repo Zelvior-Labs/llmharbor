@@ -1,0 +1,133 @@
+<!doctype html>
+<!-- OSSLLMAPI — privacy page. Same system as the home page. -->
+<html lang="en" data-type="software" data-radius="soft" data-ground="sky" data-buttons="solid" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy — OSSLLMAPI</title>
+<meta name="description" content="How OSSLLMAPI and this website handle data: no tracking, no advertising cookies, no selling of personal data, and encrypted provider keys when you self-host.">
+<link rel="canonical" href="https://ossllmapi.vercel.app/privacy.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#eef0f3">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Privacy — OSSLLMAPI">
+<meta property="og:description" content="No tracking, no advertising cookies, no selling of personal data. Provider keys are encrypted at rest when you self-host.">
+<meta property="og:url" content="https://ossllmapi.vercel.app/privacy.html">
+<meta property="og:image" content="https://ossllmapi.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400..700&family=JetBrains+Mono:wght@400..500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/backgrounds/backgrounds.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
+<link rel="stylesheet" href="css/page.css">
+<style>
+:root {
+  --p-bg: #eef0f3; --p-surface: #e2e5ea; --p-ink: #0b0c0e; --p-muted: #5d6470;
+  --p-accent: #1f2de6; --p-accent-ink: #ffffff; --p-action: #1f2de6; --p-action-ink: #ffffff;
+  --p-inv-bg: #0b0c0e; --p-inv-surface: #17181a; --p-inv-ink: #eef0f3; --p-inv-muted: #8e8f92;
+  --p-inv-accent: #eef0f3; --p-inv-accent-ink: #0b0c0e; --p-inv-action: #eef0f3; --p-inv-action-ink: #0b0c0e;
+  --font-display: "Host Grotesk", system-ui, sans-serif;
+  --font-text: "Host Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display-weight: 500;
+  --display-tracking: -0.035em;
+  --display-tracking-xl: -0.04em;
+}
+</style>
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script src="assets/backgrounds/backgrounds.js"></script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "WebPage", "name": "Privacy — OSSLLMAPI", "url": "https://ossllmapi.vercel.app/privacy.html", "isPartOf": { "@type": "WebSite", "name": "OSSLLMAPI", "url": "https://ossllmapi.vercel.app/" }}
+</script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo" href="/"><span class="mark" data-mark="ring" aria-hidden="true"></span>OSSLLMAPI</a>
+    <nav class="nav__links" aria-label="Main">
+      <div class="nav__item"><a class="nav__link" href="/#dashboard">Product</a></div>
+      <div class="nav__item"><a class="nav__link" href="/#how">How it works</a></div>
+      <div class="nav__item"><a class="nav__link" href="/#download">Download</a></div>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--primary" href="/#download">Download the app</a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="section" aria-labelledby="privacy-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="privacy-h">Privacy. <span class="muted">Short, plain, and boring on purpose.</span></h2>
+        <p class="t-lead">OSSLLMAPI is self-hosted, open-source software. This website does not track you, does not run advertising, and does not sell personal data.</p>
+      </div>
+      <div class="faq">
+        <details class="faq__item" open>
+          <summary>Does this website track visitors?</summary>
+          <p>No. The site runs no analytics, no advertising, no cross-site tracking and no advertising cookies. It is a static site served from Vercel.</p>
+        </details>
+        <details class="faq__item">
+          <summary>What does Vercel log?</summary>
+          <p>Vercel, the hosting provider, may log standard hosting data — request timestamps, IP addresses and request paths — for security and reliability. That data is handled under Vercel's own privacy policy.</p>
+        </details>
+        <details class="faq__item">
+          <summary>What happens to my provider keys?</summary>
+          <p>When you self-host OSSLLMAPI, your provider keys are stored encrypted at rest on your own machine. Clients only ever see the single unified API key you mint in the dashboard, and per-key token budgets keep every provider under its free-tier cap.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Does OSSLLMAPI send my prompts anywhere?</summary>
+          <p>Only to the LLM provider you chose for that request, as the request requires. OSSLLMAPI itself does not log your prompts or completions; the router's job is to move them to the provider and count the tokens.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Can I delete my data?</summary>
+          <p>Yes. OSSLLMAPI runs on your machine or your own server. Delete the data directory and the keys, and everything is gone. Nothing about your use is stored by this website.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Who do I contact?</summary>
+          <p>Zelvior Labs. The fastest routes are the project's GitHub repository and the Discord server, both linked on the home page.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer closing footer--dark ground-inverse" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--type">
+      <div class="section-head">
+        <h2 id="close-h">Download OSSLLMAPI and start routing.</h2>
+        <p class="t-lead">One key, one base URL, 1,313 free model endpoints. Free and open source.</p>
+      </div>
+      <a class="btn btn--primary btn--xl btn--wide" href="/#download">Download the app<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="/"><span class="mark" data-mark="ring" aria-hidden="true"></span>OSSLLMAPI</a>
+          <p class="footer__lede">One OpenAI-compatible <span class="mono">/v1</span> API in front of the free tiers of 87 LLM providers. A modified version of freellmapi, made by Zelvior Labs.</p>
+        </div>
+        <div class="span-2 footer__col"><h3>Product</h3><ul><li><a href="/#dashboard">The router</a></li><li><a href="/#download">Download</a></li><li><a href="/">Home</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Legal</h3><ul><li><a href="/privacy.html">Privacy</a></li><li><a href="/terms.html">Terms</a></li><li><a href="https://github.com/zelvior/ossllmapi/blob/main/LICENSE">MIT license</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>More</h3><ul><li><a href="https://zelviorlabs.vercel.app">Zelvior Labs</a></li><li><a href="https://github.com/zelvior/ossllmapi">Source</a></li><li><a href="https://discord.gg/UQfzQzymc">Discord</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 Zelvior Labs &nbsp; <a href="/privacy.html">Privacy</a> &nbsp; <a href="/terms.html">Terms</a></span>
+        <span class="credits">A modified version of tashfeenahmed/freellmapi, by Zelvior Labs.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+<script type="module" src="assets/layout/layout.js"></script>
+</body>
+</html>

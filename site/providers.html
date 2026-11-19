@@ -92,9 +92,13 @@
       <a class="nav__link" href="links.html">Links</a>
     </nav>
     <div class="nav__actions">
-      <a class="btn btn--primary" href="download.html"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#download"/></svg>Download the app</a>
+      <a class="btn btn--primary" href="download.html"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3" />
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+  <path d="m7 10 5 5 5-5" /></svg>Download the app</a>
     </div>
-    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#menu"/></svg></button>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16" />
+  <path d="M4 12h16" />
+  <path d="M4 19h16" /></svg></button>
   </div>
 </header>
 
@@ -102,7 +106,8 @@
   <section class="section" aria-labelledby="prov-h">
     <div class="wrap">
       <div class="page-head">
-        <p class="crumb"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#home"/></svg><a href="index.html">Home</a><span class="sep">/</span><b>Providers</b></p>
+        <p class="crumb"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+  <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg><a href="index.html">Home</a><span class="sep">/</span><b>Providers</b></p>
         <h1 id="prov-h">One endpoint, every provider.</h1>
         <p class="t-lead">The router holds the free tiers of 87 providers in one catalog and serves them through the same <span class="mono">/v1</span> surface: chat, embeddings, images and audio.</p>
       </div>
@@ -129,28 +134,49 @@
       </div>
       <div class="row row--4" style="margin-top: var(--s-6)">
         <article class="feat">
-          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#message-square"/></svg></span><h3>Chat</h3></div>
+          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /></svg></span><h3>Chat</h3></div>
           <p><span class="mono">/v1/chat/completions</span> — routed to the best free chat model, with failover.</p>
         </article>
         <article class="feat">
-          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#binary"/></svg></span><h3>Embeddings</h3></div>
+          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="14" width="4" height="6" rx="2" />
+  <rect x="6" y="4" width="4" height="6" rx="2" />
+  <path d="M6 20h4" />
+  <path d="M14 10h4" />
+  <path d="M6 14h2v6" />
+  <path d="M14 4h2v6" /></svg></span><h3>Embeddings</h3></div>
           <p><span class="mono">/v1/embeddings</span> — vectors from the free embedding endpoints.</p>
         </article>
         <article class="feat">
-          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#image"/></svg></span><h3>Images</h3></div>
+          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+  <circle cx="9" cy="9" r="2" />
+  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg></span><h3>Images</h3></div>
           <p><span class="mono">/v1/images/generations</span> — image generation through the same router.</p>
         </article>
         <article class="feat">
-          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#mic"/></svg></span><h3>Audio</h3></div>
+          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19v3" />
+  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+  <rect x="9" y="2" width="6" height="13" rx="3" /></svg></span><h3>Audio</h3></div>
           <p><span class="mono">/v1/audio</span> — speech endpoints, OpenAI-compatible.</p>
         </article>
       </div>
       <div class="ep-row" style="margin-top: var(--s-6)">
-        <span class="ep"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#message-square"/></svg>Chat</span>
-        <span class="ep"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#binary"/></svg>Embeddings</span>
-        <span class="ep"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#image"/></svg>Images</span>
-        <span class="ep"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#mic"/></svg>Audio</span>
-        <span class="ep"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#plug"/></svg>MCP server</span>
+        <span class="ep"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /></svg>Chat</span>
+        <span class="ep"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="14" width="4" height="6" rx="2" />
+  <rect x="6" y="4" width="4" height="6" rx="2" />
+  <path d="M6 20h4" />
+  <path d="M14 10h4" />
+  <path d="M6 14h2v6" />
+  <path d="M14 4h2v6" /></svg>Embeddings</span>
+        <span class="ep"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+  <circle cx="9" cy="9" r="2" />
+  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>Images</span>
+        <span class="ep"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19v3" />
+  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+  <rect x="9" y="2" width="6" height="13" rx="3" /></svg>Audio</span>
+        <span class="ep"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5" />
+  <path d="M15 8V2" />
+  <path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z" />
+  <path d="M9 8V2" /></svg>MCP server</span>
       </div>
     </div>
   </section>
@@ -181,7 +207,9 @@
         <h2 id="close-h">Download OSSLLMAPI and start routing.</h2>
         <p class="t-lead">One key, one base URL, 1,313 free model endpoints. Free and open source.</p>
       </div>
-      <a class="btn btn--primary btn--xl btn--wide" href="download.html"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#download"/></svg>Download the app<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+      <a class="btn btn--primary btn--xl btn--wide" href="download.html"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3" />
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+  <path d="m7 10 5 5 5-5" /></svg>Download the app<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
     </div>
     <div class="closing__links">
       <div class="grid">
@@ -189,10 +217,12 @@
           <a class="nav__logo" href="index.html"><span class="mark" data-mark="ring" aria-hidden="true"></span>OSSLLMAPI</a>
           <p class="footer__lede">One OpenAI-compatible <span class="mono">/v1</span> API in front of the free tiers of 87 LLM providers. A modified version of freellmapi, made by Zelvior Labs.</p>
           <div class="socials">
-            <a href="https://github.com/zelvior/ossllmapi" aria-label="GitHub"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#code"/></svg></a>
-            <a href="https://x.com/zelviorhere" aria-label="X"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#at-sign"/></svg></a>
-            <a href="https://youtube.com/@zelviorhere" aria-label="YouTube"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#play"/></svg></a>
-            <a href="https://discord.gg/UQfzQzymc" aria-label="Discord"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#message-square"/></svg></a>
+            <a href="https://github.com/zelvior/ossllmapi" aria-label="GitHub"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6" />
+  <path d="m8 6-6 6 6 6" /></svg></a>
+            <a href="https://x.com/zelviorhere" aria-label="X"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" />
+  <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8" /></svg></a>
+            <a href="https://youtube.com/@zelviorhere" aria-label="YouTube"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg></a>
+            <a href="https://discord.gg/UQfzQzymc" aria-label="Discord"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /></svg></a>
           </div>
         </div>
         <div class="span-2 footer__col"><h3>Product</h3><ul><li><a href="dashboard.html">The router</a></li><li><a href="features.html">How it works</a></li><li><a href="providers.html">Providers</a></li><li><a href="download.html">Download</a></li></ul></div>

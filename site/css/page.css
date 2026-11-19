@@ -55,7 +55,7 @@ body::before {
 .crumb a:hover { color: var(--ink); }
 .crumb b { color: var(--ink); font-weight: 500; }
 .crumb .sep { opacity: .5; }
-.page-head h1 { font-size: var(--t-h1); line-height: 1.05; }
+.page-head h1 { font-size: var(--t-h1); line-height: 1.1; }
 .page-head .t-lead { max-width: 60ch; }
 
 /* ---------------------------------------------------------------- grids
@@ -83,9 +83,10 @@ body::before {
 .feat__ic { width: 40px; height: 40px; }
 .feat__ic .ic { width: 22px; height: 22px; }
 .feat h3 { font-family: var(--font-text); font-weight: 500; font-size: var(--t-card); line-height: 1.3; }
-.feat p { color: var(--muted); font-size: 14.5px; line-height: 1.55; }
-/* the drawn mini-UI inside a feature card */
-.fx-ui { margin-top: auto; padding: 13px 15px; border-radius: 10px; background: var(--p-inv-surface);
+.feat p { color: var(--muted); font-size: 14.5px; line-height: 1.6; }
+/* the drawn mini-UI inside a feature card: flows directly under the copy,
+   never pinned to the card bottom, so every card reads at the same height */
+.fx-ui { padding: 13px 15px; border-radius: 10px; background: var(--p-inv-surface);
   color: var(--p-inv-ink); font-size: 12.5px; }
 .fx-ui h5 { margin: 0 0 9px; font: 500 12px/1.3 var(--font-text); color: var(--p-inv-muted); }
 .fx-ui .fx-split { display: flex; height: 8px; border-radius: 99px; overflow: hidden; gap: 2px; margin-bottom: 10px; }
@@ -119,7 +120,7 @@ body::before {
 .win7__ic { width: 46px; height: 46px; flex: none; }
 .win7__ic .ic { width: 26px; height: 26px; }
 .win7__head h3 { font-family: var(--font-text); font-weight: 500; font-size: var(--t-card); }
-.win7__head p { color: var(--muted); font-size: 14px; line-height: 1.5; margin-top: 3px; max-width: 62ch; }
+.win7__head p { color: var(--muted); font-size: 14px; line-height: 1.6; margin-top: 8px; max-width: 62ch; }
 /* the spec table: a 2-column grid of label / value */
 .specs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3) var(--s-6);
   margin: var(--s-5) 0; padding: var(--s-5); background: var(--p-bg); border: 1px solid var(--line); border-radius: var(--r-md); }
@@ -146,17 +147,17 @@ body::before {
   transition: transform .2s, box-shadow .2s, border-color .2s;
 }
 .dl:hover { transform: translateY(-2px); box-shadow: 0 20px 44px -28px rgb(0 0 0 / .5); border-color: var(--p-accent); }
-.dl__ic { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 11px;
+.dl__ic { flex: none; width: 40px; height: 40px; align-self: center; display: grid; place-items: center; border-radius: 11px;
   background: var(--p-bg); border: 1px solid var(--line); color: var(--p-accent); }
 .dl__ic .ic { width: 20px; height: 20px; }
 .dl__body { flex: 1; min-width: 0; }
 .dl__title { display: block; font: var(--display-weight) 16px/1.25 var(--font-display); letter-spacing: var(--display-tracking); }
-.dl__sub { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.dl__sub { display: block; margin-top: 6px; color: var(--muted); font-size: 13px; line-height: 1.55; }
 .dl__url { display: block; margin-top: 6px; font: 400 11.5px/1.4 var(--font-mono); color: var(--muted); word-break: break-all; }
 .dl .lk__go { flex: none; color: var(--muted); transition: transform .2s, color .2s; }
 .dl:hover .lk__go { color: var(--p-accent); transform: translate(2px, -2px); }
 /* the recommended, highlighted card */
-.dl--primary { display: flex; align-items: center; gap: var(--s-5); flex-wrap: wrap;
+.dl--primary { display: flex; align-items: flex-start; gap: var(--s-5); flex-wrap: wrap;
   padding: var(--s-6); background: var(--p-inv-surface); color: var(--p-inv-ink);
   border: 1px solid var(--p-accent); border-radius: var(--r-lg);
   box-shadow: 0 26px 60px -34px rgb(0 0 0 / .8); text-decoration: none;
@@ -313,7 +314,7 @@ body::before {
   display: grid; place-items: center; border-radius: 11px; background: var(--p-bg);
   border: 1px solid var(--line); color: var(--p-muted); }
 .step__ic .ic { width: 20px; height: 20px; }
-.step h3 { margin: 0 0 8px; font: var(--display-weight) 19px/1.2 var(--font-display); letter-spacing: var(--display-tracking); }
+.step h3 { margin: 0 0 10px; font: var(--display-weight) 19px/1.2 var(--font-display); letter-spacing: var(--display-tracking); }
 .step p { margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.6; }
 @media (max-width: 560px) {
   .step { padding-left: var(--s-5); padding-right: var(--s-5); padding-top: calc(var(--s-5) + 46px); }
@@ -370,7 +371,7 @@ body::before {
    as site content; the 728px leaderboard keeps its rounded frame and scales to
    full width on every screen size. */
 .ad-slot {
-  max-width: 728px; margin: 28px auto 10px;
+  max-width: 728px; margin: var(--s-6) auto;
   border: 1px solid var(--line); border-radius: var(--r-md);
   background: var(--p-surface); overflow: hidden;
 }
@@ -383,7 +384,7 @@ body::before {
   font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
   letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
 }
-.ad-slot__frame { width: 100%; height: 90px; }
+.ad-slot__frame { width: 100%; height: 90px; background: var(--p-bg); }
 .ad-slot__frame iframe { width: 100% !important; height: 90px !important; border: 0; display: block; }
 
 /* ---------------------------------------------------------------- lenis (lenis.dev) */

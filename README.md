@@ -44,6 +44,7 @@ Your router updates its own model catalog from a signed feed: new free models, q
 - [Compatible CLIs & coding agents](#compatible-clis--coding-agents)
 - [How it compares](#how-it-compares)
 - [Features](#features)
+- [Website](#website)
 - [Quick start](#quick-start)
 - [Desktop app](#desktop-app)
 - [Works with OpenAI-compatible clients](#works-with-openai-compatible-clients)
@@ -162,6 +163,28 @@ Based on public documentation, July 2026 — corrections welcome.
 - **Runs anywhere Node 20+ runs** — Windows, macOS, Linux servers, or a small ARM SBC (Raspberry Pi included). ~40 MB RSS at idle behind PM2 / systemd / whatever supervisor you prefer.
 
 The scope is deliberately narrow — see [what's not supported yet](docs/en/architecture/00-high-level-index.md#not-yet-supported).
+
+## Website
+
+The OSSLLMAPI marketing site lives at **https://ossllmapi.vercel.app** — a grey **carbon-fibre** theme with a clean, technical (oxide.computer-style) UI: **Lucide icons everywhere**, grid layouts, **fully separated pages**, and a layout that adapts to **every screen size and device**.
+
+**Visual buttons:**
+
+[![Open the site](https://img.shields.io/badge/Open%20the%20site-ossllmapi.vercel.app-94a4ba?style=for-the-badge&logo=globe)](https://ossllmapi.vercel.app/)
+[![Download](https://img.shields.io/badge/Download-releases-94a4ba?style=for-the-badge&logo=download)](https://github.com/zelvior/ossllmapi/releases)
+[![Docs](https://img.shields.io/badge/Docs-README-94a4ba?style=for-the-badge&logo=book)](https://github.com/zelvior/ossllmapi/blob/main/docs/en/README.md)
+[![Contact](https://img.shields.io/badge/Contact-zelvior@proton.me-94a4ba?style=for-the-badge&logo=mail)](mailto:zelvior@proton.me)
+
+The site is split into separated pages — **Home**, **Dashboard**, **Features**, **Providers**, **How to start**, **Download**, **My Links**, plus **Privacy** and **Terms** — with a shared navigation and a responsive layout for desktop, tablet and phone. The Home and Dashboard pages carry the **real screenshots**, taken on a Windows 7 x86 machine, to show the router performs well on legacy hardware.
+
+**Download by device:**
+
+- **Windows 7 SP1** → portable **zip** (the `.exe` will not work from the latest release): [win7-v0.16.34-preview.1](https://github.com/zelvior/ossllmapi/releases#release-win7-v0.16.34-preview.1)
+- **Android 8.0+** (armeabi-v7a, armeabi-v8a) → **.apk**: [android-v0.16.34-preview.3](https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.3) — **recommended** (works on both legacy and modern)
+- **Android 11+** (armeabi-v7a, armeabi-v8a) → **.apk**: [android-v0.16.34-preview.2](https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.2)
+- **Android 11** (armeabi-v7a) → **.apk**: [android-v0.16.34-preview.1](https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.1)
+
+For bug reports, suggestions or anything else, email **[zelvior@proton.me](mailto:zelvior@proton.me)**.
 
 ## Quick start
 

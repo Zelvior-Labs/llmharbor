@@ -1,0 +1,192 @@
+<!doctype html>
+<!-- OSSLLMAPI — how page. The three steps to route your first request. -->
+<html lang="en" data-type="software" data-radius="soft" data-ground="sky" data-buttons="solid" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="google-site-verification" content="hUqXugrHc_xzhUYio3bjW6G1dcc87Iyi8IL4fpCIiN0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How to start · OSSLLMAPI — three steps</title>
+<meta name="description" content="Set up OSSLLMAPI in three steps: pick a model, add your free provider keys, and point your client at one OpenAI-compatible base URL at http://localhost:3001/v1.">
+<link rel="canonical" href="https://ossllmapi.vercel.app/how.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="theme-color" content="#eef0f3">
+<meta name="application-name" content="OSSLLMAPI">
+<meta name="apple-mobile-web-app-title" content="OSSLLMAPI">
+<meta name="og:site_name" content="OSSLLMAPI">
+<meta property="og:type" content="website">
+<meta property="og:title" content="How to start · OSSLLMAPI — three steps">
+<meta property="og:description" content="Pick a model, add free provider keys, point your client at one OpenAI-compatible base URL. That is the whole setup.">
+<meta property="og:url" content="https://ossllmapi.vercel.app/how.html">
+<meta property="og:image" content="https://ossllmapi.vercel.app/og-image.png">
+<meta property="og:image:alt" content="The three steps to start routing with OSSLLMAPI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to start · OSSLLMAPI — three steps">
+<meta name="twitter:description" content="Pick a model, add keys, point your client at one base URL. That is the whole setup.">
+<meta name="twitter:image" content="https://ossllmapi.vercel.app/og-image.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400..700&family=JetBrains+Mono:wght@400..500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/backgrounds/backgrounds.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
+<link rel="stylesheet" href="assets/icons/icon.css">
+<link rel="stylesheet" href="assets/ui/base.css">
+<link rel="stylesheet" href="assets/ui/window/fragment.css">
+<link rel="stylesheet" href="assets/ui/stat/fragment.css">
+<link rel="stylesheet" href="assets/diagrams/diagram.css">
+<link rel="stylesheet" href="css/page.css">
+<style>
+:root {
+  --p-bg: #14161a;            /* carbon-fibre base */
+  --p-surface: #1b1e24;       /* raised carbon surface */
+  --p-ink: #e8eaed;           /* primary text */
+  --p-muted: #9aa3ad;         /* muted text */
+  --p-accent: #94a4ba;        /* steel accent */
+  --p-accent-ink: #0f1115;    /* dark ink on the accent */
+  --p-action: #94a4ba;        /* buttons, links, focus */
+  --p-action-ink: #0f1115;
+  --p-inv-bg: #0d0f12;        /* deeper inverse (footer) */
+  --p-inv-surface: #181b21;   /* inverse surface */
+  --p-inv-ink: #e8eaed;
+  --p-inv-muted: #8b949e;
+  --p-inv-accent: #aab9ca;
+  --p-inv-accent-ink: #0f1115;
+  --p-inv-action: #aab9ca;
+  --p-inv-action-ink: #0f1115;
+  --font-display: "Host Grotesk", system-ui, sans-serif;
+  --font-text: "Host Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display-weight: 500; --display-tracking: -0.035em; --display-tracking-xl: -0.04em;
+}
+</style>
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script src="assets/backgrounds/backgrounds.js"></script>
+<link rel="modulepreload" href="assets/lenis.mjs">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@graph": [
+    { "@type": "BreadcrumbList", "@id": "https://ossllmapi.vercel.app/#how-bc",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://ossllmapi.vercel.app/" },
+        { "@type": "ListItem", "position": 2, "name": "How", "item": "https://ossllmapi.vercel.app/how.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo" href="index.html"><span class="mark" data-mark="ring" aria-hidden="true"></span>OSSLLMAPI</a>
+    <nav class="nav__links" aria-label="Main">
+      <a class="nav__link" href="index.html">Home</a>
+      <a class="nav__link" href="dashboard.html">Dashboard</a>
+      <a class="nav__link" href="features.html">Features</a>
+      <a class="nav__link" href="providers.html">Providers</a>
+      <a class="nav__link" href="how.html" aria-current="page">How</a>
+      <a class="nav__link" href="links.html">Links</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--primary" href="download.html"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#download"/></svg>Download the app</a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#menu"/></svg></button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="section" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="page-head">
+        <p class="crumb"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#home"/></svg><a href="index.html">Home</a><span class="sep">/</span><b>How</b></p>
+        <h1 id="how-h">Three steps to your first route.</h1>
+        <p class="t-lead">No backend to host, no client to rewrite. Pick a model, add keys, point your app at one base URL.</p>
+      </div>
+
+      <div class="row" style="margin-top: var(--s-7)">
+        <article class="step">
+          <div class="step__num">1</div>
+          <div class="step__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#box"/></svg></div>
+          <h3>Pick a model.</h3>
+          <p>Choose from the 1,313 free model endpoints in the catalog — chat, embeddings, image and audio models, kept current by a signed model-catalog feed.</p>
+        </article>
+        <article class="step">
+          <div class="step__num">2</div>
+          <div class="step__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#key"/></svg></div>
+          <h3>Add your keys.</h3>
+          <p>Paste the free-tier API keys for the providers you want. OSSLLMAPI keeps them encrypted at rest and lets each client use only one unified key.</p>
+        </article>
+        <article class="step">
+          <div class="step__num">3</div>
+          <div class="step__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#plug"/></svg></div>
+          <h3>Point your client at one URL.</h3>
+          <p>Set <span class="mono">base_url</span> to <span class="mono">http://localhost:3001/v1</span> and send any OpenAI-compatible request. The router picks the provider.</p>
+        </article>
+      </div>
+
+      <div class="panel" style="margin-top: var(--s-8)">
+        <div class="panel__head"><h2>The one thing to remember</h2></div>
+        <div class="panel__body">
+          <p>Everything you already send to OpenAI keeps working — change only the base URL. The router takes the model name, picks the provider and endpoint, and hands back a standard OpenAI response.</p>
+          <pre class="code"><span class="code__dots" aria-hidden="true"><i></i><i></i><i></i></span><code><span class="tok-k">from</span> openai <span class="tok-k">import</span> OpenAI
+
+client = <span class="tok-fn">OpenAI</span>(
+    base_url=<span class="tok-s">"http://localhost:3001/v1"</span>,
+    api_key=<span class="tok-s">"sk-your-unified-key"</span>,
+)
+
+client.chat.completions.<span class="tok-fn">create</span>(
+    model=<span class="tok-s">"gpt-4o-mini"</span>,
+    messages=[{ <span class="tok-s">"role"</span>: <span class="tok-s">"user"</span>, <span class="tok-s">"content"</span>: <span class="tok-s">"Hello"</span> }],
+)</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer closing footer--dark ground-inverse" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--type">
+      <div class="section-head">
+        <h2 id="close-h">Download OSSLLMAPI and start routing.</h2>
+        <p class="t-lead">One key, one base URL, 1,313 free model endpoints. Free and open source.</p>
+      </div>
+      <a class="btn btn--primary btn--xl btn--wide" href="download.html"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#download"/></svg>Download the app<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="index.html"><span class="mark" data-mark="ring" aria-hidden="true"></span>OSSLLMAPI</a>
+          <p class="footer__lede">One OpenAI-compatible <span class="mono">/v1</span> API in front of the free tiers of 87 LLM providers. A modified version of freellmapi, made by Zelvior Labs.</p>
+          <div class="socials">
+            <a href="https://github.com/zelvior/ossllmapi" aria-label="GitHub"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#code"/></svg></a>
+            <a href="https://x.com/zelviorhere" aria-label="X"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#at-sign"/></svg></a>
+            <a href="https://youtube.com/@zelviorhere" aria-label="YouTube"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#play"/></svg></a>
+            <a href="https://discord.gg/UQfzQzymc" aria-label="Discord"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#message-square"/></svg></a>
+          </div>
+        </div>
+        <div class="span-2 footer__col"><h3>Product</h3><ul><li><a href="dashboard.html">The router</a></li><li><a href="features.html">How it works</a></li><li><a href="providers.html">Providers</a></li><li><a href="download.html">Download</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Learn</h3><ul><li><a href="how.html">Setup</a></li><li><a href="mailto:zelvior@proton.me">Contact</a></li><li><a href="https://github.com/zelvior/ossllmapi/blob/main/docs/en/README.md">Docs</a></li><li><a href="https://github.com/zelvior/ossllmapi">Source</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>More</h3><ul><li><a href="https://zelviorlabs.vercel.app">Zelvior Labs</a></li><li><a href="https://www.npmjs.com/~zelnpm">npm</a></li><li><a href="https://linktr.ee/zelvior">Linktree</a></li><li><a href="https://discord.gg/UQfzQzymc">Discord</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Legal</h3><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="https://github.com/zelvior/ossllmapi/blob/main/LICENSE">MIT license</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 Zelvior Labs &nbsp; <a href="privacy.html">Privacy</a> &nbsp; <a href="terms.html">Terms</a></span>
+        <span class="credits">A modified version of tashfeenahmed/freellmapi, by Zelvior Labs.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/lenis-init.js"></script>
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+<script type="module" src="assets/layout/layout.js"></script>
+<script type="module" src="assets/diagrams/mount.js"></script>
+</body>
+</html>

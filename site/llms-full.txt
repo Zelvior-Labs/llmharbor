@@ -1,0 +1,65 @@
+# OSSLLMAPI — full site content
+
+## Home (https://ossllmapi.vercel.app/)
+
+**OSSLLMAPI: one OpenAI-compatible API for 1,313 free model endpoints**
+
+OSSLLMAPI routes every request across 87 free LLM providers and 1,313 free model endpoints behind one OpenAI-compatible /v1 API — encrypted keys, per-key budgets, automatic failover. Free and open source.
+
+### Hero
+
+Free LLMs, one API. OSSLLMAPI puts the free tiers of 87 LLM providers — 1,313 model endpoints and 10.1 billion tokens a month — behind one OpenAI-compatible /v1 endpoint. You keep one key, one base URL and one bill of zero. Open source, MIT licensed, self-host it anywhere.
+
+### What it does
+
+- **Picks the best model**: every request is routed to the fastest model that can serve it, chosen from your ordered fallback chain. This week: 62% of requests go to the first choice, 31% to the second, 7% to the fallback.
+- **Falls over on rate limits**: when a provider throttles or hits its cap, the next provider takes the request before your caller ever sees it.
+- **Keeps keys encrypted**: provider keys are encrypted at rest; clients only ever see one unified key minted in the dashboard.
+- **Counts tokens per key**: usage is tracked per key against every provider's free-tier cap, so you never quietly pass a limit.
+
+### Windows 7 x86
+
+Every screenshot on the site was taken on a stock Windows 7 x86 machine — Windows 7 x86 SP1, 2 GB DDR2 RAM, Intel(R) Atom(TM) CPU N280 @ 1.66GHz (1.33GHz), and an HDD (70GB ST9160310AS ATA Device) — to show OSSLLMAPI performs well on legacy hardware. The same router runs on a modern server and on a phone; it does not demand a new one. Windows 7 SP1 users take the portable zip from the dedicated release, since the latest .exe will not run there.
+
+### Provider hub
+
+87 free LLM providers, 1,313 free model endpoints, behind one base URL. The router holds them all in one catalog and serves them through the same /v1 surface: chat completions, embeddings, image generation, audio, plus an MCP server.
+
+## Dashboard (https://ossllmapi.vercel.app/dashboard.html)
+
+Every request, routed and counted. The models list on the left is every endpoint the router can reach; the open item on the right is this month's usage — tokens spent per key, against the free-tier cap of each provider. Tokens this month: 7.4B of the 10.1B free tier. The page also carries the full Windows 7 x86 showcase: all six real screenshots and the machine they were taken on (Windows 7 x86 SP1, 2 GB DDR2 RAM, Intel Atom N280 @ 1.66GHz, 70GB ST9160310AS HDD).
+
+## Features (https://ossllmapi.vercel.app/features.html)
+
+The router does four jobs: picks the best model, fails over on rate limits, keeps keys encrypted, and counts tokens per key. Four jobs that turn free-tier keys into one dependable endpoint.
+
+## Providers (https://ossllmapi.vercel.app/providers.html)
+
+One endpoint, every provider. The router holds the free tiers of 87 providers in one catalog and serves them through the same /v1 surface: chat, embeddings, images, audio and an MCP server. Every endpoint family is OpenAI-compatible, so existing OpenAI SDK code works unchanged.
+
+## How to start (https://ossllmapi.vercel.app/how.html)
+
+Three steps: pick a model from the 1,313 free endpoints, add your free provider keys (encrypted at rest), and point your client at one base URL — http://localhost:3001/v1. Point any OpenAI-compatible client at that URL with the unified key from the dashboard and send requests as usual.
+
+## Download (https://ossllmapi.vercel.app/download.html)
+
+Pick the release that matches your device. Windows 7 SP1 users must take the portable zip — the latest .exe will not run there. Release links by audience:
+
+- **Windows 7 SP1** → portable zip: https://github.com/zelvior/ossllmapi/releases#release-win7-v0.16.34-preview.1
+- **Android 8.0+ (armeabi-v7a, armeabi-v8a)** → .apk: https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.3 (recommended — works on both legacy and modern)
+- **Android 11+ (armeabi-v7a, armeabi-v8a)** → .apk: https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.2
+- **Android 11 (armeabi-v7a)** → .apk: https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.1
+
+## My Links (https://ossllmapi.vercel.app/links.html)
+
+Eleven links to OSSLLMAPI and Zelvior Labs: npm (https://www.npmjs.com/~zelnpm), ORCID (https://orcid.org/0009-0009-2376-367X), YouTube (https://youtube.com/@zelviorhere), Linktree (https://linktr.ee/zelvior), Discord (https://discord.gg/UQfzQzymc), Donations (https://nowpayments.io/donation/zelviorhere), X (https://x.com/zelviorhere), Org site (https://zelviorlabs.vercel.app), Blog (https://zelvior.blogspot.com), Org (https://github.com/Zelvior-Labs), User (https://github.com/zelvior).
+
+## Details
+
+- Website: https://ossllmapi.vercel.app
+- Source: https://github.com/zelvior/ossllmapi
+- License: MIT — a modified version of tashfeenahmed/freellmapi, made by Zelvior Labs
+- Premium live catalog: https://ossllmapi.co ($19/yr)
+- Contact / feedback: zelvior@proton.me
+
+The site uses a grey carbon-fibre theme with a clean, technical (oxide.computer-style) UI: Lucide icons throughout, grid layouts, separated pages, and a fully responsive layout for every screen size and device.

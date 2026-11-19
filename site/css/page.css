@@ -41,15 +41,16 @@
 .ui-win__crumb b { font-weight: 500; }
 .ui-win__cols { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 74px 64px !important; }
 
-/* the open pane's own header (the stat panel's chrome) */
+/* the open pane's own header (the stat panel's chrome): a real bar, not a pseudo
+   (a ::before cannot hold the dot and label text, so the bar is its own element) */
 .app__pane--open .ui-stat { border: 0; border-radius: 0; box-shadow: none; }
-.app__pane--open::before {
-  content: ""; position: absolute; inset: 0 0 auto 0; height: 40px; z-index: 2;
+.app__pane--open-head {
+  position: absolute; inset: 0 0 auto 0; height: 40px; z-index: 2;
   background: var(--u-bg); border-bottom: 1px solid var(--u-line);
   display: flex; align-items: center; gap: 8px; padding: 0 14px;
   font: 500 12px/1 var(--font-mono); letter-spacing: .02em; color: var(--u-muted);
 }
-.app__pane--open::before .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--u-ok, #2e9e6b); }
+.app__pane--open-head .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--u-ok, #2e9e6b); flex: none; }
 .app__pane--open .ui-stat { padding-top: 34px; }
 
 /* ---------------------------------------------------------------- hero window
@@ -162,6 +163,13 @@
 .step-win__body .c { color: #8d9399; font-family: var(--font-mono); font-size: 12px; }
 .step-win pre { margin: 0; font: 400 12px/1.75 var(--font-mono); color: #c9ced4; white-space: pre-wrap; }
 .step-win .ow-badge { margin-top: 10px; display: inline-block; }
+/* the drawn step windows sit inside the pinned-chapters moment: fill the shared frame
+   when it is live, and cap the at-rest rows so the three steps stay one height */
+[data-moment="pinned-chapters"] .mo-pc__visual .step-win { width: 100%; }
+[data-moment="pinned-chapters"].is-live .mo-pc__visual .step-win { width: 100%; height: 100%; }
+@media (min-width: 640px) {
+  [data-moment="pinned-chapters"]:not(.is-live) .mo-pc__visual .step-win { max-height: 30svh; }
+}
 
 /* ---------------------------------------------------------------- download
    The platform grid: one look, one height, the real release links. */
@@ -189,7 +197,18 @@
 .lk:hover { transform: translateY(-2px); border-color: var(--action); }
 .lk__ic { width: 34px; height: 34px; border-radius: 9px; background: var(--p-inv-surface); display: grid; place-items: center; flex: none; }
 .lk__ic img { width: 18px; height: 18px; }
+/* the brand SVGs are single-colour black silhouettes with no fill baked in; on the dark
+   link tile (and the dark footer) a black mark is invisible, so invert to the light ink */
+.lk__ic img { filter: invert(1); }
+.icon-mono { filter: invert(1); }
 .lk b { display: block; font-weight: 500; font-size: 14.5px; }
 .lk span { color: var(--muted); font-size: 12.5px; }
 @media (max-width: 1023px) { .links-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .links-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------------------------------------------------------------- lenis (lenis.dev)
+   Lenis drives native window scrolling; these keep it from fighting the page. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }

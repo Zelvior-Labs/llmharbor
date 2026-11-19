@@ -2044,12 +2044,12 @@ proxyRouter.post('/chat/completions', async (req: Request, res: Response) => {
     }
   });
   const compressionResult = compressRequest(messages, {
-    header: req.headers['x-freellm-compress'],
+    header: req.headers['x-ossllm-compress'],
     tools,
     cacheControlPrefixLength,
   });
   messages = compressionResult.messages;
-  res.setHeader('X-FreeLLM-Compress', formatCompressionHeader(compressionResult));
+  res.setHeader('X-OSLLM-Compress', formatCompressionHeader(compressionResult));
 
   // Server-enforced system prompt (#411): injected AFTER compression so it is
   // never compressed away, and FIRST in the list so a caller-supplied system
@@ -2286,9 +2286,9 @@ proxyRouter.post('/chat/completions', async (req: Request, res: Response) => {
   // message + sampling-param normalization but before any routing/session work,
   // so a hit short-circuits the whole pipeline. Only NON-streaming requests at a
   // cacheable temperature are eligible (v1 scope: streaming always bypasses); a
-  // per-request `X-FreeLLM-Cache` header can force or bypass. Off unless enabled
+  // per-request `X-OSLLM-Cache` header can force or bypass. Off unless enabled
   // via the RESPONSE_CACHE env var or the response_cache_enabled setting.
-  const cacheDirective = parseCacheDirective(req.headers['x-freellm-cache'], req.headers['cache-control']);
+  const cacheDirective = parseCacheDirective(req.headers['x-ossllm-cache'], req.headers['cache-control']);
   // Streaming requests participate in the cache too: same canonical key (the
   // request content is identical), but hits are looked up in the streaming
   // store and replayed as SSE rather than JSON (see below).
@@ -2332,7 +2332,7 @@ proxyRouter.post('/chat/completions', async (req: Request, res: Response) => {
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
         res.setHeader('X-Routed-Via', 'cache');
-        res.setHeader('X-FreeLLM-Cache', 'HIT');
+        res.setHeader('X-OSLLM-Cache', 'HIT');
         res.write(streamHit.sse);
         res.end();
         return;
@@ -2344,7 +2344,7 @@ proxyRouter.post('/chat/completions', async (req: Request, res: Response) => {
         // deliberately skipped and the reply is not re-logged as provider usage.
         // The savings are reported separately by GET /api/cache/stats.
         res.setHeader('X-Routed-Via', 'cache');
-        res.setHeader('X-FreeLLM-Cache', 'HIT');
+        res.setHeader('X-OSLLM-Cache', 'HIT');
         res.json(withExecutionId(hit.body, requestGroupId));
         return;
       }
@@ -2557,7 +2557,7 @@ proxyRouter.post('/chat/completions', async (req: Request, res: Response) => {
   // this turn routes with. Skipped when the client pinned a model or the
   // conversation is sticky to one. Any doubt routes as Balanced.
   const routingPick = await applyDecisionRouting(messages, { pinned: pinnedModelId != null || preferredModel != null, preset: resolvedChain?.strategyOverride, signal: clientAbort.signal });
-  if (routingPick && !res.headersSent) res.setHeader('X-FreeLLM-Routing-Strategy', routingStrategyHeader(routingPick));
+  if (routingPick && !res.headersSent) res.setHeader('X-OSLLM-Routing-Strategy', routingStrategyHeader(routingPick));
 
   await runFallbackLoop({
     maxRetries: MAX_RETRIES,
@@ -2688,7 +2688,7 @@ proxyRouter.post('/chat/completions', async (req: Request, res: Response) => {
           res.setHeader('Cache-Control', 'no-cache');
           res.setHeader('Connection', 'keep-alive');
           res.setHeader('X-Routed-Via', routedViaValue(route.platform, route.modelId));
-          res.setHeader('X-FreeLLM-Cache', cacheKey ? 'MISS' : 'OFF');
+          res.setHeader('X-OSLLM-Cache', cacheKey ? 'MISS' : 'OFF');
           setFallbackHeaders(res, attempt, attemptLog);
           headersSentEarly = true;
         };
@@ -3289,7 +3289,7 @@ proxyRouter.post('/chat/completions', async (req: Request, res: Response) => {
         setFallbackHeaders(res, attempt, attemptLog);
         // Normalize array-shaped message.content to a string on the way out (#166).
         const outboundBody = sanitizeResponse(normalizeOutboundContent(result));
-        res.setHeader('X-FreeLLM-Cache', cacheKey ? 'MISS' : 'OFF');
+        res.setHeader('X-OSLLM-Cache', cacheKey ? 'MISS' : 'OFF');
 
         // #1084: agents show zero context usage when the upstream omits
         // `usage` (many free-tier providers do). Fall back to the same

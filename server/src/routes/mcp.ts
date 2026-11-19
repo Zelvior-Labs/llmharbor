@@ -349,8 +349,8 @@ async function askOSLLMApi(args: Record<string, unknown>, req: Request, res: Res
       usage: payload?.usage && typeof payload.usage === 'object' ? payload.usage : null,
       routed_via: response.headers.get('x-routed-via'),
       fallback_trail: response.headers.get('x-fallback-trail'),
-      cache: response.headers.get('x-freellm-cache'),
-      compression: response.headers.get('x-freellm-compress'),
+      cache: response.headers.get('x-ossllm-cache'),
+      compression: response.headers.get('x-ossllm-compress'),
       execution_id: typeof payload?.execution_id === 'string'
         ? payload.execution_id
         : response.headers.get('x-request-id'),

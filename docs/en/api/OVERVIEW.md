@@ -20,5 +20,5 @@ This domain documents OSLLMAPI's OpenAI-compatible HTTP surface and its Anthropi
 ## Related
 
 - [../clients/](../clients/) — Coding-agent integration recipes that consume this API.
-- [../compression/](../compression/) — Request-side compression (`X-FreeLLM-Compress`) visible on API responses.
+- [../compression/](../compression/) — Request-side compression (`X-OSLLM-Compress`) visible on API responses.
 - [../architecture/](../architecture/) — Router, scoring, and streaming internals behind these endpoints.

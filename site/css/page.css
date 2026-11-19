@@ -1,30 +1,8 @@
-/* OSSLLMAPI — shared page styles. The kit (system.css, cards.css, motion, backgrounds,
+/* OSSLLMAPI — shared page structure. The kit (system.css, cards.css, motion, backgrounds,
    layout) is linked in every <head>; this file adds the page layer: the lucide icon
-   system, the grey carbon-fibre ground, grid composition, and the components each
+   system, grid composition and the components each
    separated page is built from. One system, one grid, one button look — lucide icons
-   everywhere, an oxide.computer-style technical UI over a grey carbon-fibre ground. */
-
-/* ---------------------------------------------------------------- grey carbon-fibre ground
-   A twill carbon weave sits behind everything on the page ground and the big dark
-   surfaces; cards stay clean grey with a hairline border (oxide technical look). */
-.carbon {
-  background-image:
-    repeating-linear-gradient(45deg,  rgba(255,255,255,.030) 0, rgba(255,255,255,.030) 1px, transparent 1px, transparent 7px),
-    repeating-linear-gradient(-45deg, rgba(255,255,255,.030) 0, rgba(255,255,255,.030) 1px, transparent 1px, transparent 7px),
-    repeating-linear-gradient(45deg,  rgba(0,0,0,.24) 0, rgba(0,0,0,.24) 2px, transparent 2px, transparent 14px),
-    repeating-linear-gradient(-45deg, rgba(0,0,0,.24) 0, rgba(0,0,0,.24) 2px, transparent 2px, transparent 14px);
-}
-body { background-color: var(--p-bg); }
-body::before {
-  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background-image:
-    repeating-linear-gradient(45deg,  rgba(255,255,255,.030) 0, rgba(255,255,255,.030) 1px, transparent 1px, transparent 7px),
-    repeating-linear-gradient(-45deg, rgba(255,255,255,.030) 0, rgba(255,255,255,.030) 1px, transparent 1px, transparent 7px),
-    repeating-linear-gradient(45deg,  rgba(0,0,0,.24) 0, rgba(0,0,0,.24) 2px, transparent 2px, transparent 14px),
-    repeating-linear-gradient(-45deg, rgba(0,0,0,.24) 0, rgba(0,0,0,.24) 2px, transparent 2px, transparent 14px);
-}
-/* a hairline that reads on the dark carbon ground */
-:root { --line: color-mix(in oklab, var(--ink) 16%, transparent); --line-strong: color-mix(in oklab, var(--ink) 26%, transparent); }
+   everywhere, an oxide.computer-style technical UI (theme lives in carbon.css). */
 
 /* ---------------------------------------------------------------- lucide icons
    One sprite (assets/icons/lucide.svg) holds every icon; reference by name so the
@@ -340,14 +318,6 @@ body::before {
 /* ---------------------------------------------------------------- footer
    The closing band: a carbon-fibre ground, the CTA, the link grid and legal. */
 .footer.closing { position: relative; }
-.footer.closing::before {
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background-image:
-    repeating-linear-gradient(45deg,  rgba(255,255,255,.022) 0, rgba(255,255,255,.022) 1px, transparent 1px, transparent 7px),
-    repeating-linear-gradient(-45deg, rgba(255,255,255,.022) 0, rgba(255,255,255,.022) 1px, transparent 1px, transparent 7px),
-    repeating-linear-gradient(45deg,  rgba(0,0,0,.20) 0, rgba(0,0,0,.20) 2px, transparent 2px, transparent 14px),
-    repeating-linear-gradient(-45deg, rgba(0,0,0,.20) 0, rgba(0,0,0,.20) 2px, transparent 2px, transparent 14px);
-}
 .closing__links .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: var(--card-gap); }
 .closing__links .span-2 { grid-column: span 2 / span 2; }
 .closing__links .span-4 { grid-column: span 4 / span 4; }

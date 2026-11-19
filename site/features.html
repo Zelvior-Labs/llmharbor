@@ -1,0 +1,201 @@
+<!doctype html>
+<!-- OSSLLMAPI — features page. The four jobs the router does, in a grid. -->
+<html lang="en" data-type="software" data-radius="soft" data-ground="sky" data-buttons="solid" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Features · OSSLLMAPI — the router does the work</title>
+<meta name="description" content="OSSLLMAPI does four jobs: picks the best model, fails over on rate limits, keeps keys encrypted, and counts tokens per key. Four jobs that turn free-tier keys into one dependable endpoint.">
+<link rel="canonical" href="https://ossllmapi.vercel.app/features.html">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="theme-color" content="#eef0f3">
+<meta name="application-name" content="OSSLLMAPI">
+<meta name="apple-mobile-web-app-title" content="OSSLLMAPI">
+<meta name="og:site_name" content="OSSLLMAPI">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Features · OSSLLMAPI — the router does the work">
+<meta property="og:description" content="OSSLLMAPI picks the best model, fails over on rate limits, keeps keys encrypted and counts tokens per key. One dependable endpoint from free-tier keys.">
+<meta property="og:url" content="https://ossllmapi.vercel.app/features.html">
+<meta property="og:image" content="https://ossllmapi.vercel.app/og-image.png">
+<meta property="og:image:alt" content="The four jobs the OSSLLMAPI router does">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Features · OSSLLMAPI — the router does the work">
+<meta name="twitter:description" content="Picks the best model, fails over, encrypts keys, counts tokens. One dependable endpoint.">
+<meta name="twitter:image" content="https://ossllmapi.vercel.app/og-image.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400..700&family=JetBrains+Mono:wght@400..500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/backgrounds/backgrounds.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
+<link rel="stylesheet" href="assets/icons/icon.css">
+<link rel="stylesheet" href="assets/ui/base.css">
+<link rel="stylesheet" href="assets/ui/window/fragment.css">
+<link rel="stylesheet" href="assets/ui/stat/fragment.css">
+<link rel="stylesheet" href="assets/diagrams/diagram.css">
+<link rel="stylesheet" href="css/page.css">
+<style>
+:root {
+  --p-bg: #eef0f3; --p-surface: #e2e5ea; --p-ink: #0b0c0e; --p-muted: #5d6470;
+  --p-accent: #1f2de6; --p-accent-ink: #ffffff; --p-action: #1f2de6; --p-action-ink: #ffffff;
+  --p-inv-bg: #0b0c0e; --p-inv-surface: #17181a; --p-inv-ink: #eef0f3; --p-inv-muted: #8e8f92;
+  --p-inv-accent: #eef0f3; --p-inv-accent-ink: #0b0c0e; --p-inv-action: #eef0f3; --p-inv-action-ink: #0b0c0e;
+  --font-display: "Host Grotesk", system-ui, sans-serif;
+  --font-text: "Host Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display-weight: 500; --display-tracking: -0.035em; --display-tracking-xl: -0.04em;
+}
+</style>
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script src="assets/backgrounds/backgrounds.js"></script>
+<link rel="modulepreload" href="assets/lenis.mjs">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@graph": [
+    { "@type": "BreadcrumbList", "@id": "https://ossllmapi.vercel.app/#feat-bc",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://ossllmapi.vercel.app/" },
+        { "@type": "ListItem", "position": 2, "name": "Features", "item": "https://ossllmapi.vercel.app/features.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo" href="index.html"><span class="mark" data-mark="ring" aria-hidden="true"></span>OSSLLMAPI</a>
+    <nav class="nav__links" aria-label="Main">
+      <a class="nav__link" href="index.html">Home</a>
+      <a class="nav__link" href="dashboard.html">Dashboard</a>
+      <a class="nav__link" href="features.html" aria-current="page">Features</a>
+      <a class="nav__link" href="providers.html">Providers</a>
+      <a class="nav__link" href="how.html">How</a>
+      <a class="nav__link" href="faq.html">FAQ</a>
+      <a class="nav__link" href="links.html">Links</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--primary" href="download.html"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#download"/></svg>Download the app</a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#menu"/></svg></button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="section" aria-labelledby="feat-h">
+    <div class="wrap">
+      <div class="page-head">
+        <p class="crumb"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#home"/></svg><a href="index.html">Home</a><span class="sep">/</span><b>Features</b></p>
+        <h1 id="feat-h">The router does the work.</h1>
+        <p class="t-lead">Four jobs turn a pile of free-tier keys into one dependable endpoint: picking, failing over, hiding keys and counting tokens.</p>
+      </div>
+
+      <div class="row row--2" style="margin-top: var(--s-7)">
+        <article class="feat">
+          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#route"/></svg></span><h3>Picks the best model</h3></div>
+          <p>Every request is routed to the fastest model that can serve it, chosen from your ordered fallback chain.</p>
+          <div class="fx-ui" aria-hidden="true">
+            <h5>Where requests go this week</h5>
+            <div class="fx-split"><i style="width:62%; background:#1f2de6"></i><i style="width:31%; background:#5d7fb0"></i><i style="width:7%; background:#9aa0aa"></i></div>
+            <div class="fx-leg"><span style="--c:#1f2de6">First choice<b>62%</b></span><span style="--c:#5d7fb0">Second choice<b>31%</b></span><span style="--c:#9aa0aa">Fallback<b>7%</b></span></div>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#refresh-cw"/></svg></span><h3>Falls over on rate limits</h3></div>
+          <p>When a provider throttles or hits its cap, the next provider takes the request before your caller ever sees it.</p>
+          <div class="fx-ui" aria-hidden="true">
+            <h5>Failover, in order</h5>
+            <div class="fx-rows">
+              <span><b>OpenAI</b><em style="color:#e0b34d">rate-limited</em></span>
+              <span><b>Anthropic</b><em style="color:#9fd3b5">serving</em></span>
+              <span><b>Google</b><em style="color:#8d9399">on standby</em></span>
+            </div>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#lock"/></svg></span><h3>Keeps keys encrypted</h3></div>
+          <p>Provider keys are encrypted at rest. Clients only ever see one unified key, minted in the dashboard.</p>
+          <div class="fx-ui" aria-hidden="true">
+            <h5>Key vault</h5>
+            <div class="fx-key">
+              <span><i>OA</i><b>OpenAI</b><em>sk-••••••••4f2a</em></span>
+              <span><i>CL</i><b>Anthropic</b><em>sk-••••••••9c17</em></span>
+            </div>
+          </div>
+        </article>
+        <article class="feat">
+          <div class="feat__top"><span class="ic-tile feat__ic"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#bar-chart-3"/></svg></span><h3>Counts tokens per key</h3></div>
+          <p>Usage is tracked per key against every provider's free-tier cap, so you never quietly pass a limit.</p>
+          <div class="fx-ui" aria-hidden="true">
+            <h5>Against each cap</h5>
+            <div class="fx-rows">
+              <span><b>OpenAI</b><em>38% of cap</em></span>
+              <span><b>Anthropic</b><em>27% of cap</em></span>
+              <span><b>Google</b><em>16% of cap</em></span>
+              <span><b>Groq</b><em>9% of cap</em></span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="feat-cta">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="feat-cta">See it in the dashboard. <span class="muted">Or set it up in three steps.</span></h2>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--secondary btn--xl" href="dashboard.html"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#monitor"/></svg>Open the dashboard</a>
+        <a class="btn btn--primary btn--xl" href="how.html"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#route"/></svg>Set it up</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer closing footer--dark ground-inverse" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--type">
+      <div class="section-head">
+        <h2 id="close-h">Download OSSLLMAPI and start routing.</h2>
+        <p class="t-lead">One key, one base URL, 1,313 free model endpoints. Free and open source.</p>
+      </div>
+      <a class="btn btn--primary btn--xl btn--wide" href="download.html"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#download"/></svg>Download the app<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="index.html"><span class="mark" data-mark="ring" aria-hidden="true"></span>OSSLLMAPI</a>
+          <p class="footer__lede">One OpenAI-compatible <span class="mono">/v1</span> API in front of the free tiers of 87 LLM providers. A modified version of freellmapi, made by Zelvior Labs.</p>
+          <div class="socials">
+            <a href="https://github.com/zelvior/ossllmapi" aria-label="GitHub"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#code"/></svg></a>
+            <a href="https://x.com/zelviorhere" aria-label="X"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#at-sign"/></svg></a>
+            <a href="https://youtube.com/@zelviorhere" aria-label="YouTube"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#play"/></svg></a>
+            <a href="https://discord.gg/UQfzQzymc" aria-label="Discord"><svg class="ic" aria-hidden="true"><use href="assets/icons/lucide.svg#message-square"/></svg></a>
+          </div>
+        </div>
+        <div class="span-2 footer__col"><h3>Product</h3><ul><li><a href="dashboard.html">The router</a></li><li><a href="features.html">How it works</a></li><li><a href="providers.html">Providers</a></li><li><a href="download.html">Download</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Learn</h3><ul><li><a href="how.html">Setup</a></li><li><a href="faq.html">Questions</a></li><li><a href="https://github.com/zelvior/ossllmapi/blob/main/docs/en/README.md">Docs</a></li><li><a href="https://github.com/zelvior/ossllmapi">Source</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>More</h3><ul><li><a href="https://zelviorlabs.vercel.app">Zelvior Labs</a></li><li><a href="https://www.npmjs.com/~zelnpm">npm</a></li><li><a href="https://linktr.ee/zelvior">Linktree</a></li><li><a href="https://discord.gg/UQfzQzymc">Discord</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Legal</h3><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="https://github.com/zelvior/ossllmapi/blob/main/LICENSE">MIT license</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 Zelvior Labs &nbsp; <a href="privacy.html">Privacy</a> &nbsp; <a href="terms.html">Terms</a></span>
+        <span class="credits">A modified version of tashfeenahmed/freellmapi, by Zelvior Labs.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/lenis-init.js"></script>
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+<script type="module" src="assets/layout/layout.js"></script>
+<script type="module" src="assets/diagrams/mount.js"></script>
+</body>
+</html>

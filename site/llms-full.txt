@@ -10,59 +10,57 @@ OSSLLMAPI routes every request across 87 free LLM providers and 1,313 free model
 
 Free LLMs, one API. OSSLLMAPI puts the free tiers of 87 LLM providers — 1,313 model endpoints and 10.1 billion tokens a month — behind one OpenAI-compatible /v1 endpoint. You keep one key, one base URL and one bill of zero. Open source, MIT licensed, self-host it anywhere.
 
-### Every request, routed and counted
-
-The models list shows every endpoint the router can reach. The open item shows this month's usage: tokens spent per key, against the free-tier cap of each provider. Tokens this month: 7.4B of the 10.1B free tier, tracked per key against each cap.
-
-### The router does the work
+### What it does
 
 - **Picks the best model**: every request is routed to the fastest model that can serve it, chosen from your ordered fallback chain. This week: 62% of requests go to the first choice, 31% to the second, 7% to the fallback.
 - **Falls over on rate limits**: when a provider throttles or hits its cap, the next provider takes the request before your caller ever sees it.
-- **Keeps keys encrypted**: provider keys are encrypted at rest. Clients only ever see one unified key, minted in the dashboard.
+- **Keeps keys encrypted**: provider keys are encrypted at rest; clients only ever see one unified key minted in the dashboard.
 - **Counts tokens per key**: usage is tracked per key against every provider's free-tier cap, so you never quietly pass a limit.
 
-### One endpoint, every provider
+### Windows 7 x86
 
-The router holds the free tiers of 87 providers in one catalog and serves them through the same /v1 surface — chat, embeddings, images and audio. Endpoint families: /v1/chat/completions, /v1/embeddings, /v1/images/generations, /v1/audio, plus an MCP server. Every one OpenAI-compatible. Providers include OpenAI, Anthropic, Claude, Gemini, Ollama and others.
+Every screenshot on the site was taken on a stock Windows 7 x86 machine — Windows 7 x86 SP1, 2 GB DDR2 RAM, Intel(R) Atom(TM) CPU N280 @ 1.66GHz (1.33GHz), and an HDD (70GB ST9160310AS ATA Device) — to show OSSLLMAPI performs well on legacy hardware. The same router runs on a modern server and on a phone; it does not demand a new one. Windows 7 SP1 users take the portable zip from the dedicated release, since the latest .exe will not run there.
 
-### Set it up in three steps
+### Provider hub
 
-1. **Add a provider key** — open the dashboard, paste a key from any of the 87 providers; it is encrypted and stored in the vault.
-2. **Call /v1** — point any OpenAI-compatible client at http://localhost:3001/v1 with the unified key. Existing SDK code runs unchanged.
-3. **The router picks** — every request is routed to the best free model, with failover and per-key budgets tracked.
+87 free LLM providers, 1,313 free model endpoints, behind one base URL. The router holds them all in one catalog and serves them through the same /v1 surface: chat completions, embeddings, image generation, audio, plus an MCP server.
 
-### Questions, answered
+## Dashboard (https://ossllmapi.vercel.app/dashboard.html)
 
-- **What is OSSLLMAPI?** A modified version of freellmapi made by Zelvior Labs. It aggregates the free tiers of 87 LLM providers — 1,313 free model endpoints and about 10.1 billion free tokens a month — behind one OpenAI-compatible /v1 API, with encrypted key storage, automatic failover and per-key usage tracking.
-- **Is OSSLLMAPI free?** Yes. MIT-licensed and free to self-host. The free model catalog ships as a monthly signed snapshot; a premium subscription at ossllmapi.co delivers the live catalog the same day new models, quota changes and compatibility fixes land.
-- **How do I call OSSLLMAPI?** Point any OpenAI-compatible client at http://localhost:3001/v1 with the unified key from the dashboard. Chat, embedding, image and audio requests all use the same base URL.
-- **How does the router pick a model?** For every request the router picks the best available model from your fallback chain, then falls over to the next provider when one is rate-limited or over its free-tier cap, tracking token usage per key.
-- **Which platforms does OSSLLMAPI run on?** Desktop apps for Windows, macOS and Linux, an Android APK, an iOS IPA, a Docker image for self-hosting, and a CLI. All downloadable from the GitHub releases page.
-- **Are my provider keys safe?** Keys are stored encrypted at rest. The dashboard exposes a single unified API key, and per-key token budgets keep every provider under its free-tier cap.
+Every request, routed and counted. The models list on the left is every endpoint the router can reach; the open item on the right is this month's usage — tokens spent per key, against the free-tier cap of each provider. Tokens this month: 7.4B of the 10.1B free tier. The page also carries the full Windows 7 x86 showcase: all six real screenshots and the machine they were taken on (Windows 7 x86 SP1, 2 GB DDR2 RAM, Intel Atom N280 @ 1.66GHz, 70GB ST9160310AS HDD).
 
-### Get OSSLLMAPI
+## Features (https://ossllmapi.vercel.app/features.html)
 
-Free, MIT-licensed, yours to self-host. Desktop, mobile and container builds of the same router, all from one releases page (https://github.com/zelvior/ossllmapi/releases/latest): Windows desktop app, macOS desktop app (arm64 & x64), Linux desktop app (AppImage), Android APK, iOS IPA, Docker image (ghcr.io/ossllmapi). The CLI ships on npm as ossllmapi. Premium live catalog at ossllmapi.co ($19/yr, cancel anytime).
+The router does four jobs: picks the best model, fails over on rate limits, keeps keys encrypted, and counts tokens per key. Four jobs that turn free-tier keys into one dependable endpoint.
 
-### More from Zelvior
+## Providers (https://ossllmapi.vercel.app/providers.html)
 
-- npm: https://www.npmjs.com/~zelnpm
-- ORCID: https://orcid.org/0009-0009-2376-367X
-- YouTube: https://youtube.com/@zelviorhere
-- Linktree: https://linktr.ee/zelvior
-- Discord: https://discord.gg/UQfzQzymc
-- Donate (NowPayments): https://nowpayments.io/donation/zelviorhere
-- X/Twitter: https://x.com/zelviorhere
-- Zelvior Labs (organization site & products catalogue): https://zelviorlabs.vercel.app
-- Blog: https://zelvior.blogspot.com
-- GitHub organization: https://github.com/Zelvior-Labs
-- GitHub user: https://github.com/zelvior
-- Source (this repository): https://github.com/zelvior/ossllmapi
+One endpoint, every provider. The router holds the free tiers of 87 providers in one catalog and serves them through the same /v1 surface: chat, embeddings, images, audio and an MCP server. Every endpoint family is OpenAI-compatible, so existing OpenAI SDK code works unchanged.
 
-## Privacy (https://ossllmapi.vercel.app/privacy.html)
+## How to start (https://ossllmapi.vercel.app/how.html)
 
-OSSLLMAPI is a self-hosted, open-source software project. This website does not run a tracking or analytics suite, does not set advertising cookies, and does not sell personal data. The site is hosted on Vercel, which may log standard hosting data (request timestamps, IP addresses, request paths) for security and reliability. If you self-host OSSLLMAPI, your provider keys are stored encrypted at rest and only a unified API key is exposed to clients. Contact: Zelvior Labs via the links on the home page.
+Three steps: pick a model from the 1,313 free endpoints, add your free provider keys (encrypted at rest), and point your client at one base URL — http://localhost:3001/v1. Point any OpenAI-compatible client at that URL with the unified key from the dashboard and send requests as usual.
 
-## Terms (https://ossllmapi.vercel.app/terms.html)
+## Download (https://ossllmapi.vercel.app/download.html)
 
-OSSLLMAPI is free and open-source software released under the MIT License — a modified version of tashfeenahmed/freellmapi, made by Zelvior Labs. Use it as you like, within the MIT license terms. The premium live model catalog at ossllmapi.co is a paid subscription ($19/yr, cancel anytime) and is governed by its own checkout terms at purchase. The software is provided as-is, without warranty. Provider free tiers, model availability and quota caps are set by each provider and can change at any time.
+Pick the release that matches your device. Windows 7 SP1 users must take the portable zip — the latest .exe will not run there. Release links by audience:
+
+- **Windows 7 SP1** → portable zip: https://github.com/zelvior/ossllmapi/releases#release-win7-v0.16.34-preview.1
+- **Android 8.0+ (armeabi-v7a, armeabi-v8a)** → .apk: https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.3 (recommended — works on both legacy and modern)
+- **Android 11+ (armeabi-v7a, armeabi-v8a)** → .apk: https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.2
+- **Android 11 (armeabi-v7a)** → .apk: https://github.com/zelvior/ossllmapi/releases#release-android-v0.16.34-preview.1
+
+## FAQ (https://ossllmapi.vercel.app/faq.html)
+
+Common questions: OSSLLMAPI is free (MIT, self-hosted); it runs on old hardware (screenshots taken on Windows 7 x86); it fails over on rate limits; you send one unified key, not each provider's key; you don't rewrite your client; usage is tracked per key against the 10.1B free-tier cap; keys are encrypted at rest; and you pick the build that matches your OS.
+
+## My Links (https://ossllmapi.vercel.app/links.html)
+
+Eleven links to OSSLLMAPI and Zelvior Labs: npm (https://www.npmjs.com/~zelnpm), ORCID (https://orcid.org/0009-0009-2376-367X), YouTube (https://youtube.com/@zelviorhere), Linktree (https://linktr.ee/zelvior), Discord (https://discord.gg/UQfzQzymc), Donations (https://nowpayments.io/donation/zelviorhere), X (https://x.com/zelviorhere), Org site (https://zelviorlabs.vercel.app), Blog (https://zelvior.blogspot.com), Org (https://github.com/Zelvior-Labs), User (https://github.com/zelvior).
+
+## Details
+
+- Website: https://ossllmapi.vercel.app
+- Source: https://github.com/zelvior/ossllmapi
+- License: MIT — a modified version of tashfeenahmed/freellmapi, made by Zelvior Labs
+- Premium live catalog: https://ossllmapi.co ($19/yr)

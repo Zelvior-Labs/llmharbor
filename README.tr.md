@@ -22,8 +22,8 @@ Onlarca sağlayıcının ücretsiz kullanım kotalarını ve özel OpenAI uyumlu
   <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/macos-tr.svg" height="48" alt="macOS için indir"></a>
   <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/windows-tr.svg" height="48" alt="Windows için indir"></a>
   <a href="docs/en/install/01-install.md#docker-compose"><img src="repo-assets/badges/docker-tr.svg" height="48" alt="Docker ile kendi ortamınızda çalıştırın"></a>
-  <a href="https://play.google.com/store/apps/details?id=co.ossllmapi.app"><img src="repo-assets/badges/play-store-tr.svg" height="48" alt="Google Play’den edinin"></a>
-  <a href="https://apps.apple.com/app/id6804648934"><img src="repo-assets/badges/app-store-tr.svg" height="48" alt="App Store’dan indirin"></a>
+  <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/apk-tr.svg" height="48" alt="APK İndir"></a>
+  <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/ipa-tr.svg" height="48" alt="IPA İndir"></a>
 </p>
 
 ![OSLLMAPI paneli — aylık token bütçesiyle Modeller sayfası](repo-assets/github-hero.png)

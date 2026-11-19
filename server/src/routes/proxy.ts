@@ -2044,7 +2044,7 @@ proxyRouter.post('/chat/completions', async (req: Request, res: Response) => {
     }
   });
   const compressionResult = compressRequest(messages, {
-    header: req.headers['x-ossllm-compress'],
+    header: req.headers['x-osllm-compress'],
     tools,
     cacheControlPrefixLength,
   });
@@ -2288,7 +2288,7 @@ proxyRouter.post('/chat/completions', async (req: Request, res: Response) => {
   // cacheable temperature are eligible (v1 scope: streaming always bypasses); a
   // per-request `X-OSLLM-Cache` header can force or bypass. Off unless enabled
   // via the RESPONSE_CACHE env var or the response_cache_enabled setting.
-  const cacheDirective = parseCacheDirective(req.headers['x-ossllm-cache'], req.headers['cache-control']);
+  const cacheDirective = parseCacheDirective(req.headers['x-osllm-cache'], req.headers['cache-control']);
   // Streaming requests participate in the cache too: same canonical key (the
   // request content is identical), but hits are looked up in the streaming
   // store and replayed as SSE rather than JSON (see below).

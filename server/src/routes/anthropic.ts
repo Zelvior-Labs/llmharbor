@@ -543,7 +543,7 @@ export async function handleMessages(req: Request, res: Response): Promise<void>
   // Session identity before compression can rewrite the first user turn (#1889).
   const sessionMessages = sessionIdentityMessages(messages);
   const compressionResult = compressRequest(messages, {
-    header: req.headers['x-ossllm-compress'],
+    header: req.headers['x-osllm-compress'],
     tools,
     // Claude Code normally marks the system prefix. If a later native message
     // carries a breakpoint, conservatively cap the translated prefix at
@@ -1273,7 +1273,7 @@ anthropicRouter.post('/messages/count_tokens', (req: Request, res: Response) => 
   }
   const { messages, tools } = converted;
   const compressionResult = compressRequest(messages, {
-    header: req.headers['x-ossllm-compress'],
+    header: req.headers['x-osllm-compress'],
     tools,
     recordStats: false,
   });

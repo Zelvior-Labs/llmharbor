@@ -9,7 +9,7 @@
 - **Router intelligence**: every request is routed to the best available model from your fallback chain; when a provider is rate-limited or over its free-tier cap, the next provider takes the request automatically.
 - **Encrypted keys**: provider keys are encrypted at rest; clients only ever see one unified API key minted in the dashboard.
 - **Per-key budgets**: token usage is tracked per key against every provider's free-tier cap.
-- **Self-updating catalog**: the router updates its model catalog from a signed feed. Free installs get a monthly snapshot; premium routers get the live catalog the same day.
+- **Self-updating catalog**: the router updates its model catalog from a signed feed. OSSLLMAPI is free and has no paid plan.
 
 ## Platforms
 
@@ -21,7 +21,7 @@ Point any OpenAI-compatible client at `http://localhost:3001/v1` with the unifie
 
 ## Pricing
 
-Free (MIT, self-hosted). Premium live catalog at https://ossllmapi.co ($19/yr, cancel anytime).
+Free (MIT, self-hosted). OSSLLMAPI has no paid plan. The paid plan at https://freellmapi.co belongs to Tashfeen Ahmed, author of the original freellmapi.
 
 ## Details
 

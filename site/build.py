@@ -55,7 +55,7 @@ details=[("route","Picks the best model","Every request is routed to the fastest
 P["features"]=("Features · OSSLLMAPI","Four jobs turn a pile of free-tier keys into one dependable endpoint.",head("The router does the work","Picking, failing over, hiding keys and counting tokens.")+'<div class="bento">'+"".join(f'<div class="tile s3"><span class="ic">{I[i]}</span><h3>{t}</h3><p>{d}</p></div>' for i,t,d in details)+f'</div><div class="row" style="margin-top:24px"><a class="btn hot" href="dashboard.html">Open the dashboard</a><a class="btn" href="how.html">Set it up</a></div></div></section>')
 # ---- providers
 eps=[("chat","Chat","/v1/chat/completions","routed to the best free chat model, with failover."),("vec","Embeddings","/v1/embeddings","vectors from the free embedding endpoints."),("img","Images","/v1/images/generations","image generation through the same router."),("mic","Audio","/v1/audio","speech endpoints, OpenAI-compatible.")]
-P["providers"]=("Providers · OSSLLMAPI","The router holds the free tiers of 87 providers in one catalog and serves them through the same /v1 surface.",head("One endpoint, every provider","87 free tiers, one base URL, four endpoint families. Every one is OpenAI-compatible, so existing SDK code works unchanged.")+'<div class="bento">'+"".join(f'<div class="tile s3"><span class="ic">{I[i]}</span><h3>{n}</h3><p><code>{p}</code> — {d}</p></div>' for i,n,p,d in eps)+'<div class="tile s6"><h3>Also included</h3><p>An MCP server, plus a signed catalog feed that keeps the model list current. Free installs get a monthly snapshot; premium routers get the live catalog the same day.</p></div></div></div></section>')
+P["providers"]=("Providers · OSSLLMAPI","The router holds the free tiers of 87 providers in one catalog and serves them through the same /v1 surface.",head("One endpoint, every provider","87 free tiers, one base URL, four endpoint families. Every one is OpenAI-compatible, so existing SDK code works unchanged.")+'<div class="bento">'+"".join(f'<div class="tile s3"><span class="ic">{I[i]}</span><h3>{n}</h3><p><code>{p}</code> — {d}</p></div>' for i,n,p,d in eps)+'<div class="tile s6"><h3>Also included</h3><p>An MCP server, plus a signed catalog feed that keeps the model list current. OSSLLMAPI is free and has no paid plan.</p></div></div></div></section>')
 # ---- how
 steps=[("Pick a model","Choose from the 1,313 free model endpoints in the catalog: chat, embeddings, image and audio."),("Add your keys","Paste the free-tier API keys for the providers you want. They stay encrypted at rest, and each client uses one unified key."),("Point your client at one URL","Set base_url to http://localhost:3001/v1 and send any OpenAI-compatible request. The router picks the provider.")]
 code='from openai import OpenAI\n\nclient = OpenAI(\n    base_url="http://localhost:3001/v1",\n    api_key="sk-your-unified-key",\n)\n\nclient.chat.completions.create(\n    model="gpt-4o-mini",\n    messages=[{"role": "user", "content": "Hello"}],\n)'
@@ -74,16 +74,16 @@ P["links"]=("Links · OSSLLMAPI","Every place to find OSSLLMAPI, Zelvior Labs an
 LEGAL={
  "privacy": {
   "title": "Privacy Policy · OSSLLMAPI",
-  "desc": "OSSLLMAPI privacy policy: the router is self-hosted, provider keys are encrypted at rest, and the premium hosted version processes only what it needs to route a request.",
+  "desc": "OSSLLMAPI privacy policy: the router is self-hosted, provider keys are encrypted at rest, and OSSLLMAPI has no hosted service that receives your requests.",
   "h1": "Privacy Policy.",
-  "lead": "OSSLLMAPI is a self-hosted router. The short version: your provider keys stay on your machine, and the hosted version only processes what it needs to route a request.",
+  "lead": "OSSLLMAPI is a self-hosted router. The short version: your provider keys stay on your machine, and nothing is sent to Zelvior Labs.",
   "h2": "What we hold, and where"
  },
  "terms": {
   "title": "Terms of Use · OSSLLMAPI",
-  "desc": "OSSLLMAPI terms of use: the router is MIT-licensed software, the free tiers it routes remain subject to each provider's own terms, and the hosted version is a paid service.",
+  "desc": "OSSLLMAPI terms of use: the router is MIT-licensed software, the free tiers it routes remain subject to each provider's own terms, and OSSLLMAPI has no paid plan.",
   "h1": "Terms of Use.",
-  "lead": "OSSLLMAPI is MIT-licensed software. These terms cover the project, the free tiers it routes, and the optional hosted service.",
+  "lead": "OSSLLMAPI is MIT-licensed software. These terms cover the project, and the free tiers it routes.",
   "h2": "The short version"
  }
 }

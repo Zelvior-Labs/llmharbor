@@ -59,7 +59,7 @@ Eleven links to OSSLLMAPI and Zelvior Labs: npm (https://www.npmjs.com/~zelnpm),
 - Website: https://ossllmapi.vercel.app
 - Source: https://github.com/zelvior/ossllmapi
 - License: MIT — a modified version of tashfeenahmed/freellmapi, made by Zelvior Labs
-- Premium live catalog: https://ossllmapi.co ($19/yr)
+- No paid plan. The paid plan at https://freellmapi.co belongs to Tashfeen Ahmed, author of the original freellmapi.
 - Contact / feedback: zelvior@proton.me
 
 The site uses a grey carbon-fibre theme with a clean, technical (oxide.computer-style) UI: Lucide icons throughout, grid layouts, separated pages, and a fully responsive layout for every screen size and device.

@@ -1,200 +1,24 @@
 <!doctype html>
-<!-- OSSLLMAPI — how page. The three steps to route your first request. -->
-<html lang="en" data-type="software" data-radius="soft" data-ground="ink" data-buttons="solid" data-motion>
-<head>
-<meta charset="utf-8">
-<meta name="google-site-verification" content="hUqXugrHc_xzhUYio3bjW6G1dcc87Iyi8IL4fpCIiN0" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>How to start · OSSLLMAPI — three steps</title>
-<meta name="description" content="Set up OSSLLMAPI in three steps: pick a model, add your free provider keys, and point your client at one OpenAI-compatible base URL at http://localhost:3001/v1.">
-<link rel="canonical" href="https://ossllmapi.vercel.app/how.html">
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<meta name="theme-color" content="#0e1013">
-<meta name="application-name" content="OSSLLMAPI">
-<meta name="apple-mobile-web-app-title" content="OSSLLMAPI">
-<meta name="og:site_name" content="OSSLLMAPI">
-<meta property="og:type" content="website">
-<meta property="og:title" content="How to start · OSSLLMAPI — three steps">
-<meta property="og:description" content="Pick a model, add free provider keys, point your client at one OpenAI-compatible base URL. That is the whole setup.">
-<meta property="og:url" content="https://ossllmapi.vercel.app/how.html">
-<meta property="og:image" content="https://ossllmapi.vercel.app/og-image.png">
-<meta property="og:image:alt" content="The three steps to start routing with OSSLLMAPI">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="How to start · OSSLLMAPI — three steps">
-<meta name="twitter:description" content="Pick a model, add keys, point your client at one base URL. That is the whole setup.">
-<meta name="twitter:image" content="https://ossllmapi.vercel.app/og-image.png">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How it works · OSSLLMAPI</title><meta name="description" content="Three steps to your first route. No backend to host, no client to rewrite."><link rel="canonical" href="https://ossllmapi.vercel.app/how.html">
+<meta name="theme-color" content="#0b0d10"><meta property="og:title" content="How it works · OSSLLMAPI"><meta property="og:description" content="Three steps to your first route. No backend to host, no client to rewrite."><meta property="og:image" content="https://ossllmapi.vercel.app/og-image.png"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400..700&family=Saira+Semi+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400..500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/system.css">
-<link rel="stylesheet" href="assets/ui/cards.css">
-<link rel="stylesheet" href="assets/motion/motion.css">
-<link rel="stylesheet" href="assets/backgrounds/backgrounds.css">
-<link rel="stylesheet" href="assets/layout/layout.css">
-<link rel="stylesheet" href="assets/icons/icon.css">
-<link rel="stylesheet" href="assets/ui/base.css">
-<link rel="stylesheet" href="assets/ui/window/fragment.css">
-<link rel="stylesheet" href="assets/ui/stat/fragment.css">
-<link rel="stylesheet" href="assets/diagrams/diagram.css">
-<link rel="stylesheet" href="css/page.css">
-<link rel="stylesheet" href="css/carbon.css">
-<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
-<script src="assets/backgrounds/backgrounds.js"></script>
-<link rel="modulepreload" href="assets/lenis.mjs">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org", "@graph": [
-    { "@type": "BreadcrumbList", "@id": "https://ossllmapi.vercel.app/#how-bc",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://ossllmapi.vercel.app/" },
-        { "@type": "ListItem", "position": 2, "name": "How", "item": "https://ossllmapi.vercel.app/how.html" }
-      ]
-    }
-  ]
-}
-</script>
-</head>
-<body>
-<header class="nav">
-  <div class="wrap nav__bar">
-    <a class="skip-link" href="#top">Skip to content</a>
-    <a class="nav__logo" href="index.html"><span class="mark" data-mark="ring" aria-hidden="true"></span>OSSLLMAPI</a>
-    <nav class="nav__links" aria-label="Main">
-      <a class="nav__link" href="index.html">Home</a>
-      <a class="nav__link" href="dashboard.html">Dashboard</a>
-      <a class="nav__link" href="features.html">Features</a>
-      <a class="nav__link" href="providers.html">Providers</a>
-      <a class="nav__link" href="how.html" aria-current="page">How</a>
-      <a class="nav__link" href="links.html">Links</a>
-    </nav>
-    <div class="nav__actions">
-      <a class="btn btn--primary" href="download.html"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3" />
-  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-  <path d="m7 10 5 5 5-5" /></svg>Download the app</a>
-    </div>
-    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16" />
-  <path d="M4 12h16" />
-  <path d="M4 19h16" /></svg></button>
-  </div>
-</header>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400..700&family=Saira+Semi+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head><body>
+<header class="nav"><div class="wrap"><a class="logo" href="index.html"><i></i>OSSLLMAPI</a><nav class="links" aria-label="Main"><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a><a href="features.html">Features</a><a href="providers.html">Providers</a><a href="how.html" aria-current="page">How</a><a href="download.html">Download</a><a href="links.html">Links</a></nav><a class="btn hot" href="download.html">Download</a></div></header>
+<main><section><div class="wrap"><div class="head"><h1>Three steps to your first route</h1><p class="lead">Pick a model, add keys, point your app at one base URL.</p></div><div class="bento"><div class="tile s2"><span class="ic">1</span><h3>Pick a model</h3><p>Choose from the 1,313 free model endpoints in the catalog: chat, embeddings, image and audio.</p></div><div class="tile s2"><span class="ic">2</span><h3>Add your keys</h3><p>Paste the free-tier API keys for the providers you want. They stay encrypted at rest, and each client uses one unified key.</p></div><div class="tile s2"><span class="ic">3</span><h3>Point your client at one URL</h3><p>Set base_url to http://localhost:3001/v1 and send any OpenAI-compatible request. The router picks the provider.</p></div><div class="tile s6"><h3>Change only the base URL</h3><p>Everything you already send to OpenAI keeps working.</p><pre><code>from openai import OpenAI
 
-<main id="top">
-  <section class="section" aria-labelledby="how-h">
-    <div class="wrap">
-      <div class="page-head">
-        <p class="crumb"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
-  <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg><a href="index.html">Home</a><span class="sep">/</span><b>How</b></p>
-        <h1 id="how-h">Three steps to your first route.</h1>
-        <p class="t-lead">No backend to host, no client to rewrite. Pick a model, add keys, point your app at one base URL.</p>
-      </div>
-
-      <div class="row" style="margin-top: var(--s-7)">
-        <article class="step">
-          <div class="step__num">1</div>
-          <div class="step__ic"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div>
-          <h3>Pick a model.</h3>
-          <p>Choose from the 1,313 free model endpoints in the catalog — chat, embeddings, image and audio models, kept current by a signed model-catalog feed.</p>
-        </article>
-        <article class="step">
-          <div class="step__num">2</div>
-          <div class="step__ic"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 21 9.6-9.6"/><path d="m7.5 15.5 2.3 2.3a1 1 0 0 1 0 1.4l-2.1 2.1a1 1 0 0 1-1.4 0L4 19"/><circle cx="15.5" cy="7.5" r="5.5"/></svg></div>
-          <h3>Add your keys.</h3>
-          <p>Paste the free-tier API keys for the providers you want. OSSLLMAPI keeps them encrypted at rest and lets each client use only one unified key.</p>
-        </article>
-        <article class="step">
-          <div class="step__num">3</div>
-          <div class="step__ic"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5" />
-  <path d="M15 8V2" />
-  <path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z" />
-  <path d="M9 8V2" /></svg></div>
-          <h3>Point your client at one URL.</h3>
-          <p>Set <span class="mono">base_url</span> to <span class="mono">http://localhost:3001/v1</span> and send any OpenAI-compatible request. The router picks the provider.</p>
-        </article>
-      </div>
-
-      <div class="panel" style="margin-top: var(--s-8)">
-        <div class="panel__head"><h2>The one thing to remember</h2></div>
-        <div class="panel__body">
-          <p>Everything you already send to OpenAI keeps working — change only the base URL. The router takes the model name, picks the provider and endpoint, and hands back a standard OpenAI response.</p>
-          <pre class="code"><span class="code__dots" aria-hidden="true"><i></i><i></i><i></i></span><code><span class="tok-k">from</span> openai <span class="tok-k">import</span> OpenAI
-
-client = <span class="tok-fn">OpenAI</span>(
-    base_url=<span class="tok-s">"http://localhost:3001/v1"</span>,
-    api_key=<span class="tok-s">"sk-your-unified-key"</span>,
+client = OpenAI(
+    base_url=&quot;http://localhost:3001/v1&quot;,
+    api_key=&quot;sk-your-unified-key&quot;,
 )
 
-client.chat.completions.<span class="tok-fn">create</span>(
-    model=<span class="tok-s">"gpt-4o-mini"</span>,
-    messages=[{ <span class="tok-s">"role"</span>: <span class="tok-s">"user"</span>, <span class="tok-s">"content"</span>: <span class="tok-s">"Hello"</span> }],
-)</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-
-<!-- advertisement -->
-<div class="ad-slot" role="complementary" aria-label="Advertisement">
-  <div class="ad-slot__bar"><span class="ad-slot__label">Advertisement</span></div>
-  <div class="ad-slot__frame">
-    <script>
-      atOptions = {
-        'key' : 'ae24ec8eecf2689bab694705036287d3',
-        'format' : 'iframe',
-        'height' : 90,
-        'width' : 728,
-        'params' : {}
-      };
-    </script>
-    <script src="https://bellnewyork.org/22/ae24ec8eecf2689bab694705036287d3"></script>
-    <script src="assets/ad-fallback.js"></script>
-  </div>
-</div>
-
-
-<footer class="footer closing footer--dark ground-inverse" id="contact" aria-labelledby="close-h">
-  <div class="wrap">
-    <div class="closing__cta close--type">
-      <div class="section-head">
-        <h2 id="close-h">Download OSSLLMAPI and start routing.</h2>
-        <p class="t-lead">One key, one base URL, 1,313 free model endpoints. Free and open source.</p>
-      </div>
-      <a class="btn btn--primary btn--xl btn--wide" href="download.html"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3" />
-  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-  <path d="m7 10 5 5 5-5" /></svg>Download the app<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
-    </div>
-    <div class="closing__links">
-      <div class="grid">
-        <div class="span-4 stack-4">
-          <a class="nav__logo" href="index.html"><span class="mark" data-mark="ring" aria-hidden="true"></span>OSSLLMAPI</a>
-          <p class="footer__lede">One OpenAI-compatible <span class="mono">/v1</span> API in front of the free tiers of 87 LLM providers. A modified version of freellmapi, made by Zelvior Labs.</p>
-          <div class="socials">
-            <a href="https://github.com/zelvior/ossllmapi" aria-label="GitHub"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6" />
-  <path d="m8 6-6 6 6 6" /></svg></a>
-            <a href="https://x.com/zelviorhere" aria-label="X"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" />
-  <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8" /></svg></a>
-            <a href="https://youtube.com/@zelviorhere" aria-label="YouTube"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg></a>
-            <a href="https://discord.gg/UQfzQzymc" aria-label="Discord"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /></svg></a>
-          </div>
-        </div>
-        <div class="span-2 footer__col"><h3>Product</h3><ul><li><a href="dashboard.html">The router</a></li><li><a href="features.html">How it works</a></li><li><a href="providers.html">Providers</a></li><li><a href="download.html">Download</a></li></ul></div>
-        <div class="span-2 footer__col"><h3>Learn</h3><ul><li><a href="how.html">Setup</a></li><li><a href="mailto:zelvior@proton.me">Contact</a></li><li><a href="https://github.com/zelvior/ossllmapi/blob/main/docs/en/README.md">Docs</a></li><li><a href="https://github.com/zelvior/ossllmapi">Source</a></li></ul></div>
-        <div class="span-2 footer__col"><h3>More</h3><ul><li><a href="https://zelviorlabs.vercel.app">Zelvior Labs</a></li><li><a href="https://www.npmjs.com/~zelnpm">npm</a></li><li><a href="https://linktr.ee/zelvior">Linktree</a></li><li><a href="https://discord.gg/UQfzQzymc">Discord</a></li></ul></div>
-        <div class="span-2 footer__col"><h3>Legal</h3><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="https://github.com/zelvior/ossllmapi/blob/main/LICENSE">MIT license</a></li><li><a href="#contact">Contact</a></li></ul></div>
-      </div>
-      <div class="footer__legal">
-        <span>&copy; 2026 Zelvior Labs &nbsp; <a href="privacy.html">Privacy</a> &nbsp; <a href="terms.html">Terms</a></span>
-        <span class="credits">A modified version of tashfeenahmed/freellmapi, by Zelvior Labs.</span>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<script type="module" src="assets/lenis-init.js"></script>
-<script type="module" src="assets/system.js"></script>
-<script type="module" src="assets/motion/motion.js"></script>
-<script type="module" src="assets/layout/layout.js"></script>
-<script type="module" src="assets/diagrams/mount.js"></script>
-</body>
-</html>
+client.chat.completions.create(
+    model=&quot;gpt-4o-mini&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello&quot;}],
+)</code></pre></div></div></div></section></main>
+<footer><div class="wrap"><div class="bento"><div class="s3"><a class="logo" href="index.html"><i></i>OSSLLMAPI</a><p class="mute" style="margin-top:12px;max-width:44ch">One OpenAI-compatible <code>/v1</code> API in front of the free tiers of 87 LLM providers. A modified version of freellmapi, made by Zelvior Labs.</p></div>
+<ul class="s2"><li><a href="features.html">Features</a></li><li><a href="providers.html">Providers</a></li><li><a href="how.html">How it works</a></li><li><a href="download.html">Download</a></li></ul>
+<ul class="s1" style="grid-column:span 1"><li><a href="https://github.com/zelvior/ossllmapi">GitHub</a></li><li><a href="links.html">Links</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+<p class="legal">MIT licence · a modified version of tashfeenahmed/freellmapi · Zelvior Labs</p></div></footer></body></html>

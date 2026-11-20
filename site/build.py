@@ -12,9 +12,23 @@ I={k:f'<svg viewBox="0 0 24 24" aria-hidden="true">{v}</svg>' for k,v in {
 "img":'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>',
 "mic":'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/>'}.items()}
 NAV=[("index","Home"),("dashboard","Dashboard"),("features","Features"),("providers","Providers"),("how","How"),("download","Download"),("links","Links")]
+HNAV=[("features","Features"),("providers","Providers"),("how","How"),("dashboard","Dashboard")]
+SMART="https://ardance.org/4/c4141e29c163947b23a501084e9f33a8"
+def slot(k,cls="s6"): return f'<aside class="tile ad ad--{k} {cls}" data-ad="{k}" aria-label="Advertisement"><span class="ad__tag">Advertisement</span><div class="ad__box"></div></aside>'
+LINK=f'<a class="tile ad ad--link s6" href="{SMART}" target="_blank" rel="sponsored nofollow noopener noreferrer"><span class="ad__tag">Sponsored link</span><h3>Sponsored link</h3><p>Opens an advertiser’s website in a new tab. It is not part of OSSLLMAPI.</p><span class="btn">Visit sponsor ↗</span></a>'
+# ads only where nobody is mid-task: never on Download, Privacy, Terms, Links or 404
+ADS={"index":{1:slot("lb"),2:slot("tall","s2")+slot("rect","s2")+slot("native","s2")},"features":{0:slot("lb")+LINK},"providers":{0:slot("lb")},"how":{0:slot("lb")},"dashboard":{0:slot("lb")}}
+def inject(slug,body):
+    parts=body.split("</section>");out=[]
+    for n,p in enumerate(parts[:-1]):
+        out.append(p+"</section>");a=ADS.get(slug,{}).get(n)
+        if a: out.append(f'<section class="adsec"><div class="wrap"><div class="bento">{a}</div></div></section>')
+    return "".join(out)+parts[-1]
 def page(slug,title,desc,body):
-    nav="".join(f'<a href="{s}.html"{" aria-current=\"page\"" if s==slug else ""}>{n}</a>' for s,n in NAV)
+    body=inject(slug,body)
+    nav="".join(f'<a href="{s}.html"{" aria-current=\"page\"" if s==slug else ""}>{n}</a>' for s,n in HNAV)
     url="https://ossllmapi.vercel.app/"+("" if slug=="index" else slug+".html")
+    ADJS='<script src="js/ads.js" defer></script>' if ADS.get(slug) else ''
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">
@@ -22,13 +36,14 @@ def page(slug,title,desc,body):
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400..700&family=Saira+Semi+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css"></head><body>
+<script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){{document.documentElement.classList.add("js");setTimeout(function(){{if(!document.documentElement.dataset.m)document.documentElement.classList.remove("js")}},3000)}}</script>
+<link rel="stylesheet" href="css/style.css"></head><body id="top">
 <header class="nav"><div class="wrap"><a class="logo" href="index.html"><i></i>OSSLLMAPI</a><nav class="links" aria-label="Main">{nav}</nav><a class="btn hot" href="download.html">Download</a></div></header>
 <main>{body}</main>
 <footer><div class="wrap"><div class="bento"><div class="s3"><a class="logo" href="index.html"><i></i>OSSLLMAPI</a><p class="mute" style="margin-top:12px;max-width:44ch">One OpenAI-compatible <code>/v1</code> API in front of the free tiers of 87 LLM providers. A modified version of freellmapi, made by Zelvior Labs.</p></div>
 <ul class="s2"><li><a href="features.html">Features</a></li><li><a href="providers.html">Providers</a></li><li><a href="how.html">How it works</a></li><li><a href="download.html">Download</a></li></ul>
 <ul class="s1" style="grid-column:span 1"><li><a href="{GH}">GitHub</a></li><li><a href="links.html">Links</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
-<p class="legal">MIT licence · a modified version of tashfeenahmed/freellmapi · Zelvior Labs</p></div></footer></body></html>'''
+<p class="legal">MIT licence · a modified version of tashfeenahmed/freellmapi · Zelvior Labs. Free, open source, yours to self-host. Thanks for stopping by.</p><a class="btn top" href="#top" style="margin-top:14px">Back to top ↑</a></div></footer><script src="js/motion.js" defer></script>{ADJS}</body></html>'''
 def head(h,lead,pill=None): return f'<section><div class="wrap"><div class="head">{f"<span class=pill>{pill}</span>" if pill else ""}<h1>{h}</h1><p class="lead">{lead}</p></div>'
 P={}
 # ---- home

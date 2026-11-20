@@ -59,3 +59,66 @@ footer{background:var(--bg);border-top:1px solid var(--edge);padding-block:40px}
 footer .bento{align-items:start}footer ul{list-style:none;padding:0;display:grid;gap:8px}footer a{color:var(--mute);text-decoration:none}footer a:hover{color:var(--ink)}
 .legal{margin-top:28px;padding-top:18px;border-top:1px solid var(--edge);color:var(--mute);font-size:14px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ================= ads: same plate as the site, but dashed and always labelled ================= */
+.adsec{padding-block:clamp(6px,1.5vw,14px)}
+.ad{border-style:dashed;border-color:var(--edge2);justify-items:center;padding:34px 16px 18px}
+.ad__tag{position:absolute;top:9px;left:12px;font:500 11px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--steel);padding:4px 8px;border:1px solid var(--edge2);border-radius:2px;background:var(--bg)}
+.ad__box{position:relative;max-width:100%;overflow:hidden;border-radius:2px;background:linear-gradient(90deg,var(--bg),var(--plate2),var(--bg)) 0 0/200% 100%;animation:sk 1.2s linear infinite}
+.ad__box.ok{animation:none;background:transparent}
+.ad__box iframe{display:block;border:0;max-width:100%;color-scheme:dark;background:transparent}
+.ad--link{justify-items:start}.ad .btn{justify-self:start}
+a.tile.ad:hover{border-color:var(--edge2)}
+.ad--tall{display:none}@media(min-width:901px){.ad--tall{display:grid}}
+@keyframes sk{to{background-position:-200% 0}}
+@media(max-width:420px){.wrap{width:min(var(--w),100% - 24px)}.ad{padding-inline:4px}}
+.nav .btn{display:inline-flex!important}
+
+/* ================= motion ================= */
+:root{--t1:120ms;--t2:240ms;--t3:480ms;--ease:cubic-bezier(.65,0,.35,1);--out:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.34,1.56,.64,1)}
+html.calm{--t3:200ms}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@property --ax{syntax:"<length>";inherits:false;initial-value:0px}
+@property --ay{syntax:"<length>";inherits:false;initial-value:0px}
+@property --ar{syntax:"<angle>";inherits:false;initial-value:0deg}
+/* origin awareness: pages hand off from a steady header; only <main> moves */
+@view-transition{navigation:auto}.nav{view-transition-name:nav}main{view-transition-name:main}
+::view-transition-old(main){animation:vt-out var(--t1) var(--ease) both}::view-transition-new(main){animation:vt-in var(--t2) var(--out) both}
+@keyframes vt-out{to{opacity:0;translate:0 -6px}}@keyframes vt-in{from{opacity:0;translate:0 10px}}
+/* staggered arc entrance: x eases out, y springs, so each tile travels a curve and overshoots */
+.js .rv{--ax:-34px;--ay:28px;--ar:-1.5deg;opacity:0;transform:translate(var(--ax),var(--ay)) rotate(var(--ar))}
+.js .rv.in{--ax:0px;--ay:0px;--ar:0deg;opacity:1;transition:--ax var(--t3) var(--out) calc(var(--i,0)*70ms),--ay var(--t3) var(--spring) calc(var(--i,0)*70ms),--ar var(--t3) var(--spring) calc(var(--i,0)*70ms),opacity var(--t2) var(--ease) calc(var(--i,0)*70ms)}
+.js .rv.done{transform:none}
+/* tiles: exaggerated lift (primary), corners + icon react (secondary), instant press dip (anticipation) */
+.tile{transition:translate var(--t2) var(--spring),scale var(--t1) var(--out),box-shadow var(--t2) var(--ease),border-color var(--t1) linear}
+.tile::before,.tile::after{transition:width var(--t2) var(--spring),height var(--t2) var(--spring),border-color var(--t1)}
+a.tile:not(.ad):hover{translate:0 -6px;box-shadow:inset 0 1px rgb(255 255 255/.1),0 28px 34px -20px rgb(0 0 0/.95)}
+a.tile:not(.ad):hover::before,a.tile:not(.ad):hover::after{width:22px;height:22px}
+a.tile:not(.ad):active{translate:0 -1px;scale:.985;transition-duration:0s}
+.ic{transition:rotate var(--t2) var(--spring),scale var(--t2) var(--spring)}a.tile:hover .ic{rotate:-8deg;scale:1.14}
+/* buttons: fitts (48px min target), squash on press, rubber-band magnet, origin ripple */
+.btn{min-height:48px;padding:14px 24px;position:relative;overflow:hidden;translate:var(--mx,0) var(--my,0);transition:translate var(--t3) var(--spring),scale var(--t1) var(--out),background-color var(--t1),border-color var(--t1)}
+.btn.mag{transition:translate 60ms linear,scale var(--t1) var(--out),background-color var(--t1),border-color var(--t1)}
+.btn:active{scale:1.04 .9;transition-duration:0s}
+.btn .rp{position:absolute;border-radius:50%;background:rgb(255 255 255/.35);pointer-events:none;translate:-50% -50%;scale:0;animation:rp var(--t3) var(--out) forwards}
+@keyframes rp{to{scale:1;opacity:0}}
+/* von restorff: the one orange block per view gets one glint, nothing else does */
+.btn.hot::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 30%,rgb(255 255 255/.5) 50%,transparent 70%);translate:-120% 0;animation:glint 900ms var(--ease) 1.4s 1 both}
+@keyframes glint{to{translate:120% 0}}
+.btn.top{justify-self:start}
+/* nav: big targets, underline enters from the left and exits right */
+.links a{position:relative;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;box-shadow:none!important}
+.links a::after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:2px;background:var(--hot);scale:0 1;transform-origin:right;transition:scale var(--t2) var(--spring)}
+.links a:hover::after,.links a[aria-current]::after{scale:1 1;transform-origin:left}
+/* hero words: stretch while falling, squash on landing, settle (follow-through) */
+.w{display:inline-block}
+.js .hero h1 .w{animation:drop 640ms var(--ease) calc(var(--i)*90ms + 80ms) both}
+html.calm .hero h1 .w{animation-duration:200ms;animation-delay:0s}
+@keyframes drop{0%{opacity:0;translate:0 -.7em;scale:.88 1.22}55%{opacity:1;translate:0 .04em;scale:1.1 .86}75%{translate:0 -.02em;scale:.97 1.04}100%{translate:0 0;scale:1 1}}
+.logo:hover i{animation:boing 500ms var(--ease)}
+@keyframes boing{30%{scale:1.3 .75}55%{scale:.85 1.2}80%{scale:1.05 .96}}
+.logo i.pop{animation:pop 700ms var(--ease) both}
+@keyframes pop{0%{scale:.2}60%{scale:1.3}80%{scale:.92}100%{scale:1}}
+.stat{font-variant-numeric:tabular-nums}
+@media(prefers-reduced-motion:reduce){.btn.hot::after{display:none}}
+@media(max-width:560px){.links{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;justify-content:space-between}.links::-webkit-scrollbar{display:none}.links a{padding:0 10px;white-space:nowrap}.nav .wrap{gap:4px 12px;min-height:56px}.nav .btn{min-height:44px;padding:10px 18px}}

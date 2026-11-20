@@ -1,0 +1,15 @@
+<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="color-scheme" content="dark"><title>Advertisement</title>
+<style>html,body{margin:0;background:transparent;overflow:hidden}</style>
+<body><script>
+/* Ad frame: runs your network's snippets verbatim, but from a real URL on this site so the ad
+   network sees the correct domain and referrer. Only ad.htm?t=b|n&k=<32 hex>&w=&h= is accepted. */
+(function(){
+var q=new URLSearchParams(location.search),k=q.get('k')||'',t=q.get('t'),w=parseInt(q.get('w'),10)||0,h=parseInt(q.get('h'),10)||0;
+if(!/^[a-f0-9]{32}$/.test(k))return;
+if(t==='n'){
+  document.write('<script async="async" data-cfasync="false" src="https://bellnewyork.org/21/'+k+'"><\/script><div id="container-'+k+'"></div>');
+}else if(w&&h){
+  document.write('<script>atOptions={"key":"'+k+'","format":"iframe","height":'+h+',"width":'+w+',"params":{}};<\/script><script src="https://bellnewyork.org/22/'+k+'"><\/script>');
+}
+})();
+</script>

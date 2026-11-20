@@ -1,11 +1,11 @@
-/* Ad loader. Every ad lives in its own iframe pointing at ad.html (a real URL on this site, so the network sees your domain),
+/* Ad loader. Every ad lives in its own iframe pointing at ad.htm (a real URL on this site, so the network sees your domain),
    loads only when near the viewport, reserves its size first (no layout shift) and picks the banner
    size that fits the slot, so each ad fits every screen. */
 (()=>{
 const B='https://bellnewyork.org/',
 LB=[[728,90,'ae24ec8eecf2689bab694705036287d3'],[468,60,'66916e9eb7042894e37842779d0282e1'],[320,50,'04c8ea1a6864428387aad4f330226fea']],
 RECT=[300,250,'b9852b158ff7a6ffaab4b619f8b34b24'],TALL=[160,300,'df6cf2c1fc0829cbed2139611418c36b'],NAT='2f88087dae2d3e0994727a99180a0187';
-const url=(t,k,w,h)=>'ad.html?t='+t+'&k='+k+'&w='+w+'&h='+h;
+const url=(t,k,w,h)=>'ad.htm?t='+t+'&k='+k+'&w='+w+'&h='+h;
 const room=s=>{const c=getComputedStyle(s);return s.clientWidth-parseFloat(c.paddingLeft)-parseFloat(c.paddingRight)};
 const filled=f=>{try{return !!f.contentDocument.querySelector('iframe,img,a,ins,video,[id^=container-] *')}catch(e){return true}};
 function mount(s){
@@ -21,8 +21,8 @@ function mount(s){
   f.title='Advertisement';f.width=spec[0];f.height=spec[1];f.scrolling='no';
     f.referrerPolicy='strict-origin-when-cross-origin';f.src=src;
   f.onload=()=>box.classList.add('ok');box.append(f);
-  // no fill after 8s (blocked, no inventory, domain not approved): remove the empty slot instead of showing a hole
-  setTimeout(()=>{if(!filled(f))s.hidden=true},8000);
+  // never hide a slot: if nothing fills in 10s say so, and log why to the console (blocked, domain not approved, or no inventory)
+  setTimeout(()=>{if(filled(f))return;box.classList.add('empty');box.dataset.msg='No ad available right now';console.info('[ads] no fill for',s.dataset.ad,src,'- check ad blocker, domain approval and the Network tab for bellnewyork.org')},10000);
 }
 const io=new IntersectionObserver((es,o)=>es.forEach(e=>{
   if(!e.isIntersecting)return;const s=e.target;o.unobserve(s);mount(s);

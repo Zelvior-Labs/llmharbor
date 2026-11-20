@@ -122,3 +122,5 @@ html.calm .hero h1 .w{animation-duration:200ms;animation-delay:0s}
 .stat{font-variant-numeric:tabular-nums}
 @media(prefers-reduced-motion:reduce){.btn.hot::after{display:none}}
 @media(max-width:560px){.links{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;justify-content:space-between}.links::-webkit-scrollbar{display:none}.links a{padding:0 10px;white-space:nowrap}.nav .wrap{gap:4px 12px;min-height:56px}.nav .btn{min-height:44px;padding:10px 18px}}
+
+.ad[hidden]{display:none!important}

@@ -7,6 +7,7 @@ import { runMigrationsSync } from './migrate/runner.js';
 import { initEncryptionKey, isEncryptionKeyInitialized, probeStoredSecrets } from '../lib/crypto.js';
 import { restrictAllToOwner, restrictDirToOwner } from '../lib/file-permissions.js';
 import { nodeSqliteFactory } from './node-sqlite.js';
+import { wasmSqliteFactory } from './wasm-sqlite.js';
 import type { Db, DbFactory } from './types.js';
 
 export type { Db, DbFactory } from './types.js';
@@ -46,7 +47,12 @@ export function defaultDbFactory(
   platform: NodeJS.Platform = process.platform,
   driver = process.env.FREEAPI_SQLITE_DRIVER,
 ): DbFactory {
-  // The standalone Linux browser bundle has no native npm addons.
+  // The standalone Linux browser bundle ships no native npm addons and must run
+  // on Node.js 18+, so it uses the pure-WebAssembly SQLite driver (no
+  // dependency on the built-in node:sqlite, which only exists on 22.13+/24.x).
+  // Android/Termux uses the built-in node:sqlite; everything else uses
+  // better-sqlite3.
+  if (driver === 'wasm') return wasmSqliteFactory;
   return platform === 'android' || driver === 'node:sqlite' ? nodeSqliteFactory : betterSqliteFactory;
 }
 

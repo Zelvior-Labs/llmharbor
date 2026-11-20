@@ -13,8 +13,8 @@ const [directory, arch] = process.argv.slice(2);
 assert.equal(process.platform, 'win32');
 assert.ok(['x86', 'x64'].includes(arch));
 const home = resolve(directory);
-const exe = join(home, 'OSSLLMAPI.exe');
-const profile = join(process.env.APPDATA, 'OSSLLMAPI-Win7');
+const exe = join(home, 'LLMHarbor.exe');
+const profile = join(process.env.APPDATA, 'LLMHarbor-Win7');
 assert.ok(!existsSync(profile), 'Use a fresh test account; refusing to touch an existing Win7 profile');
 const config = JSON.parse(readFileSync(new URL('runtime.json', import.meta.url)));
 const base = JSON.parse(readFileSync(new URL('../package.json', import.meta.url))).version;
@@ -69,7 +69,7 @@ try {
   }
   await until('signed-in React dashboard', () => evaluate(`!!(window.__FREEAPI_DESKTOP__ && document.querySelector('#root nav'))`));
   const result = await evaluate(`(async () => {
-    const session = localStorage.getItem('ossllmapi_dashboard_token');
+    const session = localStorage.getItem('llmharbor_dashboard_token');
     const headers = { Authorization: 'Bearer ' + session };
     const { apiKey } = await (await fetch('/api/settings/api-key', { headers })).json();
     const models = await fetch('/v1/models', { headers: { Authorization: 'Bearer ' + apiKey } });
@@ -78,8 +78,8 @@ try {
       updater: await window.__FREEAPI_UPDATER__.check() };
   })()`);
   assert.deepEqual(result, { shell: version, server: version, alive: true, api: true, updater: { phase: 'unsupported', reason: 'package' } });
-  await evaluate(`window.dispatchEvent(new Event('ossllmapi:open-updates'))`);
-  await until('manual Win7 download link', () => evaluate(`!!document.querySelector('a[href="https://github.com/zelvior/ossllmapi/releases?q=win7"]')`));
+  await evaluate(`window.dispatchEvent(new Event('llmharbor:open-updates'))`);
+  await until('manual Win7 download link', () => evaluate(`!!document.querySelector('a[href="https://github.com/zelvior/llmharbor/releases?q=win7"]')`));
   assert.ok(statSync(join(profile, 'freeapi.db')).size > 0);
   assert.match(readFileSync(join(profile, '.encryption-key'), 'utf8').trim(), /^[0-9a-f]{64}$/);
   console.log(`Packaged ${arch} passed on NT ${release()}: Electron ${config.electron}, SQLite, signed-in dashboard, authenticated API, manual-only updates`);

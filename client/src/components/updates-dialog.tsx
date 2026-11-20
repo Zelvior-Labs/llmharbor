@@ -27,7 +27,7 @@ function isNetworkError(message: string): boolean {
 }
 
 const DOCKER_COMMAND = 'docker compose pull && docker compose up -d'
-const SOURCE_COMMAND = 'git fetch https://github.com/zelvior/ossllmapi.git main && git merge --ff-only FETCH_HEAD && npm ci && npm run build'
+const SOURCE_COMMAND = 'git fetch https://github.com/zelvior/llmharbor.git main && git merge --ff-only FETCH_HEAD && npm ci && npm run build'
 
 /**
  * The one place updates live: opened from the ⋯ menu or the update pill.
@@ -110,7 +110,7 @@ function UpdatesContent() {
   }
 
   const version = shellVersion ?? result?.version ?? serverVersion
-  const subtitle = version ? `OSSLLMAPI v${version}` : result?.localSha ? `OSSLLMAPI ${result.localSha}` : 'OSSLLMAPI'
+  const subtitle = version ? `LLMHarbor v${version}` : result?.localSha ? `LLMHarbor ${result.localSha}` : 'LLMHarbor'
   const releaseNotes = (
     <a href={RELEASES_URL} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-0.5 text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
       {t('updates.releaseNotes')}

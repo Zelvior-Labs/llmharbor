@@ -5,10 +5,10 @@ import { shell } from 'electron';
 import type { UpdaterHooks } from '../src/updater.js';
 import type { UpdateState } from '../src/update-support.js';
 
-export const profileDirectory = 'OSSLLMAPI-Win7';
+export const profileDirectory = 'LLMHarbor-Win7';
 export function initUpdater(_options: UpdaterHooks): void { /* manual ZIP updates only */ }
 export const getUpdateState = (): UpdateState => ({ phase: 'unsupported', reason: 'package' });
 export const checkForUpdates = getUpdateState;
 export const downloadUpdate = getUpdateState;
 export const installUpdate = getUpdateState;
-export const checkFromTray = () => shell.openExternal('https://github.com/zelvior/ossllmapi/releases?q=win7');
+export const checkFromTray = () => shell.openExternal('https://github.com/zelvior/llmharbor/releases?q=win7');

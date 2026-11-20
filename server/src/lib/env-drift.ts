@@ -11,7 +11,7 @@ const COMMENTED_ENV_RE = /^\s*#\s*(?:export\s+)?([A-Z][A-Z0-9_]*)\s*=/;
 const KNOWN_UNDOCUMENTED_ENV = new Set([
   'NODE_ENV',
   'DEV_MODE',
-  'OSSLLMAPI_DIR',
+  'LLMHarbor_DIR',
   'PROXY_URL',
   'CATALOG_BASE_URL',
   'CATALOG_PUBKEY',

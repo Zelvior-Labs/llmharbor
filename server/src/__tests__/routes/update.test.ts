@@ -128,7 +128,7 @@ describe('Update API', () => {
         checkedAt: '2026-07-28T14:00:00.000Z',
       });
       expect(fetchMock).toHaveBeenCalledWith(
-        `https://api.github.com/repos/zelvior/ossllmapi/compare/${LOCAL_SHA}...main`,
+        `https://api.github.com/repos/zelvior/llmharbor/compare/${LOCAL_SHA}...main`,
         expect.any(Object),
       );
     });
@@ -136,13 +136,13 @@ describe('Update API', () => {
     it('prefers a validated packaged-build identity and truncates commit messages', async () => {
       const longMessage = 'x'.repeat(250);
       const fetchMock = vi.fn(async (url: string | URL | RequestInfo) => (String(url).includes('/releases/latest')
-        ? response({ tag_name: 'v0.12.0', html_url: 'https://github.com/zelvior/ossllmapi/releases/tag/v0.12.0' })
+        ? response({ tag_name: 'v0.12.0', html_url: 'https://github.com/zelvior/llmharbor/releases/tag/v0.12.0' })
         : response(compareBody('ahead', longMessage))));
       const execMock = vi.fn(async () => ({ stdout: `${REMOTE_SHA}\n` }));
       const { app } = createTestApp({
         env: {
-          OSSLLMAPI_COMMIT_SHA: LOCAL_SHA.toUpperCase(),
-          OSSLLMAPI_INSTALL_METHOD: 'docker',
+          LLMHarbor_COMMIT_SHA: LOCAL_SHA.toUpperCase(),
+          LLMHarbor_INSTALL_METHOD: 'docker',
         },
         fetch: fetchMock,
         execFile: execMock,
@@ -158,7 +158,7 @@ describe('Update API', () => {
     it('uses an explicitly configured update-check token for authenticated rate limits', async () => {
       const fetchMock = vi.fn(async () => response(compareBody('identical')));
       const { app } = createTestApp({
-        env: { OSSLLMAPI_UPDATE_GITHUB_TOKEN: 'test-token' },
+        env: { LLMHarbor_UPDATE_GITHUB_TOKEN: 'test-token' },
         fetch: fetchMock,
       });
 
@@ -191,13 +191,13 @@ describe('Update API', () => {
           if (String(url).includes('/releases/latest')) {
             return response({
               tag_name: 'v0.11.0',
-              html_url: 'https://github.com/zelvior/ossllmapi/releases/tag/v0.11.0',
+              html_url: 'https://github.com/zelvior/llmharbor/releases/tag/v0.11.0',
             });
           }
           return response(compareBody('identical'));
         });
         const { app } = createTestApp({
-          env: { OSSLLMAPI_INSTALL_METHOD: installation, OSSLLMAPI_COMMIT_SHA: LOCAL_SHA },
+          env: { LLMHarbor_INSTALL_METHOD: installation, LLMHarbor_COMMIT_SHA: LOCAL_SHA },
           fetch: fetchMock,
         });
 
@@ -205,7 +205,7 @@ describe('Update API', () => {
 
         expect(result.body).toMatchObject({ status: 'current', installation });
         expect(fetchMock).toHaveBeenCalledWith(
-          `https://api.github.com/repos/zelvior/ossllmapi/compare/${LOCAL_SHA}...v0.11.0`,
+          `https://api.github.com/repos/zelvior/llmharbor/compare/${LOCAL_SHA}...v0.11.0`,
           expect.any(Object),
         );
         // 'identical' against the tag: no update offered for untagged main commits.
@@ -217,13 +217,13 @@ describe('Update API', () => {
           if (String(url).includes('/releases/latest')) {
             return response({
               tag_name: 'v0.12.0',
-              html_url: 'https://github.com/zelvior/ossllmapi/releases/tag/v0.12.0',
+              html_url: 'https://github.com/zelvior/llmharbor/releases/tag/v0.12.0',
             });
           }
           return response(compareBody('ahead'));
         });
         const { app } = createTestApp({
-          env: { OSSLLMAPI_INSTALL_METHOD: installation, OSSLLMAPI_COMMIT_SHA: LOCAL_SHA },
+          env: { LLMHarbor_INSTALL_METHOD: installation, LLMHarbor_COMMIT_SHA: LOCAL_SHA },
           fetch: fetchMock,
         });
 
@@ -238,7 +238,7 @@ describe('Update API', () => {
           return response(compareBody('ahead'));
         });
         const { app } = createTestApp({
-          env: { OSSLLMAPI_INSTALL_METHOD: installation, OSSLLMAPI_COMMIT_SHA: LOCAL_SHA },
+          env: { LLMHarbor_INSTALL_METHOD: installation, LLMHarbor_COMMIT_SHA: LOCAL_SHA },
           fetch: fetchMock,
         });
 
@@ -254,13 +254,13 @@ describe('Update API', () => {
           if (String(url).includes('/releases/latest')) {
             return response({
               tag_name: 'v0.11.0',
-              html_url: 'https://github.com/zelvior/ossllmapi/releases/tag/v0.11.0',
+              html_url: 'https://github.com/zelvior/llmharbor/releases/tag/v0.11.0',
             });
           }
           return response({ message: 'rate limited' }, 403);
         });
         const { app } = createTestApp({
-          env: { OSSLLMAPI_INSTALL_METHOD: installation, OSSLLMAPI_COMMIT_SHA: LOCAL_SHA },
+          env: { LLMHarbor_INSTALL_METHOD: installation, LLMHarbor_COMMIT_SHA: LOCAL_SHA },
           fetch: fetchMock,
         });
 
@@ -277,7 +277,7 @@ describe('Update API', () => {
       const fetchMock = vi.fn();
       const execMock = vi.fn(async () => ({ stdout: `${LOCAL_SHA}\n` }));
       const { app, logger } = createTestApp({
-        env: { OSSLLMAPI_UPDATE_CHECK: ' OFF ' },
+        env: { LLMHarbor_UPDATE_CHECK: ' OFF ' },
         fetch: fetchMock,
         execFile: execMock,
       });
@@ -324,7 +324,7 @@ describe('Update API', () => {
       });
       expect(fetchMock).toHaveBeenNthCalledWith(
         2,
-        'https://github.com/zelvior/ossllmapi/commits/main.atom',
+        'https://github.com/zelvior/llmharbor/commits/main.atom',
         expect.any(Object),
       );
     });
@@ -450,7 +450,7 @@ describe('Update API', () => {
     it('resolves Git identity lazily from the current working directory', async () => {
       const execMock = vi.fn(async () => ({ stdout: `${LOCAL_SHA}\n` }));
       const { app } = createTestApp({
-        env: { OSSLLMAPI_COMMIT_SHA: 'invalid' },
+        env: { LLMHarbor_COMMIT_SHA: 'invalid' },
         execFile: execMock,
       });
       expect(execMock).not.toHaveBeenCalled();
@@ -502,7 +502,7 @@ describe('Update API', () => {
       const fetchMock = vi.fn();
       const execMock = vi.fn(async () => ({ stdout: `${LOCAL_SHA}\n` }));
       const { app } = createTestApp({
-        env: { OSSLLMAPI_INSTALL_METHOD: 'docker' },
+        env: { LLMHarbor_INSTALL_METHOD: 'docker' },
         fetch: fetchMock,
         execFile: execMock,
       });
@@ -579,7 +579,7 @@ describe('Update API', () => {
       const fetchMock = vi.fn();
       const execMock = vi.fn(async () => ({ stdout: `${LOCAL_SHA}\n` }));
       const { app } = createTestApp({
-        env: { OSSLLMAPI_UPDATE_CHECK: 'off' },
+        env: { LLMHarbor_UPDATE_CHECK: 'off' },
         fetch: fetchMock,
         execFile: execMock,
       });
@@ -737,16 +737,16 @@ describe('Update API', () => {
 
   describe('POST /api/update/apply (Docker self-update)', () => {
     const sidecar = {
-      OSSLLMAPI_INSTALL_METHOD: 'docker',
-      OSSLLMAPI_COMMIT_SHA: LOCAL_SHA,
-      OSSLLMAPI_SELF_UPDATE_URL: 'http://watchtower:8080/',
-      OSSLLMAPI_SELF_UPDATE_TOKEN: 'wt-token',
+      LLMHarbor_INSTALL_METHOD: 'docker',
+      LLMHarbor_COMMIT_SHA: LOCAL_SHA,
+      LLMHarbor_SELF_UPDATE_URL: 'http://watchtower:8080/',
+      LLMHarbor_SELF_UPDATE_TOKEN: 'wt-token',
     };
 
     it.each([
-      ['a source install', { OSSLLMAPI_SELF_UPDATE_URL: 'http://watchtower:8080', OSSLLMAPI_SELF_UPDATE_TOKEN: 'wt-token' }],
-      ['a container without the sidecar', { OSSLLMAPI_INSTALL_METHOD: 'docker', OSSLLMAPI_COMMIT_SHA: LOCAL_SHA }],
-      ['a container with a URL but no token', { OSSLLMAPI_INSTALL_METHOD: 'docker', OSSLLMAPI_SELF_UPDATE_URL: 'http://watchtower:8080' }],
+      ['a source install', { LLMHarbor_SELF_UPDATE_URL: 'http://watchtower:8080', LLMHarbor_SELF_UPDATE_TOKEN: 'wt-token' }],
+      ['a container without the sidecar', { LLMHarbor_INSTALL_METHOD: 'docker', LLMHarbor_COMMIT_SHA: LOCAL_SHA }],
+      ['a container with a URL but no token', { LLMHarbor_INSTALL_METHOD: 'docker', LLMHarbor_SELF_UPDATE_URL: 'http://watchtower:8080' }],
     ])('refuses %s without calling anything', async (_label, env) => {
       const fetchMock = vi.fn(async () => response({}, 202));
       const { app } = createTestApp({ env, fetch: fetchMock });
@@ -785,7 +785,7 @@ describe('Update API', () => {
       const { app } = createTestApp({ env: sidecar });
       expect((await httpGet(app, '/api/update/status')).body.selfUpdate).toBe(true);
 
-      const { app: plain } = createTestApp({ env: { OSSLLMAPI_INSTALL_METHOD: 'docker', OSSLLMAPI_COMMIT_SHA: LOCAL_SHA } });
+      const { app: plain } = createTestApp({ env: { LLMHarbor_INSTALL_METHOD: 'docker', LLMHarbor_COMMIT_SHA: LOCAL_SHA } });
       expect((await httpGet(plain, '/api/update/status')).body).not.toHaveProperty('selfUpdate');
     });
   });

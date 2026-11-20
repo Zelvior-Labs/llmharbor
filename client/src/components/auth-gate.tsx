@@ -131,7 +131,7 @@ function AuthForm({ mode, onAuthed }: { mode: 'setup' | 'login'; onAuthed: () =>
     <Centered>
       <div className="mb-6 flex items-center gap-2">
         <span className="inline-block size-2 rounded-full bg-foreground" />
-        <span className="font-semibold tracking-tight text-sm">OSSLLMAPI</span>
+        <span className="font-semibold tracking-tight text-sm">LLMHarbor</span>
       </div>
       <div className="rounded-3xl border bg-card p-6">
         <h1 className="text-lg font-semibold tracking-tight">{isSetup ? t('auth.createYourAccount') : t('auth.signIn')}</h1>
@@ -181,7 +181,7 @@ function AuthForm({ mode, onAuthed }: { mode: 'setup' | 'login'; onAuthed: () =>
                 placeholder={import.meta.env.MODE === 'android' ? undefined : t('auth.setupCodePlaceholder')}
                 aria-describedby="auth-setup-code-hint"
               />
-              <p id="auth-setup-code-hint" className="text-xs text-muted-foreground">{import.meta.env.MODE === 'android' ? 'Open OSSLLMAPI on this phone to see your code.' : t('auth.setupCodeHint')}</p>
+              <p id="auth-setup-code-hint" className="text-xs text-muted-foreground">{import.meta.env.MODE === 'android' ? 'Open LLMHarbor on this phone to see your code.' : t('auth.setupCodeHint')}</p>
             </div>
           )}
           {/* A server rejection is the one error nobody can predict; it gets the same
@@ -275,14 +275,14 @@ function ForgotPasswordForm({ onBack, onAuthed }: { onBack: () => void; onAuthed
     <Centered>
       <div className="mb-6 flex items-center gap-2">
         <span className="inline-block size-2 rounded-full bg-foreground" />
-        <span className="font-semibold tracking-tight text-sm">OSSLLMAPI</span>
+        <span className="font-semibold tracking-tight text-sm">LLMHarbor</span>
       </div>
       <div className="rounded-3xl border bg-card p-6">
         <h1 className="text-base font-medium">{t('auth.forgotPassword')}</h1>
 
         {step === 'request' && (
           <div className="mt-1 space-y-3">
-            <p className="text-xs text-muted-foreground mb-4">{import.meta.env.MODE === 'android' ? 'Request a code, then open the OSSLLMAPI app to read it.' : t('auth.forgotPasswordDescription')}</p>
+            <p className="text-xs text-muted-foreground mb-4">{import.meta.env.MODE === 'android' ? 'Request a code, then open the LLMHarbor app to read it.' : t('auth.forgotPasswordDescription')}</p>
             {error && <p className="text-destructive text-xs">{error}</p>}
             <Button className="w-full" disabled={busy} onClick={requestCode}>
               {busy ? t('auth.requestingResetCode') : t('auth.requestResetCode')}
@@ -292,7 +292,7 @@ function ForgotPasswordForm({ onBack, onAuthed }: { onBack: () => void; onAuthed
 
         {step === 'reset' && (
           <form onSubmit={submitReset} className="space-y-3 mt-4" noValidate>
-            <p className="text-xs text-muted-foreground">{import.meta.env.MODE === 'android' ? 'Your reset code is shown in the OSSLLMAPI app.' : t('auth.resetCodeHint')}</p>
+            <p className="text-xs text-muted-foreground">{import.meta.env.MODE === 'android' ? 'Your reset code is shown in the LLMHarbor app.' : t('auth.resetCodeHint')}</p>
             {import.meta.env.MODE !== 'android' && <p className="text-xs text-muted-foreground">{t('auth.resetCodeDockerHint')}</p>}
             <div className="space-y-1.5">
               <Label className="text-xs" htmlFor="reset-code">{t('auth.resetCode')}</Label>

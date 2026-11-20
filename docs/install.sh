@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# The OSLLMAPI installer moved to https://ossllmapi.co/install.sh
+# The OSLLMAPI installer moved to https://llmharbor.co/install.sh
 # This shim keeps old `curl ... github.io ... | bash` one-liners working.
 set -euo pipefail
-exec bash -c "$(curl -fsSL https://ossllmapi.co/install.sh)"
+exec bash -c "$(curl -fsSL https://llmharbor.co/install.sh)"

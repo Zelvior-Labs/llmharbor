@@ -33,23 +33,23 @@ describe('updater artifact names', () => {
   });
 
   it('uses the fork identity and release repository', () => {
-    expect(config.appId).toBe('io.github.zelvior.ossllmapi');
-    expect(config.productName).toBe('OSSLLMAPI');
-    expect(config.publish).toMatchObject({ provider: 'github', owner: 'zelvior', repo: 'ossllmapi' });
+    expect(config.appId).toBe('io.github.zelvior.llmharbor');
+    expect(config.productName).toBe('LLMHarbor');
+    expect(config.publish).toMatchObject({ provider: 'github', owner: 'zelvior', repo: 'llmharbor' });
   });
 
   it('separates the Windows installers, ZIPs and feeds by architecture', () => {
     const x86 = yaml.load(readFileSync(join(desktopRoot, 'electron-builder.ia32.yml'), 'utf8'));
     expect(x86.publish.channel).toBe('latest-ia32');
-    expect(expand(x86.nsis.artifactName, 'ia32')).toBe('OSSLLMAPI-1.2.3-windows-x86-setup.exe');
-    expect(expand(x86.win.artifactName, 'ia32', 'zip')).toBe('OSSLLMAPI-1.2.3-windows-x86.zip');
-    expect(expand(config.win.artifactName, 'x64', 'zip')).toBe('OSSLLMAPI-1.2.3-windows-x64.zip');
-    expect(expand(config.nsis.artifactName)).toBe('OSSLLMAPI-1.2.3-windows-x64-setup.exe');
+    expect(expand(x86.nsis.artifactName, 'ia32')).toBe('LLMHarbor-1.2.3-windows-x86-setup.exe');
+    expect(expand(x86.win.artifactName, 'ia32', 'zip')).toBe('LLMHarbor-1.2.3-windows-x86.zip');
+    expect(expand(config.win.artifactName, 'x64', 'zip')).toBe('LLMHarbor-1.2.3-windows-x64.zip');
+    expect(expand(config.nsis.artifactName)).toBe('LLMHarbor-1.2.3-windows-x64-setup.exe');
   });
 
   it.each(['arm64', 'x64'])('identifies macOS %s downloads by platform and architecture', (arch) => {
     for (const ext of ['zip', 'dmg']) {
-      expect(expand(config.mac.artifactName, arch, ext)).toBe(`OSSLLMAPI-1.2.3-macos-${arch}.${ext}`);
+      expect(expand(config.mac.artifactName, arch, ext)).toBe(`LLMHarbor-1.2.3-macos-${arch}.${ext}`);
     }
   });
 });

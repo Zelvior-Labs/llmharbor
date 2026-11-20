@@ -1,4 +1,4 @@
-import type { ChatCompletionChunk, ChatCompletionResponse, ChatMessage } from '@ossllmapi/shared/types.js';
+import type { ChatCompletionChunk, ChatCompletionResponse, ChatMessage } from '@llmharbor/shared/types.js';
 import type { CompletionOptions } from './base.js';
 import type { QuotaObservationContext } from '../services/provider-quota.js';
 import { contentToString } from '../lib/content.js';

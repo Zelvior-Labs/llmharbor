@@ -1,38 +1,38 @@
 <div align="center">
 
-# OSSLLMAPI
+# LLMHarbor
 
 **10,1 миллиарда токенов в месяц. 87 бесплатных LLM-провайдеров. 1313 бесплатных модельных эндпоинтов. Один OpenAI-совместимый API.**
 **Это модифицированная версия [freellmapi](https://github.com/tashfeenahmed/freellmapi/), созданная Zelvior Labs.**
 
 Объединяйте бесплатные тарифы десятков провайдеров, а также собственные OpenAI-совместимые эндпоинты для чата, эмбеддингов, генерации изображений и работы с аудио через единый API `/v1`. Ключи хранятся в зашифрованном виде. Маршрутизатор выбирает наиболее подходящую доступную модель, при ограничении запросов переключается на другого провайдера и учитывает расход по каждому ключу, помогая соблюдать бесплатные квоты.
 
-[![CI](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml)
-[![GitHub stars](https://img.shields.io/github/stars/zelvior/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/zelvior/ossllmapi/stargazers)
+[![CI](https://github.com/zelvior/llmharbor/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/llmharbor/actions/workflows/ci.yml)
+[![GitHub stars](https://img.shields.io/github/stars/zelvior/llmharbor?style=flat&logo=github&color=yellow)](https://github.com/zelvior/llmharbor/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
-[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/ossllmapi/pkgs/container/ossllmapi)
-[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/ossllmapi)
+[![Docker image](https://img.shields.io/badge/ghcr.io-llmharbor-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/llmharbor/pkgs/container/llmharbor)
+[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/llmharbor)
 
-**[ossllmapi.co](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · полный каталог: 736 семейств моделей и 1313 бесплатных эндпоинтов
+**[llmharbor.co](https://llmharbor.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · полный каталог: 736 семейств моделей и 1313 бесплатных эндпоинтов
 
 [English](README.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-cn.md) · **Русский** · [O'zbekcha](README.uz.md)
 
 Русский перевод может обновляться с задержкой. Самую актуальную информацию смотрите в английском [README](README.md).
 
 <p align="center">
-  <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/macos.svg" height="48" alt="Download for macOS"></a>
-  <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/windows.svg" height="48" alt="Download for Windows"></a>
+  <a href="https://github.com/zelvior/llmharbor/releases/latest"><img src="repo-assets/badges/macos.svg" height="48" alt="Download for macOS"></a>
+  <a href="https://github.com/zelvior/llmharbor/releases/latest"><img src="repo-assets/badges/windows.svg" height="48" alt="Download for Windows"></a>
   <a href="docs/en/install/01-install.md#docker-compose"><img src="repo-assets/badges/docker.svg" height="48" alt="Self-host with Docker"></a>
-  <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/apk.svg" height="48" alt="Download APK"></a>
-  <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/ipa.svg" height="48" alt="Download IPA"></a>
+  <a href="https://github.com/zelvior/llmharbor/releases/latest"><img src="repo-assets/badges/apk.svg" height="48" alt="Download APK"></a>
+  <a href="https://github.com/zelvior/llmharbor/releases/latest"><img src="repo-assets/badges/ipa.svg" height="48" alt="Download IPA"></a>
 </p>
 
 ![Панель OSLLMAPI: страница моделей и месячный бюджет токенов](repo-assets/github-hero.png)
 
 
 Маршрутизатор самостоятельно обновляет каталог моделей из подписанного источника. Новые бесплатные модели, изменения квот и исправления совместимости поступают без `git pull`. В бесплатной версии доступен ежемесячный снимок каталога: модель появляется в нём спустя 30 дней после публикации в оперативном каталоге. Пользователи Premium получают обновления в тот же день.
-**[Подключить оперативный каталог на ossllmapi.co](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_top#pricing)** ($19 в год, подписку можно отменить).
+**[Подключить оперативный каталог на llmharbor.co](https://llmharbor.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_top#pricing)** ($19 в год, подписку можно отменить).
 
 </div>
 
@@ -40,7 +40,7 @@
 
 ## Содержание
 
-- [Зачем нужен OSLLMAPI](#зачем-нужен-ossllmapi)
+- [Зачем нужен OSLLMAPI](#зачем-нужен-llmharbor)
 - [Поддерживаемые провайдеры](#поддерживаемые-провайдеры)
 - [Совместимые CLI и программирующие агенты](#совместимые-cli-и-программирующие-агенты)
 - [Сравнение с альтернативами](#сравнение-с-альтернативами)
@@ -66,7 +66,7 @@
 
 Управлять таким количеством сервисов вручную неудобно: 87 SDK, 87 наборов ограничений и столько же потенциальных точек отказа. OSLLMAPI объединяет всё в одном OpenAI-совместимом API. Достаточно направить клиентскую библиотеку OpenAI на локальный сервер, и запросы будут распределяться между провайдерами, для которых вы добавили ключи.
 
-Бесплатные тарифы постоянно меняются: модели появляются и исчезают, ограничения корректируются. OSLLMAPI автоматически загружает подписанный каталог с [ossllmapi.co](https://ossllmapi.co), поэтому данные обновляются без `git pull`. О различиях в скорости обновления рассказывается в разделе [Premium и оперативный каталог](#premium-и-оперативный-каталог).
+Бесплатные тарифы постоянно меняются: модели появляются и исчезают, ограничения корректируются. OSLLMAPI автоматически загружает подписанный каталог с [llmharbor.co](https://llmharbor.co), поэтому данные обновляются без `git pull`. О различиях в скорости обновления рассказывается в разделе [Premium и оперативный каталог](#premium-и-оперативный-каталог).
 
 ![Объединение бесплатных тарифов: около 10,1 млрд токенов в месяц от 87 провайдеров](repo-assets/free-tier.png)
 
@@ -102,7 +102,7 @@
 
 Дополнительно можно подключить **собственного провайдера**: указать на странице **Keys** любой OpenAI-совместимый эндпоинт для чата, эмбеддингов, изображений или аудио, включая llama.cpp, LM Studio, vLLM, локальный Ollama или внешний шлюз.
 
-Полный актуальный список моделей с ограничениями скорости, размерами контекста и бюджетами бесплатных токенов находится на **[ossllmapi.co/models](https://ossllmapi.co/models.html)**.
+Полный актуальный список моделей с ограничениями скорости, размерами контекста и бюджетами бесплатных токенов находится на **[llmharbor.co/models](https://llmharbor.co/models.html)**.
 
 ## Совместимые CLI и программирующие агенты
 
@@ -129,7 +129,7 @@
 Большинство агентов можно настроить одной командой. Она читает актуальный каталог, сохраняет резервную копию текущих настроек и объединяет их с новыми:
 
 ```bash
-npx ossllmapi setup-claude --url http://localhost:3001 --api-key <unified-key>
+npx llmharbor setup-claude --url http://localhost:3001 --api-key <unified-key>
 ```
 
 **[Все поддерживаемые агенты и команды настройки →](docs/en/clients/02-supported-agents.md)** · [Инструкции для инструментов, MCP-сервер и URL-токены →](docs/en/clients/01-agent-clients.md)
@@ -153,10 +153,10 @@ npx ossllmapi setup-claude --url http://localhost:3001 --api-key <unified-key>
 - **Умная маршрутизация, шесть стратегий**: выбор модели на основании актуальных оценок скорости, возможностей и надёжности. При ответах 429/5xx выполняются переход к следующей модели, временная блокировка проблемного ключа и ротация ключей. [Как работает маршрутизация →](docs/en/architecture/00-high-level-index.md#how-it-works)
 - **Единые модели и профили**: одинаковая модель у разных провайдеров отображается одной записью со строгим переключением внутри группы. Именованные профили цепочек (например, для кода или изображений) выбираются на панели или в запросе через `auto:<profile>`. Пользовательские цепочки можно переименовывать в менеджере.
 - **Учёт ограничений каждого ключа**: счётчики RPM/RPD/TPM/TPD для сочетаний `(platform, model, key)` учитывают опубликованные провайдером лимиты, чтобы маршрутизация соблюдала квоты.
-- **Автообновляемый каталог моделей**: маршрутизатор дважды в день синхронизирует подписанный каталог ossllmapi.co с новыми моделями, изменениями квот и исправлениями совместимости. Бесплатные установки используют ежемесячный снимок с задержкой 30 дней, Premium получает изменения в день публикации. [Premium →](#premium-и-оперативный-каталог)
+- **Автообновляемый каталог моделей**: маршрутизатор дважды в день синхронизирует подписанный каталог llmharbor.co с новыми моделями, изменениями квот и исправлениями совместимости. Бесплатные установки используют ежемесячный снимок с задержкой 30 дней, Premium получает изменения в день публикации. [Premium →](#premium-и-оперативный-каталог)
 - **Закрепление сессии и передача контекста**: диалог остаётся на одной модели в течение 30 минут. При переключении в ходе разговора можно передавать краткую сводку для сохранения контекста. [Подробности →](docs/en/clients/01-agent-clients.md#context-handoff)
 - **Необязательное сжатие промптов**: общий отказоустойчивый конвейер может удалять повторы, фильтровать вывод инструментов, уплотнять повторяющийся JSON и обрезать устаревший контекст до проверки кеша и маршрутизации. [Подробности →](docs/en/compression/01-compression-pipeline.md)
-- **Шифрование ключей и один токен для клиента**: ключи провайдеров хранятся в SQLite с шифрованием AES-256-GCM и расшифровываются в памяти во время запроса. Приложению передаётся только единый Bearer-токен `ossllmapi-…`.
+- **Шифрование ключей и один токен для клиента**: ключи провайдеров хранятся в SQLite с шифрованием AES-256-GCM и расшифровываются в памяти во время запроса. Приложению передаётся только единый Bearer-токен `llmharbor-…`.
 - **Панель управления и аналитика**: интерфейс React позволяет управлять ключами, менять порядок резервной цепочки, тестировать модели в Playground, смотреть статистику p50/p95/TTFT за периоды от 24 часов до 90 дней; есть авторизация, светлая и тёмная темы и [60 языков](#языки-интерфейса).
 - **MCP-сервер для ChatGPT и интерактивная документация**: ChatGPT и другие MCP-клиенты могут отправлять запросы к OSLLMAPI, получать список моделей, сведения о состоянии провайдеров, использовании, кеше и маршрутизации, а также управлять стратегией через `/mcp`. Просмотрщик OpenAPI доступен по `/v1/docs`. [ChatGPT и программирующие агенты →](docs/en/clients/01-agent-clients.md#mcp-server)
 - **Дополнительные средства эксплуатации**: необязательный кеш ответов, зашифрованные резервные копии БД, регулярная проверка ключей, массовый импорт/экспорт, конфигурация запуска. [Установка и развёртывание →](docs/en/install/01-install.md)
@@ -166,17 +166,17 @@ npx ossllmapi setup-claude --url http://localhost:3001 --api-key <unified-key>
 
 ## Быстрый запуск
 
-**Установка одной командой** (требуется Docker): создаёт `~/ossllmapi`, генерирует ключ шифрования, загружает образ и запускает контейнер.
+**Установка одной командой** (требуется Docker): создаёт `~/llmharbor`, генерирует ключ шифрования, загружает образ и запускает контейнер.
 
 ```bash
-curl -fsSL https://ossllmapi.co/install.sh | bash
+curl -fsSL https://llmharbor.co/install.sh | bash
 ```
 
-Не хотите выполнять удалённый скрипт без предварительного просмотра? [Посмотрите его исходный код](https://ossllmapi.co/install.sh). Повторный запуск безопасен: существующие `.env` и ключ шифрования сохраняются, а контейнер обновляется до `:latest`.
+Не хотите выполнять удалённый скрипт без предварительного просмотра? [Посмотрите его исходный код](https://llmharbor.co/install.sh). Повторный запуск безопасен: существующие `.env` и ключ шифрования сохраняются, а контейнер обновляется до `:latest`.
 
 Откройте http://localhost:3001, добавьте ключи провайдеров на странице **Keys**, настройте порядок **Fallback Chain** и скопируйте единый API-ключ из заголовка страницы **Keys**. Именно его следует указывать в OpenAI SDK.
 
-Для Windows (x86 и x64) скачайте OSSLLMAPI из [GitHub Releases](https://github.com/zelvior/ossllmapi/releases/latest). Для Android существует экспериментальное [руководство по Termux](docs/en/install/02-android-termux.md).
+Для Windows (x86 и x64) скачайте LLMHarbor из [GitHub Releases](https://github.com/zelvior/llmharbor/releases/latest). Для Android существует экспериментальное [руководство по Termux](docs/en/install/02-android-termux.md).
 
 Другие варианты, включая Docker Compose, локальную разработку, конфигурацию запуска, production-сборки, сетевой доступ и резервное копирование, описаны в **[руководстве по установке](docs/en/install/01-install.md)**.
 
@@ -186,17 +186,17 @@ curl -fsSL https://ossllmapi.co/install.sh | bash
 
 ![Настольное приложение OSLLMAPI](repo-assets/desktop.png)
 
-**[Скачать из Releases](https://github.com/zelvior/ossllmapi/releases/latest)**. К каждому выпуску прикладываются `.dmg` для macOS и `.exe` для Windows. Регистрация и отдельный пароль не требуются: необходим только единый API-ключ, доступный во всплывающем окне трея. Сборка из исходников и пути хранения данных: [docs/en/install/01-install.md#desktop-app](docs/en/install/01-install.md#desktop-app).
+**[Скачать из Releases](https://github.com/zelvior/llmharbor/releases/latest)**. К каждому выпуску прикладываются `.dmg` для macOS и `.exe` для Windows. Регистрация и отдельный пароль не требуются: необходим только единый API-ключ, доступный во всплывающем окне трея. Сборка из исходников и пути хранения данных: [docs/en/install/01-install.md#desktop-app](docs/en/install/01-install.md#desktop-app).
 
 Для macOS 12 Monterey и новее выберите **arm64 (Apple Silicon)** или **x64 (Intel)**. Обе версии для Mac также доступны в ZIP.
 
 ## OpenAI-совместимые клиенты
 
-Поддерживается любой клиент, которому можно задать OpenAI-совместимый базовый URL: укажите `http://localhost:3001/v1` и единый ключ с панели управления. Все генераторы конфигураций поддерживают `--dry-run`. Команды `npx ossllmapi launch` (Claude Code) и `launch-codex` (Codex) позволяют не сохранять учётные данные в конфигурационных файлах. Маршрутизатор также работает как MCP-сервер, который агенты могут опрашивать во время сессии.
+Поддерживается любой клиент, которому можно задать OpenAI-совместимый базовый URL: укажите `http://localhost:3001/v1` и единый ключ с панели управления. Все генераторы конфигураций поддерживают `--dry-run`. Команды `npx llmharbor launch` (Claude Code) и `launch-codex` (Codex) позволяют не сохранять учётные данные в конфигурационных файлах. Маршрутизатор также работает как MCP-сервер, который агенты могут опрашивать во время сессии.
 
-**ChatGPT** подключается к тому же локальному маршрутизатору через приватный Secure MCP Tunnel. MCP-инструмент `ask_ossllmapi` отправляет задачу ChatGPT через `/v1/chat/completions` и возвращает ответ с метаданными обслужившей модели, резервной маршрутизации, кеша, выполнения и токенов. Базовый URL и Bearer-аутентификация задаются в настройках клиента туннеля. Модель по умолчанию настраивается через `MCP_INFERENCE_DEFAULT_MODEL` (при отсутствии значения используется `auto`). Нельзя размещать ключ в Git или URL MCP. **[Настройка ChatGPT →](docs/en/clients/01-agent-clients.md#chatgpt-private-secure-mcp-tunnel)**
+**ChatGPT** подключается к тому же локальному маршрутизатору через приватный Secure MCP Tunnel. MCP-инструмент `ask_llmharbor` отправляет задачу ChatGPT через `/v1/chat/completions` и возвращает ответ с метаданными обслужившей модели, резервной маршрутизации, кеша, выполнения и токенов. Базовый URL и Bearer-аутентификация задаются в настройках клиента туннеля. Модель по умолчанию настраивается через `MCP_INFERENCE_DEFAULT_MODEL` (при отсутствии значения используется `auto`). Нельзя размещать ключ в Git или URL MCP. **[Настройка ChatGPT →](docs/en/clients/01-agent-clients.md#chatgpt-private-secure-mcp-tunnel)**
 
-Ключами провайдеров можно управлять и из терминала с токеном сессии панели (`OSSLLMAPI_DASHBOARD_TOKEN` или `--token`): `npx ossllmapi keys add|list|remove|test <platform>`. Команда `keys test` повторно проверяет сохранённые ключи. См. [cli/README.md](cli/README.md#provider-keys).
+Ключами провайдеров можно управлять и из терминала с токеном сессии панели (`LLMHarbor_DASHBOARD_TOKEN` или `--token`): `npx llmharbor keys add|list|remove|test <platform>`. Команда `keys test` повторно проверяет сохранённые ключи. См. [cli/README.md](cli/README.md#provider-keys).
 
 OSLLMAPI рассчитан прежде всего на локальное использование одним пользователем. Ключи провайдеров остаются в вашей SQLite-базе, зашифрованы на диске, а запросы отправляются с вашего компьютера непосредственно выбранным внешним сервисам.
 
@@ -212,19 +212,19 @@ OSLLMAPI рассчитан прежде всего на локальное ис
 
 ## Premium и оперативный каталог
 
-Маршрутизатор поддерживает каталог моделей в актуальном состоянии: дважды в день скачивает подписанный каталог с [ossllmapi.co](https://ossllmapi.co) и обновляет локальную БД новыми моделями, изменениями квот и исправлениями особенностей провайдеров. Ваши настройки включения/отключения моделей и пользовательские провайдеры остаются нетронутыми. Каждая загрузка перед применением проверяется закреплённым ключом Ed25519.
+Маршрутизатор поддерживает каталог моделей в актуальном состоянии: дважды в день скачивает подписанный каталог с [llmharbor.co](https://llmharbor.co) и обновляет локальную БД новыми моделями, изменениями квот и исправлениями особенностей провайдеров. Ваши настройки включения/отключения моделей и пользовательские провайдеры остаются нетронутыми. Каждая загрузка перед применением проверяется закреплённым ключом Ed25519.
 
-В каталоге представлены **87 провайдеров**, **736 семейств моделей**, **1313 бесплатных сочетаний провайдер/модель** (1137 для чата, 29 для изображений, 41 для аудио, 68 для эмбеддингов, 19 для транскрибации, 6 для видео и 13 для принятия решений), а заявленная общая бесплатная ёмкость составляет примерно **10,1 миллиарда токенов в месяц**. Полный список: **[ossllmapi.co/models](https://ossllmapi.co/models.html)**.
+В каталоге представлены **87 провайдеров**, **736 семейств моделей**, **1313 бесплатных сочетаний провайдер/модель** (1137 для чата, 29 для изображений, 41 для аудио, 68 для эмбеддингов, 19 для транскрибации, 6 для видео и 13 для принятия решений), а заявленная общая бесплатная ёмкость составляет примерно **10,1 миллиарда токенов в месяц**. Полный список: **[llmharbor.co/models](https://llmharbor.co/models.html)**.
 
 Бесплатные установки получают тот же подписанный каталог, но из ежемесячного снимка. Новая модель появляется там спустя 30 дней после оперативного каталога, поэтому бесплатная версия сейчас отстаёт примерно на 303 модели. Ничего не отключается и не истекает: обновления просто приходят позже.
 
 Premium поддерживает оперативный каталог на всех ваших маршрутизаторах. Когда провайдер запускает бесплатную мощную модель, незаметно снижает квоту или меняет формат API, пользователи оперативного каталога получают соответствующее обновление в тот же день, когда оно выпущено.
 
-**[Подключить оперативный каталог на ossllmapi.co →](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_bottom#pricing)**
+**[Подключить оперативный каталог на llmharbor.co →](https://llmharbor.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_bottom#pricing)**
 
 - $19 в год либо однократный платёж $49 за бессрочный доступ. Оплата через Stripe; подписку можно самостоятельно отменить в любой момент.
 - Один ключ `fla_` действует для всех ваших экземпляров маршрутизатора: на компьютере, домашнем сервере или Raspberry Pi.
-- Активация выполняется на панели управления в разделе **Premium**. Управление оплатой и подпиской: [ossllmapi.co/manage](https://ossllmapi.co/manage).
+- Активация выполняется на панели управления в разделе **Premium**. Управление оплатой и подпиской: [llmharbor.co/manage](https://llmharbor.co/manage).
 - Сам маршрутизатор распространяется под лицензией MIT и остаётся бесплатным. Premium оплачивает только доступ к оперативному каталогу, финансируя ежедневные проверки моделей и сопровождение каталога.
 
 Сервер каталога не получает ваши промпты, ответы моделей или ключи провайдеров. Маршрутизатор в любом случае остаётся размещённым на вашем оборудовании.
@@ -236,7 +236,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="http://localhost:3001/v1",
-    api_key="ossllmapi-your-unified-key",
+    api_key="llmharbor-your-unified-key",
 )
 
 resp = client.chat.completions.create(
@@ -285,11 +285,11 @@ print("Routed via:", resp.headers.get("x-routed-via"))
 
 **Нужен ли пароль?** Для настольного приложения нет: вход в панель выполняется автоматически через скрытую локальную учётную запись. Откройте панель через значок в трее → **Open Dashboard**. В серверных установках (Docker, установка одной командой, `npm run dev`) используется учётная запись с адресом электронной почты и паролем.
 
-**Забыли пароль от серверной установки?** Нажмите **Forgot password?** на странице входа. Поскольку рассылка писем не настроена, одноразовый код печатается в журнале сервера. Его можно прочитать через `docker compose logs -f ossllmapi`, в терминале работающего сервера или в журнале настольного приложения и ввести в форму сброса. Код действителен 15 минут.
+**Забыли пароль от серверной установки?** Нажмите **Forgot password?** на странице входа. Поскольку рассылка писем не настроена, одноразовый код печатается в журнале сервера. Его можно прочитать через `docker compose logs -f llmharbor`, в терминале работающего сервера или в журнале настольного приложения и ввести в форму сброса. Код действителен 15 минут.
 
 **Где находятся логи?** Для Docker в журнале контейнера, при запуске из исходников в терминале, для настольной версии в `<data dir>/logs/freeapi.log`. Открыть каталог логов также можно через **Open Logs Folder** в меню трея.
 
-**Как удалить программу?** Удалите приложение (Корзина в macOS, *Параметры → Приложения* в Windows или `docker compose down -v` для Docker), затем при необходимости удалите каталог данных: `%APPDATA%\OSSLLMAPI\`, `~/Library/Application Support/OSSLLMAPI/` либо `~/.config/OSSLLMAPI/`. Само удаление приложения не очищает эти каталоги.
+**Как удалить программу?** Удалите приложение (Корзина в macOS, *Параметры → Приложения* в Windows или `docker compose down -v` для Docker), затем при необходимости удалите каталог данных: `%APPDATA%\LLMHarbor\`, `~/Library/Application Support/LLMHarbor/` либо `~/.config/LLMHarbor/`. Само удаление приложения не очищает эти каталоги.
 
 Более подробные ответы для каждого способа установки: **[docs/en/install/01-install.md#faq-passwords-logs-uninstall](docs/en/install/01-install.md#faq-passwords-logs-uninstall)**.
 

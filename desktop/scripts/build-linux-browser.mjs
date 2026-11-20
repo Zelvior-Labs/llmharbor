@@ -12,9 +12,9 @@ import { build } from 'esbuild';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const { version } = JSON.parse(readFileSync(join(root, 'desktop/package.json'), 'utf8'));
-const name = `OSSLLMAPI-${version}-linux-i686-server`;
+const name = `LLMHarbor-${version}-linux-i686-server`;
 const out = join(root, 'desktop/dist-electron/browser');
-const temp = mkdtempSync(join(tmpdir(), 'ossllmapi-package-'));
+const temp = mkdtempSync(join(tmpdir(), 'llmharbor-package-'));
 const directory = join(temp, name);
 try {
   mkdirSync(directory);

@@ -1,5 +1,5 @@
-appId: io.github.zelvior.ossllmapi
-productName: OSSLLMAPI
+appId: io.github.zelvior.llmharbor
+productName: LLMHarbor
 directories:
   output: dist-electron
 files:
@@ -17,7 +17,7 @@ files:
 publish:
   provider: github
   owner: zelvior
-  repo: ossllmapi
+  repo: llmharbor
 asar: true
 # Linux chrome-sandbox must be mode 4755 (setuid) in the .deb; otherwise
 # Electron aborts at launch (#1229). Path is relative to desktop/.

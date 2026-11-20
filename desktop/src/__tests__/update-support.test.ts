@@ -31,8 +31,8 @@ describe('updateSupport', () => {
   });
 
   it('updates the AppImage on Linux and leaves deb/rpm to the package manager', () => {
-    expect(updateSupport({ ...base, platform: 'linux', execPath: '/tmp/.mount_x/ossllmapi-desktop', appImage: '/home/me/OSLLMAPI.AppImage' })).toBeNull();
-    expect(updateSupport({ ...base, platform: 'linux', execPath: '/opt/OSLLMAPI/ossllmapi-desktop' })).toEqual({ phase: 'unsupported', reason: 'package' });
+    expect(updateSupport({ ...base, platform: 'linux', execPath: '/tmp/.mount_x/llmharbor-desktop', appImage: '/home/me/OSLLMAPI.AppImage' })).toBeNull();
+    expect(updateSupport({ ...base, platform: 'linux', execPath: '/opt/OSLLMAPI/llmharbor-desktop' })).toEqual({ phase: 'unsupported', reason: 'package' });
   });
 });
 

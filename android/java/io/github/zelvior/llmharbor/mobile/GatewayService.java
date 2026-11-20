@@ -1,4 +1,4 @@
-package io.github.zelvior.ossllmapi.mobile;
+package io.github.zelvior.llmharbor.mobile;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -22,7 +22,7 @@ import java.nio.file.StandardCopyOption;
 
 /** The only process that loads Node. node::Start and process.exit are process-wide. */
 public final class GatewayService extends Service {
-    static final String STOP = "io.github.zelvior.ossllmapi.mobile.STOP";
+    static final String STOP = "io.github.zelvior.llmharbor.mobile.STOP";
     private static final String CHANNEL = "gateway";
     private static final int NOTIFICATION = 1;
     private static final int NOTIFICATION_ALERT = 2;
@@ -54,7 +54,7 @@ public final class GatewayService extends Service {
             final boolean lan = Prefs.get(this, Prefs.LAN);
             final boolean eco = Prefs.get(this, Prefs.ECO);
             final int heapMb = heapMegabytes();
-            new Thread(() -> watch(), "ossllmapi-status").start();
+            new Thread(() -> watch(), "llmharbor-status").start();
             new Thread(null, () -> {
                 try {
                     File data = new File(getFilesDir(), "data");
@@ -68,12 +68,12 @@ public final class GatewayService extends Service {
                 } catch (Throwable failure) {
                     recordError(describe(failure));
                     // No exception bodies/arguments in public logs: neither codes nor keys belong there.
-                    android.util.Log.e("OSSLLMAPI", "Cannot start packaged runtime: " + failure.getClass().getSimpleName());
+                    android.util.Log.e("LLMHarbor", "Cannot start packaged runtime: " + failure.getClass().getSimpleName());
                 } finally {
                     alive = false;
                     stopSelf();
                 }
-            }, "ossllmapi-node", 4L * 1024 * 1024).start();
+            }, "llmharbor-node", 4L * 1024 * 1024).start();
         }
         return Prefs.get(this, Prefs.KEEP) ? START_STICKY : START_NOT_STICKY;
     }
@@ -155,7 +155,7 @@ public final class GatewayService extends Service {
     private void acquireWakeLock() {
         PowerManager power = getSystemService(PowerManager.class);
         if (power == null) return;
-        startup = power.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "OSSLLMAPI:startup");
+        startup = power.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "LLMHarbor:startup");
         startup.setReferenceCounted(false);
         startup.acquire(90_000);
     }

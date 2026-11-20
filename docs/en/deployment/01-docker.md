@@ -18,7 +18,7 @@ The production image, the Compose quickstart, and everything about running OSLLM
 OSLLMAPI publishes a single production image containing the Express server and the built React dashboard:
 
 ```bash
-docker pull ghcr.io/tashfeenahmed/ossllmapi:latest   # or pin a release, e.g. :v1.2.3
+docker pull ghcr.io/tashfeenahmed/llmharbor:latest   # or pin a release, e.g. :v1.2.3
 ```
 
 Published tags: `latest` (default branch), `v*.*.*` (git release tags), and `sha-<commit>`. The image is multi-arch (`linux/amd64` + `linux/arm64`, so it runs on a Raspberry Pi).
@@ -26,8 +26,8 @@ Published tags: `latest` (default branch), `v*.*.*` (git release tags), and `sha
 Build shape ([Dockerfile](../../../Dockerfile)):
 
 - Three stages on the `node:24-bookworm-slim` base (`deps` → `build` → `runtime`); only already-built artifacts are copied into the runtime stage.
-- The runtime sets `NODE_ENV=production`, `PORT=3001`, and `OSSLLMAPI_INSTALL_METHOD=docker`; the process is `node server/dist/index.js`.
-- A `OSSLLMAPI_COMMIT_SHA` ARG/ENV pair sits deliberately after all `COPY` layers: the SHA changes every commit, and placing it higher would invalidate the layer cache for the whole image on each build.
+- The runtime sets `NODE_ENV=production`, `PORT=3001`, and `LLMHarbor_INSTALL_METHOD=docker`; the process is `node server/dist/index.js`.
+- A `LLMHarbor_COMMIT_SHA` ARG/ENV pair sits deliberately after all `COPY` layers: the SHA changes every commit, and placing it higher would invalidate the layer cache for the whole image on each build.
 - The runtime also copies `desktop/package.json` (a 400-byte manifest) so a container install can name its own release version (#703).
 - `.dockerignore` keeps secrets and local state out of the build context: `.env`, `.env.*`, `*.db` (+ `-wal`/`-shm` sidecars), `.encryption-key`, and `server/data` never enter an image.
 
@@ -36,8 +36,8 @@ Build shape ([Dockerfile](../../../Dockerfile)):
 Prerequisites: Docker, Docker Compose, OpenSSL. macOS/Linux:
 
 ```bash
-git clone https://github.com/tashfeenahmed/ossllmapi.git
-cd ossllmapi
+git clone https://github.com/tashfeenahmed/llmharbor.git
+cd llmharbor
 
 # Generate an encryption key for at-rest key storage
 ENCRYPTION_KEY="$(openssl rand -hex 32)"
@@ -49,7 +49,7 @@ docker compose up -d
 Windows PowerShell variant and a curl one-liner bootstrap live in [docs/en/install/01-install.md#docker-compose](../install/01-install.md#docker-compose). Then follow the logs:
 
 ```bash
-docker compose logs -f ossllmapi
+docker compose logs -f llmharbor
 ```
 
 Open http://localhost:3001, add provider keys on the **Keys** page, and grab your unified API key from that page's header — that key is what your OpenAI SDK points at.
@@ -66,7 +66,7 @@ Only do this on a trusted network — the proxy is single-user and guarded only 
 
 ## Volumes & persistence
 
-SQLite data lives in the named volume `ossllmapi-data`, mounted at `/app/server/data`. Keep the same `.env` `ENCRYPTION_KEY` and the same volume when upgrading, because provider keys are encrypted at rest. If your host only persists one specific directory, point the database there with `FREEAPI_DB_PATH=/that/path/ossllmapi.db`.
+SQLite data lives in the named volume `llmharbor-data`, mounted at `/app/server/data`. Keep the same `.env` `ENCRYPTION_KEY` and the same volume when upgrading, because provider keys are encrypted at rest. If your host only persists one specific directory, point the database there with `FREEAPI_DB_PATH=/that/path/llmharbor.db`.
 
 The Dockerfile declares **no** `VOLUME` for `/app/server/data` on purpose. Persistence is the deployment's job — the compose file maps the named volume there, and plain `docker run` takes `-v`. Declaring it in the image instead would create an ANONYMOUS volume on every container that doesn't override it: PaaS runtimes that build from the Dockerfile (Railway, Render, Coolify, Dokploy, CapRover) would then either refuse the image or silently hand each redeploy a fresh empty volume, and the declaration would also shadow a bind mount made at the same path.
 
@@ -103,5 +103,5 @@ Providers unreachable from the container, but fine from the host? A container ha
 To see which case you are hitting, ask the container directly:
 
 ```bash
-docker compose exec ossllmapi node -e "fetch('https://generativelanguage.googleapis.com/').then(r=>console.log('ok',r.status)).catch(e=>console.log('fail',e.cause?.code||e.message))"
+docker compose exec llmharbor node -e "fetch('https://generativelanguage.googleapis.com/').then(r=>console.log('ok',r.status)).catch(e=>console.log('fail',e.cause?.code||e.message))"
 ```

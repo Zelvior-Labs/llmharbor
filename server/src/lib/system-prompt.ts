@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import type { ChatMessage } from '@ossllmapi/shared/types.js';
+import type { ChatMessage } from '@llmharbor/shared/types.js';
 import { getDb, getUnifiedApiKey } from '../db/index.js';
 
 // Per-client API keys with server-enforced system prompts (#411). A client

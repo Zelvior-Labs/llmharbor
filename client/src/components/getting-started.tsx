@@ -9,8 +9,8 @@ import { apiBaseUrl } from '@/components/api-usage'
 import { Button } from '@/components/ui/button'
 import { useI18n } from '@/i18n'
 
-const DISMISS_KEY = 'ossllmapi.setup.dismissed'
-const CONNECT_KEY = 'ossllmapi.setup.connected'
+const DISMISS_KEY = 'llmharbor.setup.dismissed'
+const CONNECT_KEY = 'llmharbor.setup.connected'
 
 function readFlag(key: string): boolean {
   try { return localStorage.getItem(key) === '1' } catch { return false }

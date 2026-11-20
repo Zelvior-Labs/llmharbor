@@ -1,11 +1,11 @@
-# ossllmapi
+# llmharbor
 
-Point your coding agent at a [OSLLMAPI](https://github.com/tashfeenahmed/ossllmapi)
+Point your coding agent at a [OSLLMAPI](https://github.com/tashfeenahmed/llmharbor)
 gateway in one command. The generators read the models your server is actually
 serving and write the config file each tool expects.
 
 ```bash
-npx ossllmapi setup-claude --url http://localhost:3001 --api-key <your-key>
+npx llmharbor setup-claude --url http://localhost:3001 --api-key <your-key>
 ```
 
 No install step, no account. The unified API key comes from your OSLLMAPI
@@ -51,27 +51,27 @@ dashboard (or the tray popover in the desktop app).
 | `--model ID` | Pin a specific model instead of the catalog default |
 | `--dry-run` | Print the diff and write nothing |
 
-`OSSLLMAPI_URL` and `OSSLLMAPI_API_KEY` work in place of `--url` / `--api-key`.
+`LLMHarbor_URL` and `LLMHarbor_API_KEY` work in place of `--url` / `--api-key`.
 
 ## Provider keys
 
 The `keys` commands use a **dashboard session token**. Set
-`OSSLLMAPI_DASHBOARD_TOKEN`, or pass `--token TOKEN` to override it. This is the
+`LLMHarbor_DASHBOARD_TOKEN`, or pass `--token TOKEN` to override it. This is the
 session returned by dashboard sign-in (stored in the signed-in browser's local
-storage as `ossllmapi_dashboard_token`). The unified `--api-key` /
-`OSSLLMAPI_API_KEY` used by coding agents cannot authenticate these commands.
+storage as `llmharbor_dashboard_token`). The unified `--api-key` /
+`LLMHarbor_API_KEY` used by coding agents cannot authenticate these commands.
 The CLI does not log in or persist the dashboard token.
 
 ```bash
-export OSSLLMAPI_URL=http://localhost:3001
-export OSSLLMAPI_DASHBOARD_TOKEN='<dashboard-session-token>'
+export LLMHarbor_URL=http://localhost:3001
+export LLMHarbor_DASHBOARD_TOKEN='<dashboard-session-token>'
 
-npx ossllmapi keys add groq                 # hidden provider-key prompt
-npx ossllmapi keys add groq --key '<key>'   # non-interactive alternative
-npx ossllmapi keys list
-npx ossllmapi keys test groq                # check every stored Groq key
-npx ossllmapi keys test groq --id 7         # check one key
-npx ossllmapi keys remove groq --id 7
+npx llmharbor keys add groq                 # hidden provider-key prompt
+npx llmharbor keys add groq --key '<key>'   # non-interactive alternative
+npx llmharbor keys list
+npx llmharbor keys test groq                # check every stored Groq key
+npx llmharbor keys test groq --id 7         # check one key
+npx llmharbor keys remove groq --id 7
 ```
 
 `keys list` prints each key's ID, platform, enabled chat model count,
@@ -91,7 +91,7 @@ checks, including its policy of disabling a key after repeated confirmed failure
 
 Keyless providers skip the prompt. Custom endpoints need a URL and model
 registration, so create them in the dashboard; existing custom keys can be
-listed, tested, and removed here. Requests accept `--url` / `OSSLLMAPI_URL` and
+listed, tested, and removed here. Requests accept `--url` / `LLMHarbor_URL` and
 `--timeout MS` (30,000 ms per request by default). `--dry-run` is not supported for
 `keys`; it is rejected before any request.
 
@@ -107,11 +107,11 @@ them into the child process environment for that run only.
 ## Requirements
 
 Node.js >= 20.18. A running OSLLMAPI gateway
-([install guide](https://github.com/tashfeenahmed/ossllmapi/blob/main/docs/en/install/01-install.md)).
+([install guide](https://github.com/tashfeenahmed/llmharbor/blob/main/docs/en/install/01-install.md)).
 
 ## Links
 
-- [Clients & coding agents guide](https://github.com/tashfeenahmed/ossllmapi/blob/main/docs/en/clients/01-agent-clients.md)
-- [Issue tracker](https://github.com/tashfeenahmed/ossllmapi/issues)
+- [Clients & coding agents guide](https://github.com/tashfeenahmed/llmharbor/blob/main/docs/en/clients/01-agent-clients.md)
+- [Issue tracker](https://github.com/tashfeenahmed/llmharbor/issues)
 
 MIT © Tashfeen Ahmed

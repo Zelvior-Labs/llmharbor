@@ -10,10 +10,10 @@ import { fileURLToPath } from 'node:url';
 // addons. Warn (but do not block) on anything older than the bundle's target.
 const [major] = process.versions.node.split('.').map(Number);
 if (major < 18) {
-  console.warn(`OSSLLMAPI is built for Node.js 18+ but this is v${process.versions.node}; some features may not work.`);
+  console.warn(`LLMHarbor is built for Node.js 18+ but this is v${process.versions.node}; some features may not work.`);
 }
 process.umask(0o077);
-const data = join(process.env.XDG_DATA_HOME || join(homedir(), '.local/share'), 'ossllmapi');
+const data = join(process.env.XDG_DATA_HOME || join(homedir(), '.local/share'), 'llmharbor');
 mkdirSync(data, { recursive: true, mode: 0o700 });
 process.env.FREEAPI_DB_PATH ??= join(data, 'freeapi.db');
 process.env.FREEAPI_ENV_PATH ??= join(data, '.env');

@@ -29,14 +29,14 @@ interface ModelRow {
 export function keysHelp(): string {
   return [
     'Provider key management (dashboard authentication):',
-    '  ossllmapi keys add <platform> [--key KEY]',
-    '  ossllmapi keys list',
-    '  ossllmapi keys remove <platform> [--id ID]',
-    '  ossllmapi keys test <platform> [--id ID]',
+    '  llmharbor keys add <platform> [--key KEY]',
+    '  llmharbor keys list',
+    '  llmharbor keys remove <platform> [--id ID]',
+    '  llmharbor keys test <platform> [--id ID]',
     '',
     'Options: --url URL, --token TOKEN, --timeout MS (default 30000)',
-    'Use OSSLLMAPI_DASHBOARD_TOKEN or --token for the dashboard session token.',
-    'The unified --api-key / OSSLLMAPI_API_KEY is not dashboard authentication.',
+    'Use LLMHarbor_DASHBOARD_TOKEN or --token for the dashboard session token.',
+    'The unified --api-key / LLMHarbor_API_KEY is not dashboard authentication.',
     'Omit --key for hidden terminal input. Keyless providers do not prompt.',
     'remove requires --id when a platform has multiple keys; test checks all matches.',
     'list shows enabled chat model counts, respecting each key\'s model scope.',
@@ -84,7 +84,7 @@ export async function runKeys(
   const platform = rawPlatform?.toLowerCase();
   if (platform && !/^[a-z][a-z0-9_-]*$/.test(platform)) throw new Error('Invalid provider platform identifier');
   const token = options.token?.trim();
-  if (!token) throw new Error('Set OSSLLMAPI_DASHBOARD_TOKEN or pass --token with a dashboard session token');
+  if (!token) throw new Error('Set LLMHarbor_DASHBOARD_TOKEN or pass --token with a dashboard session token');
   const root = gatewayRoot(options.url);
   const timeout = options.timeoutMs ?? 30_000;
   if (!Number.isSafeInteger(timeout) || timeout <= 0 || timeout > 2_147_483_647) {
@@ -108,7 +108,7 @@ export async function runKeys(
     // Provider error bodies may contain credentials. Only report the HTTP
     // status, never echo arbitrary response bodies or transport errors.
     if (response.status === 401 || response.status === 403) {
-      throw new Error('Dashboard authentication failed. Supply a current dashboard session token with --token or OSSLLMAPI_DASHBOARD_TOKEN.');
+      throw new Error('Dashboard authentication failed. Supply a current dashboard session token with --token or LLMHarbor_DASHBOARD_TOKEN.');
     }
     if (!response.ok) throw new Error(`Dashboard request failed (HTTP ${response.status})`);
     if (response.status === 204) return undefined as T;

@@ -19,11 +19,11 @@ re-pull `:latest`).
 ## Reporting a vulnerability
 
 **Preferred:** GitHub private vulnerability reporting — go to the
-[Security tab](https://github.com/tashfeenahmed/ossllmapi/security) and click
+[Security tab](https://github.com/tashfeenahmed/llmharbor/security) and click
 **Report a vulnerability**. That opens a private thread with the maintainer and
 keeps the details out of public issues.
 
-**Alternate:** email **support@ossllmapi.co** with `[ossllmapi security]` in the
+**Alternate:** email **support@llmharbor.co** with `[llmharbor security]` in the
 subject.
 
 Please do not open a public issue, PR, or discussion for a security bug until a
@@ -54,7 +54,7 @@ In scope:
 
 - The router server and its `/v1` proxy, `/api/*` admin routes, and `/mcp` endpoint.
 - Dashboard authentication — the email + password account (scrypt, session tokens)
-  and the unified `ossllmapi-…` API key.
+  and the unified `llmharbor-…` API key.
 - Key handling: AES-256-GCM encryption at rest, `ENCRYPTION_KEY` usage, encrypted
   DB backups, key import/export.
 - The Electron desktop app and its local data directory.

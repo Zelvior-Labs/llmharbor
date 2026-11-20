@@ -1,4 +1,4 @@
-package io.github.zelvior.ossllmapi.mobile;
+package io.github.zelvior.llmharbor.mobile;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 /** Reports a failed self-update; success replaces this process, so there is nothing to say. */
 public final class InstallReceiver extends BroadcastReceiver {
-    static final String ACTION_STATUS = "io.github.zelvior.ossllmapi.mobile.INSTALL_STATUS";
+    static final String ACTION_STATUS = "io.github.zelvior.llmharbor.mobile.INSTALL_STATUS";
 
     @Override public void onReceive(Context context, Intent intent) {
         int status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, PackageInstaller.STATUS_FAILURE);

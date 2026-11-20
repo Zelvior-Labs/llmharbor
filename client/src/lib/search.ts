@@ -3,7 +3,7 @@
 // but they never serve chat, so the Keys page, the add-key picker and the
 // Models tabs all treat them as their own group.
 
-import type { SearchPlatform as SharedSearchPlatform } from '@ossllmapi/shared/types'
+import type { SearchPlatform as SharedSearchPlatform } from '@llmharbor/shared/types'
 import type { QueryClient } from '@tanstack/react-query'
 
 // Mirrors SEARCH_PLATFORMS in shared/types.ts. The client only imports types

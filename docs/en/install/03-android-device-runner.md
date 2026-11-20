@@ -31,7 +31,7 @@ Install the GitHub Actions runner, register it against this repository, and give
 workflow asks for:
 
 ```sh
-./config.sh --url https://github.com/zelvior/ossllmapi --token <runner-token> \
+./config.sh --url https://github.com/zelvior/llmharbor --token <runner-token> \
   --labels self-hosted,android,arm64 --unattended
 ./run.sh            # or install it as a service with ./svc.sh install
 ```

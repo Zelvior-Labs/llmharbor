@@ -11,12 +11,12 @@ mcp:
   server_urls:
     - channel: main
       url: http://127.0.0.1:3001/mcp
-  # Set OSSLLMAPI_MCP_AUTHORIZATION to the complete value
-  # "Bearer ossllmapi-..." in the process environment.
+  # Set LLMHarbor_MCP_AUTHORIZATION to the complete value
+  # "Bearer llmharbor-..." in the process environment.
   extra_headers:
-    Authorization: env:OSSLLMAPI_MCP_AUTHORIZATION
+    Authorization: env:LLMHarbor_MCP_AUTHORIZATION
   discovery_extra_headers:
-    Authorization: env:OSSLLMAPI_MCP_AUTHORIZATION
+    Authorization: env:LLMHarbor_MCP_AUTHORIZATION
   startup_wait_timeout: 60s
 
 health:

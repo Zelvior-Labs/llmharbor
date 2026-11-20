@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import type { ChatMessage } from '@ossllmapi/shared/types.js';
+import type { ChatMessage } from '@llmharbor/shared/types.js';
 import { normalizeImageInJs } from './image-normalize-js.js';
 
 // Inbound image normalization. Vision payloads ride inline as base64 data

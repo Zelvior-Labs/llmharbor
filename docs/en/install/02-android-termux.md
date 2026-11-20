@@ -34,8 +34,8 @@ node --version
 Then clone and start OSLLMAPI:
 
 ```bash
-git clone https://github.com/tashfeenahmed/ossllmapi.git
-cd ossllmapi
+git clone https://github.com/tashfeenahmed/llmharbor.git
+cd llmharbor
 npm install --no-audit --no-fund
 npm run dev
 ```

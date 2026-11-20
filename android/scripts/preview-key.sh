@@ -7,4 +7,4 @@ export APK_KEYSTORE="$keydir/preview.p12"
 export APK_PASSWORD="$(openssl rand -hex 32)" APK_ALIAS=preview
 keytool -genkeypair -keystore "$APK_KEYSTORE" -storetype PKCS12 -storepass:env APK_PASSWORD \
   -keypass:env APK_PASSWORD -alias "$APK_ALIAS" -keyalg RSA -keysize 3072 -validity 7300 \
-  -dname 'CN=OSSLLMAPI Android Preview'
+  -dname 'CN=LLMHarbor Android Preview'

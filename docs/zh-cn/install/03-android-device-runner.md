@@ -27,7 +27,7 @@ adb devices        # 应当只有一行以 "device" 结尾
 安装 GitHub Actions runner，注册到本仓库，并设置工作流要求的三个标签：
 
 ```sh
-./config.sh --url https://github.com/zelvior/ossllmapi --token <runner-token> \
+./config.sh --url https://github.com/zelvior/llmharbor --token <runner-token> \
   --labels self-hosted,android,arm64 --unattended
 ./run.sh            # 或用 ./svc.sh install 安装为服务
 ```

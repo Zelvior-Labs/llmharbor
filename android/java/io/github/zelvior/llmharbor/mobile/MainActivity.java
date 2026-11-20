@@ -1,4 +1,4 @@
-package io.github.zelvior.ossllmapi.mobile;
+package io.github.zelvior.llmharbor.mobile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -56,7 +56,7 @@ import java.util.zip.ZipOutputStream;
 public final class MainActivity extends Activity {
     private static final int REQ_EXPORT = 11, REQ_RESTORE = 12, REQ_DIAGNOSTICS = 13, REQ_CREDENTIAL = 14;
     private static final long REVEAL_MS = 60_000;
-    private static final String ACTION_SHORTCUT = "io.github.zelvior.ossllmapi.mobile.SHORTCUT";
+    private static final String ACTION_SHORTCUT = "io.github.zelvior.llmharbor.mobile.SHORTCUT";
 
     private final Handler ui = new Handler(Looper.getMainLooper());
     private final ExecutorService io = Executors.newSingleThreadExecutor();
@@ -139,7 +139,7 @@ public final class MainActivity extends Activity {
         scroll.addView(panel);
         setContentView(scroll);
 
-        TextView title = label("OSSLLMAPI", 28);
+        TextView title = label("LLMHarbor", 28);
         title.setTypeface(null, Typeface.BOLD);
         label(getString(R.string.subtitle, versionName(), Build.SUPPORTED_ABIS[0]), 14);
         status = label("Checking gateway…", 18);
@@ -500,7 +500,7 @@ public final class MainActivity extends Activity {
         if (export) {
             intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
                 .setType("application/octet-stream")
-                .putExtra(Intent.EXTRA_TITLE, "ossllmapi-backup-" + stamp + ".ossllmapi");
+                .putExtra(Intent.EXTRA_TITLE, "llmharbor-backup-" + stamp + ".llmharbor");
         } else {
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*");
         }
@@ -516,7 +516,7 @@ public final class MainActivity extends Activity {
         String stamp = new SimpleDateFormat("yyyyMMdd-HHmm", Locale.US).format(new Date());
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
             .setType("application/zip")
-            .putExtra(Intent.EXTRA_TITLE, "ossllmapi-diagnostics-" + stamp + ".zip");
+            .putExtra(Intent.EXTRA_TITLE, "llmharbor-diagnostics-" + stamp + ".zip");
         try {
             startActivityForResult(intent, REQ_DIAGNOSTICS);
         } catch (ActivityNotFoundException missing) {
@@ -560,7 +560,7 @@ public final class MainActivity extends Activity {
                         zip.write(key.getBytes(StandardCharsets.US_ASCII));
                         zip.closeEntry();
                         zip.putNextEntry(new ZipEntry("meta.json"));
-                        String meta = "{\"app\":\"OSSLLMAPI\",\"package\":\"" + getPackageName()
+                        String meta = "{\"app\":\"LLMHarbor\",\"package\":\"" + getPackageName()
                             + "\",\"version\":\"" + versionName() + "\"}";
                         zip.write(meta.getBytes(StandardCharsets.UTF_8));
                         zip.closeEntry();
@@ -693,7 +693,7 @@ public final class MainActivity extends Activity {
     private void copy(String value, String message) {
         ClipboardManager clipboard = getSystemService(ClipboardManager.class);
         if (clipboard == null || value.isEmpty()) return;
-        clipboard.setPrimaryClip(ClipData.newPlainText("OSSLLMAPI", value));
+        clipboard.setPrimaryClip(ClipData.newPlainText("LLMHarbor", value));
         toast(message);
     }
 

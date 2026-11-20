@@ -1,18 +1,18 @@
-# OSSLLMAPI Desktop
+# LLMHarbor Desktop
 
-Lean Electron menu-bar app for [OSSLLMAPI](https://github.com/zelvior/ossllmapi):
+Lean Electron menu-bar app for [LLMHarbor](https://github.com/zelvior/llmharbor):
 runs the whole router locally on `127.0.0.1:31415`, with a dark-glass tray
 popover (live 24h request chart, quick stats, copy URL/key) and the full
 dashboard in a native-feeling window.
 
-Download an installer from [Releases](https://github.com/zelvior/ossllmapi/releases/latest),
+Download an installer from [Releases](https://github.com/zelvior/llmharbor/releases/latest),
 or build against the server and client sources in this checkout.
 
 On macOS, choose **arm64** for Apple Silicon (M-series) or **x64** for Intel.
 Both require **macOS 12 Monterey or later**. Each architecture has a DMG
 installer and a ZIP containing the app.
 
-**Windows 7 SP1:** Use the [separate Windows 7 portable preview](win7/README.md) (x86 or x64). Extract the ZIP and run `OSSLLMAPI.exe`; the standard installers and their shortcuts will not work on Windows 7.
+**Windows 7 SP1:** Use the [separate Windows 7 portable preview](win7/README.md) (x86 or x64). Extract the ZIP and run `LLMHarbor.exe`; the standard installers and their shortcuts will not work on Windows 7.
 
 Windows 10/11 installers end in `-windows-x86-setup.exe` (32-bit) or `-windows-x64-setup.exe` (64-bit); the matching `.zip` is portable. These are GitHub downloads, not the upstream Microsoft Store product.
 
@@ -32,9 +32,9 @@ From the **repo root** (one-time client build + package):
 ```bash
 npm install
 npm install --prefix desktop  # install desktop dependencies
-npm run desktop:dist          # macOS → desktop/dist-electron/OSSLLMAPI-…-macos-arm64.dmg
-npm run desktop:dist:mac:x64  # Intel Mac → desktop/dist-electron/OSSLLMAPI-…-macos-x64.dmg
-npm run desktop:dist:win      # Windows → desktop/dist-electron/OSSLLMAPI-…-windows-x64-setup.exe
+npm run desktop:dist          # macOS → desktop/dist-electron/LLMHarbor-…-macos-arm64.dmg
+npm run desktop:dist:mac:x64  # Intel Mac → desktop/dist-electron/LLMHarbor-…-macos-x64.dmg
+npm run desktop:dist:win      # Windows → desktop/dist-electron/LLMHarbor-…-windows-x64-setup.exe
 ```
 
 Both Mac commands also produce a ZIP. Prefer building on the matching Mac
@@ -87,8 +87,8 @@ open for real-screen captures.
 
 ## Notes
 
-- DB + config live in `~/Library/Application Support/OSSLLMAPI/` (macOS) /
-  `%APPDATA%/OSSLLMAPI/` (Windows).
+- DB + config live in `~/Library/Application Support/LLMHarbor/` (macOS) /
+  `%APPDATA%/LLMHarbor/` (Windows).
 - The server binds loopback only; default port 31415, scan-up on conflict,
   resolved port persisted.
 - Do not run plain `npm rebuild` here — it rebuilds better-sqlite3 for the

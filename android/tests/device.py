@@ -15,7 +15,7 @@ abi = os.environ.get('ABI', 'armeabi-v7a')
 arch = {'armeabi-v7a': 'arm', 'arm64-v8a': 'arm64', 'x86_64': 'x64'}[abi]
 expected_sdk = os.environ.get('EXPECTED_SDK', '30')
 pkg = (apk_dir / 'package-id').read_text().strip()
-activity = f'{pkg}/io.github.zelvior.ossllmapi.mobile.MainActivity'
+activity = f'{pkg}/io.github.zelvior.llmharbor.mobile.MainActivity'
 
 
 def adb(*args):
@@ -33,8 +33,8 @@ WIDTH, HEIGHT = screen()
 def nodes():
     for _ in range(3):
         try:
-            adb('shell', 'uiautomator', 'dump', '/data/local/tmp/ossllmapi-ui.xml')
-            return list(ET.fromstring(adb('shell', 'cat', '/data/local/tmp/ossllmapi-ui.xml')).iter('node'))
+            adb('shell', 'uiautomator', 'dump', '/data/local/tmp/llmharbor-ui.xml')
+            return list(ET.fromstring(adb('shell', 'cat', '/data/local/tmp/llmharbor-ui.xml')).iter('node'))
         except subprocess.CalledProcessError:
             time.sleep(.5)
     raise TimeoutError('uiautomator could not dump the launcher')
@@ -187,7 +187,7 @@ def run():
     assert lan_port >= 31415, 'LAN dashboard must use the loopback API port range'
     adb('forward', f'tcp:{lan_port}', f'tcp:{lan_port}')
     with urllib.request.urlopen(f'http://127.0.0.1:{lan_port}/', timeout=20) as page:
-        assert b'OSSLLMAPI' in page.read(), 'dashboard not served with LAN enabled'
+        assert b'LLMHarbor' in page.read(), 'dashboard not served with LAN enabled'
 
     tap('Stop gateway')
     scroll_to('Gateway stopped')
@@ -207,7 +207,7 @@ except Exception as error:
         print('Visible labels unavailable:', type(unreadable).__name__, flush=True)
     # Diagnostics from Android, not the launcher UI (which contains one-time codes).
     subprocess.run(['adb', 'logcat', '-d', '-t', '1600', 'AndroidRuntime:E', 'linker:E', 'libc:F',
-                    'DEBUG:F', 'OSSLLMAPI:E', 'ActivityManager:E', '*:S'])
+                    'DEBUG:F', 'LLMHarbor:E', 'ActivityManager:E', '*:S'])
     raise
 finally:
-    subprocess.run(['adb', 'shell', 'rm', '-f', '/data/local/tmp/ossllmapi-ui.xml'])
+    subprocess.run(['adb', 'shell', 'rm', '-f', '/data/local/tmp/llmharbor-ui.xml'])

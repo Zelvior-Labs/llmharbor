@@ -1,4 +1,4 @@
-package io.github.zelvior.ossllmapi.mobile;
+package io.github.zelvior.llmharbor.mobile;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,7 +17,7 @@ public final class GatewayTileService extends TileService {
 
     @Override public void onStartListening() {
         super.onStartListening();
-        new Thread(this::apply, "ossllmapi-tile").start();
+        new Thread(this::apply, "llmharbor-tile").start();
     }
 
     @Override public void onClick() {
@@ -33,7 +33,7 @@ public final class GatewayTileService extends TileService {
             }
             apply();
             Widgets.refresh(this);
-        }, "ossllmapi-tile-toggle").start();
+        }, "llmharbor-tile-toggle").start();
     }
 
     private void apply() {

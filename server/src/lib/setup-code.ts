@@ -18,7 +18,7 @@ const _code = createOneTimeCode();
 export function generateSetupCode(): string {
   const code = _code.generate();
   // Displayed by the native launcher over app-private IPC, never in logcat.
-  if (process.env.OSSLLMAPI_ANDROID_APP === '1') return code;
+  if (process.env.LLMHarbor_ANDROID_APP === '1') return code;
   console.log('');
   console.log('  First-run setup code: ' + code);
   console.log('  A browser on this machine can finish setup without it. From any');

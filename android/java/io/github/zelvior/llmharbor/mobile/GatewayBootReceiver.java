@@ -1,4 +1,4 @@
-package io.github.zelvior.ossllmapi.mobile;
+package io.github.zelvior.llmharbor.mobile;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,7 +12,7 @@ public final class GatewayBootReceiver extends BroadcastReceiver {
         try {
             Gateway.start(context);
         } catch (RuntimeException refused) {
-            android.util.Log.w("OSSLLMAPI", "Boot start refused: " + refused.getClass().getSimpleName());
+            android.util.Log.w("LLMHarbor", "Boot start refused: " + refused.getClass().getSimpleName());
         }
         Widgets.refresh(context);
         GatewayTileService.requestRefresh(context);

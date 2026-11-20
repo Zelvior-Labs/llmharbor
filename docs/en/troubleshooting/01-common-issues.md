@@ -10,7 +10,7 @@
 
 **Fix:** Use `host.docker.internal` (Docker Desktop) or `172.17.0.1` / host's LAN IP (Linux), and ensure the proxy (Clash/v2rayN/sing-box) listens on `0.0.0.0` not `127.0.0.1`. Compose `host-gateway` mapping: `extra_hosts: ["host.docker.internal:host-gateway"]`.
 
-**Diagnose:** `docker exec ossllmapi curl -v http://host.docker.internal:11434/api/tags`.
+**Diagnose:** `docker exec llmharbor curl -v http://host.docker.internal:11434/api/tags`.
 
 ## Empty chain `400`
 
@@ -52,11 +52,11 @@
 
 ## Windows: "Smart App Control blocked an app that may be unsafe"
 
-**Symptom:** On Windows 11 with Smart App Control on, the `OSSLLMAPI-*-setup.exe` installer (or the app it installs) is blocked with "could not verify the publisher" and there is no "Run anyway" button (#1933).
+**Symptom:** On Windows 11 with Smart App Control on, the `LLMHarbor-*-setup.exe` installer (or the app it installs) is blocked with "could not verify the publisher" and there is no "Run anyway" button (#1933).
 
 **Cause:** The GitHub `.exe` is not code-signed. Smart App Control only runs files Microsoft's cloud already trusts or that carry a signature from a trusted certificate authority, and it has no per-app exception.
 
-**Options:** OSSLLMAPI releases are distributed on GitHub, not through the upstream Microsoft Store listing. If local policy blocks unsigned executables, use the [server installation](../install/01-install.md) rather than turning off Smart App Control.
+**Options:** LLMHarbor releases are distributed on GitHub, not through the upstream Microsoft Store listing. If local policy blocks unsigned executables, use the [server installation](../install/01-install.md) rather than turning off Smart App Control.
 
 ## Update-check shows no update / unsigned build won't auto-update
 

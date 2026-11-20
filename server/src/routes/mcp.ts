@@ -21,7 +21,7 @@ import { z } from 'zod';
 // questions mid-session: which free models are usable right now and with
 // which parameters, how healthy the provider pool is, what the routing
 // strategy is, and how much quota the cache has saved — plus one control
-// knob (switching the routing strategy). The ask_ossllmapi tool also lets
+// knob (switching the routing strategy). The ask_llmharbor tool also lets
 // ChatGPT and other MCP clients run a non-streaming inference through the same
 // /v1/chat/completions path as every OpenAI-compatible client.
 //
@@ -287,7 +287,7 @@ async function askOSLLMApi(args: Record<string, unknown>, req: Request, res: Res
       .map(error => `${error.path.join('.') || 'arguments'}: ${error.message}`)
       .slice(0, 5)
       .join(', ');
-    throw new Error(`Invalid ask_ossllmapi arguments: ${detail}`);
+    throw new Error(`Invalid ask_llmharbor arguments: ${detail}`);
   }
 
   const input = parsed.data;
@@ -428,7 +428,7 @@ interface McpTool {
 const READ_ONLY_LOCAL = { readOnlyHint: true, destructiveHint: false, openWorldHint: false };
 
 const TOOLS: Record<string, McpTool> = {
-  ask_ossllmapi: {
+  ask_llmharbor: {
     title: 'Ask OSLLMAPI',
     description: 'Use this when the user explicitly wants a OSLLMAPI model to answer, analyze, rewrite, summarize, or generate text. Routes through the configured free-provider pool. Defaults to the server\'s MCP_INFERENCE_DEFAULT_MODEL (auto when unset). Returns the answer plus model, routing, cache, execution, and token-usage metadata.',
     inputSchema: {
@@ -595,8 +595,8 @@ async function dispatchRpc(msg: JsonRpcRequest, id: number | string | null, req:
       return rpcResult(id, {
         protocolVersion: PROTOCOL_VERSION,
         capabilities: { tools: {} },
-        serverInfo: { name: 'ossllmapi', version: '1.0.0' },
-        instructions: 'Use ask_ossllmapi when the user explicitly asks OSLLMAPI or one of its models to perform a text task. Use healthcheck before troubleshooting availability; list_models for model choice; provider_health, provider_list, usage_summary, cache_stats, compression_stats, quota_outlook, and routing_info for diagnostics. set_routing_strategy changes server state. web_search searches the web through the configured search providers. clear_cache flushes cached responses.',
+        serverInfo: { name: 'llmharbor', version: '1.0.0' },
+        instructions: 'Use ask_llmharbor when the user explicitly asks OSLLMAPI or one of its models to perform a text task. Use healthcheck before troubleshooting availability; list_models for model choice; provider_health, provider_list, usage_summary, cache_stats, compression_stats, quota_outlook, and routing_info for diagnostics. set_routing_strategy changes server state. web_search searches the web through the configured search providers. clear_cache flushes cached responses.',
       });
     }
     case 'ping':

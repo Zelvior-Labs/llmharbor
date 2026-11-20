@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { OpenAICompatProvider } from '../../providers/openai-compat.js';
 import { resetTimeoutWarnings } from '../../lib/provider-timeout.js';
-import type { ChatMessage } from '@ossllmapi/shared/types.js';
-import type { ChatCompletionChunk } from '@ossllmapi/shared/types.js';
+import type { ChatMessage } from '@llmharbor/shared/types.js';
+import type { ChatCompletionChunk } from '@llmharbor/shared/types.js';
 
 const MESSAGES: ChatMessage[] = [{ role: 'user', content: 'hi' }];
 

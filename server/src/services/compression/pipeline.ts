@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import type { ChatMessage } from '@ossllmapi/shared/types.js';
+import type { ChatMessage } from '@llmharbor/shared/types.js';
 import './engines/index.js';
 import {
   compressionConfigFingerprint,

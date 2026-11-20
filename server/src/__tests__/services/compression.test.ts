@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { ChatMessage } from '@ossllmapi/shared/types.js';
+import type { ChatMessage } from '@llmharbor/shared/types.js';
 import { initDb } from '../../db/index.js';
 import {
   DEFAULT_COMPRESSION_CONFIG,
@@ -46,12 +46,12 @@ function msg(role: ChatMessage['role'], content: string, extra: Partial<ChatMess
 describe('compression configuration', () => {
   beforeEach(() => {
     process.env.ENCRYPTION_KEY = '0'.repeat(64);
-    delete process.env.OSSLLMAPI_COMPRESSION;
+    delete process.env.LLMHarbor_COMPRESSION;
     initDb(':memory:');
   });
 
   it('uses setting → env → off precedence and persists complete engine defaults', () => {
-    process.env.OSSLLMAPI_COMPRESSION = 'lossless';
+    process.env.LLMHarbor_COMPRESSION = 'lossless';
     expect(getCompressionConfig().mode).toBe('lossless');
     const saved = setCompressionConfig({
       mode: 'standard',

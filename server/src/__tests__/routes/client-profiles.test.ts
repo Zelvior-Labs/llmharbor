@@ -402,7 +402,7 @@ describe('client profiles (#411)', () => {
     });
 
     it('does not hand off another profile\'s session when the model changes', async () => {
-      process.env.OSSLLMAPI_CONTEXT_HANDOFF = 'on_model_switch';
+      process.env.LLMHarbor_CONTEXT_HANDOFF = 'on_model_switch';
       try {
         const a = await createProfile('handoff-a');
         const b = await createProfile('handoff-b');
@@ -416,7 +416,7 @@ describe('client profiles (#411)', () => {
         const handoff = seenMessages[1].find((m: any) => m.role === 'system' && String(m.content).startsWith('OSLLMAPI context handoff:'));
         expect(handoff).toBeUndefined();
       } finally {
-        delete process.env.OSSLLMAPI_CONTEXT_HANDOFF;
+        delete process.env.LLMHarbor_CONTEXT_HANDOFF;
       }
     });
   });

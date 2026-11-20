@@ -27,11 +27,11 @@ The tray menu exposes both folders; `openBackupsFolder` resolves to `<userData>/
 
 ### Electron-builder publish
 
-`desktop/electron-builder.yml` `publish: { provider: github, owner: zelvior, repo: ossllmapi }` — artifacts (`dmg`, `nsis`, `zip`, `AppImage`, `deb`, `tar.xz`, `rpm`) upload on `desktop-release.yml` (`*.rpm` glob since d8fae97). `latest.yml` / `latest-ia32.yml` / `latest-mac.yml` / `latest-linux.yml` generated per channel.
+`desktop/electron-builder.yml` `publish: { provider: github, owner: zelvior, repo: llmharbor }` — artifacts (`dmg`, `nsis`, `zip`, `AppImage`, `deb`, `tar.xz`, `rpm`) upload on `desktop-release.yml` (`*.rpm` glob since d8fae97). `latest.yml` / `latest-ia32.yml` / `latest-mac.yml` / `latest-linux.yml` generated per channel.
 
 ### Build identity
 
-`scripts/bundle-server.mjs` `define: { 'process.env.OSSLLMAPI_COMMIT_SHA': JSON.stringify(GITHUB_SHA), 'process.env.OSSLLMAPI_INSTALL_METHOD': '"desktop"' }` — 40-hex SHA stamped at build, mirrored into live `process.env` in `server-host.ts` so `server/src/routes/update.ts` resolves the running commit vs `GET /api/update` available. `FREEAPI_VERSION` from `app.getVersion()` (`0.16.34`).
+`scripts/bundle-server.mjs` `define: { 'process.env.LLMHarbor_COMMIT_SHA': JSON.stringify(GITHUB_SHA), 'process.env.LLMHarbor_INSTALL_METHOD': '"desktop"' }` — 40-hex SHA stamped at build, mirrored into live `process.env` in `server-host.ts` so `server/src/routes/update.ts` resolves the running commit vs `GET /api/update` available. `FREEAPI_VERSION` from `app.getVersion()` (`0.16.34`).
 
 ### In-dashboard checker
 

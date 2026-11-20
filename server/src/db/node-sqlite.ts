@@ -78,7 +78,7 @@ export const nodeSqliteFactory: DbFactory = (resolvedPath) => {
     transaction: <F extends (...args: any[]) => unknown>(fn: F): F => {
       const wrapped = function (this: unknown, ...args: Parameters<F>): ReturnType<F> {
         const outermost = transactionDepth === 0;
-        const savepoint = `ossllmapi_tx_${++savepointSequence}`;
+        const savepoint = `llmharbor_tx_${++savepointSequence}`;
 
         raw.exec(outermost ? 'BEGIN' : `SAVEPOINT ${savepoint}`);
         transactionDepth += 1;

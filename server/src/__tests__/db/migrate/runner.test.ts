@@ -228,7 +228,7 @@ describe('migration runner', () => {
 });
 
 function createMigrationsDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-migrations-'));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-migrations-'));
   tempDirs.push(dir);
   return dir;
 }

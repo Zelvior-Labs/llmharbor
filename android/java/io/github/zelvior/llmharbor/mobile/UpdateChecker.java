@@ -1,4 +1,4 @@
-package io.github.zelvior.ossllmapi.mobile;
+package io.github.zelvior.llmharbor.mobile;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -46,7 +46,7 @@ final class UpdateChecker {
         }
     }
 
-    private static final String RELEASES = "https://api.github.com/repos/zelvior/ossllmapi/releases?per_page=10";
+    private static final String RELEASES = "https://api.github.com/repos/zelvior/llmharbor/releases?per_page=10";
     private static final Handler UI = new Handler(Looper.getMainLooper());
 
     private UpdateChecker() {}
@@ -64,7 +64,7 @@ final class UpdateChecker {
                 final String message = describe(error);
                 UI.post(() -> callback.result(false, message, null));
             }
-        }, "ossllmapi-update-check").start();
+        }, "llmharbor-update-check").start();
     }
 
     static void downloadAndInstall(Context context, Candidate candidate, Callback callback) {
@@ -76,7 +76,7 @@ final class UpdateChecker {
                         Uri.parse("package:" + app.getPackageName()));
                     allow.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     app.startActivity(allow);
-                    throw new IOException("Allow OSSLLMAPI to install unknown apps, then tap Check for updates again.");
+                    throw new IOException("Allow LLMHarbor to install unknown apps, then tap Check for updates again.");
                 }
                 if (app.getPackageName().matches(".*\\.p\\d+$")) {
                     // Version-locked previews carry a per-build ID, so no download could
@@ -102,7 +102,7 @@ final class UpdateChecker {
                 final String message = describe(error);
                 UI.post(() -> callback.result(false, message, null));
             }
-        }, "ossllmapi-update-download").start();
+        }, "llmharbor-update-download").start();
     }
 
     private static Candidate find(Context context) throws Exception {
@@ -230,7 +230,7 @@ final class UpdateChecker {
         connection.setConnectTimeout(20000);
         connection.setReadTimeout(45000);
         connection.setInstanceFollowRedirects(true);
-        connection.setRequestProperty("User-Agent", "OSSLLMAPI-Android");
+        connection.setRequestProperty("User-Agent", "LLMHarbor-Android");
         connection.setRequestProperty("Accept", "application/vnd.github+json");
         try {
             int status = connection.getResponseCode();

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Create, inspect and rotate the durable Android signing key.
 #
-#   ./android/scripts/android-signing-key.sh init [--out durable.p12] [--alias ossllmapi]
+#   ./android/scripts/android-signing-key.sh init [--out durable.p12] [--alias llmharbor]
 #   ./android/scripts/android-signing-key.sh show durable.p12
 #
 # `init` prints the four values the build workflow reads (ANDROID_KEYSTORE_B64,
@@ -27,7 +27,7 @@ need_keytool() {
 }
 
 cmd_init() {
-  local out="durable.p12" alias="ossllmapi" dname="CN=OSSLLMAPI, O=OSSLLMAPI, C=PK"
+  local out="durable.p12" alias="llmharbor" dname="CN=LLMHarbor, O=LLMHarbor, C=PK"
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --out) out=${2:?--out needs a path}; shift 2 ;;

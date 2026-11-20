@@ -46,7 +46,7 @@ jobs:
           if [[ -n "${ANDROID_KEYSTORE_B64:-}" ]]; then
             source android/scripts/durable-key.sh
             echo "ANDROID_SIGNING_MODE=durable" >> "$GITHUB_ENV"
-            echo "ANDROID_PACKAGE_ID=${DURABLE_ID:-io.github.zelvior.ossllmapi.android}" >> "$GITHUB_ENV"
+            echo "ANDROID_PACKAGE_ID=${DURABLE_ID:-io.github.zelvior.llmharbor.android}" >> "$GITHUB_ENV"
           else
             source android/scripts/preview-key.sh
             echo "ANDROID_SIGNING_MODE=preview" >> "$GITHUB_ENV"
@@ -188,4 +188,4 @@ jobs:
           rm -f package-id
           sha256sum --check SHA256SUMS.txt
           gh release create "$GITHUB_REF_NAME" ./*.apk SHA256SUMS.txt --verify-tag --prerelease --latest=false \
-            --title "OSSLLMAPI for Android 8.0+ ($version)" --notes-file "$RUNNER_TEMP/notes.md"
+            --title "LLMHarbor for Android 8.0+ ($version)" --notes-file "$RUNNER_TEMP/notes.md"

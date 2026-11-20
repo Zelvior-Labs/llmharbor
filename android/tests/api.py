@@ -52,7 +52,7 @@ class Smoke:
 
     def setup(self, code, provider_port):
         with urllib.request.urlopen(self.base + '/', timeout=10) as page:
-            assert 'OSSLLMAPI' in page.read().decode()
+            assert 'LLMHarbor' in page.read().decode()
         assert self.req('/api/auth/status')['needsSetup']
         credentials = {'email': 'phone@example.test', 'password': 'smoke-account-only'}
         assert self.req('/api/auth/setup', credentials, status=403)['error']['type'] == 'setup_code_required'

@@ -52,7 +52,7 @@ process.on('uncaughtExceptionMonitor', error => record(`[fatal] ${error?.stack ?
 // Host tests (no Android Keystore) still use the private file fallback.
 const keyfile = join(data, '.encryption-key');
 const db = join(data, 'freeapi.db');
-let key = process.env.OSSLLMAPI_ENCRYPTION_KEY?.trim() ?? '';
+let key = process.env.LLMHarbor_ENCRYPTION_KEY?.trim() ?? '';
 if (key) {
   if (!/^[0-9a-f]{64}$/i.test(key)) throw Error('Malformed encryption key from the keystore');
   rmSync(keyfile, { force: true }); // Superseded by the Keystore-wrapped copy.
@@ -96,7 +96,7 @@ if (!port) throw Error(`No free port between ${FIRST_PORT} and ${LAST_PORT}`);
 if (eco) {
   process.env.HEALTH_CHECK_INTERVAL_MS ??= '900000';
   process.env.CATALOG_SYNC_DISABLED ??= '1';
-  process.env.OSSLLMAPI_ECO = '1';
+  process.env.LLMHarbor_ECO = '1';
 }
 
 const addresses = lan ? lanAddresses() : [];
@@ -113,7 +113,7 @@ Object.assign(process.env, {
 const sock = join(home, 'control.sock');
 const startedAt = Date.now();
 const statusFile = join(home, 'status.json');
-channel('ossllmapi.listening').subscribe(({ port: actual }) => {
+channel('llmharbor.listening').subscribe(({ port: actual }) => {
   record(`[gateway] listening on ${host}:${actual}${lan ? ' (LAN)' : ''}${eco ? ' (battery saver)' : ''}`);
   rmSync(sock, { force: true });
   createServer(socket => {

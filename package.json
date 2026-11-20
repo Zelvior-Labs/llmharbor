@@ -1,5 +1,5 @@
 {
-  "name": "@ossllmapi/monorepo",
+  "name": "@llmharbor/monorepo",
   "private": true,
   "workspaces": [
     "shared",

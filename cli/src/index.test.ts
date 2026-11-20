@@ -8,13 +8,13 @@ import type { CatalogModel } from './types.js';
 
 describe('CLI arguments and launchers', () => {
   it('defaults to the gateway port when no URL is configured', () => {
-    const previous = process.env.OSSLLMAPI_URL;
-    delete process.env.OSSLLMAPI_URL;
+    const previous = process.env.LLMHarbor_URL;
+    delete process.env.LLMHarbor_URL;
     try {
       expect(parseArgs(['setup-generic']).options.url).toBe('http://localhost:3001');
     } finally {
-      if (previous === undefined) delete process.env.OSSLLMAPI_URL;
-      else process.env.OSSLLMAPI_URL = previous;
+      if (previous === undefined) delete process.env.LLMHarbor_URL;
+      else process.env.LLMHarbor_URL = previous;
     }
   });
 
@@ -88,18 +88,18 @@ describe('CLI arguments and launchers', () => {
   });
 
   it.skipIf(process.platform !== 'win32')('launches Windows command shims for both agents', async () => {
-    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-launch-'));
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-launch-'));
     temporary.push(directory);
     for (const command of ['codex', 'claude']) {
       fs.writeFileSync(path.join(directory, `${command}.cmd`),
-        `@echo off\r\necho ${command} > "%OSSLLMAPI_TEST_MARKER%"\r\nexit /b 17\r\n`);
+        `@echo off\r\necho ${command} > "%LLMHarbor_TEST_MARKER%"\r\nexit /b 17\r\n`);
     }
     const previousPath = process.env.PATH;
-    const previousMarker = process.env.OSSLLMAPI_TEST_MARKER;
+    const previousMarker = process.env.LLMHarbor_TEST_MARKER;
     const previousFetch = globalThis.fetch;
     const marker = path.join(directory, 'launched.txt');
     process.env.PATH = `${directory};${process.env.SystemRoot}\\System32`;
-    process.env.OSSLLMAPI_TEST_MARKER = marker;
+    process.env.LLMHarbor_TEST_MARKER = marker;
     globalThis.fetch = async () => new Response(JSON.stringify({
       data: [{ id: 'test-model', available: true }],
     }), { headers: { 'Content-Type': 'application/json' } });
@@ -114,8 +114,8 @@ describe('CLI arguments and launchers', () => {
       globalThis.fetch = previousFetch;
       if (previousPath === undefined) delete process.env.PATH;
       else process.env.PATH = previousPath;
-      if (previousMarker === undefined) delete process.env.OSSLLMAPI_TEST_MARKER;
-      else process.env.OSSLLMAPI_TEST_MARKER = previousMarker;
+      if (previousMarker === undefined) delete process.env.LLMHarbor_TEST_MARKER;
+      else process.env.LLMHarbor_TEST_MARKER = previousMarker;
     }
   });
 
@@ -137,7 +137,7 @@ describe('CLI arguments and launchers', () => {
   });
 
   it('never uses the profile name as a model id', () => {
-    const home = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-cli-'));
+    const home = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-cli-'));
     temporary.push(home);
     const profileDir = path.join(home, '.claude', 'profiles', 'work');
     fs.mkdirSync(profileDir, { recursive: true });
@@ -153,7 +153,7 @@ describe('CLI arguments and launchers', () => {
   });
 
   it('rejects a profile whose configuration directory does not exist', () => {
-    const home = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-cli-'));
+    const home = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-cli-'));
     temporary.push(home);
     expect(() => claudeLaunchEnv(
       { ...baseOptions, profile: 'missing' },
@@ -161,7 +161,7 @@ describe('CLI arguments and launchers', () => {
       models,
       {},
       home,
-    )).toThrow("ossllmapi setup-claude --profile missing");
+    )).toThrow("llmharbor setup-claude --profile missing");
   });
 
   it('strips the user\'s real Anthropic credentials from the child environment', () => {
@@ -230,13 +230,13 @@ describe('CLI arguments and launchers', () => {
 
   it('passes a complete Responses provider to Codex', () => {
     const args = codexArgs('http://localhost:3001/v1/', 'coder');
-    expect(args).toContain('model_provider="ossllmapi"');
+    expect(args).toContain('model_provider="llmharbor"');
     expect(args).toContain('model="coder"');
-    expect(args).toContain('model_providers.ossllmapi.name="OSLLMAPI"');
+    expect(args).toContain('model_providers.llmharbor.name="OSLLMAPI"');
     expect(args).toContain(
-      'model_providers.ossllmapi.base_url="http://localhost:3001/v1"',
+      'model_providers.llmharbor.base_url="http://localhost:3001/v1"',
     );
-    expect(args).toContain('model_providers.ossllmapi.wire_api="responses"');
+    expect(args).toContain('model_providers.llmharbor.wire_api="responses"');
   });
 
   // #1283: on Node <17.4 the CLI died at module-load time with

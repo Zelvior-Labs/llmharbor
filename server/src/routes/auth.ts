@@ -204,11 +204,11 @@ authRouter.post('/setup', (req: Request, res: Response) => {
   // claimed by a stranger who finds it first.
   // Android apps share loopback. Only the owner can read the setup code from
   // the launcher's private control socket; localhost alone proves nothing.
-  const phone = process.env.OSSLLMAPI_ANDROID_APP === '1';
+  const phone = process.env.LLMHarbor_ANDROID_APP === '1';
   if ((phone || !isLoopbackRemote(req)) && !setupCodeMatches((req.body ?? {}).setupCode)) {
     res.status(403).json({
       error: {
-        message: phone ? 'Enter the setup code shown in the OSSLLMAPI Android app.' :
+        message: phone ? 'Enter the setup code shown in the LLMHarbor Android app.' :
           'A setup code is required to create the first account from a remote device. ' +
           'Check the server logs for the code, or open the dashboard from a browser on the machine running OSLLMAPI.',
         type: 'setup_code_required',

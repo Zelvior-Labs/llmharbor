@@ -6,7 +6,7 @@ import type {
   ChatToolChoice,
   Platform,
   TokenUsage,
-} from '@ossllmapi/shared/types.js';
+} from '@llmharbor/shared/types.js';
 import {
   BaseProvider,
   providerHttpError,

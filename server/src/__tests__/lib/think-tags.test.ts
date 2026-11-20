@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import type { ChatCompletionChunk } from '@ossllmapi/shared/types.js';
+import type { ChatCompletionChunk } from '@llmharbor/shared/types.js';
 import {
   splitThinkTag,
   extractThinkFromMessage,

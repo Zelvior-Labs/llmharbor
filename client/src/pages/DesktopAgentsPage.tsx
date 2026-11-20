@@ -34,7 +34,7 @@ function GatewayKey({ command }: { command?: string }) {
   const windows = (window as Window & { __FREEAPI_PLATFORM__?: string }).__FREEAPI_PLATFORM__ === 'win32'
   const quoted = windows ? value.replaceAll("'", "''") : value.replaceAll("'", "'\\''")
   const snippet = command
-    ? (windows ? '$env:OSSLLMAPI_API_KEY = ' : 'export OSSLLMAPI_API_KEY=') + "'" + quoted + "'\n" + command
+    ? (windows ? '$env:LLMHarbor_API_KEY = ' : 'export LLMHarbor_API_KEY=') + "'" + quoted + "'\n" + command
     : value
   return <div className="key-field">
     <code>{show && isError ? t('common.error') : snippet}</code>
@@ -114,7 +114,7 @@ function AgentCard({ tool, bridge, state, update, active, activate, seen }: {
         {seen && <p>{t('agents.seenRecently')}</p>}
         {(id === 'claude' || id === 'codex') && <p>{t(id === 'claude' ? 'search.agentsBadgeClaude' : 'search.agentsBadgeCodex')}</p>}
         <Files files={paths ?? []} />
-        <code className="value">npx ossllmapi {tool.command} --url {origin}</code>
+        <code className="value">npx llmharbor {tool.command} --url {origin}</code>
         {saved && <button className="subbutton" disabled={busy} onClick={connect}>{t('common.apply')}</button>} {docs}
       </>}
       {panel === 'quit' && <p>{t('agents.connect.quit')}</p>}

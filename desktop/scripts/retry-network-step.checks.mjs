@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process';
 const script = fileURLToPath(new URL('./retry-network-step.sh', import.meta.url)).replaceAll('\\', '/');
 const bash = process.env.CI_RETRY_BASH_EXE || 'bash';
 function run({ failures = 0, message = '', exitCode = 47, attempts = '3', delay = '0' } = {}) {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-retry-test-'));
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-retry-test-'));
   const counter = path.join(directory, 'counter.json');
   const fixture = `import fs from 'node:fs';
     const p=process.argv[1];const n=(fs.existsSync(p)?JSON.parse(fs.readFileSync(p)):0)+1;

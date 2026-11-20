@@ -62,10 +62,10 @@ claude
 Use the generator instead of hand-editing a client configuration:
 
 ```bash
-export OSSLLMAPI_API_KEY=<unified-key>   # or pass --api-key on each command
-npx ossllmapi setup-claude --url http://localhost:3001 --dry-run
-npx ossllmapi setup-claude --url http://localhost:3001
-npx ossllmapi setup-dsh --url http://localhost:3001 --api-key <unified-key>
+export LLMHarbor_API_KEY=<unified-key>   # or pass --api-key on each command
+npx llmharbor setup-claude --url http://localhost:3001 --dry-run
+npx llmharbor setup-claude --url http://localhost:3001
+npx llmharbor setup-dsh --url http://localhost:3001 --api-key <unified-key>
 ```
 
 `--dry-run` prints a diff. Real writes merge with the existing configuration
@@ -110,7 +110,7 @@ window, image support), point the provider's `model_catalog_url` at
 `/v1/codex/models` in `~/.codex/config.toml`:
 
 ```toml
-[model_providers.ossllmapi]
+[model_providers.llmharbor]
 # ...existing base_url, env_key and wire_api...
 model_catalog_url = "http://localhost:3001/v1/codex/models"
 ```
@@ -123,32 +123,32 @@ only the warning and the context window change.
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) keeps
 every provider as a route under `llm-pi-ai.providers` in
 `$DSH_HOME/settings.yaml` (`~/.dsh` by default). `setup-dsh` adds a
-`ossllmapi` route there — `api: openai-completions`, the gateway's `/v1`
+`llmharbor` route there — `api: openai-completions`, the gateway's `/v1`
 base URL, and the live catalog as the route's `models` list, which DSH
 requires for a provider its installed catalog does not ship — and makes
-`ossllmapi/auto` the default model. The key goes into `$DSH_HOME/.env`
-(mode 0600) as `OSSLLMAPI_API_KEY`, the environment layer DSH reads on its
+`llmharbor/auto` the default model. The key goes into `$DSH_HOME/.env`
+(mode 0600) as `LLMHarbor_API_KEY`, the environment layer DSH reads on its
 own, so nothing needs exporting. Both writes are structural merges: other
 routes, comments, and settings in the file are left as they were.
 
 ```bash
-npx ossllmapi setup-dsh --url http://localhost:3001 --api-key <unified-key>
+npx llmharbor setup-dsh --url http://localhost:3001 --api-key <unified-key>
 npx @deepseek-ai/dsh web
 ```
 
 Settings are hot-reloaded, so a running `dsh` uses the route on its next
-request. `--profile <name>` adds a second route (`ossllmapi-<name>`) without
+request. `--profile <name>` adds a second route (`llmharbor-<name>`) without
 changing the default model; `--model <id>` pins the default. Routes are
 declared text-only — add `input: [text, image]` to a model entry under
-`ossllmapi.models` to send it images. `DSH_HOME` is honoured when set.
+`llmharbor.models` to send it images. `DSH_HOME` is honoured when set.
 
 ### MiMo Code (`mimo`)
 
 [MiMo Code](https://mimo.xiaomi.com/mimocode) is an OpenCode derivative, so it
 takes any OpenAI-compatible endpoint as a custom entry under `provider` — an
 `npm` package to speak with (`@ai-sdk/openai-compatible`), the credentials in
-`options`, and a `models` map. `setup-mimo` writes that entry as `ossllmapi`
-and names `ossllmapi/<model>` as the default `model`.
+`options`, and a `models` map. `setup-mimo` writes that entry as `llmharbor`
+and names `llmharbor/<model>` as the default `model`.
 
 The file is `config.json` in MiMo's own global config directory:
 `$XDG_CONFIG_HOME/mimocode` (`~/.config/mimocode` on macOS and Linux), or
@@ -159,12 +159,12 @@ generated file is the weakest layer and anything you hand-write in
 providers and settings already in `config.json` are left as they were.
 
 ```bash
-npx ossllmapi setup-mimo --url http://localhost:3001
-export OSSLLMAPI_API_KEY=<unified-key>
+npx llmharbor setup-mimo --url http://localhost:3001
+export LLMHarbor_API_KEY=<unified-key>
 mimo
 ```
 
-The key is referenced as `{env:OSSLLMAPI_API_KEY}`, MiMo's own substitution
+The key is referenced as `{env:LLMHarbor_API_KEY}`, MiMo's own substitution
 syntax, so it stays out of the config file. There is no `MIMOCODE_API_KEY` or
 `MIMOCODE_BASE_URL`: MiMo's environment variables locate resources and toggle
 features, they are not a general fallback for config fields. Each model is
@@ -175,9 +175,9 @@ requires, both taken from the live catalog.
 
 [AtomCode](https://atomcode.atomgit.com/docs/en/) is AtomGit's terminal
 coding agent, written in Rust. It reads `~/.atomcode/config.toml`.
-`setup-atomcode` writes `[provider_accounts.ossllmapi]` with `provider = "openai"`,
+`setup-atomcode` writes `[provider_accounts.llmharbor]` with `provider = "openai"`,
 the gateway's `/v1` as `base_url`, and the unified key as `api_key`.
-`[models.ossllmapi]` references that account and stores the chosen model and
+`[models.llmharbor]` references that account and stores the chosen model and
 its `context_window` from the live catalog. The root `default_model` selects
 this model entry, taking precedence over any legacy `default_provider`.
 The write is a structural merge: the root key is placed above existing
@@ -185,7 +185,7 @@ tables, the two generated tables are replaced, and unrelated accounts,
 models, legacy providers and settings are preserved.
 
 ```bash
-npx ossllmapi setup-atomcode --url http://localhost:3001 --api-key <unified-key>
+npx llmharbor setup-atomcode --url http://localhost:3001 --api-key <unified-key>
 atomcode
 ```
 
@@ -201,29 +201,29 @@ that answers on WhatsApp, Telegram, Discord and the other channels its
 gateway connects to. It reads one JSON5 document, `~/.openclaw/openclaw.json`,
 and every model endpoint is an entry under `models.providers`; a provider its
 bundled catalog does not know must spell out `baseUrl`, `api` and a non-empty
-`models` list. `setup-openclaw` writes a `ossllmapi` provider there —
+`models` list. `setup-openclaw` writes a `llmharbor` provider there —
 `api: openai-completions`, the gateway's `/v1` base URL, the live catalog as
-its `models` list — and makes `ossllmapi/auto` the default model under
+its `models` list — and makes `llmharbor/auto` the default model under
 `agents.defaults.model.primary`. The key is referenced as
-`${OSSLLMAPI_API_KEY}`, OpenClaw's own substitution, and the value goes into
+`${LLMHarbor_API_KEY}`, OpenClaw's own substitution, and the value goes into
 `~/.openclaw/.env` (mode 0600), the global env file OpenClaw loads on its own,
 so nothing needs exporting. Both writes are structural merges: other
 providers, `fallbacks` on the default model, and every other setting in the
 file are left as they were.
 
 ```bash
-npx ossllmapi setup-openclaw --url http://localhost:3001 --api-key <unified-key>
+npx llmharbor setup-openclaw --url http://localhost:3001 --api-key <unified-key>
 npm install -g openclaw@latest --allow-scripts=openclaw
-openclaw agent exec --model ossllmapi/auto "Say hello"   # no gateway daemon needed
+openclaw agent exec --model llmharbor/auto "Say hello"   # no gateway daemon needed
 ```
 
 A running `openclaw gateway` needs a restart to pick the change up.
-`--profile <name>` adds a second provider (`ossllmapi-<name>`) without
+`--profile <name>` adds a second provider (`llmharbor-<name>`) without
 changing the default model; `--model <id>` pins the default. OpenClaw sends a
 bare SDK user agent to custom endpoints, so the provider carries a static
 `User-Agent: openclaw` header — that is what lights the "seen recently" badge
 on the Agents page. Models are declared text-only; add `input: ["text",
-"image"]` to a model entry under `models.providers.ossllmapi.models` to send
+"image"]` to a model entry under `models.providers.llmharbor.models` to send
 it images. `OPENCLAW_CONFIG_PATH`, `OPENCLAW_STATE_DIR` and `OPENCLAW_HOME` are
 honoured when set.
 
@@ -238,21 +238,21 @@ so a custom endpoint has to be declared in the `model` block. `setup-hermes`
 writes that block — `provider: custom`, `api_mode: chat_completions`, the
 gateway's `/v1` as `base_url`, the chosen model as `default` with its
 `context_length` from the live catalog — and references the key as
-`api_key: "${OSSLLMAPI_API_KEY}"`, Hermes's own substitution, with the value
+`api_key: "${LLMHarbor_API_KEY}"`, Hermes's own substitution, with the value
 in `~/.hermes/.env` (mode 0600), which Hermes loads on its own. A fresh
 install ships `model: ""`, the "not configured" sentinel; replacing it is
 exactly what `hermes setup` would do, and it is what lets a headless first
 run skip the wizard. Every other key in the file is left as it was.
 
 ```bash
-npx ossllmapi setup-hermes --url http://localhost:3001 --api-key <unified-key>
+npx llmharbor setup-hermes --url http://localhost:3001 --api-key <unified-key>
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --skip-setup
 hermes -z "Say hello"
 ```
 
 A running `hermes gateway` needs a restart to pick the change up.
-`--profile <name>` adds a `providers.ossllmapi-<name>` entry instead —
-picked inside a chat with `/model custom:ossllmapi-<name>:auto` — and leaves
+`--profile <name>` adds a `providers.llmharbor-<name>` entry instead —
+picked inside a chat with `/model custom:llmharbor-<name>:auto` — and leaves
 the default model alone; `--model <id>` pins the default. Hermes sends a bare
 SDK user agent to custom endpoints, so the block carries
 `default_headers: { User-Agent: hermes-agent }`, which is what the Agents
@@ -262,7 +262,7 @@ page's "seen recently" badge keys on. `HERMES_HOME` is honoured when set.
 
 [Pi](https://pi.dev) is a minimal terminal agent harness you extend with your
 own extensions, skills and prompt templates. Endpoints it does not ship are
-provider entries in `~/.pi/agent/models.json`. `setup-pi` adds a `ossllmapi`
+provider entries in `~/.pi/agent/models.json`. `setup-pi` adds a `llmharbor`
 provider there — `api: openai-completions`, the gateway's `/v1` as `baseUrl`,
 and every model in the live catalog with its context window, the chosen model
 first — then sets `defaultProvider` and `defaultModel` in
@@ -272,14 +272,14 @@ created with mode 0600. Other providers and settings in both files are left
 as they were.
 
 ```bash
-npx ossllmapi setup-pi --url http://localhost:3001 --api-key <unified-key>
+npx llmharbor setup-pi --url http://localhost:3001 --api-key <unified-key>
 npm install -g @earendil-works/pi-coding-agent
 pi -p "Say hello"
 ```
 
 A running session reloads `models.json` when `/model` is opened.
-`--profile <name>` adds a `ossllmapi-<name>` provider instead, picked with
-`pi --model ossllmapi-<name>/<model>` or from `/model`, and leaves the
+`--profile <name>` adds a `llmharbor-<name>` provider instead, picked with
+`pi --model llmharbor-<name>/<model>` or from `/model`, and leaves the
 default model alone; `--model <id>` pins the default. Models are declared
 text-only with `reasoning: false`. To send images to a vision model, add
 `"image"` to its `input`. Pi sends a bare SDK user agent to custom endpoints,
@@ -293,26 +293,26 @@ is what the Agents page's "seen recently" badge keys on.
 terminal coding agent built around prefix-cache stability. Every endpoint is a
 `[[providers]]` entry in `~/.reasonix/config.toml` (`%APPDATA%\reasonix` on
 Windows, `$REASONIX_HOME` when set). `setup-reasonix` adds one named
-`ossllmapi` — `kind = "openai"`, the gateway's `/v1` as `base_url`, and every
+`llmharbor` — `kind = "openai"`, the gateway's `/v1` as `base_url`, and every
 model in the live catalog, the chosen model first — and points `default_model`
-at `ossllmapi/<model>`. The entry names its key with
-`api_key_env = "OSSLLMAPI_API_KEY"`; the value goes to `~/.reasonix/.env`
+at `llmharbor/<model>`. The entry names its key with
+`api_key_env = "LLMHarbor_API_KEY"`; the value goes to `~/.reasonix/.env`
 (0600), which Reasonix loads itself, so nothing needs exporting. Your other
 `[[providers]]` entries and settings are left as they were, and a rerun
-replaces only the `ossllmapi` entry.
+replaces only the `llmharbor` entry.
 
 ```bash
-npx ossllmapi setup-reasonix --url http://localhost:3001 --api-key <unified-key>
+npx llmharbor setup-reasonix --url http://localhost:3001 --api-key <unified-key>
 npm install -g reasonix
 reasonix -p "Say hello"
 ```
 
-Every catalog model is in `/model` as `ossllmapi/<id>`. `--profile <name>`
-adds a `ossllmapi-<name>` entry instead, picked with
-`reasonix --model ossllmapi-<name>/<model>`, and leaves the default model
+Every catalog model is in `/model` as `llmharbor/<id>`. `--profile <name>`
+adds a `llmharbor-<name>` entry instead, picked with
+`reasonix --model llmharbor-<name>/<model>`, and leaves the default model
 alone; `--model <id>` pins the default. A zero `price` keeps Reasonix's cost
 readout at $0. Reasonix Studio only lists the providers in
-`[desktop].provider_access` when that list is set, so add `"ossllmapi"` there
+`[desktop].provider_access` when that list is set, so add `"llmharbor"` there
 (or under Settings → Model → Access). Reasonix sends `Reasonix/<version>` as
 its user agent, which is what the Agents page's "seen recently" badge keys on.
 
@@ -321,23 +321,23 @@ its user agent, which is what the Agents page's "seen recently" badge keys on.
 [ZCode](https://zcode.z.ai) is Z.ai's coding agent, built for its GLM models.
 Its Desktop app and CLI share one provider registry,
 `~/.zcode/v2/provider_config.json` (`ZCODE_PERSONAL_PROVIDER_CONFIG_FILE`
-moves it). `setup-zcode` adds a `ossllmapi` provider there: an `api-key`
+moves it). `setup-zcode` adds a `llmharbor` provider there: an `api-key`
 access block, an `openai-chat-completions` endpoint at the gateway's `/v1`,
 and one model rule per catalog model with its context and output limits. It
-also makes `ossllmapi/auto` the default model. Your other providers, their
+also makes `llmharbor/auto` the default model. Your other providers, their
 model rules and your provider order are kept, and a rerun replaces only the
-`ossllmapi` entries. ZCode has no environment-variable lookup for custom
+`llmharbor` entries. ZCode has no environment-variable lookup for custom
 providers, so the key lives in that file; the writer backs the file up first
 and keeps it at `0600`.
 
 ```bash
-npx ossllmapi setup-zcode --url http://localhost:3001 --api-key <unified-key>
+npx llmharbor setup-zcode --url http://localhost:3001 --api-key <unified-key>
 ```
 
 Quit ZCode Desktop before running it so the app does not save its in-memory
-registry over the file. Pick another `ossllmapi/<model>` in the model picker
+registry over the file. Pick another `llmharbor/<model>` in the model picker
 (or `/model` in the CLI). `--profile <name>` adds a second
-`ossllmapi-<name>` provider instead. ZCode tags every request with its own
+`llmharbor-<name>` provider instead. ZCode tags every request with its own
 `x-zcode-app-version` and `x-title: Z Code@…` headers, which is what the
 Agents page's "seen recently" badge keys on. The older `~/.zcode/v2/config.json`
 and `~/.zcode/cli/config.json` files are only read once, for migration, so
@@ -351,7 +351,7 @@ unified key from its dashboard, then open **Settings → Models** in the QwenPaw
 Console:
 
 1. Under **Providers**, choose **Add Provider**.
-2. Give it a **Provider ID** such as `ossllmapi` and a **Provider Name** such
+2. Give it a **Provider ID** such as `llmharbor` and a **Provider Name** such
    as `OSLLMAPI`, and set the API compatibility mode to OpenAI
    `chat.completions`.
 3. Open the new provider's settings and set **Base URL** to
@@ -375,7 +375,7 @@ Gemini CLI and Gemini-lineage clients can speak Google's wire format directly:
 
 ```bash
 export GOOGLE_GEMINI_BASE_URL=http://localhost:3001
-export GEMINI_API_KEY=ossllmapi-your-unified-key
+export GEMINI_API_KEY=llmharbor-your-unified-key
 gemini
 ```
 
@@ -444,8 +444,8 @@ While it is off, every verb on `/mcp` answers `403` with a JSON-RPC error saying
 For Claude Code:
 
 ```bash
-claude mcp add --transport http ossllmapi http://localhost:3001/mcp \
-  --header "Authorization: Bearer ossllmapi-your-unified-key"
+claude mcp add --transport http llmharbor http://localhost:3001/mcp \
+  --header "Authorization: Bearer llmharbor-your-unified-key"
 ```
 
 Any MCP client that speaks Streamable HTTP works the same way: point it at `/mcp` with the
@@ -453,7 +453,7 @@ unified key as a Bearer token.
 
 ### ChatGPT (private Secure MCP Tunnel)
 
-`ask_ossllmapi` makes OSLLMAPI directly callable from a ChatGPT conversation. It uses
+`ask_llmharbor` makes OSLLMAPI directly callable from a ChatGPT conversation. It uses
 the same `/v1/chat/completions` implementation as every OpenAI-compatible client, so model
 routing, fallback, response caching, prompt compression, token accounting, execution ids,
 and redacted provider errors stay consistent. The result includes the answer, requested and
@@ -464,7 +464,7 @@ The three relevant settings are deliberately separate:
 | Setting | Where it lives | Example |
 | --- | --- | --- |
 | Base URL | `mcp.server_urls[].url` in tunnel-client | `http://127.0.0.1:3001/mcp` |
-| API key | `OSSLLMAPI_MCP_AUTHORIZATION` environment variable | `Bearer ossllmapi-...` |
+| API key | `LLMHarbor_MCP_AUTHORIZATION` environment variable | `Bearer llmharbor-...` |
 | Default model | OSLLMAPI `MCP_INFERENCE_DEFAULT_MODEL` | `auto`, a model id, or `auto:<profile>` |
 
 1. Enable the MCP surface as shown above. Optionally set the default model before starting
@@ -482,14 +482,14 @@ The three relevant settings are deliberately separate:
 
    ```powershell
    $env:CONTROL_PLANE_API_KEY = '<OpenAI tunnel runtime key>'
-   $env:OSSLLMAPI_MCP_AUTHORIZATION = 'Bearer <OSLLMAPI unified key>'
+   $env:LLMHarbor_MCP_AUTHORIZATION = 'Bearer <OSLLMAPI unified key>'
    tunnel-client doctor --profile-file .\tunnel-client.yaml --explain
    tunnel-client run --profile-file .\tunnel-client.yaml
    ```
 
    ```bash
    export CONTROL_PLANE_API_KEY='<OpenAI tunnel runtime key>'
-   export OSSLLMAPI_MCP_AUTHORIZATION='Bearer <OSLLMAPI unified key>'
+   export LLMHarbor_MCP_AUTHORIZATION='Bearer <OSLLMAPI unified key>'
    tunnel-client doctor --profile-file ./tunnel-client.yaml --explain
    tunnel-client run --profile-file ./tunnel-client.yaml
    ```
@@ -497,7 +497,7 @@ The three relevant settings are deliberately separate:
 3. In ChatGPT, enable **Settings → Security and login → Developer mode**. Open the Plugins
    directory, create a developer-mode plugin, choose **Tunnel**, and select the tunnel id.
    Review the discovered tools before saving. Start with `healthcheck`; use
-   `ask_ossllmapi` for inference and `list_models` when selecting an explicit model.
+   `ask_llmharbor` for inference and `list_models` when selecting an explicit model.
 
 The tunnel's static MCP headers are sent only to the configured OSLLMAPI origin. Do not
 put either API key in the YAML file, MCP URL, screenshots, logs, or commits. A public plugin
@@ -518,7 +518,7 @@ models:
     provider: openai
     model: auto
     apiBase: http://localhost:3001/v1
-    apiKey: ossllmapi-your-unified-key
+    apiKey: llmharbor-your-unified-key
     useLegacyCompletionsEndpoint: true
     roles:
       - autocomplete
@@ -543,7 +543,7 @@ Assistant: …
 **Enable it in `.env`:**
 
 ```env
-OSSLLMAPI_CONTEXT_HANDOFF=on_model_switch
+LLMHarbor_CONTEXT_HANDOFF=on_model_switch
 ```
 
 **How it works:**

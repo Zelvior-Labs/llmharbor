@@ -35,7 +35,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="http://localhost:3001/v1",
-    api_key="ossllmapi-your-unified-key",
+    api_key="llmharbor-your-unified-key",
 )
 
 resp = client.chat.completions.create(
@@ -50,7 +50,7 @@ print("Routed via:", resp.headers.get("x-routed-via"))
 
 ```bash
 curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer ossllmapi-your-unified-key" \
+  -H "Authorization: Bearer llmharbor-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "auto",
@@ -72,7 +72,7 @@ These rank **every enabled model**, ignoring your chain order. Common synonyms r
 
 ```bash
 curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer ossllmapi-your-unified-key" \
+  -H "Authorization: Bearer llmharbor-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "auto:fast",
@@ -84,7 +84,7 @@ curl http://localhost:3001/v1/chat/completions \
 
 ```bash
 curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer ossllmapi-your-unified-key" \
+  -H "Authorization: Bearer llmharbor-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "auto:coding",
@@ -108,7 +108,7 @@ Each catalog entry also carries `execution_status`, a live answer to "would a re
 
 ```bash
 curl "http://localhost:3001/v1/models?execution_status=ready" \
-  -H "Authorization: Bearer ossllmapi-your-unified-key"
+  -H "Authorization: Bearer llmharbor-your-unified-key"
 ```
 
 ## Streaming
@@ -196,7 +196,7 @@ Gemini SDKs and Gemini CLI can use the native `/v1beta` surface:
 
 ```bash
 curl "http://localhost:3001/v1beta/models/gemini-2.5-flash:generateContent" \
-  -H "x-goog-api-key: ossllmapi-your-unified-key" \
+  -H "x-goog-api-key: llmharbor-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{"contents":[{"role":"user","parts":[{"text":"hello"}]}]}'
 ```
@@ -279,7 +279,7 @@ HuggingFace models route through the **fal queue** (`router.huggingface.co/fal-a
 
 ```bash
 curl http://localhost:3001/v1/videos/generations \
-  -H "Authorization: Bearer ossllmapi-your-unified-key" \
+  -H "Authorization: Bearer llmharbor-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{"model":"auto","prompt":"a sunrise over a quiet lake","duration":6}' \
   --output video.mp4
@@ -334,7 +334,7 @@ print(len(resp.data), "vectors of", len(resp.data[0].embedding), "dims")
 
 ```bash
 curl http://localhost:3001/v1/embeddings \
-  -H "Authorization: Bearer ossllmapi-your-unified-key" \
+  -H "Authorization: Bearer llmharbor-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{"model": "auto", "input": "hello world"}'
 ```
@@ -360,7 +360,7 @@ OSLLMAPI also speaks Anthropic's Messages API, so anything built for Claude — 
 
 ```bash
 curl http://localhost:3001/v1/messages \
-  -H "x-api-key: ossllmapi-your-unified-key" \
+  -H "x-api-key: llmharbor-your-unified-key" \
   -H "anthropic-version: 2023-06-01" \
   -H "Content-Type: application/json" \
   -d '{
@@ -399,14 +399,14 @@ This does **not** disable auto-mode safety checks or permissions. Claude Code st
 *On macOS / Linux (Bash):*
 ```bash
 export ANTHROPIC_BASE_URL=http://localhost:3001
-export ANTHROPIC_AUTH_TOKEN=ossllmapi-your-unified-key   # NOT ANTHROPIC_API_KEY
+export ANTHROPIC_AUTH_TOKEN=llmharbor-your-unified-key   # NOT ANTHROPIC_API_KEY
 claude
 ```
 
 *On Windows (PowerShell):*
 ```powershell
 $env:ANTHROPIC_BASE_URL="http://localhost:3001"
-$env:ANTHROPIC_AUTH_TOKEN="ossllmapi-your-unified-key"
+$env:ANTHROPIC_AUTH_TOKEN="llmharbor-your-unified-key"
 claude
 ```
 
@@ -421,7 +421,7 @@ Authenticate with your unified proxy key (the same `Authorization: Bearer`
 every `/v1` route takes).
 
 ```bash
-curl http://localhost:3001/v1/usage -H "Authorization: Bearer $OSSLLMAPI_KEY"
+curl http://localhost:3001/v1/usage -H "Authorization: Bearer $LLMHarbor_KEY"
 ```
 
 ```json
@@ -489,7 +489,7 @@ proxy key may call this route; client-profile keys get `403`.
   "items": [
     {
       "id": 14,
-      "filename": "ossllmapi-20260825-040000-enc.sql",
+      "filename": "llmharbor-20260825-040000-enc.sql",
       "filesize": 2418688,
       "isFull": true,
       "source": "scheduled",
@@ -548,7 +548,7 @@ time. Each threshold fires once per key per UTC month, so a key cannot flood the
 log. This mirrors LiteLLM's budget alerts and OpenRouter's per-key spend-limit
 alert: the warning arrives while requests still flow, before the hard `429`.
 Set `BUDGET_ALERT_WEBHOOK_URL` to also POST each alert as JSON
-(`type: ossllmapi.key_budget_threshold`) to a webhook, such as a Slack or
+(`type: llmharbor.key_budget_threshold`) to a webhook, such as a Slack or
 Discord workflow.
 
 Embeddings additionally relay the upstream providers' own back-off. A provider

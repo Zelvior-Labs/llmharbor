@@ -38,7 +38,7 @@ describe('wasm-sqlite Linux portable driver', () => {
   });
 
   it('opens a file-backed database with file metadata and persists writes', () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-wasm-sqlite-'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-wasm-sqlite-'));
     tempDirs.push(dir);
     const dbPath = path.join(dir, 'freeapi.db');
 

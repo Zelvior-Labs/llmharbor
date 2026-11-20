@@ -10,7 +10,7 @@ import type {
   QuotaResetStrategy,
   ProviderQuotaObservation,
   ProviderQuotaState,
-} from '@ossllmapi/shared/types.js';
+} from '@llmharbor/shared/types.js';
 
 export interface QuotaObservationContext {
   platform: Platform;

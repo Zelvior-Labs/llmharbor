@@ -25,7 +25,7 @@
 
 import crypto from 'crypto';
 import { getDb } from '../db/index.js';
-import type { ChatMessage } from '@ossllmapi/shared/types.js';
+import type { ChatMessage } from '@llmharbor/shared/types.js';
 
 // ── Config (read per call so tests can flip it live) ──
 

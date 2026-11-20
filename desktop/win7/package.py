@@ -41,9 +41,9 @@ def check_executable(path, arch):
 
 def package(arch, runtime_zip=None):
     cpu = 'ia32' if arch == 'x86' else 'x64'
-    name = f'OSSLLMAPI-{VERSION}-windows7-{arch}'
+    name = f'LLMHarbor-{VERSION}-windows7-{arch}'
     electron = PIN['electron']
-    with tempfile.TemporaryDirectory(prefix='ossllmapi-win7-') as tmp:
+    with tempfile.TemporaryDirectory(prefix='llmharbor-win7-') as tmp:
         tmp = Path(tmp)
         if not runtime_zip:
             asset = f'electron-v{electron}-win32-{cpu}.zip'
@@ -58,13 +58,13 @@ def package(arch, runtime_zip=None):
             vendor.extractall(stage)
         check_executable(stage / 'electron.exe', arch)
         # Leave the PE, DLLs, Chromium resources and vendor licenses intact.
-        (stage / 'electron.exe').rename(stage / 'OSSLLMAPI.exe')
+        (stage / 'electron.exe').rename(stage / 'LLMHarbor.exe')
         (stage / 'resources' / 'default_app.asar').unlink()
         app = stage / 'resources' / 'app'
         build = app / 'build'
         build.mkdir(parents=True)
         (app / 'package.json').write_text(json.dumps({
-            'name': 'ossllmapi-win7', 'productName': 'OSSLLMAPI', 'version': VERSION,
+            'name': 'llmharbor-win7', 'productName': 'LLMHarbor', 'version': VERSION,
             'type': 'module', 'main': 'build/main.mjs',
         }))
         for file in ('main.mjs', 'server.mjs'):
@@ -77,7 +77,7 @@ def package(arch, runtime_zip=None):
         if not (OUT / 'client' / 'index.html').is_file():
             raise ValueError('Build the win7 dashboard first; see desktop/win7/README.md')
         shutil.copytree(OUT / 'client', stage / 'resources' / 'client-dist')
-        shutil.copyfile(DESKTOP.parent / 'LICENSE', stage / 'LICENSE.OSSLLMAPI.txt')
+        shutil.copyfile(DESKTOP.parent / 'LICENSE', stage / 'LICENSE.LLMHarbor.txt')
         shutil.copyfile(HERE / 'LICENSE.electron-legacy.txt', stage / 'LICENSE.electron-legacy.txt')
         (stage / 'README-Windows7.txt').write_bytes((HERE / 'README.md').read_text(encoding='utf-8').replace('\n', '\r\n').encode('utf-8-sig'))
 

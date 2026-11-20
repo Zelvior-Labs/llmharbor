@@ -2,7 +2,7 @@
 
 # OSLLMAPI documentation
 
-**OSSLLMAPI is a modified version of [freellmapi](https://github.com/tashfeenahmed/freellmapi/), made by Zelvior Labs.**
+**LLMHarbor is a modified version of [freellmapi](https://github.com/tashfeenahmed/freellmapi/), made by Zelvior Labs.**
 
 This is the user entry point — start here to install the gateway, call the OpenAI-compatible API, connect coding agents and understand the high-level architecture. The root [README](../../README.md) is the product overview; this index gets you running.
 

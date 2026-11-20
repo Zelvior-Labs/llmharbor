@@ -1,4 +1,4 @@
-package io.github.zelvior.ossllmapi.mobile;
+package io.github.zelvior.llmharbor.mobile;
 
 import android.content.Context;
 

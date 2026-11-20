@@ -4,11 +4,11 @@
 
 ## Scope
 
-This domain documents the OSLLMAPI setup CLI (`cli/`) — the `npx ossllmapi` generators that wire coding agents to the local gateway in one command. Each generator (`setup-claude`, `setup-codex`, …) fetches the live catalog, backs up existing config, never clobbers unrelated keys, and records `tools.json` metadata for `ossllmapi launch` / `launch-codex` zero-persistence launchers and `ossllmapi doctor`.
+This domain documents the OSLLMAPI setup CLI (`cli/`) — the `npx llmharbor` generators that wire coding agents to the local gateway in one command. Each generator (`setup-claude`, `setup-codex`, …) fetches the live catalog, backs up existing config, never clobbers unrelated keys, and records `tools.json` metadata for `llmharbor launch` / `launch-codex` zero-persistence launchers and `llmharbor doctor`.
 
 Authoritative sources: [`cli/src/tools.ts`](../../../cli/src/tools.ts) (all `Xxx()` generator functions), [`cli/tools.json`](../../../cli/tools.json) (registry), [`cli/src/config-files.ts`](../../../cli/src/config-files.ts) (merge + `0600` + timestamped backup), [`cli/README.md`](../../../cli/README.md), [`client/src/data/agent-tools.json`](../../../client/src/data/agent-tools.json).
 
-For per-agent wiring recipes and the MCP/headerless-client story, see [Clients & coding agents](../clients/OVERVIEW.md). For the env vars the CLI injects (`OSSLLMAPI_API_KEY`, `OSSLLMAPI_MODEL`), see [env/](../env/OVERVIEW.md).
+For per-agent wiring recipes and the MCP/headerless-client story, see [Clients & coding agents](../clients/OVERVIEW.md). For the env vars the CLI injects (`LLMHarbor_API_KEY`, `LLMHarbor_MODEL`), see [env/](../env/OVERVIEW.md).
 
 ## File Index
 

@@ -78,7 +78,7 @@ function claude(ctx: GenerateContext): Generation {
       ctx.profile === 'default'
         ? 'Claude Code will read this configuration automatically.'
         : `Launch with CLAUDE_CONFIG_DIR=${directory} claude`,
-      'For zero-persistence credentials, prefer: ossllmapi launch',
+      'For zero-persistence credentials, prefer: llmharbor launch',
     ],
   };
 }
@@ -87,11 +87,11 @@ function codex(ctx: GenerateContext): Generation {
   const model = primaryModel(ctx.models, ctx.requestedModelId);
   const compact = Math.max(16_000, Math.floor(contextWindow(model) * 0.9));
   const providerTable = [
-    '[model_providers.ossllmapi]',
+    '[model_providers.llmharbor]',
     'name = "OSLLMAPI"',
     `base_url = ${JSON.stringify(v1Url(ctx.url))}`,
     'wire_api = "responses"',
-    'env_key = "OSSLLMAPI_API_KEY"',
+    'env_key = "LLMHarbor_API_KEY"',
     'requires_openai_auth = false',
   ];
   // Codex reads exactly one file, ~/.codex/config.toml. Named profiles are
@@ -99,25 +99,25 @@ function codex(ctx: GenerateContext): Generation {
   // `codex --profile NAME`; separate per-profile files are never read.
   const content = ctx.profile === 'default'
     ? [
-      '# ossllmapi:start',
+      '# llmharbor:start',
       `model = ${JSON.stringify(model.id)}`,
-      'model_provider = "ossllmapi"',
+      'model_provider = "llmharbor"',
       `model_context_window = ${contextWindow(model)}`,
       `model_auto_compact_token_limit = ${compact}`,
       'tool_output_token_limit = 20000',
       '',
       ...providerTable,
-      '# ossllmapi:end',
+      '# llmharbor:end',
       '',
     ]
     : [
-      '# ossllmapi:start',
+      '# llmharbor:start',
       ...providerTable,
       '',
       `[profiles.${/^[A-Za-z0-9_-]+$/.test(ctx.profile) ? ctx.profile : JSON.stringify(ctx.profile)}]`,
       `model = ${JSON.stringify(model.id)}`,
-      'model_provider = "ossllmapi"',
-      '# ossllmapi:end',
+      'model_provider = "llmharbor"',
+      '# llmharbor:end',
       '',
     ];
   return {
@@ -128,7 +128,7 @@ function codex(ctx: GenerateContext): Generation {
     }],
     notes: [
       ...clientNotes(ctx.detectedClient ?? detectChatGptClient()),
-      'Export OSSLLMAPI_API_KEY before running codex; the key is not written to config.toml.',
+      'Export LLMHarbor_API_KEY before running codex; the key is not written to config.toml.',
       ...(ctx.profile === 'default'
         ? []
         : [`Activate this profile with: codex --profile ${ctx.profile}`]),
@@ -178,7 +178,7 @@ function continueDev(ctx: GenerateContext): Generation {
       path: path.join(ctx.homeDir, '.continue', 'config.yaml'),
       format: 'yaml',
       content: [
-        '# ossllmapi:start',
+        '# llmharbor:start',
         'name: OSLLMAPI',
         'version: 1.0.0',
         'schema: v1',
@@ -187,12 +187,12 @@ function continueDev(ctx: GenerateContext): Generation {
         '    provider: openai',
         `    model: ${yamlString(model.id)}`,
         `    apiBase: ${yamlString(v1Url(ctx.url))}`,
-        '    apiKey: ${{ secrets.OSSLLMAPI_API_KEY }}',
+        '    apiKey: ${{ secrets.LLMHarbor_API_KEY }}',
         '    capabilities:',
         '      - tool_use',
         '    defaultCompletionOptions:',
         `      contextLength: ${contextWindow(model)}`,
-        '# ossllmapi:end',
+        '# llmharbor:end',
         '',
       ].join('\n'),
     },
@@ -205,7 +205,7 @@ function continueDev(ctx: GenerateContext): Generation {
       path: path.join(ctx.homeDir, '.continue', '.env'),
       format: 'env',
       sensitive: true,
-      content: `OSSLLMAPI_API_KEY=${ctx.apiKey}\n`,
+      content: `LLMHarbor_API_KEY=${ctx.apiKey}\n`,
     }],
     notes: [
       'The key is in ~/.continue/.env (read by the Continue CLI and the IDE extensions); config.yaml references it as a secret.',
@@ -222,11 +222,11 @@ function aider(ctx: GenerateContext): Generation {
       format: 'yaml',
       sensitive: true,
       content: [
-        '# ossllmapi:start',
+        '# llmharbor:start',
         `openai-api-base: ${yamlString(v1Url(ctx.url))}`,
         `openai-api-key: ${yamlString(ctx.apiKey)}`,
         `model: ${yamlString(`openai/${model.id}`)}`,
-        '# ossllmapi:end',
+        '# llmharbor:end',
         '',
       ].join('\n'),
     }],
@@ -245,7 +245,7 @@ function aider(ctx: GenerateContext): Generation {
 //
 // The key goes into OpenCode's own credential store, auth.json under its data
 // dir (`$XDG_DATA_HOME/opencode`, else `~/.local/share/opencode` — on Windows
-// too), keyed by the provider id. It used to travel as `{env:OSSLLMAPI_API_KEY}`
+// too), keyed by the provider id. It used to travel as `{env:LLMHarbor_API_KEY}`
 // in the config, which only works when the process making the request inherits
 // that variable: a PowerShell `$env:` lasts one window, and the OpenCode desktop
 // app never sees a shell export at all. Worse, the unset placeholder resolves to
@@ -272,9 +272,9 @@ function opencode(ctx: GenerateContext): Generation {
         format: 'json',
         value: {
           $schema: 'https://opencode.ai/config.json',
-          model: `ossllmapi/${model.id}`,
+          model: `llmharbor/${model.id}`,
           provider: {
-            ossllmapi: {
+            llmharbor: {
               npm: '@ai-sdk/openai-compatible',
               name: 'OSLLMAPI',
               options: {
@@ -291,13 +291,13 @@ function opencode(ctx: GenerateContext): Generation {
         format: 'json',
         sensitive: true,
         value: {
-          ossllmapi: { type: 'api', key: ctx.apiKey },
+          llmharbor: { type: 'api', key: ctx.apiKey },
         },
       },
     ],
     notes: [
       'The key is stored in OpenCode\'s auth.json, so no environment variable is needed (CLI or desktop app).',
-      `ossllmapi/${model.id} is now the default model.`,
+      `llmharbor/${model.id} is now the default model.`,
     ],
   };
 }
@@ -322,15 +322,15 @@ function goose(ctx: GenerateContext): Generation {
         path: path.join(
           dir,
           'custom_providers',
-          'ossllmapi.json',
+          'llmharbor.json',
         ),
         format: 'json',
         value: {
-          name: 'ossllmapi',
+          name: 'llmharbor',
           engine: 'openai',
           display_name: 'OSLLMAPI',
           description: 'OSLLMAPI OpenAI-compatible gateway',
-          api_key_env: 'OSSLLMAPI_API_KEY',
+          api_key_env: 'LLMHarbor_API_KEY',
           base_url: v1Url(ctx.url),
           models,
           supports_streaming: true,
@@ -343,15 +343,15 @@ function goose(ctx: GenerateContext): Generation {
         path: path.join(dir, 'config.yaml'),
         format: 'yaml',
         content: [
-          '# ossllmapi:start',
-          'GOOSE_PROVIDER: ossllmapi',
+          '# llmharbor:start',
+          'GOOSE_PROVIDER: llmharbor',
           `GOOSE_MODEL: ${yamlString(model.id)}`,
-          '# ossllmapi:end',
+          '# llmharbor:end',
           '',
         ].join('\n'),
       },
     ],
-    notes: ['Export OSSLLMAPI_API_KEY before starting Goose.'],
+    notes: ['Export LLMHarbor_API_KEY before starting Goose.'],
   };
 }
 
@@ -366,7 +366,7 @@ function qwen(ctx: GenerateContext): Generation {
   const models = [model, ...roster.filter(entry => entry.id !== model.id)].map(entry => ({
     id: entry.id,
     name: entry.name ?? entry.id,
-    envKey: 'OSSLLMAPI_API_KEY',
+    envKey: 'LLMHarbor_API_KEY',
     baseUrl: v1Url(ctx.url),
     generationConfig: {
       contextWindowSize: contextWindow(entry),
@@ -392,7 +392,7 @@ function qwen(ctx: GenerateContext): Generation {
         path: path.join(dir, '.env'),
         format: 'env',
         sensitive: true,
-        content: `OSSLLMAPI_API_KEY=${ctx.apiKey}\n`,
+        content: `LLMHarbor_API_KEY=${ctx.apiKey}\n`,
       },
     ],
     notes: [
@@ -412,8 +412,8 @@ function qwen(ctx: GenerateContext): Generation {
 // ~/.vscode-mock/global-storage/global-state.json.
 function roo(ctx: GenerateContext): Generation {
   const model = primaryModel(ctx.models, ctx.requestedModelId);
-  const importPath = path.join(ctx.homeDir, '.roo', 'ossllmapi.json');
-  const cliImportPath = path.join(ctx.homeDir, '.roo', 'ossllmapi-cli.json');
+  const importPath = path.join(ctx.homeDir, '.roo', 'llmharbor.json');
+  const cliImportPath = path.join(ctx.homeDir, '.roo', 'llmharbor-cli.json');
   const cliProfile = {
     apiProvider: 'openrouter',
     openRouterBaseUrl: v1Url(ctx.url),
@@ -428,9 +428,9 @@ function roo(ctx: GenerateContext): Generation {
         sensitive: true,
         value: {
           providerProfiles: {
-            currentApiConfigName: 'ossllmapi',
+            currentApiConfigName: 'llmharbor',
             apiConfigs: {
-              ossllmapi: {
+              llmharbor: {
                 apiProvider: 'openai',
                 openAiBaseUrl: v1Url(ctx.url),
                 openAiApiKey: ctx.apiKey,
@@ -442,7 +442,7 @@ function roo(ctx: GenerateContext): Generation {
                   supportsPromptCache: false,
                 },
               },
-              'ossllmapi-cli': cliProfile,
+              'llmharbor-cli': cliProfile,
             },
           },
           globalSettings: {},
@@ -454,8 +454,8 @@ function roo(ctx: GenerateContext): Generation {
         sensitive: true,
         value: {
           providerProfiles: {
-            currentApiConfigName: 'ossllmapi-cli',
-            apiConfigs: { 'ossllmapi-cli': cliProfile },
+            currentApiConfigName: 'llmharbor-cli',
+            apiConfigs: { 'llmharbor-cli': cliProfile },
           },
           globalSettings: {},
         },
@@ -471,7 +471,7 @@ function roo(ctx: GenerateContext): Generation {
       },
     ],
     notes: [
-      `VS Code: add "roo-cline.autoImportSettingsPath": "${importPath}" to settings.json and reload (or Roo Settings → Import); the ossllmapi profile becomes current.`,
+      `VS Code: add "roo-cline.autoImportSettingsPath": "${importPath}" to settings.json and reload (or Roo Settings → Import); the llmharbor profile becomes current.`,
       `Roo CLI: merge {"roo-cline.autoImportSettingsPath": "${cliImportPath}"} into ~/.vscode-mock/global-storage/global-state.json (create it if missing), then:`,
       `  export OPENROUTER_API_KEY=<unified-key>   # the CLI refuses to start without it, even with the key in the profile`,
       `  roo -m ${model.id} "Say hello"            # -m is required: the CLI's built-in default model shadows cli-settings.json`,
@@ -505,7 +505,7 @@ function kilo(ctx: GenerateContext): Generation {
         provider: {
           'openai-compatible': {
             options: {
-              apiKey: '{env:OSSLLMAPI_API_KEY}',
+              apiKey: '{env:LLMHarbor_API_KEY}',
               baseURL: v1Url(ctx.url),
             },
             models,
@@ -514,7 +514,7 @@ function kilo(ctx: GenerateContext): Generation {
       },
     }],
     notes: [
-      'Export OSSLLMAPI_API_KEY before starting Kilo; global config is trusted for {env:…} expansion.',
+      'Export LLMHarbor_API_KEY before starting Kilo; global config is trusted for {env:…} expansion.',
       `One-shot check: kilo run "Say hello" — openai-compatible/${model.id} is the default model.`,
     ],
   };
@@ -548,23 +548,23 @@ function crush(ctx: GenerateContext): Generation {
       value: {
         $schema: 'https://charm.land/crush.json',
         models: {
-          large: { provider: 'ossllmapi', model: model.id },
-          small: { provider: 'ossllmapi', model: model.id },
+          large: { provider: 'llmharbor', model: model.id },
+          small: { provider: 'llmharbor', model: model.id },
         },
         providers: {
-          ossllmapi: {
+          llmharbor: {
             name: 'OSLLMAPI',
             type: 'openai-compat',
             base_url: v1Url(ctx.url),
-            api_key: '$OSSLLMAPI_API_KEY',
+            api_key: '$LLMHarbor_API_KEY',
             models,
           },
         },
       },
     }],
     notes: [
-      'Export OSSLLMAPI_API_KEY before starting Crush.',
-      `ossllmapi/${model.id} is now the large and small model.`,
+      'Export LLMHarbor_API_KEY before starting Crush.',
+      `llmharbor/${model.id} is now the large and small model.`,
     ],
   };
 }
@@ -588,8 +588,8 @@ function dsh(ctx: GenerateContext): Generation {
   // name it) and must be lowercase; a named profile becomes a second route
   // beside the default one rather than replacing it.
   const route = ctx.profile === 'default'
-    ? 'ossllmapi'
-    : `ossllmapi-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
+    ? 'llmharbor'
+    : `llmharbor-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
   const roster = catalogModels(ctx.models);
   const entries = [model, ...roster.filter(entry => entry.id !== model.id)]
     .map(entry => ({
@@ -603,7 +603,7 @@ function dsh(ctx: GenerateContext): Generation {
       providers: {
         [route]: {
           displayName: ctx.profile === 'default' ? 'OSLLMAPI' : `OSLLMAPI (${ctx.profile})`,
-          apiKeyEnv: 'OSSLLMAPI_API_KEY',
+          apiKeyEnv: 'LLMHarbor_API_KEY',
           api: 'openai-completions',
           baseURL: v1Url(ctx.url),
           models: entries,
@@ -637,7 +637,7 @@ function dsh(ctx: GenerateContext): Generation {
         path: path.join(home, '.env'),
         format: 'env',
         sensitive: true,
-        content: `OSSLLMAPI_API_KEY=${ctx.apiKey}\n`,
+        content: `LLMHarbor_API_KEY=${ctx.apiKey}\n`,
       },
       { path: path.join(home, 'cordis.patch.yml'), format: 'yaml-entries', value: settings },
     ],
@@ -675,7 +675,7 @@ function mimo(ctx: GenerateContext): Generation {
       process.env.XDG_CONFIG_HOME?.trim() || path.join(ctx.homeDir, '.config'),
       'mimocode',
     );
-  // The default model is named as `ossllmapi/<id>`, so it has to exist in the
+  // The default model is named as `llmharbor/<id>`, so it has to exist in the
   // provider's own `models` map — `auto`, the usual default, is filtered out
   // of the plain catalog roster, so put the chosen model back at the front.
   const roster = catalogModels(ctx.models);
@@ -692,23 +692,23 @@ function mimo(ctx: GenerateContext): Generation {
       value: {
         $schema: 'https://mimo.xiaomi.com/mimocode/config.json',
         provider: {
-          ossllmapi: {
+          llmharbor: {
             npm: '@ai-sdk/openai-compatible',
             name: 'OSLLMAPI',
             options: {
               baseURL: v1Url(ctx.url),
-              apiKey: '{env:OSSLLMAPI_API_KEY}',
+              apiKey: '{env:LLMHarbor_API_KEY}',
             },
             models: modelEntries,
           },
         },
-        model: `ossllmapi/${model.id}`,
+        model: `llmharbor/${model.id}`,
       },
     }],
     notes: [
       'Install MiMo Code with: curl -fsSL https://mimo.xiaomi.com/install | bash',
-      'Export OSSLLMAPI_API_KEY before starting MiMo Code.',
-      `Start it with \`mimo\` — ossllmapi/${model.id} is the default model.`,
+      'Export LLMHarbor_API_KEY before starting MiMo Code.',
+      `Start it with \`mimo\` — llmharbor/${model.id} is the default model.`,
       'One-shot check: mimo run "Say hello"',
     ],
   };
@@ -722,10 +722,10 @@ function mimo(ctx: GenerateContext): Generation {
 // gateway with a per-user live catalog is. `api: openai-completions` is the
 // adapter for a /v1/chat/completions backend; OpenClaw already strips the
 // developer role and attribution headers for a custom origin, so no `compat`
-// switches are needed. The key travels as `${OSSLLMAPI_API_KEY}`, OpenClaw's
+// switches are needed. The key travels as `${LLMHarbor_API_KEY}`, OpenClaw's
 // own env substitution, and the value lands in $OPENCLAW_STATE_DIR/.env (0600),
 // the global env file OpenClaw loads on its own — so the route works with
-// nothing exported. The default model is `ossllmapi/<id>` under
+// nothing exported. The default model is `llmharbor/<id>` under
 // `agents.defaults.model.primary`; the patch keeps any `fallbacks` already
 // declared beside it.
 function openclawStateDir(homeDir: string): string {
@@ -742,8 +742,8 @@ function openclaw(ctx: GenerateContext): Generation {
   // by session state, so it is permanent; a named profile becomes a second
   // provider beside the default one rather than replacing it.
   const provider = ctx.profile === 'default'
-    ? 'ossllmapi'
-    : `ossllmapi-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
+    ? 'llmharbor'
+    : `llmharbor-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
   const roster = catalogModels(ctx.models);
   const entries = [model, ...roster.filter(entry => entry.id !== model.id)]
     .map(entry => ({
@@ -768,7 +768,7 @@ function openclaw(ctx: GenerateContext): Generation {
             providers: {
               [provider]: {
                 baseUrl: v1Url(ctx.url),
-                apiKey: '${OSSLLMAPI_API_KEY}',
+                apiKey: '${LLMHarbor_API_KEY}',
                 api: 'openai-completions',
                 // OpenClaw attaches its own `openclaw/<version>` identity only
                 // to endpoints it recognises; a custom origin gets the bare
@@ -786,7 +786,7 @@ function openclaw(ctx: GenerateContext): Generation {
         path: path.join(stateDir, '.env'),
         format: 'env',
         sensitive: true,
-        content: `OSSLLMAPI_API_KEY=${ctx.apiKey}\n`,
+        content: `LLMHarbor_API_KEY=${ctx.apiKey}\n`,
       },
     ],
     notes: [
@@ -805,7 +805,7 @@ function openclaw(ctx: GenerateContext): Generation {
 // endpoint: OPENAI_BASE_URL is deliberately ignored for anything but
 // api.openai.com, and OPENAI_API_KEY is only sent to OpenAI hosts. So the
 // gateway goes into the `model` block as `provider: custom` with `base_url`,
-// and the key travels as `api_key: "${OSSLLMAPI_API_KEY}"` — Hermes's own
+// and the key travels as `api_key: "${LLMHarbor_API_KEY}"` — Hermes's own
 // substitution — with the value in $HERMES_HOME/.env (0600), the file Hermes
 // loads on its own, so nothing needs exporting. A fresh install ships
 // `model: ""` (a "not configured" sentinel); replacing it with the mapping is
@@ -818,7 +818,7 @@ function hermes(ctx: GenerateContext): Generation {
   const home = process.env.HERMES_HOME?.trim() || (process.platform === 'win32'
     ? path.join(process.env.LOCALAPPDATA || path.join(ctx.homeDir, 'AppData', 'Local'), 'hermes')
     : path.join(ctx.homeDir, '.hermes'));
-  const provider = `ossllmapi-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
+  const provider = `llmharbor-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
   // Hermes only identifies itself to hosts it knows; a custom endpoint gets the
   // bare openai-python user agent. `default_headers` is its documented way to
   // override that, and it is what lets the gateway's analytics name the client.
@@ -829,7 +829,7 @@ function hermes(ctx: GenerateContext): Generation {
         provider: 'custom',
         default: model.id,
         base_url: v1Url(ctx.url),
-        api_key: '${OSSLLMAPI_API_KEY}',
+        api_key: '${LLMHarbor_API_KEY}',
         api_mode: 'chat_completions',
         context_length: contextWindow(model),
         default_headers: headers,
@@ -844,7 +844,7 @@ function hermes(ctx: GenerateContext): Generation {
         [provider]: {
           name: `OSLLMAPI (${ctx.profile})`,
           api: v1Url(ctx.url),
-          api_key: '${OSSLLMAPI_API_KEY}',
+          api_key: '${LLMHarbor_API_KEY}',
           transport: 'chat_completions',
           default_model: model.id,
           context_length: contextWindow(model),
@@ -859,7 +859,7 @@ function hermes(ctx: GenerateContext): Generation {
         path: path.join(home, '.env'),
         format: 'env',
         sensitive: true,
-        content: `OSSLLMAPI_API_KEY=${ctx.apiKey}\n`,
+        content: `LLMHarbor_API_KEY=${ctx.apiKey}\n`,
       },
     ],
     notes: [
@@ -889,8 +889,8 @@ function pi(ctx: GenerateContext): Generation {
   const model = primaryModel(ctx.models, ctx.requestedModelId);
   const dir = piAgentDir(ctx.homeDir);
   const provider = ctx.profile === 'default'
-    ? 'ossllmapi'
-    : `ossllmapi-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
+    ? 'llmharbor'
+    : `llmharbor-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
   const roster = catalogModels(ctx.models);
   const entries = [model, ...roster.filter(entry => entry.id !== model.id)]
     .map(entry => ({
@@ -968,8 +968,8 @@ function reasonix(ctx: GenerateContext): Generation {
   // A provider name is what every `provider/model` ref and saved session points
   // at, so a named profile becomes a second entry rather than replacing it.
   const provider = ctx.profile === 'default'
-    ? 'ossllmapi'
-    : `ossllmapi-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
+    ? 'llmharbor'
+    : `llmharbor-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
   const roster = catalogModels(ctx.models);
   const models = [model, ...roster.filter(entry => entry.id !== model.id)].map(entry => entry.id);
   return {
@@ -986,7 +986,7 @@ function reasonix(ctx: GenerateContext): Generation {
           `base_url = ${JSON.stringify(v1Url(ctx.url))}`,
           `models = [${models.map(id => JSON.stringify(id)).join(', ')}]`,
           `default = ${JSON.stringify(model.id)}`,
-          'api_key_env = "OSSLLMAPI_API_KEY"',
+          'api_key_env = "LLMHarbor_API_KEY"',
           `context_window = ${contextWindow(model)}`,
           // Without a price Reasonix bills unknown models at a guessed rate;
           // the gateway's models are free.
@@ -997,7 +997,7 @@ function reasonix(ctx: GenerateContext): Generation {
         path: path.join(home, '.env'),
         format: 'env',
         sensitive: true,
-        content: `OSSLLMAPI_API_KEY=${ctx.apiKey}\n`,
+        content: `LLMHarbor_API_KEY=${ctx.apiKey}\n`,
       },
     ],
     notes: [
@@ -1034,8 +1034,8 @@ function zcode(ctx: GenerateContext): Generation {
   // Like every other generator, a named profile is a second provider entry so
   // both routes coexist in ZCode's model picker.
   const provider = ctx.profile === 'default'
-    ? 'ossllmapi'
-    : `ossllmapi-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
+    ? 'llmharbor'
+    : `llmharbor-${ctx.profile.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`;
   const ids = [model, ...catalogModels(ctx.models).filter(entry => entry.id !== model.id)];
   return {
     files: [{
@@ -1121,22 +1121,22 @@ function atomcode(ctx: GenerateContext): Generation {
       format: 'toml',
       sensitive: true,
       content: [
-        'default_model = "ossllmapi"',
+        'default_model = "llmharbor"',
         '',
-        '[provider_accounts.ossllmapi]',
+        '[provider_accounts.llmharbor]',
         'provider = "openai"',
         `base_url = ${JSON.stringify(v1Url(ctx.url))}`,
         `api_key = ${JSON.stringify(ctx.apiKey)}`,
         '',
-        '[models.ossllmapi]',
-        'account = "ossllmapi"',
+        '[models.llmharbor]',
+        'account = "llmharbor"',
         `model = ${JSON.stringify(model.id)}`,
         `context_window = ${contextWindow(model)}`,
       ].join('\n'),
     }],
     notes: [
       'AtomCode reads ~/.atomcode/config.toml; unrelated accounts, models and legacy providers are kept.',
-      `default_model now points at [models.ossllmapi] with ${model.id} via [provider_accounts.ossllmapi].`,
+      `default_model now points at [models.llmharbor] with ${model.id} via [provider_accounts.llmharbor].`,
       'Point base_url at the unified /v1 endpoint; api_key is the unified key shown on the Agents page.',
       'One-shot check: atomcode -p "Say hello" (telemetry is on by default: atomcode telemetry disable).',
     ],
@@ -1177,7 +1177,7 @@ const metadata = [
   ['reasonix', 'Reasonix', 'code', 'file', 'OpenAI Chat', '/v1', 'setup-reasonix', 'https://github.com/esengine/DeepSeek-Reasonix/blob/studio/docs/CLI.md#configure-providers', reasonix],
   ['zcode', 'ZCode', 'code', 'file', 'OpenAI Chat', '/v1', 'setup-zcode', 'https://zcode.z.ai/en/docs/configuration', zcode],
   ['cursor', 'Cursor', 'code', 'guide', 'OpenAI Chat', '/v1', 'setup-cursor', 'https://docs.cursor.com', cursor],
-  ['generic', 'Generic OpenAI client', 'agent', 'guide', 'OpenAI Chat', '/v1', 'setup-generic', 'https://github.com/zelvior/ossllmapi', generic],
+  ['generic', 'Generic OpenAI client', 'agent', 'guide', 'OpenAI Chat', '/v1', 'setup-generic', 'https://github.com/zelvior/llmharbor', generic],
 ] as const;
 
 export const tools: ToolDefinition[] = metadata.map(([

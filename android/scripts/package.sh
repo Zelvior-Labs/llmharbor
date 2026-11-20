@@ -18,7 +18,7 @@ if [[ $mode == durable ]]; then
   pkg=$ANDROID_PACKAGE_ID
 else
   # One-shot preview signers MUST NOT occupy the durable release package ID.
-  pkg=${ANDROID_PACKAGE_ID:-io.github.zelvior.ossllmapi.mobile.p$code}
+  pkg=${ANDROID_PACKAGE_ID:-io.github.zelvior.llmharbor.mobile.p$code}
 fi
 abis=${ANDROID_ABIS:-"armeabi-v7a arm64-v8a x86_64"}
 out=$PWD/android/build
@@ -50,14 +50,14 @@ recipe=d4aedf536d035bf4eeab7a7a6e18b73d154d0ea5
 fetch_verified "$licenses/Node.txt" "$(node -p "require('$meta').licenseSha256")" "$raw/v$runtime/LICENSE"
 fetch_verified "$licenses/NodeMobile.txt" 66233b87054d6bca9b0c2f23b027bb2caf1ebd961a6f981616d098dade33af34 "$raw/$recipe/LICENSE"
 fetch_verified "$licenses/NodeMobile-NOTICE.txt" 8d4d85eeb410ddd9017344e11447ce30639961f4848a58df75e7aee8fa55133c "$raw/$recipe/NOTICE.md"
-cp LICENSE "$licenses/OSSLLMAPI.txt"; cp "$ndk/NOTICE" "$licenses/Android-NDK.txt"
+cp LICENSE "$licenses/LLMHarbor.txt"; cp "$ndk/NOTICE" "$licenses/Android-NDK.txt"
 for font in geist geist-mono; do cp "node_modules/@fontsource-variable/$font/LICENSE" "$licenses/$font.txt"; done
 
 # Resources, Java and DEX are identical for every ABI; only native libraries differ.
 "$tools/aapt2" compile --dir android/res -o "$work/resources.zip"
 "$tools/aapt2" link -I "$jar" --manifest android/AndroidManifest.xml --min-sdk-version 26 --target-sdk-version 35 \
   --version-code "$code" --version-name "$version" --rename-manifest-package "$pkg" \
-  --custom-package io.github.zelvior.ossllmapi.mobile --java "$work/gen" \
+  --custom-package io.github.zelvior.llmharbor.mobile --java "$work/gen" \
   -A "$out/assets" -o "$work/base-unsigned.apk" "$work/resources.zip"
 mapfile -t sources < <(find android/java "$work/gen" -name '*.java')
 javac -encoding UTF-8 --release 8 -classpath "$jar" -d "$work/classes" "${sources[@]}"
@@ -92,7 +92,7 @@ for abi in $abis; do
   cp "$native"/*.so "$stage/lib/$abi/"
   (cd "$stage" && zip -q -9 base.apk classes.dex lib/"$abi"/*.so)
   "$tools/zipalign" -f 4 "$stage/base.apk" "$stage/aligned.apk"
-  apk="$out/apks/OSSLLMAPI-$version-android-$abi.apk"
+  apk="$out/apks/LLMHarbor-$version-android-$abi.apk"
   "$tools/apksigner" sign --ks "${APK_KEYSTORE:?Set APK_KEYSTORE to a private signing keystore}" \
     --ks-key-alias "${APK_ALIAS:?Set APK_ALIAS}" --ks-pass env:APK_PASSWORD --key-pass env:APK_PASSWORD \
     --v4-signing-enabled false --out "$apk" "$stage/aligned.apk"

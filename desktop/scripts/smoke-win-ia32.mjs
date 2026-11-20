@@ -1,4 +1,4 @@
-// Run with the extracted ZIP's OSSLLMAPI.exe, outside the build tree, so
+// Run with the extracted ZIP's LLMHarbor.exe, outside the build tree, so
 // missing native dependencies can't resolve from desktop/node_modules. The
 // x64 CI host can launch either architecture; check which one we shipped.
 import assert from 'node:assert/strict';
@@ -18,10 +18,10 @@ db.close();
 assert.ok(requireApp('sharp').versions.vips);
 
 const { version } = requireApp('./package.json');
-const installer = `OSSLLMAPI-${version}-windows-x86-setup.exe`;
+const installer = `LLMHarbor-${version}-windows-x86-setup.exe`;
 const [dist] = process.argv.slice(2);
 const { owner, repo, channel } = yaml.load(readFileSync(join(resources, 'app-update.yml'), 'utf8'));
-assert.equal(`${owner}/${repo}`, 'zelvior/ossllmapi');
+assert.equal(`${owner}/${repo}`, 'zelvior/llmharbor');
 assert.equal(channel, 'latest-ia32');
 const manifest = yaml.load(readFileSync(join(dist, `${channel}.yml`), 'utf8'));
 assert.deepEqual(manifest.files.map(file => file.url), [installer]);

@@ -1,37 +1,37 @@
 <div align="center">
 
-# OSSLLMAPI
+# LLMHarbor
 
 **Oyiga 10,1 milliard token. 87 ta bepul LLM provayderi. 1313 ta bepul model endpointi. OpenAI bilan mos bitta endpoint.**
 **Bu loyiha — Zelvior Labs tomonidan yaratilgan [freellmapi](https://github.com/tashfeenahmed/freellmapi/) loyihasining o'zgartirilgan versiyasi.**
 
 O'nlab provayderlarning bepul tariflarini, shuningdek, OpenAI bilan mos keladigan istalgan chat, embedding, rasm va audio endpointlaringizni bitta `/v1` API orqasida birlashtiring. Kalitlar shifrlangan holda saqlanadi. Router har bir so'rov uchun eng yaxshi mavjud modelni tanlaydi, provayder limitga yetganda keyingisiga o'tadi va har bir kalitning sarfini kuzatib boradi, shunda siz hech bir bepul tarif limitidan oshib ketmaysiz.
 
-[![CI](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml)
-[![GitHub stars](https://img.shields.io/github/stars/zelvior/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/zelvior/ossllmapi/stargazers)
+[![CI](https://github.com/zelvior/llmharbor/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/llmharbor/actions/workflows/ci.yml)
+[![GitHub stars](https://img.shields.io/github/stars/zelvior/llmharbor?style=flat&logo=github&color=yellow)](https://github.com/zelvior/llmharbor/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#hissa-qoshish)
-[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/ossllmapi/pkgs/container/ossllmapi)
-[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/ossllmapi)
+[![Docker image](https://img.shields.io/badge/ghcr.io-llmharbor-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/llmharbor/pkgs/container/llmharbor)
+[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/llmharbor)
 
-**[ossllmapi.co](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · to'liq katalogni ko'ring: 736 ta model oilasi, 1313 ta bepul endpoint
+**[llmharbor.co](https://llmharbor.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · to'liq katalogni ko'ring: 736 ta model oilasi, 1313 ta bepul endpoint
 
 [English](README.md) · [Türkçe](README.tr.md) · [简体中文](README.zh-cn.md) · [Русский](README.ru.md) · **O'zbekcha**
 
 Bu tarjima ortda qolishi mumkin. Eng so'nggi ma'lumot uchun inglizcha README'ga qarang.
 
 <p align="center">
-  <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/macos.svg" height="48" alt="Download for macOS"></a>
-  <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/windows.svg" height="48" alt="Download for Windows"></a>
+  <a href="https://github.com/zelvior/llmharbor/releases/latest"><img src="repo-assets/badges/macos.svg" height="48" alt="Download for macOS"></a>
+  <a href="https://github.com/zelvior/llmharbor/releases/latest"><img src="repo-assets/badges/windows.svg" height="48" alt="Download for Windows"></a>
   <a href="docs/en/install/01-install.md#docker-compose"><img src="repo-assets/badges/docker.svg" height="48" alt="Self-host with Docker"></a>
-  <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/apk.svg" height="48" alt="Download APK"></a>
-  <a href="https://github.com/zelvior/ossllmapi/releases/latest"><img src="repo-assets/badges/ipa.svg" height="48" alt="Download IPA"></a>
+  <a href="https://github.com/zelvior/llmharbor/releases/latest"><img src="repo-assets/badges/apk.svg" height="48" alt="Download APK"></a>
+  <a href="https://github.com/zelvior/llmharbor/releases/latest"><img src="repo-assets/badges/ipa.svg" height="48" alt="Download IPA"></a>
 </p>
 
 ![OSLLMAPI dashboard: oylik token hajmi ko'rsatilgan Modellar sahifasi](repo-assets/github-hero.png)
 
 Routeringiz model katalogini imzolangan manbadan o'zi yangilaydi: yangi bepul modellar, limit o'zgarishlari va moslik tuzatishlari `git pull` qilmasdan yetib keladi. Bepul o'rnatmalar oylik snapshotni oladi, ya'ni model jonli manbaga qo'shilganidan 30 kun o'tib ularga yetib boradi; premium routerlar uni o'sha kuniyoq oladi.
-**[ossllmapi.co'da jonli manbaga ulaning](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_top#pricing)** (yiliga $19, istalgan vaqtda bekor qilish mumkin).
+**[llmharbor.co'da jonli manbaga ulaning](https://llmharbor.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_top#pricing)** (yiliga $19, istalgan vaqtda bekor qilish mumkin).
 
 </div>
 
@@ -65,7 +65,7 @@ Bugun har bir jiddiy AI laboratoriyasi bepul tarif taklif qiladi: oyiga bir nech
 
 Muammo shundaki, ularni qo'lda birlashtirish juda og'ir: sakson yettita turli SDK, sakson yettita turli limit, so'rov xato berishi mumkin bo'lgan sakson yettita joy. OSLLMAPI bularning hammasini OpenAI bilan mos bitta endpointga jamlaydi. Istalgan OpenAI klient kutubxonasini lokal serveringizga yo'naltiring, u esa so'rovlarni siz kalit qo'shgan provayderlar bo'ylab sezdirmasdan taqsimlaydi.
 
-Bundan tashqari, bepul tariflar manzarasi har hafta o'zgaradi: provayderlar ogohlantirmasdan model chiqaradi, eskilarini o'chiradi va limitlarni o'zgartiradi. OSLLMAPI bularning barchasini siz uchun kuzatib boradi. Router imzolangan model katalogini [ossllmapi.co](https://ossllmapi.co) dan o'zi tortib oladi, shuning uchun o'rnatmangiz `git pull` qilmasdan ham dolzarb bo'lib turadi. Qanchalik tez yangilanishi haqida [Premium (jonli katalog)](#premium-jonli-katalog) bo'limida o'qing.
+Bundan tashqari, bepul tariflar manzarasi har hafta o'zgaradi: provayderlar ogohlantirmasdan model chiqaradi, eskilarini o'chiradi va limitlarni o'zgartiradi. OSLLMAPI bularning barchasini siz uchun kuzatib boradi. Router imzolangan model katalogini [llmharbor.co](https://llmharbor.co) dan o'zi tortib oladi, shuning uchun o'rnatmangiz `git pull` qilmasdan ham dolzarb bo'lib turadi. Qanchalik tez yangilanishi haqida [Premium (jonli katalog)](#premium-jonli-katalog) bo'limida o'qing.
 
 ![Bepul tariflar birlashtirilganda: 87 ta provayder bo'ylab oyiga ~10,1 mlrd token bepul inference](repo-assets/free-tier.png)
 
@@ -101,7 +101,7 @@ Bundan tashqari, bepul tariflar manzarasi har hafta o'zgaradi: provayderlar ogoh
 
 Bundan tashqari **custom** provayder ham bor: **Kalitlar** (Keys) sahifasida chat, embedding, rasm yoki audio modellarni OpenAI bilan mos istalgan endpointga (llama.cpp, LM Studio, vLLM, lokal Ollama yoki masofaviy gateway) yo'naltirishingiz mumkin.
 
-To'liq va doim dolzarb ro'yxat **[ossllmapi.co/models](https://ossllmapi.co/models.html)** sahifasida: har bir model uchun limitlar, kontekst oynasi va bepul token hajmi bilan.
+To'liq va doim dolzarb ro'yxat **[llmharbor.co/models](https://llmharbor.co/models.html)** sahifasida: har bir model uchun limitlar, kontekst oynasi va bepul token hajmi bilan.
 
 ## Mos CLI'lar va kodlash agentlari
 
@@ -128,7 +128,7 @@ To'liq va doim dolzarb ro'yxat **[ossllmapi.co/models](https://ossllmapi.co/mode
 Ko'pchilik agentlar bitta buyruq bilan sozlanadi: u jonli katalogingizni o'qiydi, mavjud konfiguratsiyaning zaxira nusxasini oladi va o'zgarishlarni unga qo'shadi:
 
 ```bash
-npx ossllmapi setup-claude --url http://localhost:3001 --api-key <unified-key>
+npx llmharbor setup-claude --url http://localhost:3001 --api-key <unified-key>
 ```
 
 **[Barcha qo'llab-quvvatlanadigan agentlar va ularni sozlash buyruqlari →](docs/en/clients/02-supported-agents.md)** · [Har bir vosita uchun retseptlar, MCP server va URL tokenlar →](docs/en/clients/01-agent-clients.md)
@@ -152,10 +152,10 @@ Ochiq hujjatlar asosida, 2026-yil iyul. Tuzatishlar mamnuniyat bilan qabul qilin
 - **Aqlli routing, oltita strategiya**: har bir modelning jonli tezlik, qobiliyat va ishonchlilik ballari zanjiringizni tartiblaydi. 429/5xx xatolarida avtomatik ravishda keyingi model sinab ko'riladi, kalit "sovitiladi" va kalitlar almashtiriladi. [Routing batafsil →](docs/en/architecture/00-high-level-index.md#how-it-works)
 - **Birlashtirilgan modellar va profillar**: bir nechta provayderdagi bir xil model bitta yozuvga birlashadi va guruh ichida qat'iy failover ishlaydi. Nomlangan fallback-zanjir profillari (masalan, kodlash zanjiri, vision zanjiri) dashboard'dan yoki har bir so'rovda `auto:<profile>` orqali almashtiriladi. O'z zanjirlaringizni zanjir menejerida joyida qayta nomlash mumkin.
 - **Har bir kalit bo'yicha limitlarni kuzatish**: har bir `(platform, model, key)` uchun RPM/RPD/TPM/TPD hisoblagichlari provayderlar xabar bergan chegaralarni o'rganib boradi, shuning uchun routing doim barcha limitlardan past turadi.
-- **O'zi yangilanadigan model katalogi**: router kuniga ikki marta ossllmapi.co'dan imzolangan katalogni sinxronlaydi. Yangi modellar, limit o'zgarishlari va provayderlarga oid tuzatishlar avtomatik qo'llanadi. Bepul o'rnatmalar oylik snapshotni kuzatadi: model unga jonli manbada paydo bo'lganidan 30 kun o'tib qo'shiladi. Premium routerlar uni o'sha kuniyoq oladi. [Premium →](#premium-jonli-katalog)
+- **O'zi yangilanadigan model katalogi**: router kuniga ikki marta llmharbor.co'dan imzolangan katalogni sinxronlaydi. Yangi modellar, limit o'zgarishlari va provayderlarga oid tuzatishlar avtomatik qo'llanadi. Bepul o'rnatmalar oylik snapshotni kuzatadi: model unga jonli manbada paydo bo'lganidan 30 kun o'tib qo'shiladi. Premium routerlar uni o'sha kuniyoq oladi. [Premium →](#premium-jonli-katalog)
 - **Sticky sessiyalar va kontekstni uzatish**: suhbatlar 30 daqiqa davomida bitta modelda qoladi. Suhbat o'rtasida model almashsa, ixtiyoriy qisqa uzatish eslatmasi suhbat izchilligini saqlaydi. [Batafsil →](docs/en/clients/01-agent-clients.md#context-handoff)
 - **Promptni siqish (ixtiyoriy)**: umumiy, xatoda so'rovni to'xtatmaydigan (fail-open) pipeline kesh tekshiruvi va routingdan oldin promptlardagi takrorlarni olib tashlashi, tool natijalarini filtrlashi, takrorlanuvchi JSON'ni ixchamlashi va eskirgan kontekstni qisqartirishi mumkin. [Batafsil →](docs/en/compression/01-compression-pipeline.md)
-- **Shifrlangan kalitlar, tashqariga bitta token**: provayder kalitlari SQLite'da AES-256-GCM bilan shifrlangan va har bir so'rovda faqat xotirada ochiladi. Ilovalaringiz faqat bitta birlashtirilgan `ossllmapi-…` bearer tokenni ko'radi.
+- **Shifrlangan kalitlar, tashqariga bitta token**: provayder kalitlari SQLite'da AES-256-GCM bilan shifrlangan va har bir so'rovda faqat xotirada ochiladi. Ilovalaringiz faqat bitta birlashtirilgan `llmharbor-…` bearer tokenni ko'radi.
 - **Admin dashboard va analitika**: kalitlarni boshqarish, zanjirni qayta tartiblash, playground'da sinash va 24 soatdan 90 kungacha bo'lgan oraliqlarda p50/p95/TTFT analitikasini ko'rish uchun React interfeysi. Login bilan himoyalangan, qorong'i va yorug' mavzular, [60 ta til](#tillar).
 - **ChatGPT'ga tayyor MCP server va interaktiv hujjatlar**: ChatGPT va boshqa MCP klientlari `/mcp` orqali OSLLMAPI inference'ini chaqirishi, foydalanish mumkin bo'lgan modellar ro'yxatini olishi, provayder holati, sarf, kesh va routing metama'lumotlarini ko'rishi hamda routing strategiyasini boshqarishi mumkin. Tashqi bog'liqliklarsiz OpenAPI ko'ruvchisi `/v1/docs` manzilida. [ChatGPT va kodlash agentlari →](docs/en/clients/01-agent-clients.md#mcp-server)
 - **Operatsion qulayliklar**: ixtiyoriy javob keshi, shifrlangan ma'lumotlar bazasi zaxiralari, kalitlarning muntazam holat tekshiruvi, kalitlarni ommaviy import/eksport qilish, deklarativ ishga tushirish konfiguratsiyasi. [O'rnatish va deploy →](docs/en/install/01-install.md)
@@ -165,17 +165,17 @@ Loyiha ataylab tor doirada. [Hali qo'llab-quvvatlanmaydigan narsalar](docs/en/ar
 
 ## Tez boshlash
 
-**Bitta buyruq** (Docker kerak; `~/ossllmapi` papkasini tayyorlaydi, shifrlash kalitini yaratadi, image'ni yuklab oladi va konteynerni ishga tushiradi):
+**Bitta buyruq** (Docker kerak; `~/llmharbor` papkasini tayyorlaydi, shifrlash kalitini yaratadi, image'ni yuklab oladi va konteynerni ishga tushiradi):
 
 ```bash
-curl -fsSL https://ossllmapi.co/install.sh | bash
+curl -fsSL https://llmharbor.co/install.sh | bash
 ```
 
-bash'ga yuborishdan oldin o'qib chiqmoqchimisiz? [Skript shu yerda](https://ossllmapi.co/install.sh). Uni qayta ishga tushirish xavfsiz: `.env` faylingiz (va shifrlash kaliti) saqlanib qoladi, konteyner esa `:latest` ga yangilanadi.
+bash'ga yuborishdan oldin o'qib chiqmoqchimisiz? [Skript shu yerda](https://llmharbor.co/install.sh). Uni qayta ishga tushirish xavfsiz: `.env` faylingiz (va shifrlash kaliti) saqlanib qoladi, konteyner esa `:latest` ga yangilanadi.
 
 http://localhost:3001 ni oching, **Kalitlar** (Keys) sahifasida provayder kalitlaringizni qo'shing, **Fallback Chain** tartibini xohishingizga ko'ra o'zgartiring va **Kalitlar** sahifasining yuqori qismidan birlashtirilgan API kalitingizni oling. OpenAI SDK'ingizga aynan shu birlashtirilgan kalitni berasiz.
 
-Windows (x86 va x64) uchun OSSLLMAPI o‘rnatuvchisini yuklab oling: [GitHub Releases](https://github.com/zelvior/ossllmapi/releases/latest). Android uchun tajriba bosqichidagi [Termux qo'llanmasiga](docs/en/install/02-android-termux.md) qarang.
+Windows (x86 va x64) uchun LLMHarbor o‘rnatuvchisini yuklab oling: [GitHub Releases](https://github.com/zelvior/llmharbor/releases/latest). Android uchun tajriba bosqichidagi [Termux qo'llanmasiga](docs/en/install/02-android-termux.md) qarang.
 
 Qolgan hamma narsa (Docker Compose, lokal ishlab chiqish, deklarativ ishga tushirish konfiguratsiyasi, production build'lar, LAN orqali kirish va zaxira nusxalar) **[docs/en/install/01-install.md](docs/en/install/01-install.md)** da.
 
@@ -185,22 +185,22 @@ Qolgan hamma narsa (Docker Compose, lokal ishlab chiqish, deklarativ ishga tushi
 
 ![OSLLMAPI desktop ilovasi](repo-assets/desktop.png)
 
-**[Releases'dan yuklab oling](https://github.com/zelvior/ossllmapi/releases/latest)**: har bir relizga macOS `.dmg` va Windows `.exe` o'rnatuvchisi biriktirilgan. Akkaunt yoki parol sozlash shart emas: sizga kerak bo'ladigan yagona maxfiy ma'lumot trey popoveridagi birlashtirilgan API kaliti. Manba koddan build qilish bosqichlari va ma'lumotlaringiz qayerda saqlanishi: [docs/en/install/01-install.md#desktop-app](docs/en/install/01-install.md#desktop-app).
+**[Releases'dan yuklab oling](https://github.com/zelvior/llmharbor/releases/latest)**: har bir relizga macOS `.dmg` va Windows `.exe` o'rnatuvchisi biriktirilgan. Akkaunt yoki parol sozlash shart emas: sizga kerak bo'ladigan yagona maxfiy ma'lumot trey popoveridagi birlashtirilgan API kaliti. Manba koddan build qilish bosqichlari va ma'lumotlaringiz qayerda saqlanishi: [docs/en/install/01-install.md#desktop-app](docs/en/install/01-install.md#desktop-app).
 
 macOS 12 Monterey yoki undan yangi versiyalar uchun **arm64 (Apple Silicon)** yoki **x64 (Intel)** ni tanlang. Ikkala Mac build'i ZIP ko'rinishida ham yuklab olinadi.
 
 ## OpenAI bilan mos klientlar
 
-OpenAI bilan mos base URL'ga ulana oladigan har qanday dastur ishlaydi: uni dashboard'dagi birlashtirilgan kalit bilan `http://localhost:3001/v1` ga sozlang. Har bir generator `--dry-run` ni qo'llab-quvvatlaydi. `npx ossllmapi launch` (Claude Code) va `launch-codex` (Codex) maxfiy ma'lumotlarni konfiguratsiya fayllariga umuman yozmaydi. Router bir vaqtning o'zida MCP server ham bo'lib xizmat qiladi, agentlaringiz sessiya davomida u orqali ma'lumot olishi mumkin.
+OpenAI bilan mos base URL'ga ulana oladigan har qanday dastur ishlaydi: uni dashboard'dagi birlashtirilgan kalit bilan `http://localhost:3001/v1` ga sozlang. Har bir generator `--dry-run` ni qo'llab-quvvatlaydi. `npx llmharbor launch` (Claude Code) va `launch-codex` (Codex) maxfiy ma'lumotlarni konfiguratsiya fayllariga umuman yozmaydi. Router bir vaqtning o'zida MCP server ham bo'lib xizmat qiladi, agentlaringiz sessiya davomida u orqali ma'lumot olishi mumkin.
 
-**ChatGPT** xuddi shu lokal routerga xususiy Secure MCP Tunnel orqali ulanadi. `ask_ossllmapi`
+**ChatGPT** xuddi shu lokal routerga xususiy Secure MCP Tunnel orqali ulanadi. `ask_llmharbor`
 MCP vositasi ChatGPT so'ragan vazifani `/v1/chat/completions` orqali yo'naltiradi va javobni
 xizmat ko'rsatgan model, fallback, kesh, bajarilish va token metama'lumotlari bilan qaytaradi.
 Base URL va bearer autentifikatsiyasi tunnel-klient konfiguratsiyasida saqlanadi; standart model
 `MCP_INFERENCE_DEFAULT_MODEL` orqali belgilanadi (berilmasa `auto`). Hech qanday kalit Git'da
 yoki MCP URL'da bo'lmasligi kerak. **[ChatGPT'ni sozlash →](docs/en/clients/01-agent-clients.md#chatgpt-private-secure-mcp-tunnel)**
 
-Provayder kalitlarini terminaldan ham boshqarish mumkin, buning uchun dashboard sessiya tokeni kerak (`OSSLLMAPI_DASHBOARD_TOKEN` yoki `--token`): `npx ossllmapi keys add|list|remove|test <platform>`, bunda `keys test` saqlangan kalitlarni qayta tekshiradi. [cli/README.md](cli/README.md#provider-keys) ga qarang.
+Provayder kalitlarini terminaldan ham boshqarish mumkin, buning uchun dashboard sessiya tokeni kerak (`LLMHarbor_DASHBOARD_TOKEN` yoki `--token`): `npx llmharbor keys add|list|remove|test <platform>`, bunda `keys test` saqlangan kalitlarni qayta tekshiradi. [cli/README.md](cli/README.md#provider-keys) ga qarang.
 
 OSLLMAPI ataylab lokal va bir foydalanuvchili qilib yaratilgan. Provayder kalitlaringiz SQLite bazangizda shifrlangan holda qoladi, so'rovlar esa sizning kompyuteringizdan to'g'ridan-to'g'ri siz yoqqan provayderlarga boradi.
 
@@ -231,7 +231,7 @@ tekshiradi. PR'lar mamnuniyat bilan qabul qilinadi.
 ## Premium (jonli katalog)
 
 Router model katalogini o'zi yangilab turadi: kuniga ikki marta
-[ossllmapi.co](https://ossllmapi.co) dan imzolangan katalogni tortib oladi va yangi
+[llmharbor.co](https://llmharbor.co) dan imzolangan katalogni tortib oladi va yangi
 modellar, limit o'zgarishlari hamda provayderlarga oid tuzatishlarni lokal bazangizga
 qo'llaydi. Siz o'zingiz yoqqan yoki o'chirgan modellarga va o'z provayderlaringizga hech
 qachon tegilmaydi. Har bir yuklab olingan fayl qo'llanishidan oldin qat'iy belgilangan
@@ -241,7 +241,7 @@ Hozir katalog **87 ta provayder**, **736 ta model oilasi**, **1313 ta bepul prov
 endpointi** (1137 ta chat, 29 ta rasm, 41 ta audio, 68 ta embedding, 19 ta transkripsiya,
 6 ta video, 13 ta qaror) va ro'yxatga olingan bepul tariflardagi oyiga taxminan
 **10,1 milliard token** quvvatni kuzatadi. To'liq
-ro'yxatni **[ossllmapi.co/models](https://ossllmapi.co/models.html)** da ko'ring.
+ro'yxatni **[llmharbor.co/models](https://llmharbor.co/models.html)** da ko'ring.
 
 Bepul o'rnatmalar ham xuddi shu imzolangan katalogni oladi, lekin oylik snapshotdan: model
 unga jonli manbada paydo bo'lganidan 30 kun o'tib qo'shiladi, shuning uchun bepul versiya
@@ -252,12 +252,12 @@ Premium esa siz ishlatadigan har bir routerda bu imzolangan katalogni jonli hold
 Provayder kuchli bepul model chiqarsa, limitni sezdirmasdan qisqartirsa yoki API formatini
 buzsa, jonli manbaga ulangan routerlar yangilanishni biz uni chiqargan kuniyoq oladi.
 
-**[ossllmapi.co'da jonli manbaga ulaning →](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_bottom#pricing)**
+**[llmharbor.co'da jonli manbaga ulaning →](https://llmharbor.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_bottom#pricing)**
 
 - Yiliga $19 yoki bir martalik $49 (umrbod). To'lov Stripe orqali; istalgan vaqtda o'zingiz bekor qila olasiz.
 - Bitta `fla_` kalit siz ishlatadigan barcha routerlarni qamrab oladi: desktop, uy serveri, Raspberry Pi.
 - Dashboard'dagi **Premium** bo'limida faollashtiring; obunani bekor qilish yoki to'lovlarni
-  boshqarishni [ossllmapi.co/manage](https://ossllmapi.co/manage) da o'zingiz qilasiz.
+  boshqarishni [llmharbor.co/manage](https://llmharbor.co/manage) da o'zingiz qilasiz.
 - Routerning o'zi MIT litsenziyasi ostida qoladi va abadiy to'liq bepul. Premium faqat jonli
   manbadir va aynan u katalogni ishchi holatda ushlab turadigan kundalik model sinovlari va
   katalogga xizmat ko'rsatishni moliyalashtiradi.
@@ -272,7 +272,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="http://localhost:3001/v1",
-    api_key="ossllmapi-your-unified-key",
+    api_key="llmharbor-your-unified-key",
 )
 
 resp = client.chat.completions.create(
@@ -321,11 +321,11 @@ Bitta so'rov kiradi, eng yaxshi bepul model javob beradi: router barcha limitlar
 
 **Parol kerakmi?** Desktop ilova uchun kerak emas: dashboard yashirin lokal akkaunt bilan o'zi tizimga kiradi, shuning uchun sozlash ham, eslab qolish ham kerak emas. Uni trey belgisi → **Open Dashboard** orqali yoki o'sha kompyuterdagi istalgan brauzerda oching (masalan, http://127.0.0.1:31415); ikkala holatda ham o'zi tizimga kiradi. LAN orqali ulangan boshqa qurilmada esa kirish formasi ko'rinadi. Server o'rnatmalarida (Docker, bitta buyruqli o'rnatish, `npm run dev`) email va parolli akkaunt bo'ladi.
 
-**Server o'rnatmasida parolni unutdim.** Kirish sahifasida **Parolni unutdingizmi?** tugmasini bosing. Havola yuboradigan email yo'q, shuning uchun bir martalik kod server logiga chiqariladi. Uni `docker compose logs -f ossllmapi` bilan (yoki serverni ishga tushirgan terminalda, yoki desktop log faylida) o'qing va tiklash formasiga kiriting. Kod 15 daqiqa amal qiladi.
+**Server o'rnatmasida parolni unutdim.** Kirish sahifasida **Parolni unutdingizmi?** tugmasini bosing. Havola yuboradigan email yo'q, shuning uchun bir martalik kod server logiga chiqariladi. Uni `docker compose logs -f llmharbor` bilan (yoki serverni ishga tushirgan terminalda, yoki desktop log faylida) o'qing va tiklash formasiga kiriting. Kod 15 daqiqa amal qiladi.
 
 **Loglar qayerda?** Docker'da konteyner logida, manba koddan ishga tushirilganda terminalda, desktop ilovada esa `<data dir>/logs/freeapi.log` faylida. Unga trey menyusidagi **Open Logs Folder** orqali kirish mumkin.
 
-**Qanday o'chiraman?** Ilovani o'chiring (macOS'da Trash'ga tashlang, Windows'da *Settings → Apps*, Docker uchun `docker compose down -v`), so'ng ma'lumotlar papkasini o'chiring: `%APPDATA%\OSSLLMAPI\`, `~/Library/Application Support/OSSLLMAPI/` yoki `~/.config/OSSLLMAPI/`. Ilovani o'chirish bu papkaga o'zi hech qachon tegmaydi.
+**Qanday o'chiraman?** Ilovani o'chiring (macOS'da Trash'ga tashlang, Windows'da *Settings → Apps*, Docker uchun `docker compose down -v`), so'ng ma'lumotlar papkasini o'chiring: `%APPDATA%\LLMHarbor\`, `~/Library/Application Support/LLMHarbor/` yoki `~/.config/LLMHarbor/`. Ilovani o'chirish bu papkaga o'zi hech qachon tegmaydi.
 
 Har bir o'rnatish usuli bo'yicha batafsil javoblar: **[docs/en/install/01-install.md#faq-passwords-logs-uninstall](docs/en/install/01-install.md#faq-passwords-logs-uninstall)**.
 

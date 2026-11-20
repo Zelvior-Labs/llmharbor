@@ -123,7 +123,7 @@ async function main() {
   // keep-alive socket out while the next request's headers are in flight.
   const tuneKeepAlive = (s: ReturnType<typeof app.listen>) => {
     // Embedders must not mistake another app already using PORT for this server.
-    s.once('listening', () => channel('ossllmapi.listening').publish(s.address()));
+    s.once('listening', () => channel('llmharbor.listening').publish(s.address()));
     s.keepAliveTimeout = 75_000;
     s.headersTimeout = 76_000;
   };

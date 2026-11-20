@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { ChatCompletionChunk, ChatMessage } from '@ossllmapi/shared/types.js';
+import type { ChatCompletionChunk, ChatMessage } from '@llmharbor/shared/types.js';
 import { JamaiProvider, jamaiHeaders } from '../../providers/jamai.js';
 import { getProvider } from '../../providers/index.js';
 import { AUTH_JSON_PROVIDER_MAP, parseKeysFromFile } from '../../lib/key-parser.js';

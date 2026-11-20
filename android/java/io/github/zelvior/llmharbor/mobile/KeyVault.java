@@ -1,4 +1,4 @@
-package io.github.zelvior.ossllmapi.mobile;
+package io.github.zelvior.llmharbor.mobile;
 
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
@@ -23,7 +23,7 @@ import javax.crypto.spec.GCMParameterSpec;
  */
 final class KeyVault {
     private static final String STORE = "AndroidKeyStore";
-    private static final String ALIAS = "ossllmapi-data-key-v1";
+    private static final String ALIAS = "llmharbor-data-key-v1";
     private static final String WRAPPED = ".encryption-key.enc";
     private static final String LEGACY = ".encryption-key";
     private static final SecureRandom RANDOM = new SecureRandom();

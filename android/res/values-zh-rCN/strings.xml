@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OSSLLMAPI</string>
+    <string name="app_name">LLMHarbor</string>
     <string name="subtitle">网关与仪表盘都在本机\n版本 %1$s · %2$s</string>
 
     <string name="start_gateway">启动网关</string>
@@ -69,7 +69,7 @@
     <string name="no_code">暂无待用验证码。该仪表盘账户已存在。</string>
 
     <string name="notification_channel">本地网关</string>
-    <string name="notification_title">OSSLLMAPI</string>
+    <string name="notification_title">LLMHarbor</string>
     <string name="notification_starting">正在启动本地网关…</string>
     <string name="notification_running">正在端口 %1$d 运行</string>
     <string name="alert_channel">网关提醒</string>

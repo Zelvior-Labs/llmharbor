@@ -157,7 +157,7 @@ export function budgetWebhookPayload(
   now = Date.now(),
 ) {
   return {
-    type: 'ossllmapi.key_budget_threshold',
+    type: 'llmharbor.key_budget_threshold',
     key_id: keyId,
     label,
     platform,

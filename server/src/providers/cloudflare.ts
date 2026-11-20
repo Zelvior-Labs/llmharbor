@@ -2,7 +2,7 @@ import type {
   ChatMessage,
   ChatCompletionResponse,
   ChatCompletionChunk,
-} from '@ossllmapi/shared/types.js';
+} from '@llmharbor/shared/types.js';
 import { BaseProvider, providerHttpError, type CompletionOptions, type KeyValidationResult, type KeyValidationFailure } from './base.js';
 import { extendedBodyParams, resolveMaxTokens } from '../lib/sampling-params.js';
 import { contentToString, contentHasImage } from '../lib/content.js';

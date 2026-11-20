@@ -376,7 +376,7 @@ jobs:
           $dist = 'desktop/dist-electron/ia32'
           $app = Join-Path $env:RUNNER_TEMP 'x86-zip'
           Expand-Archive -Path "$dist/*-windows-x86.zip" -DestinationPath $app
-          & (Join-Path $app 'OSSLLMAPI.exe') desktop/scripts/smoke-win-ia32.mjs $dist | Out-Host
+          & (Join-Path $app 'LLMHarbor.exe') desktop/scripts/smoke-win-ia32.mjs $dist | Out-Host
           exit $LASTEXITCODE
 
       - name: Smoke-test packaged macOS backend
@@ -388,8 +388,8 @@ jobs:
           set -euo pipefail
           app_dir=desktop/dist-electron/mac
           if [ "$EXPECTED_ARCH" = arm64 ]; then app_dir="$app_dir-arm64"; fi
-          app="$app_dir/OSSLLMAPI.app"
-          ELECTRON_RUN_AS_NODE=1 "$app/Contents/MacOS/OSSLLMAPI" \
+          app="$app_dir/LLMHarbor.app"
+          ELECTRON_RUN_AS_NODE=1 "$app/Contents/MacOS/LLMHarbor" \
             desktop/scripts/smoke-mac-package.mjs "$app" "$EXPECTED_ARCH"
 
       # electron-builder notarizes and staples the .app, then wraps it in a DMG
@@ -474,14 +474,14 @@ jobs:
           npm --prefix desktop run dist:linux:x86-server
       - name: Run the extracted archive with 32-bit distro Node, without npm or Electron
         run: |
-          docker build --platform linux/386 -t ossllmapi-i686-test - <<'EOF'
+          docker build --platform linux/386 -t llmharbor-i686-test - <<'EOF'
           FROM alpine:3.22
           RUN apk add --no-cache nodejs ca-certificates
           EOF
           docker run --rm --platform linux/386 --network none --user 65534:65534 \
             -v "$PWD/desktop/dist-electron/browser:/downloads:ro" \
             -v "$PWD/desktop/scripts/smoke-linux-browser.mjs:/smoke.mjs:ro" \
-            ossllmapi-i686-test sh -ec 'cd /tmp; tar -xzf /downloads/*.tar.gz; node /smoke.mjs /tmp/OSSLLMAPI-* ia32'
+            llmharbor-i686-test sh -ec 'cd /tmp; tar -xzf /downloads/*.tar.gz; node /smoke.mjs /tmp/LLMHarbor-* ia32'
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: linux-i686-server
@@ -517,7 +517,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    name: Publish verified OSSLLMAPI downloads
+    name: Publish verified LLMHarbor downloads
     if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.publish == true)
     needs: [build, linux-browser, macos-release]
     runs-on: ubuntu-24.04
@@ -551,7 +551,7 @@ jobs:
           if gh release view "$tag" --json isDraft >/dev/null 2>&1; then
             test "$(gh release view "$tag" --json isDraft --jq .isDraft)" = true || { echo "::error::refusing to replace a published release"; exit 1; }
           else
-            gh release create "$tag" --draft --target "$sha" --title "OSSLLMAPI $tag" --generate-notes
+            gh release create "$tag" --draft --target "$sha" --title "LLMHarbor $tag" --generate-notes
           fi
           gh release upload "$tag" release/* --clobber
           # A successful upload alone does not rule out stale assets on a draft.

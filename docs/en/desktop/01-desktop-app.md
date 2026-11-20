@@ -4,7 +4,7 @@
 
 ## Package manifest
 
-`desktop/package.json` `ossllmapi-desktop@0.16.34` — Electron `38.8.6`, `better-sqlite3@12.10.0`, `electron-builder@25.1.8`, `esbuild@0.24.0`. Entry `build/main.mjs` (`type: module`). AppId `io.github.zelvior.ossllmapi`, publish `github:zelvior/ossllmapi` (`desktop/electron-builder.yml`). `asar` + `client-dist` in `extraResources`; per-OS signing targets (mac `dmg`+`zip` `arm64`+`x64` signed/notarized/stapled via `refresh-mac-update-metadata.mjs`, win `nsis`+`zip` `x64`+`ia32`, linux `AppImage`+`deb`+`tar.xz`+`rpm` `x64` since #981 `d8fae97`).
+`desktop/package.json` `llmharbor-desktop@0.16.34` — Electron `38.8.6`, `better-sqlite3@12.10.0`, `electron-builder@25.1.8`, `esbuild@0.24.0`. Entry `build/main.mjs` (`type: module`). AppId `io.github.zelvior.llmharbor`, publish `github:zelvior/llmharbor` (`desktop/electron-builder.yml`). `asar` + `client-dist` in `extraResources`; per-OS signing targets (mac `dmg`+`zip` `arm64`+`x64` signed/notarized/stapled via `refresh-mac-update-metadata.mjs`, win `nsis`+`zip` `x64`+`ia32`, linux `AppImage`+`deb`+`tar.xz`+`rpm` `x64` since #981 `d8fae97`).
 
 ## Build pipeline
 
@@ -12,7 +12,7 @@
 bundle:server → build:main / build:preload → stage:client → electron-builder
 ```
 
-- `scripts/bundle-server.mjs` esbuild `define: { 'process.env.OSSLLMAPI_COMMIT_SHA', 'process.env.OSSLLMAPI_INSTALL_METHOD' }` from `GITHUB_SHA` (40-hex); mirrored into live `process.env` in `server-host.ts` so `routes/update.ts` resolves.
+- `scripts/bundle-server.mjs` esbuild `define: { 'process.env.LLMHarbor_COMMIT_SHA', 'process.env.LLMHarbor_INSTALL_METHOD' }` from `GITHUB_SHA` (40-hex); mirrored into live `process.env` in `server-host.ts` so `routes/update.ts` resolves.
 - `build/main.mjs` bundles `src/main.ts` (`--platform=node --format=esm --external:electron --external:./server.mjs`), `build/preload` for `preload.ts`/`preload-popover.ts`.
 - `scripts/stage-client.mjs` copies `client/dist` → `build/client-dist` or `Resources/client-dist` in packaged app; dev override via `FREEAPI_REPO`.
 
@@ -26,7 +26,7 @@ bundle:server → build:main / build:preload → stage:client → electron-build
 | `<userData>/backups` | Server dumps (`services/backups.ts` `dataDir()`) |
 | `Resources/client-dist` | Packaged client; dev: `client/dist` via `FREEAPI_REPO` |
 
-`~/Library/Application Support/OSSLLMAPI` (macOS), `%APPDATA%/OSSLLMAPI` (Windows), `~/.config/OSSLLMAPI` (Linux).
+`~/Library/Application Support/LLMHarbor` (macOS), `%APPDATA%/LLMHarbor` (Windows), `~/.config/LLMHarbor` (Linux).
 
 ## Embedded server-host
 
@@ -50,7 +50,7 @@ Deliberately NOT mirrored: `restoreDbBackupIfNeeded`/`startDbBackupPump` (`FREEA
 
 ## Tray / popover / window
 
-- `desktop/src/tray.ts` — menu-bar icon, `Open Logs Folder` / `Open Backups Folder` (`logger.ts:openLogsFolder`/`openBackupsFolder` via `shell.openPath`), `Open OSSLLMAPI`, quit.
+- `desktop/src/tray.ts` — menu-bar icon, `Open Logs Folder` / `Open Backups Folder` (`logger.ts:openLogsFolder`/`openBackupsFolder` via `shell.openPath`), `Open LLMHarbor`, quit.
 - `desktop/src/popover.ts` — popover window for quick access.
 - `desktop/src/window.ts` — main BrowserWindow chrome.
 

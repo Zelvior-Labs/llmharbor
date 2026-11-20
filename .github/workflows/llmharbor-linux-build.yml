@@ -1,4 +1,4 @@
-name: Linux build
+name: LLMHarbor Linux build
 
 # A focused, standalone workflow for building every Linux artifact:
 #   1. linux-app     — the Electron desktop app (AppImage, deb, rpm, tar.xz)
@@ -20,7 +20,7 @@ on:
       - 'desktop/**'
       - 'server/**'
       - 'client/**'
-      - '.github/workflows/linux-build.yml'
+      - '.github/workflows/llmharbor-linux-build.yml'
 
 permissions:
   contents: read
@@ -166,14 +166,14 @@ jobs:
       # Electron, on a real ia32 container with no network.
       - name: Smoke-test the packaged archive on 32-bit Node
         run: |
-          docker build --platform linux/386 -t ossllmapi-i686-test - <<'EOF'
+          docker build --platform linux/386 -t llmharbor-i686-test - <<'EOF'
           FROM alpine:3.22
           RUN apk add --no-cache nodejs ca-certificates
           EOF
           docker run --rm --platform linux/386 --network none --user 65534:65534 \
             -v "$PWD/desktop/dist-electron/browser:/downloads:ro" \
             -v "$PWD/desktop/scripts/smoke-linux-browser.mjs:/smoke.mjs:ro" \
-            ossllmapi-i686-test sh -ec 'cd /tmp; tar -xzf /downloads/*.tar.gz; node /smoke.mjs /tmp/OSSLLMAPI-* ia32'
+            llmharbor-i686-test sh -ec 'cd /tmp; tar -xzf /downloads/*.tar.gz; node /smoke.mjs /tmp/LLMHarbor-* ia32'
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

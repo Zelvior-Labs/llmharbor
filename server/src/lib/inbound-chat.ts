@@ -4,7 +4,7 @@ import type {
   ChatToolCall,
   ChatToolChoice,
   ChatToolDefinition,
-} from '@ossllmapi/shared/types.js';
+} from '@llmharbor/shared/types.js';
 import { getDb } from '../db/index.js';
 import {
   routeRequest,

@@ -48,7 +48,7 @@ afterEach(() => {
 // or ChatGPT.app installed would otherwise produce different notes than CI).
 const context: GenerateContext = {
   url: 'http://localhost:3000',
-  apiKey: 'ossllmapi-test-key',
+  apiKey: 'llmharbor-test-key',
   profile: 'default',
   homeDir: '/home/tester',
   detectedClient: undefined,
@@ -154,8 +154,8 @@ describe('tool generators', () => {
     expect(asPosix(file.path)).toBe('/home/tester/.codex/config.toml');
     expect(file.content).toContain('[profiles.work]');
     expect(file.content).toContain('model = "fast-coder"');
-    expect(file.content).toContain('model_provider = "ossllmapi"');
-    expect(file.content).toContain('[model_providers.ossllmapi]');
+    expect(file.content).toContain('model_provider = "llmharbor"');
+    expect(file.content).toContain('[model_providers.llmharbor]');
     // A named profile must not hijack the root/default model selection.
     expect(file.content!.split('\n').findIndex(line => line.startsWith('model =')))
       .toBeGreaterThan(file.content!.split('\n').indexOf('[profiles.work]'));
@@ -177,7 +177,7 @@ describe('tool generators', () => {
         client: 'openai-compatible',
         model: 'fast-coder',
         baseUrl: 'http://localhost:3000/v1',
-        apiKey: 'ossllmapi-test-key',
+        apiKey: 'llmharbor-test-key',
         contextWindow: 131072,
         capabilities: ['streaming', 'tools'],
       },
@@ -192,17 +192,17 @@ describe('tool generators', () => {
     expect(config).toContain('version: 1.0.0');
     expect(config).toContain('schema: v1');
     expect(config).toContain('      - tool_use');
-    expect(config).toContain('    apiKey: ${{ secrets.OSSLLMAPI_API_KEY }}');
+    expect(config).toContain('    apiKey: ${{ secrets.LLMHarbor_API_KEY }}');
   });
 
   it('generates Goose custom-provider registration without persisting the key', () => {
     const generation = tools.find(tool => tool.id === 'goose')!.generate(context);
-    const provider = generation.files.find(file => file.path.endsWith('ossllmapi.json'))!.value as any;
+    const provider = generation.files.find(file => file.path.endsWith('llmharbor.json'))!.value as any;
     const selection = generation.files.find(file => file.path.endsWith('config.yaml'))!.content!;
     expect(provider).toMatchObject({
-      name: 'ossllmapi',
+      name: 'llmharbor',
       engine: 'openai',
-      api_key_env: 'OSSLLMAPI_API_KEY',
+      api_key_env: 'LLMHarbor_API_KEY',
       base_url: 'http://localhost:3000/v1',
       requires_auth: true,
       dynamic_models: false,
@@ -211,8 +211,8 @@ describe('tool generators', () => {
       'fast-coder',
       'reasoning-model',
     ]);
-    expect(selection).toContain('GOOSE_PROVIDER: ossllmapi');
-    expect(JSON.stringify(generation)).not.toContain('ossllmapi-test-key');
+    expect(selection).toContain('GOOSE_PROVIDER: llmharbor');
+    expect(JSON.stringify(generation)).not.toContain('llmharbor-test-key');
   });
 
   it('generates Qwen Code provider catalogs using a supported auth type', () => {
@@ -224,18 +224,18 @@ describe('tool generators', () => {
     expect(settings.modelProviders.openai.models).toHaveLength(2);
     expect(settings.modelProviders.openai.models[0]).toMatchObject({
       id: 'fast-coder',
-      envKey: 'OSSLLMAPI_API_KEY',
+      envKey: 'LLMHarbor_API_KEY',
       baseUrl: 'http://localhost:3000/v1',
       generationConfig: { contextWindowSize: 131072 },
     });
-    expect(settings.modelProviders).not.toHaveProperty('ossllmapi');
+    expect(settings.modelProviders).not.toHaveProperty('llmharbor');
   });
 
   it('wraps Roo Code imports in the documented provider profile envelope', () => {
     const config = tools.find(tool => tool.id === 'roo')!
       .generate(context).files[0].value as any;
-    expect(config.providerProfiles.currentApiConfigName).toBe('ossllmapi');
-    expect(config.providerProfiles.apiConfigs.ossllmapi).toMatchObject({
+    expect(config.providerProfiles.currentApiConfigName).toBe('llmharbor');
+    expect(config.providerProfiles.apiConfigs.llmharbor).toMatchObject({
       apiProvider: 'openai',
       openAiBaseUrl: 'http://localhost:3000/v1',
       openAiModelId: 'fast-coder',
@@ -250,7 +250,7 @@ describe('tool generators', () => {
     expect(config.$schema).toBe('https://app.kilo.ai/config.json');
     expect(config.model).toBe('openai-compatible/fast-coder');
     expect(config.provider['openai-compatible'].options).toEqual({
-      apiKey: '{env:OSSLLMAPI_API_KEY}',
+      apiKey: '{env:LLMHarbor_API_KEY}',
       baseURL: 'http://localhost:3000/v1',
     });
     expect(Object.keys(config.provider['openai-compatible'].models)).toEqual([
@@ -261,25 +261,25 @@ describe('tool generators', () => {
       tool_call: true,
       limit: { context: 131072, output: 8192 },
     });
-    expect(JSON.stringify(config)).not.toContain('ossllmapi-test-key');
+    expect(JSON.stringify(config)).not.toContain('llmharbor-test-key');
   });
 
   it('uses Crush openai-compat schema, lists every catalog model, and selects the default', () => {
     const config = tools.find(tool => tool.id === 'crush')!
       .generate(context).files[0].value as any;
     expect(config.$schema).toBe('https://charm.land/crush.json');
-    expect(config.providers.ossllmapi.type).toBe('openai-compat');
-    expect(config.providers.ossllmapi.models.map((model: any) => model.id)).toEqual([
+    expect(config.providers.llmharbor.type).toBe('openai-compat');
+    expect(config.providers.llmharbor.models.map((model: any) => model.id)).toEqual([
       'fast-coder',
       'reasoning-model',
     ]);
     // A provider entry alone is never used: Crush auto-detects from whatever
     // credentials it finds on the machine unless `models.large`/`small` name it.
     expect(config.models).toEqual({
-      large: { provider: 'ossllmapi', model: 'fast-coder' },
-      small: { provider: 'ossllmapi', model: 'fast-coder' },
+      large: { provider: 'llmharbor', model: 'fast-coder' },
+      small: { provider: 'llmharbor', model: 'fast-coder' },
     });
-    for (const model of config.providers.ossllmapi.models) {
+    for (const model of config.providers.llmharbor.models) {
       expect(model).toMatchObject({
         cost_per_1m_in: 0,
         cost_per_1m_out: 0,
@@ -292,7 +292,7 @@ describe('tool generators', () => {
   });
 
   it('stores the OpenCode key in auth.json, not as an env placeholder in the config', () => {
-    // An `{env:OSSLLMAPI_API_KEY}` placeholder only works when the process
+    // An `{env:LLMHarbor_API_KEY}` placeholder only works when the process
     // making the request inherits the variable; unset, it resolves to an empty
     // key that also overrides a key stored with `/connect`. The key belongs in
     // OpenCode's credential store instead.
@@ -301,9 +301,9 @@ describe('tool generators', () => {
     expect(asPosix(config.path)).toBe('/home/tester/.config/opencode/opencode.json');
     expect(asPosix(auth.path)).toBe('/home/tester/.local/share/opencode/auth.json');
     expect(auth.sensitive).toBe(true);
-    expect(auth.value).toEqual({ ossllmapi: { type: 'api', key: 'ossllmapi-test-key' } });
+    expect(auth.value).toEqual({ llmharbor: { type: 'api', key: 'llmharbor-test-key' } });
     expect(config.sensitive).toBeFalsy();
-    expect(JSON.stringify(config.value)).not.toContain('ossllmapi-test-key');
+    expect(JSON.stringify(config.value)).not.toContain('llmharbor-test-key');
 
     // Re-running over a config an older CLI wrote retires the placeholder and
     // leaves the user's other providers and settings alone.
@@ -311,19 +311,19 @@ describe('tool generators', () => {
       theme: 'dark',
       provider: {
         other: { options: { apiKey: 'keep-me' } },
-        ossllmapi: { options: { baseURL: 'http://old/v1', apiKey: '{env:OSSLLMAPI_API_KEY}' } },
+        llmharbor: { options: { baseURL: 'http://old/v1', apiKey: '{env:LLMHarbor_API_KEY}' } },
       },
     });
     const merged = JSON.parse(renderFile(config, previous));
     expect(merged.theme).toBe('dark');
     expect(merged.provider.other.options.apiKey).toBe('keep-me');
-    expect(merged.provider.ossllmapi.options).toEqual({ baseURL: 'http://localhost:3000/v1' });
+    expect(merged.provider.llmharbor.options).toEqual({ baseURL: 'http://localhost:3000/v1' });
 
     // auth.json is shared with every provider OpenCode has credentials for.
     const existingAuth = JSON.stringify({ anthropic: { type: 'oauth', refresh: 'r' } });
     expect(JSON.parse(renderFile(auth, existingAuth))).toEqual({
       anthropic: { type: 'oauth', refresh: 'r' },
-      ossllmapi: { type: 'api', key: 'ossllmapi-test-key' },
+      llmharbor: { type: 'api', key: 'llmharbor-test-key' },
     });
   });
 
@@ -338,7 +338,7 @@ describe('tool generators', () => {
   });
 
   it('keeps `auto` in the OpenCode, Crush and Goose rosters when it is the default', () => {
-    // OpenCode resolves `ossllmapi/auto` only if `auto` is a declared model,
+    // OpenCode resolves `llmharbor/auto` only if `auto` is a declared model,
     // and Crush's `models.large` must name a listed model; with `auto` in the
     // live catalog all three generators put it first rather than filter it out.
     const liveContext: GenerateContext = {
@@ -346,13 +346,13 @@ describe('tool generators', () => {
       models: [{ id: 'auto', name: 'Auto', available: true, context_window: 200_000 }, ...context.models],
     };
     const opencode = tools.find(tool => tool.id === 'opencode')!.generate(liveContext).files[0].value as any;
-    expect(opencode.model).toBe('ossllmapi/auto');
-    expect(Object.keys(opencode.provider.ossllmapi.models)).toEqual(['auto', 'fast-coder', 'reasoning-model']);
+    expect(opencode.model).toBe('llmharbor/auto');
+    expect(Object.keys(opencode.provider.llmharbor.models)).toEqual(['auto', 'fast-coder', 'reasoning-model']);
     const crush = tools.find(tool => tool.id === 'crush')!.generate(liveContext).files[0].value as any;
     expect(crush.models.large.model).toBe('auto');
-    expect(crush.providers.ossllmapi.models[0].id).toBe('auto');
+    expect(crush.providers.llmharbor.models[0].id).toBe('auto');
     const goose = tools.find(tool => tool.id === 'goose')!.generate(liveContext);
-    const provider = goose.files.find(file => file.path.endsWith('ossllmapi.json'))!.value as any;
+    const provider = goose.files.find(file => file.path.endsWith('llmharbor.json'))!.value as any;
     expect(provider.models[0].name).toBe('auto');
     // Qwen Code silently falls back to the first listed model when the selected
     // one is missing (it picked `fusion`); Kilo refuses to start outright.
@@ -368,34 +368,34 @@ describe('tool generators', () => {
     const env = generation.files.find(file => file.path.endsWith('.env'))!;
     expect(asPosix(env.path)).toBe('/home/tester/.continue/.env');
     expect(env.sensitive).toBe(true);
-    expect(env.content).toBe('OSSLLMAPI_API_KEY=ossllmapi-test-key\n');
+    expect(env.content).toBe('LLMHarbor_API_KEY=llmharbor-test-key\n');
     const config = generation.files.find(file => file.path.endsWith('config.yaml'))!.content!;
-    expect(config).not.toContain('ossllmapi-test-key');
+    expect(config).not.toContain('llmharbor-test-key');
   });
 
   it('gives Roo an openai profile for the extension and a separate CLI import with an openrouter one', () => {
     const files = tools.find(tool => tool.id === 'roo')!.generate(context).files;
     const value = files[0].value as any;
     const configs = value.providerProfiles.apiConfigs;
-    expect(value.providerProfiles.currentApiConfigName).toBe('ossllmapi');
+    expect(value.providerProfiles.currentApiConfigName).toBe('llmharbor');
     // The CLI forces its provider onto the CURRENT profile of the file it
     // imports, so its file must make the openrouter-type profile current.
     const cli = files[1].value as any;
-    expect(asPosix(files[1].path)).toBe('/home/tester/.roo/ossllmapi-cli.json');
-    expect(cli.providerProfiles.currentApiConfigName).toBe('ossllmapi-cli');
-    expect(cli.providerProfiles.apiConfigs['ossllmapi-cli']).toEqual(configs['ossllmapi-cli']);
+    expect(asPosix(files[1].path)).toBe('/home/tester/.roo/llmharbor-cli.json');
+    expect(cli.providerProfiles.currentApiConfigName).toBe('llmharbor-cli');
+    expect(cli.providerProfiles.apiConfigs['llmharbor-cli']).toEqual(configs['llmharbor-cli']);
     expect(asPosix(files[2].path)).toBe('/home/tester/.roo/cli-settings.json');
     expect(files[2].value).toEqual({ provider: 'openrouter', model: 'fast-coder' });
-    expect(configs.ossllmapi).toMatchObject({
+    expect(configs.llmharbor).toMatchObject({
       apiProvider: 'openai',
       openAiBaseUrl: 'http://localhost:3000/v1',
       openAiModelId: 'fast-coder',
       openAiCustomModelInfo: { contextWindow: 131072, maxTokens: 8192 },
     });
-    expect(configs['ossllmapi-cli']).toEqual({
+    expect(configs['llmharbor-cli']).toEqual({
       apiProvider: 'openrouter',
       openRouterBaseUrl: 'http://localhost:3000/v1',
-      openRouterApiKey: 'ossllmapi-test-key',
+      openRouterApiKey: 'llmharbor-test-key',
       openRouterModelId: 'fast-coder',
     });
   });
@@ -413,15 +413,15 @@ describe('tool generators', () => {
       'llm-pi-ai': { providers: Record<string, { api: string; baseURL: string; apiKeyEnv: string; models: { id: string }[] }> };
       'agent-default-model': { provider: string; model: string; reasoningEffort?: string };
     };
-    const route = value['llm-pi-ai'].providers.ossllmapi;
+    const route = value['llm-pi-ai'].providers.llmharbor;
     // A hand-declared route must carry api, baseURL, and a non-empty models
     // list, or DSH refuses the whole section where it is written.
     expect(route.api).toBe('openai-completions');
     expect(route.baseURL).toBe('http://localhost:3000/v1');
-    expect(route.apiKeyEnv).toBe('OSSLLMAPI_API_KEY');
+    expect(route.apiKeyEnv).toBe('LLMHarbor_API_KEY');
     expect(route.models.map(model => model.id)).toEqual(['fast-coder', 'reasoning-model']);
     expect(value['agent-default-model']).toEqual({
-      provider: 'ossllmapi',
+      provider: 'llmharbor',
       model: 'fast-coder',
       reasoningEffort: undefined,
     });
@@ -432,7 +432,7 @@ describe('tool generators', () => {
       path: '/home/tester/.dsh/.env',
       format: 'env',
       sensitive: true,
-      content: 'OSSLLMAPI_API_KEY=ossllmapi-test-key\n',
+      content: 'LLMHarbor_API_KEY=llmharbor-test-key\n',
     });
   });
 
@@ -440,7 +440,7 @@ describe('tool generators', () => {
     const dsh = tools.find(tool => tool.id === 'dsh')!;
     const value = dsh.generate({ ...context, profile: 'Work Laptop' }).files[0].value as Record<string, unknown>;
     const providers = (value['llm-pi-ai'] as { providers: Record<string, unknown> }).providers;
-    expect(Object.keys(providers)).toEqual(['ossllmapi-work-laptop']);
+    expect(Object.keys(providers)).toEqual(['llmharbor-work-laptop']);
     expect(value['agent-default-model']).toBeUndefined();
   });
 
@@ -454,23 +454,23 @@ describe('tool generators', () => {
     const value = config.value as {
       model: string;
       provider: {
-        ossllmapi: {
+        llmharbor: {
           npm: string;
           options: Record<string, string>;
           models: Record<string, { limit: Record<string, number> }>;
         };
       };
     };
-    const provider = value.provider.ossllmapi;
+    const provider = value.provider.llmharbor;
     expect(provider.npm).toBe('@ai-sdk/openai-compatible');
     expect(provider.options).toEqual({
       baseURL: 'http://localhost:3000/v1',
-      apiKey: '{env:OSSLLMAPI_API_KEY}',
+      apiKey: '{env:LLMHarbor_API_KEY}',
     });
     // `provider.<id>.models.<id>.limit` requires context AND output.
     expect(provider.models['fast-coder'].limit).toEqual({ context: 131072, output: 8192 });
     // The default model has to name an entry that exists in that map.
-    expect(value.model).toBe('ossllmapi/fast-coder');
+    expect(value.model).toBe('llmharbor/fast-coder');
     expect(Object.keys(provider.models)).toContain(value.model.split('/')[1]);
     // MIMOCODE_API_KEY and MIMOCODE_BASE_URL do not exist.
     expect(JSON.stringify(mimo.generate(context))).not.toContain('MIMOCODE_');
@@ -487,10 +487,10 @@ describe('tool generators', () => {
     const value = tools.find(tool => tool.id === 'mimo')!
       .generate(liveContext).files[0].value as {
         model: string;
-        provider: { ossllmapi: { models: Record<string, unknown> } };
+        provider: { llmharbor: { models: Record<string, unknown> } };
       };
-    expect(value.model).toBe('ossllmapi/auto');
-    expect(Object.keys(value.provider.ossllmapi.models)).toContain('auto');
+    expect(value.model).toBe('llmharbor/auto');
+    expect(Object.keys(value.provider.llmharbor.models)).toContain('auto');
   });
 
   it('writes OpenClaw as a custom provider plus the default model ref, key via its own .env', () => {
@@ -505,23 +505,23 @@ describe('tool generators', () => {
       agents: { defaults: { model: { primary: string } } }
       models: { providers: Record<string, { baseUrl: string; apiKey: string; api: string; headers: Record<string, string>; models: { id: string }[] }> }
     };
-    expect(value.agents.defaults.model.primary).toBe('ossllmapi/fast-coder');
-    const provider = value.models.providers.ossllmapi;
+    expect(value.agents.defaults.model.primary).toBe('llmharbor/fast-coder');
+    const provider = value.models.providers.llmharbor;
     expect(provider.baseUrl).toBe('http://localhost:3000/v1');
-    expect(provider.apiKey).toBe('${OSSLLMAPI_API_KEY}');
+    expect(provider.apiKey).toBe('${LLMHarbor_API_KEY}');
     expect(provider.api).toBe('openai-completions');
     expect(provider.headers).toEqual({ 'User-Agent': 'openclaw' });
     expect(provider.models.map(model => model.id)).toEqual(['fast-coder', 'reasoning-model']);
     expect(asPosix(env.path)).toBe('/home/tester/.openclaw/.env');
     expect(env.sensitive).toBe(true);
-    expect(env.content).toBe('OSSLLMAPI_API_KEY=ossllmapi-test-key\n');
+    expect(env.content).toBe('LLMHarbor_API_KEY=llmharbor-test-key\n');
   });
 
   it('gives a named OpenClaw profile its own provider without touching the default model', () => {
     const generation = tools.find(tool => tool.id === 'openclaw')!.generate({ ...context, profile: 'Work Box' });
     const value = generation.files[0].value as { agents?: unknown; models: { providers: Record<string, unknown> } };
     expect(value.agents).toBeUndefined();
-    expect(Object.keys(value.models.providers)).toEqual(['ossllmapi-work-box']);
+    expect(Object.keys(value.models.providers)).toEqual(['llmharbor-work-box']);
   });
 
   it('honours OPENCLAW_CONFIG_PATH and OPENCLAW_STATE_DIR the way OpenClaw does', () => {
@@ -547,7 +547,7 @@ describe('tool generators', () => {
         provider: 'custom',
         default: 'fast-coder',
         base_url: 'http://localhost:3000/v1',
-        api_key: '${OSSLLMAPI_API_KEY}',
+        api_key: '${LLMHarbor_API_KEY}',
         api_mode: 'chat_completions',
         context_length: 131072,
         default_headers: { 'User-Agent': 'hermes-agent' },
@@ -557,7 +557,7 @@ describe('tool generators', () => {
     });
     expect(asPosix(env.path)).toBe('/home/tester/.hermes/.env');
     expect(env.sensitive).toBe(true);
-    expect(env.content).toBe('OSSLLMAPI_API_KEY=ossllmapi-test-key\n');
+    expect(env.content).toBe('LLMHarbor_API_KEY=llmharbor-test-key\n');
   });
 
   it('gives a named Hermes profile a providers entry instead of the default model', () => {
@@ -566,8 +566,8 @@ describe('tool generators', () => {
     expect(asPosix(config.path)).toBe('/srv/hermes/config.yaml');
     const value = config.value as { model?: unknown; providers: Record<string, { api: string; default_model: string }> };
     expect(value.model).toBeUndefined();
-    expect(value.providers['ossllmapi-lab'].api).toBe('http://localhost:3000/v1');
-    expect(value.providers['ossllmapi-lab'].default_model).toBe('fast-coder');
+    expect(value.providers['llmharbor-lab'].api).toBe('http://localhost:3000/v1');
+    expect(value.providers['llmharbor-lab'].default_model).toBe('fast-coder');
   });
 
   it('writes Pi as a models.json provider plus the startup default in settings.json', () => {
@@ -579,12 +579,12 @@ describe('tool generators', () => {
     expect(asPosix(models.path)).toBe('/home/tester/.pi/agent/models.json');
     expect(models.format).toBe('json');
     expect(models.sensitive).toBe(true);
-    const provider = (models.value as { providers: Record<string, any> }).providers.ossllmapi;
+    const provider = (models.value as { providers: Record<string, any> }).providers.llmharbor;
     expect(provider).toMatchObject({
       name: 'OSLLMAPI',
       baseUrl: 'http://localhost:3000/v1',
       api: 'openai-completions',
-      apiKey: 'ossllmapi-test-key',
+      apiKey: 'llmharbor-test-key',
       headers: { 'User-Agent': 'pi-coding-agent' },
     });
     expect(provider.models.map((model: { id: string }) => model.id)).toEqual(['fast-coder', 'reasoning-model']);
@@ -599,7 +599,7 @@ describe('tool generators', () => {
     });
     expect(asPosix(settings.path)).toBe('/home/tester/.pi/agent/settings.json');
     expect(settings.sensitive).toBeUndefined();
-    expect(settings.value).toEqual({ defaultProvider: 'ossllmapi', defaultModel: 'fast-coder' });
+    expect(settings.value).toEqual({ defaultProvider: 'llmharbor', defaultModel: 'fast-coder' });
   });
 
   it('keeps `auto` first in the Pi roster when it is the default', () => {
@@ -608,9 +608,9 @@ describe('tool generators', () => {
       models: [{ id: 'auto', name: 'Auto', available: true, context_window: 200_000 }, ...context.models],
     };
     const [models, settings] = tools.find(tool => tool.id === 'pi')!.generate(liveContext).files;
-    const provider = (models.value as { providers: Record<string, { models: { id: string }[] }> }).providers.ossllmapi;
+    const provider = (models.value as { providers: Record<string, { models: { id: string }[] }> }).providers.llmharbor;
     expect(provider.models.map(model => model.id)).toEqual(['auto', 'fast-coder', 'reasoning-model']);
-    expect(settings.value).toEqual({ defaultProvider: 'ossllmapi', defaultModel: 'auto' });
+    expect(settings.value).toEqual({ defaultProvider: 'llmharbor', defaultModel: 'auto' });
   });
 
   it('gives a named Pi profile its own provider and leaves the default model alone', () => {
@@ -619,8 +619,8 @@ describe('tool generators', () => {
     expect(files).toHaveLength(1);
     expect(asPosix(files[0].path)).toBe('/srv/pi/models.json');
     const providers = (files[0].value as { providers: Record<string, { name: string }> }).providers;
-    expect(Object.keys(providers)).toEqual(['ossllmapi-work-box']);
-    expect(providers['ossllmapi-work-box'].name).toBe('OSLLMAPI (Work Box)');
+    expect(Object.keys(providers)).toEqual(['llmharbor-work-box']);
+    expect(providers['llmharbor-work-box'].name).toBe('OSLLMAPI (Work Box)');
   });
 
   it('writes Reasonix as a [[providers]] entry plus its key in the Reasonix .env', () => {
@@ -632,21 +632,21 @@ describe('tool generators', () => {
     expect(config.format).toBe('toml');
     expect(config.sensitive).toBeUndefined();
     const lines = (config.content ?? '').split('\n');
-    expect(lines[0]).toBe('default_model = "ossllmapi/fast-coder"');
+    expect(lines[0]).toBe('default_model = "llmharbor/fast-coder"');
     expect(lines.indexOf('[[providers]]')).toBeGreaterThan(0);
-    expect(lines).toContain('name = "ossllmapi"');
+    expect(lines).toContain('name = "llmharbor"');
     expect(lines).toContain('kind = "openai"');
     expect(lines).toContain('base_url = "http://localhost:3000/v1"');
     expect(lines).toContain('models = ["fast-coder", "reasoning-model"]');
     expect(lines).toContain('default = "fast-coder"');
-    expect(lines).toContain('api_key_env = "OSSLLMAPI_API_KEY"');
+    expect(lines).toContain('api_key_env = "LLMHarbor_API_KEY"');
     expect(lines).toContain('context_window = 131072');
-    expect(config.content).not.toContain('ossllmapi-test-key');
+    expect(config.content).not.toContain('llmharbor-test-key');
     expect({ ...env, path: asPosix(env.path) }).toEqual({
       path: '/home/tester/.reasonix/.env',
       format: 'env',
       sensitive: true,
-      content: 'OSSLLMAPI_API_KEY=ossllmapi-test-key\n',
+      content: 'LLMHarbor_API_KEY=llmharbor-test-key\n',
     });
   });
 
@@ -656,7 +656,7 @@ describe('tool generators', () => {
       models: [{ id: 'auto', name: 'Auto', available: true, context_window: 200_000 }, ...context.models],
     };
     const [config] = tools.find(tool => tool.id === 'reasonix')!.generate(liveContext).files;
-    expect(config.content).toContain('default_model = "ossllmapi/auto"');
+    expect(config.content).toContain('default_model = "llmharbor/auto"');
     expect(config.content).toContain('models = ["auto", "fast-coder", "reasoning-model"]');
   });
 
@@ -667,7 +667,7 @@ describe('tool generators', () => {
     expect(asPosix(env.path)).toBe('/srv/reasonix/.env');
     expect(config.content).not.toContain('default_model');
     expect(config.content!.split('\n')[0]).toBe('[[providers]]');
-    expect(config.content).toContain('name = "ossllmapi-work-box"');
+    expect(config.content).toContain('name = "llmharbor-work-box"');
     expect(config.content).toContain('display_name = "OSLLMAPI (Work Box)"');
   });
 
@@ -695,9 +695,9 @@ describe('tool generators', () => {
     };
     expect(value.schemaVersion).toBe(1);
     const [provider] = value.config.providerConfigRules.providerRules;
-    expect(provider.providerId).toBe('ossllmapi');
+    expect(provider.providerId).toBe('llmharbor');
     expect(provider.providerName).toBe('OSLLMAPI');
-    expect(provider.config.access).toEqual({ type: 'api-key', apiKey: 'ossllmapi-test-key' });
+    expect(provider.config.access).toEqual({ type: 'api-key', apiKey: 'llmharbor-test-key' });
     expect(provider.config.api).toEqual({ type: 'openai-chat-completions', baseUrl: 'http://localhost:3000/v1' });
     expect(provider.config.personalModelIds).toEqual(['fast-coder', 'reasoning-model']);
     const rules = value.config.modelConfigRules.providerModelRules;
@@ -705,9 +705,9 @@ describe('tool generators', () => {
     expect(rules[0].config.properties.contextWindow).toBe(131072);
     expect(rules[0].config.optionSpecs.maxOutputTokens.map).toBe('{"max_tokens": maxOutputTokens}');
     expect(value.config.modelConfigRules.manualProviderModelRules).toEqual([]);
-    expect(value.config.defaultModelSelection).toEqual({ providerId: 'ossllmapi', modelId: 'fast-coder' });
+    expect(value.config.defaultModelSelection).toEqual({ providerId: 'llmharbor', modelId: 'fast-coder' });
     // The rule arrays are merged per provider, never replaced whole.
-    expect(config.arrays?.['config.providerConfigRules.providerRules']).toEqual({ ownedBy: { providerId: 'ossllmapi' } });
+    expect(config.arrays?.['config.providerConfigRules.providerRules']).toEqual({ ownedBy: { providerId: 'llmharbor' } });
   });
 
   it('follows ZCODE_PERSONAL_PROVIDER_CONFIG_FILE for ZCode', () => {
@@ -720,7 +720,7 @@ describe('tool generators', () => {
     const [config] = tools.find(tool => tool.id === 'zcode')!.generate({ ...context, profile: 'Work Box' }).files;
     const value = config.value as { config: { providerConfigRules: { providerRules: { providerId: string; providerName: string }[] } } };
     const [provider] = value.config.providerConfigRules.providerRules;
-    expect(provider.providerId).toBe('ossllmapi-work-box');
+    expect(provider.providerId).toBe('llmharbor-work-box');
     expect(provider.providerName).toBe('OSLLMAPI (Work Box)');
   });
 
@@ -730,13 +730,13 @@ describe('tool generators', () => {
     expect(config.format).toBe('toml');
     expect(config.sensitive).toBe(true);
     const lines = (config.content ?? '').split('\n');
-    expect(lines[0]).toBe('default_model = "ossllmapi"');
-    expect(lines).toContain('[provider_accounts.ossllmapi]');
+    expect(lines[0]).toBe('default_model = "llmharbor"');
+    expect(lines).toContain('[provider_accounts.llmharbor]');
     expect(lines).toContain('provider = "openai"');
     expect(lines).toContain('base_url = "http://localhost:3000/v1"');
-    expect(lines).toContain('api_key = "ossllmapi-test-key"');
-    expect(lines).toContain('[models.ossllmapi]');
-    expect(lines).toContain('account = "ossllmapi"');
+    expect(lines).toContain('api_key = "llmharbor-test-key"');
+    expect(lines).toContain('[models.llmharbor]');
+    expect(lines).toContain('account = "llmharbor"');
     expect(lines).toContain('model = "fast-coder"');
     expect(lines).toContain('context_window = 131072');
     expect(config.content).not.toContain('default_provider');
@@ -755,15 +755,15 @@ describe('tool generators', () => {
       '[provider_accounts.personal]',
       'provider = "openai"',
       'api_key = "keep-key"',
-      '[models.ossllmapi]',
+      '[models.llmharbor]',
       'model = "stale-model"',
-      '[provider_accounts.ossllmapi]',
+      '[provider_accounts.llmharbor]',
       'api_key = "stale-key"',
     ].join('\n');
     const merged = renderFile(config, existing);
     const lines = merged.split('\n');
     const firstTable = lines.findIndex(line => line.startsWith('['));
-    expect(lines.slice(0, firstTable)).toContain('default_model = "ossllmapi"');
+    expect(lines.slice(0, firstTable)).toContain('default_model = "llmharbor"');
     expect(merged.match(/^default_model =/gm)).toHaveLength(1);
     expect(merged).toContain('default_provider = "legacy"');
     expect(merged).toContain('[models.personal]\naccount = "personal"\nmodel = "keep-model"');

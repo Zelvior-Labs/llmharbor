@@ -8,7 +8,7 @@ import { hashFile } from './refresh-mac-update-metadata.mjs';
 
 const [artifacts, out] = process.argv.slice(2);
 const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
-const base = `OSSLLMAPI-${version}`;
+const base = `LLMHarbor-${version}`;
 mkdirSync(out); // Never publish leftovers from an older staging directory.
 function stage(group, ...files) {
   for (const name of files) {

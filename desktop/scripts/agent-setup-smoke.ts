@@ -75,7 +75,7 @@ async function smoke() {
       await wait(async () => (await textAt(card + ' h4')) === 'Configuration saved', tool.id + ' did not save');
       const content = files.map(file => fs.readFileSync(file, 'utf8')).join('\n');
       assert.ok(content.includes(origin), tool.id + ' gateway URL missing');
-      assert.ok(content.includes(isTerminalAgent(tool.id) ? 'OSSLLMAPI_API_KEY' : key), tool.id + ' credential missing');
+      assert.ok(content.includes(isTerminalAgent(tool.id) ? 'LLMHarbor_API_KEY' : key), tool.id + ' credential missing');
       assert.ok(!isTerminalAgent(tool.id) || !content.includes(key));
       if (tool.id === 'hermes' && process.platform === 'win32') assert.equal(files[0], path.join(process.env.LOCALAPPDATA!, 'hermes', 'config.yaml'));
       if (tool.id === 'goose' && process.platform === 'win32') assert.ok(files[0].includes(path.join('Block', 'goose', 'config')));

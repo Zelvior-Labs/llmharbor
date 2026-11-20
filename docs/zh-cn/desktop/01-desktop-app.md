@@ -4,7 +4,7 @@
 
 ## 包清单
 
-`desktop/package.json` `ossllmapi-desktop@0.16.34` —— Electron `38.8.6`、`better-sqlite3@12.10.0`、`electron-builder@25.1.8`、`esbuild@0.24.0`。入口 `build/main.mjs`（`type: module`）。AppId `io.github.zelvior.ossllmapi`，发布 `github:zelvior/ossllmapi`（`desktop/electron-builder.yml`）。`asar` + `client-dist` 位于 `extraResources`；按系统划分的签名目标（mac `dmg`+`zip` `arm64`+`x64` 经 `refresh-mac-update-metadata.mjs` 签名/公证/钉装、win `nsis`+`zip` `x64`+`ia32`、linux `AppImage`+`deb`+`tar.xz`+`rpm` `x64` 自 #981 `d8fae97` 起）。
+`desktop/package.json` `llmharbor-desktop@0.16.34` —— Electron `38.8.6`、`better-sqlite3@12.10.0`、`electron-builder@25.1.8`、`esbuild@0.24.0`。入口 `build/main.mjs`（`type: module`）。AppId `io.github.zelvior.llmharbor`，发布 `github:zelvior/llmharbor`（`desktop/electron-builder.yml`）。`asar` + `client-dist` 位于 `extraResources`；按系统划分的签名目标（mac `dmg`+`zip` `arm64`+`x64` 经 `refresh-mac-update-metadata.mjs` 签名/公证/钉装、win `nsis`+`zip` `x64`+`ia32`、linux `AppImage`+`deb`+`tar.xz`+`rpm` `x64` 自 #981 `d8fae97` 起）。
 
 ## 构建流水线
 
@@ -12,7 +12,7 @@
 bundle:server → build:main / build:preload → stage:client → electron-builder
 ```
 
-- `scripts/bundle-server.mjs` esbuild `define: { 'process.env.OSSLLMAPI_COMMIT_SHA', 'process.env.OSSLLMAPI_INSTALL_METHOD' }` 取自 `GITHUB_SHA`（40 位十六进制）；在 `server-host.ts` 中镜像进运行时的 `process.env`，以便 `routes/update.ts` 正确解析。
+- `scripts/bundle-server.mjs` esbuild `define: { 'process.env.LLMHarbor_COMMIT_SHA', 'process.env.LLMHarbor_INSTALL_METHOD' }` 取自 `GITHUB_SHA`（40 位十六进制）；在 `server-host.ts` 中镜像进运行时的 `process.env`，以便 `routes/update.ts` 正确解析。
 - `build/main.mjs` 打包 `src/main.ts`（`--platform=node --format=esm --external:electron --external:./server.mjs`），`build/preload` 对应 `preload.ts`/`preload-popover.ts`。
 - `scripts/stage-client.mjs` 将 `client/dist` 复制到 `build/client-dist` 或已打包应用中的 `Resources/client-dist`；开发环境经 `FREEAPI_REPO` 覆盖。
 
@@ -26,7 +26,7 @@ bundle:server → build:main / build:preload → stage:client → electron-build
 | `<userData>/backups` | 服务端转储（`services/backups.ts` `dataDir()`） |
 | `Resources/client-dist` | 已打包客户端；开发环境：经 `FREEAPI_REPO` 的 `client/dist` |
 
-`~/Library/Application Support/OSSLLMAPI`（macOS）、`%APPDATA%/OSSLLMAPI`（Windows）、`~/.config/OSSLLMAPI`（Linux）。
+`~/Library/Application Support/LLMHarbor`（macOS）、`%APPDATA%/LLMHarbor`（Windows）、`~/.config/LLMHarbor`（Linux）。
 
 ## 内嵌 server-host
 
@@ -50,7 +50,7 @@ bundle:server → build:main / build:preload → stage:client → electron-build
 
 ## 托盘 / 悬浮窗 / 窗口
 
-- `desktop/src/tray.ts` —— 菜单栏图标、`打开日志文件夹` / `打开备份文件夹`（`logger.ts:openLogsFolder`/`openBackupsFolder` 经 `shell.openPath`）、`打开 OSSLLMAPI`、退出。
+- `desktop/src/tray.ts` —— 菜单栏图标、`打开日志文件夹` / `打开备份文件夹`（`logger.ts:openLogsFolder`/`openBackupsFolder` 经 `shell.openPath`）、`打开 LLMHarbor`、退出。
 - `desktop/src/popover.ts` —— 用于快捷访问的悬浮窗。
 - `desktop/src/window.ts` —— 主 BrowserWindow 外观。
 

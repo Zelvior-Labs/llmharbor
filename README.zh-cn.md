@@ -1,20 +1,20 @@
 <div align="center">
 
-# OSSLLMAPI
+# LLMHarbor
 
 **每月 101 亿词元。87 家免费 LLM 提供方。1,313 个免费模型端点。一个 OpenAI 兼容端点。**
 **本项目是 [freellmapi](https://github.com/tashfeenahmed/freellmapi/) 的修改版本，由 Zelvior Labs 制作。**
 
 把几十家提供方的免费额度，连同任意自建的 OpenAI 兼容聊天、嵌入、图像和音频端点，一起聚合到单个 `/v1` API 之后。密钥加密存储。路由器为每个请求挑选当前可用的最佳模型，某家提供方触发限流时自动转移到下一家，并按密钥跟踪用量，让你始终待在各家的免费额度之内。
 
-[![CI](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/ossllmapi/actions/workflows/ci.yml)
-[![GitHub stars](https://img.shields.io/github/stars/zelvior/ossllmapi?style=flat&logo=github&color=yellow)](https://github.com/zelvior/ossllmapi/stargazers)
+[![CI](https://github.com/zelvior/llmharbor/actions/workflows/ci.yml/badge.svg)](https://github.com/zelvior/llmharbor/actions/workflows/ci.yml)
+[![GitHub stars](https://img.shields.io/github/stars/zelvior/llmharbor?style=flat&logo=github&color=yellow)](https://github.com/zelvior/llmharbor/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#参与贡献)
-[![Docker image](https://img.shields.io/badge/ghcr.io-ossllmapi-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/ossllmapi/pkgs/container/ossllmapi)
-[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/ossllmapi)
+[![Docker image](https://img.shields.io/badge/ghcr.io-llmharbor-2496ED?logo=docker&logoColor=white)](https://github.com/zelvior/llmharbor/pkgs/container/llmharbor)
+[![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Ask-blue)](https://deepwiki.com/zelvior/llmharbor)
 
-**[ossllmapi.co](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · 浏览完整目录：736 个模型系列，1,313 个免费端点
+**[llmharbor.co](https://llmharbor.co/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · 浏览完整目录：736 个模型系列，1,313 个免费端点
 
 [English](README.md) · [Türkçe](README.tr.md) · **简体中文** · [Русский](README.ru.md) · [O'zbekcha](README.uz.md)
 
@@ -24,7 +24,7 @@
 
 
 你的路由器会从签名源自行更新模型目录：新的免费模型、额度变更和兼容性修复，都不需要 `git pull` 就能生效。
-**[前往 ossllmapi.co 启用](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_top#pricing)**（每年 $19，随时可取消）。
+**[前往 llmharbor.co 启用](https://llmharbor.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_top#pricing)**（每年 $19，随时可取消）。
 
 </div>
 
@@ -59,7 +59,7 @@
 
 问题在于手工叠加太痛苦：八十七套不同的 SDK，八十七种不同的限流规则，八十七个请求可能失败的地方。OSLLMAPI 把这些收拢成一个 OpenAI 兼容端点。把任意 OpenAI 客户端库指向你的本地服务，它就会在你添加过密钥的提供方之间透明路由。
 
-而且免费额度的格局每周都在变：提供方会上线新模型、下线旧模型，并且不打招呼就调整额度。这些 OSLLMAPI 都替你盯着。路由器会自行从 [ossllmapi.co](https://ossllmapi.co) 拉取经过签名的模型目录，所以你的部署不用 `git pull` 也能跟上。跟进速度见 [Premium 实时目录](#premium-实时目录)。
+而且免费额度的格局每周都在变：提供方会上线新模型、下线旧模型，并且不打招呼就调整额度。这些 OSLLMAPI 都替你盯着。路由器会自行从 [llmharbor.co](https://llmharbor.co) 拉取经过签名的模型目录，所以你的部署不用 `git pull` 也能跟上。跟进速度见 [Premium 实时目录](#premium-实时目录)。
 
 ![叠加后的免费额度 —— 87 家提供方合计每月约 101 亿词元的免费推理](repo-assets/free-tier.png)
 
@@ -95,7 +95,7 @@
 
 此外还有 **自定义** 提供方：在密钥页上，把聊天、嵌入、图像或音频模型指向任意 OpenAI 兼容端点（llama.cpp、LM Studio、vLLM、本地 Ollama，或者一个远程网关）。
 
-完整且始终最新的列表在 **[ossllmapi.co/models](https://ossllmapi.co/models.html)**，含每个模型的限流规则、上下文窗口和免费词元额度。
+完整且始终最新的列表在 **[llmharbor.co/models](https://llmharbor.co/models.html)**，含每个模型的限流规则、上下文窗口和免费词元额度。
 
 ## 兼容的 CLI 与编程智能体
 
@@ -130,7 +130,7 @@
 
 </div>
 
-其中大多数一条命令就能配好：`npx ossllmapi setup-claude`、`setup-codex`、`setup-aider`，还有另外十几个生成器。它们会拉取你当前的实时目录，备份已有配置，并且绝不覆盖你已经写好的内容。Claude Code 和 Codex 另有零留存启动器（`ossllmapi launch`、`ossllmapi launch-codex`），只把凭据注入子进程。Zed 和 JetBrains AI 通过可选的 [Ollama 模拟](docs/en/clients/01-agent-clients.md#ollama-clients) 接入；Gemini CLI 走它自己的 `/v1beta` 协议。
+其中大多数一条命令就能配好：`npx llmharbor setup-claude`、`setup-codex`、`setup-aider`，还有另外十几个生成器。它们会拉取你当前的实时目录，备份已有配置，并且绝不覆盖你已经写好的内容。Claude Code 和 Codex 另有零留存启动器（`llmharbor launch`、`llmharbor launch-codex`），只把凭据注入子进程。Zed 和 JetBrains AI 通过可选的 [Ollama 模拟](docs/en/clients/01-agent-clients.md#ollama-clients) 接入；Gemini CLI 走它自己的 `/v1beta` 协议。
 
 各工具的具体配方、setup CLI 参考、给无法发送请求头的客户端用的可撤销 URL 令牌，以及 MCP 服务，都在 **[客户端与编程智能体 →](docs/zh-cn/clients/01-agent-clients.md)**
 
@@ -153,10 +153,10 @@
 - **智能路由，六种策略** —— 实时的每模型速度、能力、稳定性评分决定你的链路顺序；遇到 429/5xx 时自动转移到下一个模型，并带冷却和密钥轮换。[路由详解 →](docs/zh-cn/architecture/00-high-level-index.md#工作原理)
 - **统一模型与配置档** —— 同一个模型在多家提供方上会合并成一个条目，并在组内严格故障转移；命名的回退链配置档（比如一条编程链、一条视觉链）可以在仪表盘里切换，也可以按请求用 `auto:<profile>` 指定。
 - **按密钥的限流跟踪** —— 以 `(平台, 模型, 密钥)` 为单位的 RPM/RPD/TPM/TPD 计数器，会学习提供方公布的上限，让路由始终不越线。
-- **自更新的模型目录** —— 路由器每天两次从 ossllmapi.co 同步经过签名的目录：新模型、额度变更和提供方的怪癖修复都会自动生效。[Premium →](#premium-实时目录)
+- **自更新的模型目录** —— 路由器每天两次从 llmharbor.co 同步经过签名的目录：新模型、额度变更和提供方的怪癖修复都会自动生效。[Premium →](#premium-实时目录)
 - **粘性会话与上下文交接** —— 对话会在同一个模型上停留 30 分钟；如果中途确实换了模型，可选的精简交接说明能让话题保持连贯。[详情 →](docs/en/clients/01-agent-clients.md#context-handoff)
 - **提示词压缩（可选开启）** —— 一条共享且失败即放行的请求流程，可以在缓存查找和路由之前对提示词去重、过滤工具输出、压紧重复的 JSON，并裁掉过时的上下文。[详情 →](docs/zh-cn/compression/01-compression-pipeline.md)
-- **密钥加密存储，对外只有一个令牌** —— 提供方密钥以 AES-256-GCM 加密存放在 SQLite 中，每次请求时在内存里解密；你的应用自始至终只看到一个统一的 `ossllmapi-…` bearer 令牌。
+- **密钥加密存储，对外只有一个令牌** —— 提供方密钥以 AES-256-GCM 加密存放在 SQLite 中，每次请求时在内存里解密；你的应用自始至终只看到一个统一的 `llmharbor-…` bearer 令牌。
 - **管理仪表盘与分析** —— React 界面用来管理密钥、调整链路顺序、使用试验台，并查看 24 小时到 90 天窗口的 p50/p95/首个词元用时分析；带登录保护，支持明暗主题和 [60 种语言](#语言)。
 - **MCP 服务与交互式文档** —— 智能体可以通过 `/mcp` 查询可用模型、提供方健康状况和路由策略；`/v1/docs` 提供一个零依赖的 OpenAPI 浏览器。[编程智能体 →](docs/zh-cn/clients/01-agent-clients.md)
 - **运维上的便利** —— 可选的响应缓存、加密的数据库备份、定期密钥健康检查、密钥批量导入导出、声明式启动配置。[安装与部署 →](docs/zh-cn/install/01-install.md)
@@ -166,17 +166,17 @@
 
 ## 快速开始
 
-**一行命令**（需要 Docker。它会建好 `~/ossllmapi`、生成加密密钥、拉取镜像并启动容器）：
+**一行命令**（需要 Docker。它会建好 `~/llmharbor`、生成加密密钥、拉取镜像并启动容器）：
 
 ```bash
-curl -fsSL https://ossllmapi.co/install.sh | bash
+curl -fsSL https://llmharbor.co/install.sh | bash
 ```
 
-不放心直接管道给 bash？[脚本在这里](https://ossllmapi.co/install.sh)。重复执行是安全的：你的 `.env`（以及加密密钥）会被保留，容器会更新到 `:latest`。
+不放心直接管道给 bash？[脚本在这里](https://llmharbor.co/install.sh)。重复执行是安全的：你的 `.env`（以及加密密钥）会被保留，容器会更新到 `:latest`。
 
 打开 http://localhost:3001 ，在 **密钥** 页添加你的提供方密钥，按喜好调整 **回退链** 的顺序，然后在 **密钥** 页顶部拿到你的统一 API 密钥。这个统一密钥就是你的 OpenAI SDK 要指向的东西。
 
-在 Windows 上，最省事的方式是下面提到的桌面版 **[Releases 里的 `.exe` 安装包](https://github.com/zelvior/ossllmapi/releases/latest)**。Android 8.0 或更高版本可直接安装[独立 APK](android/README.md)，在本机运行网关和仪表盘；也可参考实验性的 [Termux 指南](docs/zh-cn/install/02-android-termux.md)。
+在 Windows 上，最省事的方式是下面提到的桌面版 **[Releases 里的 `.exe` 安装包](https://github.com/zelvior/llmharbor/releases/latest)**。Android 8.0 或更高版本可直接安装[独立 APK](android/README.md)，在本机运行网关和仪表盘；也可参考实验性的 [Termux 指南](docs/zh-cn/install/02-android-termux.md)。
 
 其余内容，包括 Docker Compose、本地开发、声明式启动配置、生产构建、局域网访问和备份，都在 **[docs/zh-cn/install/01-install.md](docs/zh-cn/install/01-install.md)**。
 
@@ -186,7 +186,7 @@ curl -fsSL https://ossllmapi.co/install.sh | bash
 
 ![OSLLMAPI 桌面应用](repo-assets/desktop.png)
 
-**[从 Releases 下载](https://github.com/zelvior/ossllmapi/releases/latest)** —— 每个版本都附带 macOS 的 `.dmg` 和 Windows 的 `.exe` 安装包。不需要注册账号或设置密码：你唯一需要的凭据就是托盘悬浮窗里的统一 API 密钥。从源码构建的步骤，以及数据存放位置，见 [docs/zh-cn/install/01-install.md#桌面应用](docs/zh-cn/install/01-install.md#桌面应用)。
+**[从 Releases 下载](https://github.com/zelvior/llmharbor/releases/latest)** —— 每个版本都附带 macOS 的 `.dmg` 和 Windows 的 `.exe` 安装包。不需要注册账号或设置密码：你唯一需要的凭据就是托盘悬浮窗里的统一 API 密钥。从源码构建的步骤，以及数据存放位置，见 [docs/zh-cn/install/01-install.md#桌面应用](docs/zh-cn/install/01-install.md#桌面应用)。
 
 macOS 要求 12 Monterey 或更高版本；Apple Silicon 请选择 **arm64**，Intel 请选择 **x64**。两种 Mac 构建都提供 ZIP 下载。
 
@@ -197,10 +197,10 @@ macOS 要求 12 Monterey 或更高版本；Apple Silicon 请选择 **arm64**，I
 最快的配置方式是根据你服务器上实际可用的模型生成：
 
 ```bash
-npx ossllmapi setup-claude --url http://localhost:3001 --api-key <统一密钥>
+npx llmharbor setup-claude --url http://localhost:3001 --api-key <统一密钥>
 ```
 
-每个生成器都支持 `--dry-run`，改动已有文件前会先创建带时间戳的备份，并且是合并进用户配置而不是覆盖。启动器则把凭据完全挡在配置文件之外：Claude Code 用 `npx ossllmapi launch`，Codex 用 `npx ossllmapi launch-codex`。
+每个生成器都支持 `--dry-run`，改动已有文件前会先创建带时间戳的备份，并且是合并进用户配置而不是覆盖。启动器则把凭据完全挡在配置文件之外：Claude Code 用 `npx llmharbor launch`，Codex 用 `npx llmharbor launch-codex`。
 
 | 智能体 | 自动配置命令 | Base URL |
 | --- | --- | --- |
@@ -234,17 +234,17 @@ OSLLMAPI 在设计上是本地优先、单用户的。你的提供方密钥留�
 
 ## Premium 实时目录
 
-路由器会自行保持模型目录的新鲜：它每天两次从 [ossllmapi.co](https://ossllmapi.co) 拉取经过签名的目录，把新模型、额度变更和提供方的怪癖修复应用到你的本地数据库。你自己的启用/停用选择和自定义提供方永远不会被动到，而且每次下载在应用之前都会用固定的 Ed25519 公钥验签。
+路由器会自行保持模型目录的新鲜：它每天两次从 [llmharbor.co](https://llmharbor.co) 拉取经过签名的目录，把新模型、额度变更和提供方的怪癖修复应用到你的本地数据库。你自己的启用/停用选择和自定义提供方永远不会被动到，而且每次下载在应用之前都会用固定的 Ed25519 公钥验签。
 
-目录目前收录 **87 家提供方**、**736 个模型系列**、**1,313 个免费提供方/模型端点**（1,137 个聊天、29 个图像、41 个音频、68 个嵌入、19 个转录、6 个视频、13 个决策），以及大约 **每月 101 亿词元** 的免费额度容量。完整内容可在 **[ossllmapi.co/models](https://ossllmapi.co/models.html)** 浏览。
+目录目前收录 **87 家提供方**、**736 个模型系列**、**1,313 个免费提供方/模型端点**（1,137 个聊天、29 个图像、41 个音频、68 个嵌入、19 个转录、6 个视频、13 个决策），以及大约 **每月 101 亿词元** 的免费额度容量。完整内容可在 **[llmharbor.co/models](https://llmharbor.co/models.html)** 浏览。
 
 Premium 让这份签名目录在你运行的每一个路由器上保持实时。当某家提供方上线了一个强力的免费模型、悄悄收紧了额度，或者改坏了协议格式，订阅了实时源的路由器会在我们发布的第一时间收到更新。
 
-**[前往 ossllmapi.co 启用 →](https://ossllmapi.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_bottom#pricing)**
+**[前往 llmharbor.co 启用 →](https://llmharbor.co/?utm_source=github&utm_medium=readme&utm_campaign=premium&utm_content=readme_bottom#pricing)**
 
 - 每年 $19，或一次性 $49 永久有效。Stripe 支付，随时可自助取消。
 - 一个 `fla_` 密钥覆盖你运行的所有路由器：桌面、家庭服务器、树莓派。
-- 在仪表盘的 **Premium** 页激活；取消或管理账单可自助前往 [ossllmapi.co/manage](https://ossllmapi.co/manage)。
+- 在仪表盘的 **Premium** 页激活；取消或管理账单可自助前往 [llmharbor.co/manage](https://llmharbor.co/manage)。
 - 路由器本身永远保持 MIT 许可、完全免费。Premium 只是那条实时源，而正是它资助了每天的模型测试和目录维护，让这份目录始终可用。
 
 目录服务器不会看到你的提示词、补全结果或提供方密钥。无论是否订阅，路由器都完全自托管。
@@ -256,7 +256,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="http://localhost:3001/v1",
-    api_key="ossllmapi-your-unified-key",
+    api_key="llmharbor-your-unified-key",
 )
 
 resp = client.chat.completions.create(

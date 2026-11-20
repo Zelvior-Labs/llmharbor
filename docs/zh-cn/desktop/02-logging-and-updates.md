@@ -27,11 +27,11 @@ installFileLogger(); // 在 createApp / 服务端启动之前
 
 ### Electron-builder 发布
 
-`desktop/electron-builder.yml` `publish: { provider: github, owner: zelvior, repo: ossllmapi }` —— 产物（`dmg`、`nsis`、`zip`、`AppImage`、`deb`、`tar.xz`、`rpm`）在 `desktop-release.yml` 上上传（`*.rpm` 通配自 d8fae97）。按渠道生成 `latest.yml` / `latest-ia32.yml` / `latest-mac.yml` / `latest-linux.yml`。
+`desktop/electron-builder.yml` `publish: { provider: github, owner: zelvior, repo: llmharbor }` —— 产物（`dmg`、`nsis`、`zip`、`AppImage`、`deb`、`tar.xz`、`rpm`）在 `desktop-release.yml` 上上传（`*.rpm` 通配自 d8fae97）。按渠道生成 `latest.yml` / `latest-ia32.yml` / `latest-mac.yml` / `latest-linux.yml`。
 
 ### 构建标识
 
-`scripts/bundle-server.mjs` `define: { 'process.env.OSSLLMAPI_COMMIT_SHA': JSON.stringify(GITHUB_SHA), 'process.env.OSSLLMAPI_INSTALL_METHOD': '"desktop"' }` —— 构建时戳记的 40 位十六进制 SHA，在 `server-host.ts` 中镜像进运行时的 `process.env`，以便 `server/src/routes/update.ts` 解析运行中提交 vs `GET /api/update` 可用版本。`FREEAPI_VERSION` 取自 `app.getVersion()`（`0.16.34`）。
+`scripts/bundle-server.mjs` `define: { 'process.env.LLMHarbor_COMMIT_SHA': JSON.stringify(GITHUB_SHA), 'process.env.LLMHarbor_INSTALL_METHOD': '"desktop"' }` —— 构建时戳记的 40 位十六进制 SHA，在 `server-host.ts` 中镜像进运行时的 `process.env`，以便 `server/src/routes/update.ts` 解析运行中提交 vs `GET /api/update` 可用版本。`FREEAPI_VERSION` 取自 `app.getVersion()`（`0.16.34`）。
 
 ### 仪表盘内检查器
 

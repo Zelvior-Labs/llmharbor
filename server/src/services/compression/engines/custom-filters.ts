@@ -27,7 +27,7 @@ export function loadCustomFilters(trustProjectFilters: boolean): ToolFilterRule[
   const key = `${process.cwd()}:${trustProjectFilters}`;
   if (key === cacheKey) return cached;
   const filters: ToolFilterRule[] = [];
-  const userDir = path.join(os.homedir(), '.ossllmapi', 'filters');
+  const userDir = path.join(os.homedir(), '.llmharbor', 'filters');
   try {
     for (const name of fs.readdirSync(userDir).filter(name => name.endsWith('.json')).sort()) {
       filters.push(...readFilterFile(path.join(userDir, name)));
@@ -36,7 +36,7 @@ export function loadCustomFilters(trustProjectFilters: boolean): ToolFilterRule[
     // Optional directory.
   }
   if (trustProjectFilters) {
-    filters.push(...readFilterFile(path.resolve(process.cwd(), '.ossllmapi', 'filters.json')));
+    filters.push(...readFilterFile(path.resolve(process.cwd(), '.llmharbor', 'filters.json')));
   }
   cacheKey = key;
   cached = filters.slice(0, 100);

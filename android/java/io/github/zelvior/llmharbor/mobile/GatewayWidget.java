@@ -1,4 +1,4 @@
-package io.github.zelvior.ossllmapi.mobile;
+package io.github.zelvior.llmharbor.mobile;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -10,7 +10,7 @@ import android.widget.RemoteViews;
 
 /** Home-screen start/stop control. State is always re-read from the private socket. */
 public final class GatewayWidget extends AppWidgetProvider {
-    static final String ACTION_TOGGLE = "io.github.zelvior.ossllmapi.mobile.WIDGET_TOGGLE";
+    static final String ACTION_TOGGLE = "io.github.zelvior.llmharbor.mobile.WIDGET_TOGGLE";
 
     @Override public void onUpdate(Context context, AppWidgetManager manager, int[] ids) {
         final PendingResult pending = goAsync();
@@ -20,7 +20,7 @@ public final class GatewayWidget extends AppWidgetProvider {
             } finally {
                 pending.finish();
             }
-        }, "ossllmapi-widget").start();
+        }, "llmharbor-widget").start();
     }
 
     @Override public void onReceive(Context context, Intent intent) {
@@ -40,7 +40,7 @@ public final class GatewayWidget extends AppWidgetProvider {
                 GatewayTileService.requestRefresh(context);
                 pending.finish();
             }
-        }, "ossllmapi-widget-toggle").start();
+        }, "llmharbor-widget-toggle").start();
     }
 
     static ComponentName component(Context context) { return new ComponentName(context, GatewayWidget.class); }

@@ -8,8 +8,8 @@ import { createUpdateRouter, UPDATE_CHECK_SETTING } from '../../routes/update.js
 import { mintDashboardToken } from '../helpers/auth.js';
 
 const NOW = Date.parse('2026-08-09T14:00:00.000Z');
-const RELEASE_URL = 'https://api.github.com/repos/zelvior/ossllmapi/releases/latest';
-const RELEASES_PAGE = 'https://github.com/zelvior/ossllmapi/releases';
+const RELEASE_URL = 'https://api.github.com/repos/zelvior/llmharbor/releases/latest';
+const RELEASES_PAGE = 'https://github.com/zelvior/llmharbor/releases';
 
 function httpGet(app: Express, path: string): Promise<{ status: number; body: any }> {
   return new Promise((resolve, reject) => {
@@ -155,7 +155,7 @@ describe('GET /api/update/release', () => {
   it('stays disabled when the deployment kill switch is set, opt-in or not', async () => {
     const fetchMock = vi.fn();
     const { app } = createTestApp({
-      env: { OSSLLMAPI_UPDATE_CHECK: 'off' },
+      env: { LLMHarbor_UPDATE_CHECK: 'off' },
       fetch: fetchMock,
       autoCheckEnabled: () => true,
     });

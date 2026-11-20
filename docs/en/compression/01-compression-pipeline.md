@@ -13,7 +13,7 @@ The same pipeline runs on Chat Completions, Responses, Anthropic Messages, and A
 Choose a mode under dashboard **Settings → Prompt compression**, or bootstrap the mode with:
 
 ```env
-OSSLLMAPI_COMPRESSION=lossless
+LLMHarbor_COMPRESSION=lossless
 ```
 
 Once settings have been saved in the dashboard, the stored setting takes precedence over the environment value.
@@ -72,8 +72,8 @@ Built-in filters understand common output from Git, package managers, test runne
 
 Additional JSON filter definitions can be loaded from:
 
-- `~/.ossllmapi/filters/*.json` for user-owned filters;
-- `.ossllmapi/filters.json` in the project, only when **Trust project filter files** is enabled.
+- `~/.llmharbor/filters/*.json` for user-owned filters;
+- `.llmharbor/filters.json` in the project, only when **Trust project filter files** is enabled.
 
 Project filters are disabled by default because repositories may be untrusted.
 

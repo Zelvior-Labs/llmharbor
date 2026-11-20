@@ -1,4 +1,4 @@
-# OSSLLMAPI for Android · standalone preview
+# LLMHarbor for Android · standalone preview
 
 A signed APK for Android 8.0 (API 26) and later. Both the gateway and the dashboard are inside the
 app: no PC, Termux, Node installation, root access or first-run runtime download. The dashboard
@@ -13,10 +13,10 @@ opens in your phone's browser so uploads, downloads and the clipboard work norma
 Android refuses an APK whose CPUs do not match the device, so try `arm64-v8a` first on a modern
 phone and `armeabi-v7a` on an older or low-RAM one.
 
-1. Download the APK from the [Android releases](https://github.com/zelvior/ossllmapi/releases?q=android).
+1. Download the APK from the [Android releases](https://github.com/zelvior/llmharbor/releases?q=android).
    Tap it, allow **Install unknown apps** for that browser or file manager if prompted, then install.
    You can turn that permission off again afterward.
-2. Open **OSSLLMAPI → Start gateway**. Wait for **Gateway running**, then tap **Show setup/reset code**
+2. Open **LLMHarbor → Start gateway**. Wait for **Gateway running**, then tap **Show setup/reset code**
    and confirm it is you. Tap **Open dashboard**, and create a local account with that code. Nothing
    is emailed.
 3. In **Keys**, add a provider key (or your own compatible endpoint). In the playground, choose a model
@@ -104,11 +104,11 @@ at that keystore. CI does the same when these repository secrets exist:
 | --- | --- |
 | `ANDROID_KEYSTORE_B64` | base64 of a PKCS12 keystore holding the durable key |
 | `ANDROID_KEYSTORE_PASSWORD` | its password |
-| `ANDROID_KEY_ALIAS` | key alias inside the keystore (`init` uses `ossllmapi`) |
+| `ANDROID_KEY_ALIAS` | key alias inside the keystore (`init` uses `llmharbor`) |
 | `ANDROID_KEY_PASSWORD` | key password (PKCS12 usually matches the store password) |
 
 Optionally set the repository variable `ANDROID_PACKAGE_ID` (default
-`io.github.zelvior.ossllmapi.android`). Without the secret the workflow falls back to
+`io.github.zelvior.llmharbor.android`). Without the secret the workflow falls back to
 `android/scripts/preview-key.sh`, and the release is a normal version-locked preview. Never commit a
 keystore; the CI copy is decoded into `RUNNER_TEMP` and deleted after signing.
 
@@ -124,7 +124,7 @@ node android/scripts/bundle.mjs
 python3 android/tests/host.py
 # Use your OWN private keystore; reuse the same identity/key on later builds to keep app data.
 # Set APK_KEYSTORE, APK_ALIAS and APK_PASSWORD in your environment, not in Git.
-ANDROID_PACKAGE_ID=io.github.zelvior.ossllmapi.android android/scripts/package.sh
+ANDROID_PACKAGE_ID=io.github.zelvior.llmharbor.android android/scripts/package.sh
 ```
 
 `ANDROID_ABIS` limits or extends the CPU list (default `armeabi-v7a arm64-v8a x86_64`), and

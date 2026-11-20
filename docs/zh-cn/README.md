@@ -2,7 +2,7 @@
 
 # OSLLMAPI 文档
 
-**OSSLLMAPI 是 [freellmapi](https://github.com/tashfeenahmed/freellmapi/) 的修改版本，由 Zelvior Labs 制作。**
+**LLMHarbor 是 [freellmapi](https://github.com/tashfeenahmed/freellmapi/) 的修改版本，由 Zelvior Labs 制作。**
 
 这里是用户入口 —— 从这里开始安装网关、调用兼容 OpenAI 的 API、接入编程智能体并了解整体架构。根目录的 [README](../../README.zh-cn.md) 是产品总览；这份索引帮你把服务跑起来。
 

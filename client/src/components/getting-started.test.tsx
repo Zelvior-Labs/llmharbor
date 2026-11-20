@@ -28,7 +28,7 @@ async function mount(keys: { keyless: boolean }[]) {
   vi.mocked(apiFetch).mockReset().mockImplementation(async (path: string) => {
     if (path === '/api/keys') return keys
     if (path.startsWith('/api/analytics/summary')) return { totalRequests: 0 }
-    if (path === '/api/settings/api-key') return { apiKey: 'ossllmapi-test' }
+    if (path === '/api/settings/api-key') return { apiKey: 'llmharbor-test' }
     return {}
   })
   act(() => root.render(

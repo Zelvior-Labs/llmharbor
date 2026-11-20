@@ -64,7 +64,7 @@ with tempfile.TemporaryDirectory() as tmp:
 
 # 2. The APK path: the key arrives in the environment, so nothing is written at rest.
 with tempfile.TemporaryDirectory() as tmp:
-    proc = run(tmp, env={**os.environ, 'OSSLLMAPI_ENCRYPTION_KEY': 'ab' * 32})
+    proc = run(tmp, env={**os.environ, 'LLMHarbor_ENCRYPTION_KEY': 'ab' * 32})
     try:
         current = state(tmp, proc)
         assert not (Path(tmp) / 'data' / '.encryption-key').exists(), 'no plaintext key on disk'
@@ -77,7 +77,7 @@ with tempfile.TemporaryDirectory() as tmp:
 
 # 3. A malformed key from the keystore is fatal rather than silently replaced.
 with tempfile.TemporaryDirectory() as tmp:
-    proc = run(tmp, env={**os.environ, 'OSSLLMAPI_ENCRYPTION_KEY': 'not-a-key'})
+    proc = run(tmp, env={**os.environ, 'LLMHarbor_ENCRYPTION_KEY': 'not-a-key'})
     assert proc.wait(timeout=20) != 0, 'a malformed keystore key must abort the gateway'
 
 # 4. Port fallback when another app already owns 31415.
@@ -105,7 +105,7 @@ with tempfile.TemporaryDirectory() as tmp:
         smoke.setup(current['setup'], upstream())
         for url in current['lan']:
             status, body = fetch(url)
-            assert status == 200 and 'OSSLLMAPI' in body, f'LAN dashboard failed for {url}'
+            assert status == 200 and 'LLMHarbor' in body, f'LAN dashboard failed for {url}'
         assert fetch(f'http://127.0.0.1:{current["port"]}/', host='evil.example')[0] == 403, 'LAN host guard'
     finally:
         proc.terminate()

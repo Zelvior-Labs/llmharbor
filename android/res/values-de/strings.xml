@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OSSLLMAPI</string>
+    <string name="app_name">LLMHarbor</string>
     <string name="subtitle">Gateway und Dashboard auf diesem Telefon\nVersion %1$s · %2$s</string>
 
     <string name="start_gateway">Gateway starten</string>
@@ -69,7 +69,7 @@
     <string name="no_code">Kein Code offen. Das Dashboard-Konto existiert bereits.</string>
 
     <string name="notification_channel">Lokales Gateway</string>
-    <string name="notification_title">OSSLLMAPI</string>
+    <string name="notification_title">LLMHarbor</string>
     <string name="notification_starting">Lokales Gateway wird gestartet…</string>
     <string name="notification_running">Läuft auf Port %1$d</string>
     <string name="alert_channel">Gateway-Warnungen</string>

@@ -50,7 +50,7 @@ jobs:
       - name: Launch extracted ZIP, exercise dashboard, SQLite, API and update isolation
         shell: pwsh
         run: |
-          $zip = Get-Item 'desktop/dist-electron/windows7/OSSLLMAPI-*-windows7-${{ matrix.arch }}.zip'
+          $zip = Get-Item 'desktop/dist-electron/windows7/LLMHarbor-*-windows7-${{ matrix.arch }}.zip'
           $temp = Join-Path $env:RUNNER_TEMP 'win7 smoke'
           Expand-Archive -LiteralPath $zip.FullName -DestinationPath $temp
           node desktop/win7/smoke.mjs (Join-Path $temp $zip.BaseName) ${{ matrix.arch }}
@@ -58,7 +58,7 @@ jobs:
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: win7-${{ matrix.arch }}
-          path: desktop/dist-electron/windows7/OSSLLMAPI-*-windows7-${{ matrix.arch }}.zip
+          path: desktop/dist-electron/windows7/LLMHarbor-*-windows7-${{ matrix.arch }}.zip
           compression-level: 0
           if-no-files-found: error
 
@@ -87,9 +87,9 @@ jobs:
           tag="win7-v$version"
           test "$tag" = "$GITHUB_REF_NAME"
           cd downloads
-          files=("OSSLLMAPI-$version-windows7-x86.zip" "OSSLLMAPI-$version-windows7-x64.zip")
+          files=("LLMHarbor-$version-windows7-x86.zip" "LLMHarbor-$version-windows7-x64.zip")
           for file in "${files[@]}"; do test -s "$file"; done
           sha256sum "${files[@]}" > SHA256SUMS.txt
           sed '/^## Build (/,$d' ../desktop/win7/README.md > "$RUNNER_TEMP/notes.md"
           gh release create "$tag" "${files[@]}" SHA256SUMS.txt --verify-tag --prerelease --latest=false \
-            --title "OSSLLMAPI for Windows 7 SP1 ($version)" --notes-file "$RUNNER_TEMP/notes.md"
+            --title "LLMHarbor for Windows 7 SP1 ($version)" --notes-file "$RUNNER_TEMP/notes.md"

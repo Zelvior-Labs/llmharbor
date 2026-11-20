@@ -25,7 +25,7 @@ await build({
   bundle: true, platform: 'node', target: 'node24', format: 'esm', legalComments: 'linked',
   external: ['better-sqlite3', 'sharp'],
   define: {
-    'process.env.OSSLLMAPI_ANDROID_APP': '"1"', 'process.env.FREEAPI_VERSION': JSON.stringify(version),
+    'process.env.LLMHarbor_ANDROID_APP': '"1"', 'process.env.FREEAPI_VERSION': JSON.stringify(version),
     'process.env.FREEAPI_SQLITE_DRIVER': '"node:sqlite"',
     // No libvips on a phone, so the pure-JS path resizes; 1568 is the cap the
     // strictest vision provider applies anyway.

@@ -18,7 +18,7 @@ import { Tooltip } from '@/components/tooltip'
 // page rather than its own nav entry: most installs use one chain forever, and
 // the routing table below is what the page is for.
 
-const COLLAPSED_KEY = 'ossllmapi.chainManager.collapsed'
+const COLLAPSED_KEY = 'llmharbor.chainManager.collapsed'
 
 function readCollapsed(): boolean {
   try {

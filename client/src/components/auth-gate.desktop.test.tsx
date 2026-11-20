@@ -19,7 +19,7 @@ type DesktopWindow = Window & {
 }
 
 const FRESH = 'fresh-session-token'
-const TOKEN_KEY = 'ossllmapi_dashboard_token'
+const TOKEN_KEY = 'llmharbor_dashboard_token'
 
 let root: Root
 let container: HTMLDivElement
@@ -114,7 +114,7 @@ describe('AuthGate inside the desktop shell', () => {
     expect(bridge).toHaveBeenCalledTimes(1)
     expect(passwordField()).toBeNull()
     expect(container.querySelector('[data-testid="app"]')).toBeNull()
-    expect(container.textContent).toContain('Quit OSSLLMAPI and open it again')
+    expect(container.textContent).toContain('Quit LLMHarbor and open it again')
   })
 
   // The recovery message is the whole screen: a screen reader that has already

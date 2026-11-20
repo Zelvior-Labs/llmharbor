@@ -1,8 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "ossllmapi/auto",
+  "model": "llmharbor/auto",
   "provider": {
-    "ossllmapi": {
+    "llmharbor": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "OSLLMAPI (local)",
       "options": {

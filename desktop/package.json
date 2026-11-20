@@ -1,13 +1,13 @@
 {
-  "name": "ossllmapi-desktop",
+  "name": "llmharbor-desktop",
   "version": "0.16.34",
-  "description": "OSSLLMAPI desktop — local OpenAI-compatible LLM router",
+  "description": "LLMHarbor desktop — local OpenAI-compatible LLM router",
   "author": {
     "name": "tashfeenahmed",
     "email": "tashfene@gmail.com",
     "url": "https://github.com/tashfeenahmed"
   },
-  "homepage": "https://github.com/zelvior/ossllmapi",
+  "homepage": "https://github.com/zelvior/llmharbor",
   "private": true,
   "type": "module",
   "main": "build/main.mjs",

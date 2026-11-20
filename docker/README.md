@@ -23,13 +23,13 @@ Start the app:
 docker compose up -d
 ```
 
-Open http://localhost:3001, add provider keys on the **Keys** page, then use the generated `ossllmapi-...` key with any OpenAI-compatible client.
+Open http://localhost:3001, add provider keys on the **Keys** page, then use the generated `llmharbor-...` key with any OpenAI-compatible client.
 
 ## Example API Call
 
 ```bash
 curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer ossllmapi-your-unified-key" \
+  -H "Authorization: Bearer llmharbor-your-unified-key" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "auto",
@@ -48,7 +48,7 @@ docker compose ps
 Tail logs:
 
 ```bash
-docker compose logs -f ossllmapi
+docker compose logs -f llmharbor
 ```
 
 Stop the app:
@@ -76,7 +76,7 @@ docker compose up -d --build
 | --- | --- | --- | --- |
 | `ENCRYPTION_KEY` | Yes | None | 64-character hex key used to encrypt provider API keys at rest. Generate it once and keep it stable. |
 | `PORT` | No | `3001` | Host port exposed by Docker Compose. The container listens on port 3001. |
-| `FREEAPI_DB_PATH` | No | `/app/server/data/ossllmapi.db` | SQLite file path. Set this when your host only persists one mounted directory. |
+| `FREEAPI_DB_PATH` | No | `/app/server/data/llmharbor.db` | SQLite file path. Set this when your host only persists one mounted directory. |
 | `FREEAPI_DB_BACKUP_PATH` | No | None | Local encrypted backup file. Restored on startup if the DB file is missing, then refreshed while the app runs. |
 | `FREEAPI_DB_BACKUP_URL` | No | None | HTTP(S) encrypted backup target. Startup uses `GET`; periodic backups use `PUT`. |
 | `FREEAPI_DB_BACKUP_TOKEN` | No | None | Optional bearer token for `FREEAPI_DB_BACKUP_URL`. |
@@ -84,14 +84,14 @@ docker compose up -d --build
 | `FREEAPI_CONFIG_PATH` | No | None | JSON config file applied idempotently after migrations on every boot. |
 | `FREEAPI_CONFIG_JSON` | No | None | Inline JSON config. Takes precedence over `FREEAPI_CONFIG_PATH`. |
 
-The `ossllmapi-data` volume stores SQLite data at `/app/server/data`. Keep the same volume and `ENCRYPTION_KEY` when upgrading, otherwise existing encrypted provider keys cannot be decrypted.
+The `llmharbor-data` volume stores SQLite data at `/app/server/data`. Keep the same volume and `ENCRYPTION_KEY` when upgrading, otherwise existing encrypted provider keys cannot be decrypted.
 
-Example `ossllmapi.config.json`:
+Example `llmharbor.config.json`:
 
 ```json
 {
   "admin": { "email": "ops@example.com", "password": "change-me-min-8-chars" },
-  "license": "premium license key from ossllmapi.co",
+  "license": "premium license key from llmharbor.co",
   "keys": [
     { "platform": "groq", "key": "gsk_...", "label": "main" }
   ],
@@ -119,7 +119,7 @@ secrets, so protect it like `ENCRYPTION_KEY`.
 Images are published to GitHub Container Registry:
 
 ```bash
-docker pull ghcr.io/tashfeenahmed/ossllmapi:latest
+docker pull ghcr.io/tashfeenahmed/llmharbor:latest
 ```
 
 The Docker workflow builds pull requests without pushing. After this repository receives the workflow on `main`, pushes to `main` and version tags publish images to GHCR automatically.

@@ -15,17 +15,17 @@ afterEach(() => {
 
 describe('safe config writes', () => {
   it('writes a fresh env file without a leading blank line', () => {
-    const rendered = renderFile({ path: '/unused', format: 'env', content: 'OSSLLMAPI_API_KEY=k\n' }, '');
-    expect(rendered).toBe('OSSLLMAPI_API_KEY=k\n');
-    expect(renderFile({ path: '/unused', format: 'env', content: 'OSSLLMAPI_API_KEY=k\n' }, rendered)).toBe(rendered);
+    const rendered = renderFile({ path: '/unused', format: 'env', content: 'LLMHarbor_API_KEY=k\n' }, '');
+    expect(rendered).toBe('LLMHarbor_API_KEY=k\n');
+    expect(renderFile({ path: '/unused', format: 'env', content: 'LLMHarbor_API_KEY=k\n' }, rendered)).toBe(rendered);
   });
 
   it('appends a new env key without leaving a blank line before it', () => {
     const merged = renderFile(
-      { path: '/unused/.env', format: 'env', content: 'OSSLLMAPI_API_KEY=k\n' },
+      { path: '/unused/.env', format: 'env', content: 'LLMHarbor_API_KEY=k\n' },
       'DEEPSEEK_API_KEY=sk-keep\n',
     );
-    expect(merged).toBe('DEEPSEEK_API_KEY=sk-keep\nOSSLLMAPI_API_KEY=k\n');
+    expect(merged).toBe('DEEPSEEK_API_KEY=sk-keep\nLLMHarbor_API_KEY=k\n');
   });
 
   it('merges keyed JSON arrays per owner instead of replacing them (ZCode)', () => {
@@ -34,32 +34,32 @@ describe('safe config writes', () => {
       config: {
         providerConfigRules: { providerRules: [
           { providerId: 'local', providerName: 'Mine' },
-          { providerId: 'ossllmapi', providerName: 'Old' },
+          { providerId: 'llmharbor', providerName: 'Old' },
         ] },
         modelConfigRules: {
-          providerModelRules: [{ providerId: 'local', modelId: 'm' }, { providerId: 'ossllmapi', modelId: 'gone' }],
-          manualProviderModelRules: [{ providerId: 'ossllmapi', modelId: 'fast' }, { providerId: 'local', modelId: 'x' }],
+          providerModelRules: [{ providerId: 'local', modelId: 'm' }, { providerId: 'llmharbor', modelId: 'gone' }],
+          manualProviderModelRules: [{ providerId: 'llmharbor', modelId: 'fast' }, { providerId: 'local', modelId: 'x' }],
         },
-        providerOrder: ['local', 'ossllmapi'],
+        providerOrder: ['local', 'llmharbor'],
       },
     }, null, 2);
     const file = {
       path: '/unused/provider_config.json',
       format: 'json' as const,
       arrays: {
-        'config.providerConfigRules.providerRules': { ownedBy: { providerId: 'ossllmapi' } },
-        'config.modelConfigRules.providerModelRules': { ownedBy: { providerId: 'ossllmapi' } },
-        'config.modelConfigRules.manualProviderModelRules': { ownedBy: { providerId: 'ossllmapi' } },
+        'config.providerConfigRules.providerRules': { ownedBy: { providerId: 'llmharbor' } },
+        'config.modelConfigRules.providerModelRules': { ownedBy: { providerId: 'llmharbor' } },
+        'config.modelConfigRules.manualProviderModelRules': { ownedBy: { providerId: 'llmharbor' } },
         'config.providerOrder': { union: true as const },
       },
       value: {
         config: {
-          providerConfigRules: { providerRules: [{ providerId: 'ossllmapi', providerName: 'OSLLMAPI' }] },
+          providerConfigRules: { providerRules: [{ providerId: 'llmharbor', providerName: 'OSLLMAPI' }] },
           modelConfigRules: {
-            providerModelRules: [{ providerId: 'ossllmapi', modelId: 'fast' }],
+            providerModelRules: [{ providerId: 'llmharbor', modelId: 'fast' }],
             manualProviderModelRules: [],
           },
-          providerOrder: ['ossllmapi'],
+          providerOrder: ['llmharbor'],
         },
       },
     };
@@ -67,20 +67,20 @@ describe('safe config writes', () => {
     const merged = parse(once).config;
     expect(merged.providerConfigRules.providerRules).toEqual([
       { providerId: 'local', providerName: 'Mine' },
-      { providerId: 'ossllmapi', providerName: 'OSLLMAPI' },
+      { providerId: 'llmharbor', providerName: 'OSLLMAPI' },
     ]);
     expect(merged.modelConfigRules.providerModelRules).toEqual([
       { providerId: 'local', modelId: 'm' },
-      { providerId: 'ossllmapi', modelId: 'fast' },
+      { providerId: 'llmharbor', modelId: 'fast' },
     ]);
     expect(merged.modelConfigRules.manualProviderModelRules).toEqual([{ providerId: 'local', modelId: 'x' }]);
-    expect(merged.providerOrder).toEqual(['local', 'ossllmapi']);
+    expect(merged.providerOrder).toEqual(['local', 'llmharbor']);
     expect(renderFile(file, once)).toBe(once);
   });
 
   it('renders a fresh Continue config idempotently', () => {
     const generated = [
-      '# ossllmapi:start',
+      '# llmharbor:start',
       'name: OSLLMAPI',
       'version: 1.0.0',
       'schema: v1',
@@ -88,7 +88,7 @@ describe('safe config writes', () => {
       '  - name: OSLLMAPI',
       '    provider: openai',
       '    model: coder',
-      '# ossllmapi:end',
+      '# llmharbor:end',
       '',
     ].join('\n');
     const first = renderFile({
@@ -102,7 +102,7 @@ describe('safe config writes', () => {
       content: generated,
     }, first);
     expect(second).toBe(first);
-    expect(first).not.toContain('ossllmapi:start');
+    expect(first).not.toContain('llmharbor:start');
     expect(first.match(/^models:$/gm)).toHaveLength(1);
   });
 
@@ -122,14 +122,14 @@ describe('safe config writes', () => {
     const rendered = renderFile({
       path: '/unused',
       format: 'json',
-      value: { provider: { ossllmapi: true } },
+      value: { provider: { llmharbor: true } },
     }, existing);
     expect(rendered).toContain('// user configuration');
     expect(rendered).toContain('// keep the chosen theme');
     expect(rendered).toContain('/* keep the unrelated provider */');
     expect(parse(rendered)).toEqual({
       theme: 'dark',
-      provider: { other: true, ossllmapi: true },
+      provider: { other: true, llmharbor: true },
     });
   });
 
@@ -148,7 +148,7 @@ describe('safe config writes', () => {
       '',
     ].join('\n');
     const generated = [
-      '# ossllmapi:start',
+      '# llmharbor:start',
       'name: OSLLMAPI',
       'version: 1.0.0',
       'schema: v1',
@@ -156,7 +156,7 @@ describe('safe config writes', () => {
       '  - name: OSLLMAPI',
       '    provider: openai',
       '    model: coder',
-      '# ossllmapi:end',
+      '# llmharbor:end',
       '',
     ].join('\n');
     const first = renderFile({
@@ -187,16 +187,16 @@ describe('safe config writes', () => {
       '  - name: Existing',
       '    provider: ollama',
       '    model: qwen',
-      '# ossllmapi:start',
+      '# llmharbor:start',
       'models:',
       '  - name: OSLLMAPI',
       '    provider: openai',
       '    model: old',
-      '# ossllmapi:end',
+      '# llmharbor:end',
       '',
     ].join('\n');
     const generated = [
-      '# ossllmapi:start',
+      '# llmharbor:start',
       'name: OSLLMAPI',
       'version: 1.0.0',
       'schema: v1',
@@ -204,7 +204,7 @@ describe('safe config writes', () => {
       '  - name: OSLLMAPI',
       '    provider: openai',
       '    model: current',
-      '# ossllmapi:end',
+      '# llmharbor:end',
       '',
     ].join('\n');
     const rendered = renderFile({
@@ -224,10 +224,10 @@ describe('safe config writes', () => {
   it('replaces generated YAML scalar keys without creating duplicates', () => {
     const existing = '# user config\nGOOSE_PROVIDER: old\nGOOSE_MODEL: old\nkeep: true\n';
     const generated = [
-      '# ossllmapi:start',
-      'GOOSE_PROVIDER: ossllmapi',
+      '# llmharbor:start',
+      'GOOSE_PROVIDER: llmharbor',
       'GOOSE_MODEL: coder',
-      '# ossllmapi:end',
+      '# llmharbor:end',
       '',
     ].join('\n');
     const first = renderFile({
@@ -259,7 +259,7 @@ describe('safe config writes', () => {
       '    anthropic:',
       '      # keep me',
       '      apiKeyEnv: ANTHROPIC_API_KEY',
-      '    ossllmapi:',
+      '    llmharbor:',
       '      baseURL: http://old:1/v1',
       '      models:',
       '        - id: stale',
@@ -276,14 +276,14 @@ describe('safe config writes', () => {
       value: {
         'llm-pi-ai': {
           providers: {
-            ossllmapi: {
+            llmharbor: {
               baseURL: 'http://localhost:3001/v1',
               models: [{ id: 'auto' }],
             },
           },
         },
         'agent-default-model': {
-          provider: 'ossllmapi',
+          provider: 'llmharbor',
           model: 'auto',
           reasoningEffort: undefined,
         },
@@ -296,7 +296,7 @@ describe('safe config writes', () => {
     expect(once).toContain('baseURL: http://localhost:3001/v1');
     expect(once).not.toContain('http://old:1/v1');
     expect(once).not.toContain('stale');
-    expect(once).toContain('provider: ossllmapi');
+    expect(once).toContain('provider: llmharbor');
     expect(once).not.toContain('reasoningEffort');
     expect(once).toContain('other: { a: 1 }');
     expect(renderFile(file, once)).toBe(once);
@@ -328,7 +328,7 @@ describe('safe config writes', () => {
       'model = "old"',
       'model_provider = "old"',
       '',
-      '[model_providers.ossllmapi]',
+      '[model_providers.llmharbor]',
       'name = "Old"',
       'base_url = "https://old.invalid/v1"',
       '',
@@ -337,14 +337,14 @@ describe('safe config writes', () => {
       '',
     ].join('\n');
     const generated = [
-      '# ossllmapi:start',
+      '# llmharbor:start',
       'model = "coder"',
-      'model_provider = "ossllmapi"',
+      'model_provider = "llmharbor"',
       '',
-      '[model_providers.ossllmapi]',
+      '[model_providers.llmharbor]',
       'name = "OSLLMAPI"',
       'base_url = "http://localhost:3000/v1"',
-      '# ossllmapi:end',
+      '# llmharbor:end',
       '',
     ].join('\n');
     const first = renderFile({
@@ -361,7 +361,7 @@ describe('safe config writes', () => {
     expect(first).toContain('# personal config');
     expect(first).toContain('[mcp_servers.personal]\ncommand = "keep-me"');
     expect(first.match(/^model =/gm)).toHaveLength(1);
-    expect(first.match(/^\[model_providers\.ossllmapi\]$/gm)).toHaveLength(1);
+    expect(first.match(/^\[model_providers\.llmharbor\]$/gm)).toHaveLength(1);
   });
 
   it('keeps generated root TOML keys in the root region when the file ends in a table', () => {
@@ -375,14 +375,14 @@ describe('safe config writes', () => {
       '',
     ].join('\n');
     const generated = [
-      '# ossllmapi:start',
+      '# llmharbor:start',
       'model = "coder"',
-      'model_provider = "ossllmapi"',
+      'model_provider = "llmharbor"',
       '',
-      '[model_providers.ossllmapi]',
+      '[model_providers.llmharbor]',
       'name = "OSLLMAPI"',
       'base_url = "http://localhost:3000/v1"',
-      '# ossllmapi:end',
+      '# llmharbor:end',
       '',
     ].join('\n');
     const first = renderFile({
@@ -402,7 +402,7 @@ describe('safe config writes', () => {
     const lines = first.split('\n');
     const firstHeader = lines.findIndex(line => /^\[[^\]]+\]$/.test(line));
     const modelLine = lines.findIndex(line => line === 'model = "coder"');
-    const providerLine = lines.findIndex(line => line === 'model_provider = "ossllmapi"');
+    const providerLine = lines.findIndex(line => line === 'model_provider = "llmharbor"');
     expect(firstHeader).toBeGreaterThan(-1);
     expect(modelLine).toBeGreaterThan(-1);
     expect(modelLine).toBeLessThan(firstHeader);
@@ -410,7 +410,7 @@ describe('safe config writes', () => {
     expect(providerLine).toBeLessThan(firstHeader);
     expect(first).toContain('sandbox_mode = "workspace-write"');
     expect(first).toContain('[mcp_servers.personal]\ncommand = "keep-me"\nargs = ["--serve"]');
-    expect(first).toContain('[model_providers.ossllmapi]');
+    expect(first).toContain('[model_providers.llmharbor]');
   });
 
   it('only strips root TOML keys that the generated root region sets', () => {
@@ -423,12 +423,12 @@ describe('safe config writes', () => {
       '',
     ].join('\n');
     const generated = [
-      '# ossllmapi:start',
+      '# llmharbor:start',
       'model = "coder"',
       '',
-      '[model_providers.ossllmapi]',
+      '[model_providers.llmharbor]',
       'name = "OSLLMAPI"',
-      '# ossllmapi:end',
+      '# llmharbor:end',
       '',
     ].join('\n');
     const first = renderFile({
@@ -444,7 +444,7 @@ describe('safe config writes', () => {
   });
 
   it('does not write any file when a later file in the batch fails to merge', () => {
-    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-cli-'));
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-cli-'));
     temporary.push(directory);
     const good = path.join(directory, 'good.json');
     const bad = path.join(directory, 'bad.json');
@@ -461,7 +461,7 @@ describe('safe config writes', () => {
     // A user with a DeepSeek provider already configured runs setup-atomcode:
     // `default_provider` must land in the root region (a key appended after
     // `[providers.deepseek]` would become that table's key), the deepseek
-    // table must survive, and a stale `[providers.ossllmapi]` is replaced.
+    // table must survive, and a stale `[providers.llmharbor]` is replaced.
     const existing = [
       'default_provider = "deepseek"',
       'auto_update = true',
@@ -471,29 +471,29 @@ describe('safe config writes', () => {
       'api_key = "sk-keep"',
       'model = "deepseek-chat"',
       '',
-      '[providers.ossllmapi]',
+      '[providers.llmharbor]',
       'type = "openai"',
       'model = "stale-model"',
       '',
     ].join('\n');
     const generated = [
-      'default_provider = "ossllmapi"',
+      'default_provider = "llmharbor"',
       '',
-      '[providers.ossllmapi]',
+      '[providers.llmharbor]',
       'type = "openai"',
       'base_url = "http://localhost:3000/v1"',
-      'api_key = "ossllmapi-test-key"',
+      'api_key = "llmharbor-test-key"',
       'model = "fast-coder"',
       'context_window = 131072',
     ].join('\n');
     const merged = renderFile({ path: '/unused', format: 'toml', content: generated }, existing);
     const lines = merged.split('\n');
     const firstTable = lines.findIndex(line => line.startsWith('['));
-    expect(lines.slice(0, firstTable)).toContain('default_provider = "ossllmapi"');
+    expect(lines.slice(0, firstTable)).toContain('default_provider = "llmharbor"');
     expect(lines.slice(0, firstTable)).toContain('auto_update = true');
     expect(merged.match(/^default_provider =/gm)).toHaveLength(1);
     expect(merged).toContain('[providers.deepseek]\ntype = "openai"\napi_key = "sk-keep"');
-    expect(merged.match(/^\[providers\.ossllmapi\]$/gm)).toHaveLength(1);
+    expect(merged.match(/^\[providers\.llmharbor\]$/gm)).toHaveLength(1);
     expect(merged).not.toContain('stale-model');
     expect(merged).toContain('context_window = 131072');
     expect(renderFile({ path: '/unused', format: 'toml', content: generated }, merged)).toBe(merged);
@@ -501,7 +501,7 @@ describe('safe config writes', () => {
 
   it('merges a Reasonix config: replaces only the [[providers]] entry with the same name', () => {
     // Reasonix keeps every endpoint as a `[[providers]]` array entry. A rerun
-    // must swap the stale ossllmapi entry (and its sub-table) for the new one
+    // must swap the stale llmharbor entry (and its sub-table) for the new one
     // and leave the deepseek entry, the [desktop] table and root keys alone.
     const existing = [
       'config_version = 1',
@@ -516,22 +516,22 @@ describe('safe config writes', () => {
       'api_key_env = "DEEPSEEK_API_KEY"',
       '',
       '[[providers]]',
-      "name = 'ossllmapi'",
+      "name = 'llmharbor'",
       'base_url = "http://stale:9/v1"',
       '',
       '[providers.model_overrides]',
       'stale = { context_window = 1 }',
       '',
       '[[plugins]]',
-      'name = "ossllmapi"',
+      'name = "llmharbor"',
       'command = "keep-me"',
       '',
     ].join('\n');
     const generated = [
-      'default_model = "ossllmapi/auto"',
+      'default_model = "llmharbor/auto"',
       '',
       '[[providers]]',
-      'name = "ossllmapi"',
+      'name = "llmharbor"',
       'kind = "openai"',
       'base_url = "http://localhost:3001/v1"',
       'models = ["auto"]',
@@ -539,12 +539,12 @@ describe('safe config writes', () => {
     const merged = renderFile({ path: '/unused', format: 'toml', content: generated }, existing);
     const lines = merged.split('\n');
     const firstTable = lines.findIndex(line => line.startsWith('['));
-    expect(lines.slice(0, firstTable)).toContain('default_model = "ossllmapi/auto"');
+    expect(lines.slice(0, firstTable)).toContain('default_model = "llmharbor/auto"');
     expect(lines.slice(0, firstTable)).toContain('config_version = 1');
     expect(merged.match(/^default_model =/gm)).toHaveLength(1);
     expect(merged).toContain('[desktop]\nprovider_access = ["deepseek"]');
     expect(merged).toContain('name        = "deepseek"\nkind        = "openai"');
-    expect(merged).toContain('[[plugins]]\nname = "ossllmapi"\ncommand = "keep-me"');
+    expect(merged).toContain('[[plugins]]\nname = "llmharbor"\ncommand = "keep-me"');
     expect(merged.match(/^\[\[providers\]\]$/gm)).toHaveLength(2);
     expect(merged).not.toContain('stale');
     expect(merged).toContain('base_url = "http://localhost:3001/v1"');
@@ -552,14 +552,14 @@ describe('safe config writes', () => {
   });
 
   it('creates a timestamped backup before replacing a real file', () => {
-    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-cli-'));
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-cli-'));
     temporary.push(directory);
     const target = path.join(directory, 'config.toml');
     fs.writeFileSync(target, 'user_setting = true\n');
     const result = applyGeneratedFile({
       path: target,
       format: 'toml',
-      content: '# ossllmapi:start\nmodel = "auto"\n# ossllmapi:end\n',
+      content: '# llmharbor:start\nmodel = "auto"\n# llmharbor:end\n',
     }, false);
     expect(result.backupPath).toBeTruthy();
     expect(fs.readFileSync(result.backupPath!, 'utf8')).toBe('user_setting = true\n');
@@ -569,19 +569,19 @@ describe('safe config writes', () => {
 
   it('merges Cordis profile overlays by id and keeps other providers and comments', () => {
     const file = { format: 'yaml-entries' as const, path: 'cordis.patch.yml',
-      value: { 'llm-pi-ai': { providers: { ossllmapi: { apiKeyEnv: 'OSSLLMAPI_API_KEY' } } } } };
+      value: { 'llm-pi-ai': { providers: { llmharbor: { apiKeyEnv: 'LLMHarbor_API_KEY' } } } } };
     const existing = '# user overlay\n- id: llm-pi-ai\n  config:\n    providers:\n      existing: {apiKeyEnv: KEEP}\n- id: hmr\n  disabled: true\n';
     const rendered = renderFile(file, existing);
     expect(rendered).toContain('# user overlay');
     expect(rendered).toContain('KEEP');
     expect(rendered).toContain('disabled: true');
-    expect(rendered).toContain('OSSLLMAPI_API_KEY');
+    expect(rendered).toContain('LLMHarbor_API_KEY');
     expect(renderFile(file, rendered)).toBe(rendered);
     expect(() => renderFile(file, 'other: mapping')).toThrow('Expected a YAML patch sequence');
   });
 
   it('restores earlier files if a later replacement fails, and a retry succeeds', () => {
-    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-cli-'));
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-cli-'));
     temporary.push(directory);
     const files = ['existing', 'new', 'locked'].map(name => ({
       path: path.join(directory, name), format: 'env' as const, sensitive: true, content: 'KEY=new\n',
@@ -603,7 +603,7 @@ describe('safe config writes', () => {
   });
 
   it('does not write in dry-run mode', () => {
-    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-cli-'));
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-cli-'));
     temporary.push(directory);
     const target = path.join(directory, 'new.json');
     const result = applyGeneratedFile({

@@ -1,4 +1,4 @@
-import type { Platform } from '@ossllmapi/shared/types.js';
+import type { Platform } from '@llmharbor/shared/types.js';
 import type { BaseProvider } from './base.js';
 import { GoogleProvider } from './google.js';
 import { OpenAICompatProvider } from './openai-compat.js';

@@ -1,4 +1,4 @@
-package io.github.zelvior.ossllmapi.mobile;
+package io.github.zelvior.llmharbor.mobile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import java.nio.file.Files;
 /** Shared gateway state, read only from our private filesystem socket. */
 final class Gateway {
     /** Notification / tile intent action that opens the browser dashboard. */
-    static final String ACTION_OPEN = "io.github.zelvior.ossllmapi.mobile.OPEN_DASHBOARD";
+    static final String ACTION_OPEN = "io.github.zelvior.llmharbor.mobile.OPEN_DASHBOARD";
 
     private Gateway() {}
 

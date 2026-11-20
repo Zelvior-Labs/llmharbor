@@ -18,7 +18,7 @@ function restoreEnv() {
 
 describe('initDb encryption bootstrapping', () => {
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ossllmapi-db-'));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'llmharbor-db-'));
     process.env.ENCRYPTION_KEY = 'c'.repeat(64);
   });
 

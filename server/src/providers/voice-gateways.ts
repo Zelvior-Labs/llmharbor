@@ -1,4 +1,4 @@
-import type { ChatCompletionChunk, ChatCompletionResponse } from '@ossllmapi/shared/types.js';
+import type { ChatCompletionChunk, ChatCompletionResponse } from '@llmharbor/shared/types.js';
 import { BaseProvider, type KeyValidationResult } from './base.js';
 
 /** Native speech APIs, not OpenAI chat endpoints. Their model/voice lists are

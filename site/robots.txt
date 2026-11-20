@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ossllmapi.vercel.app/sitemap.xml
+Sitemap: https://llmharbor.vercel.app/sitemap.xml

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://ossllmapi.vercel.app/</loc></url>
-<url><loc>https://ossllmapi.vercel.app/features.html</loc></url>
-<url><loc>https://ossllmapi.vercel.app/providers.html</loc></url>
-<url><loc>https://ossllmapi.vercel.app/how.html</loc></url>
-<url><loc>https://ossllmapi.vercel.app/download.html</loc></url>
-<url><loc>https://ossllmapi.vercel.app/dashboard.html</loc></url>
-<url><loc>https://ossllmapi.vercel.app/links.html</loc></url>
-<url><loc>https://ossllmapi.vercel.app/privacy.html</loc></url>
-<url><loc>https://ossllmapi.vercel.app/terms.html</loc></url>
+<url><loc>https://llmharbor.vercel.app/</loc></url>
+<url><loc>https://llmharbor.vercel.app/features.html</loc></url>
+<url><loc>https://llmharbor.vercel.app/providers.html</loc></url>
+<url><loc>https://llmharbor.vercel.app/how.html</loc></url>
+<url><loc>https://llmharbor.vercel.app/download.html</loc></url>
+<url><loc>https://llmharbor.vercel.app/dashboard.html</loc></url>
+<url><loc>https://llmharbor.vercel.app/links.html</loc></url>
+<url><loc>https://llmharbor.vercel.app/privacy.html</loc></url>
+<url><loc>https://llmharbor.vercel.app/terms.html</loc></url>
 </urlset>

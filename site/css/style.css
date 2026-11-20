@@ -1,4 +1,4 @@
-/* OSSLLMAPI — carbon-fibre, grid-first. One file, no framework. Every layout is a CSS grid; nothing is absolutely positioned except decorative marks. */
+/* LLMHarbor — carbon-fibre, grid-first. One file, no framework. Every layout is a CSS grid; nothing is absolutely positioned except decorative marks. */
 :root{--bg:#0b0d10;--plate:#1a1e24;--plate2:#232831;--weave:#272c35;--ink:#e9ebee;--mute:#98a1ae;--steel:#9aa6b6;--hot:#ff5b1f;--hot-ink:#160803;--edge:rgb(255 255 255/.1);--edge2:rgb(255 255 255/.24);--gap:14px;--w:1180px;
 --display:"Saira Semi Condensed","Arial Narrow",system-ui,sans-serif;--text:"Host Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
 *{box-sizing:border-box;margin:0}

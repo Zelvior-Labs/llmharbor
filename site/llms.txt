@@ -1,6 +1,6 @@
-# OSSLLMAPI
+# LLMHarbor
 
-> OSSLLMAPI is a modified version of freellmapi by Zelvior Labs: one OpenAI-compatible `/v1` API in front of the free tiers of 87 LLM providers and 1,313 free model endpoints — about 10.1 billion free tokens a month — with encrypted key storage, per-key usage tracking, automatic failover, and chat, embedding, image and audio endpoints. Free and open source (MIT).
+> LLMHarbor is a modified version of freellmapi by Zelvior Labs: one OpenAI-compatible `/v1` API in front of the free tiers of 87 LLM providers and 1,313 free model endpoints — about 10.1 billion free tokens a month — with encrypted key storage, per-key usage tracking, automatic failover, and chat, embedding, image and audio endpoints. Free and open source (MIT).
 
 ## What it is
 
@@ -9,29 +9,29 @@
 - **Router intelligence**: every request is routed to the best available model from your fallback chain; when a provider is rate-limited or over its free-tier cap, the next provider takes the request automatically.
 - **Encrypted keys**: provider keys are encrypted at rest; clients only ever see one unified API key minted in the dashboard.
 - **Per-key budgets**: token usage is tracked per key against every provider's free-tier cap.
-- **Self-updating catalog**: the router updates its model catalog from a signed feed. OSSLLMAPI is free and has no paid plan.
+- **Self-updating catalog**: the router updates its model catalog from a signed feed. LLMHarbor is free and has no paid plan.
 
 ## Platforms
 
-Desktop apps for Windows, macOS and Linux; Android APK; iOS IPA; Docker image (ghcr.io/ossllmapi); CLI on npm. Downloads: https://github.com/zelvior/ossllmapi/releases/latest
+Desktop apps for Windows, macOS and Linux; Android APK; iOS IPA; Docker image (ghcr.io/llmharbor); CLI on npm. Downloads: https://github.com/zelvior/llmharbor/releases/latest
 
 ## Install
 
-Point any OpenAI-compatible client at `http://localhost:3001/v1` with the unified key from the dashboard. Documentation: https://github.com/zelvior/ossllmapi/blob/main/docs/en/README.md
+Point any OpenAI-compatible client at `http://localhost:3001/v1` with the unified key from the dashboard. Documentation: https://github.com/zelvior/llmharbor/blob/main/docs/en/README.md
 
 ## Pricing
 
-Free (MIT, self-hosted). OSSLLMAPI has no paid plan. The paid plan at https://freellmapi.co belongs to Tashfeen Ahmed, author of the original freellmapi.
+Free (MIT, self-hosted). LLMHarbor has no paid plan. The paid plan at https://freellmapi.co belongs to Tashfeen Ahmed, author of the original freellmapi.
 
 ## Details
 
-- Website: https://ossllmapi.vercel.app
-- Source: https://github.com/zelvior/ossllmapi
+- Website: https://llmharbor.vercel.app
+- Source: https://github.com/zelvior/llmharbor
 - License: MIT — a modified version of tashfeenahmed/freellmapi, made by Zelvior Labs
 - Maintainer: Zelvior Labs (https://zelviorlabs.vercel.app)
 
 ## Pages
 
-- [Home](https://ossllmapi.vercel.app/)
-- [Privacy](https://ossllmapi.vercel.app/privacy.html)
-- [Terms](https://ossllmapi.vercel.app/terms.html)
+- [Home](https://llmharbor.vercel.app/)
+- [Privacy](https://llmharbor.vercel.app/privacy.html)
+- [Terms](https://llmharbor.vercel.app/terms.html)

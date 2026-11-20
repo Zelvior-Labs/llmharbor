@@ -5,9 +5,12 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const [major, minor] = process.versions.node.split('.').map(Number);
-if (!(major === 22 && minor >= 13 || major === 24)) {
-  throw new Error('OSSLLMAPI requires Node.js 22.13+ (22.x) or 24.x with node:sqlite.');
+// No Node version gate: this portable build bundles a pure-WebAssembly SQLite
+// (node-sqlite3-wasm), so it runs on any Node.js 18+ — no node:sqlite, no native
+// addons. Warn (but do not block) on anything older than the bundle's target.
+const [major] = process.versions.node.split('.').map(Number);
+if (major < 18) {
+  console.warn(`OSSLLMAPI is built for Node.js 18+ but this is v${process.versions.node}; some features may not work.`);
 }
 process.umask(0o077);
 const data = join(process.env.XDG_DATA_HOME || join(homedir(), '.local/share'), 'ossllmapi');

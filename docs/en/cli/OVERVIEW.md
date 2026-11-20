@@ -4,7 +4,7 @@
 
 ## Scope
 
-This domain documents the OSLLMAPI setup CLI (`cli/`) — the `npx llmharbor` generators that wire coding agents to the local gateway in one command. Each generator (`setup-claude`, `setup-codex`, …) fetches the live catalog, backs up existing config, never clobbers unrelated keys, and records `tools.json` metadata for `llmharbor launch` / `launch-codex` zero-persistence launchers and `llmharbor doctor`.
+This domain documents the LLMHarbor setup CLI (`cli/`) — the generators that wire coding agents to the local gateway in one command. The CLI is not published to npm; run it from a checkout with `npm run cli -- <command>` (see [`scripts/cli.mjs`](../../../scripts/cli.mjs), which builds `cli/dist` on demand and runs in the directory npm was invoked from). Each generator (`setup-claude`, `setup-codex`, …) fetches the live catalog, backs up existing config, never clobbers unrelated keys, and records `tools.json` metadata for `llmharbor launch` / `launch-codex` zero-persistence launchers and `llmharbor doctor`.
 
 Authoritative sources: [`cli/src/tools.ts`](../../../cli/src/tools.ts) (all `Xxx()` generator functions), [`cli/tools.json`](../../../cli/tools.json) (registry), [`cli/src/config-files.ts`](../../../cli/src/config-files.ts) (merge + `0600` + timestamped backup), [`cli/README.md`](../../../cli/README.md), [`client/src/data/agent-tools.json`](../../../client/src/data/agent-tools.json).
 

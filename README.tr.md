@@ -132,7 +132,7 @@ Model bazında hız sınırları, bağlam pencereleri ve ücretsiz token bütçe
 Çoğu ajan, canlı kataloğunuzu okuyup mevcut yapılandırmayı yedekleyen ve yeni ayarları onunla birleştiren tek bir komutla yapılandırılabilir:
 
 ```bash
-npx llmharbor setup-claude --url http://localhost:3001 --api-key <unified-key>
+npm run cli -- setup-claude --url http://localhost:3001 --api-key <unified-key>
 ```
 
 **[Desteklenen tüm ajanlar ve kurulum komutları →](docs/en/clients/02-supported-agents.md)** · [Araçlara özel ayarlar, MCP sunucusu ve URL tokenları →](docs/en/clients/01-agent-clients.md)
@@ -205,11 +205,11 @@ macOS 12 Monterey ve sonrası için **arm64 (Apple Silicon)** veya **x64 (Intel)
 
 ## OpenAI uyumlu istemcilerle kullanım
 
-OpenAI uyumlu bir temel URL’ye bağlanabilen tüm istemciler çalışır: adresi `http://localhost:3001/v1` olarak ayarlayın ve paneldeki birleşik anahtarı kullanın. Tüm yapılandırma üreticileri `--dry-run` seçeneğini destekler. `npx llmharbor launch` (Claude Code) ve `launch-codex` (Codex), kimlik bilgilerini yapılandırma dosyalarına hiç yazmaz. Yönlendirici, ajanlarınızın oturum sırasında inceleyebileceği bir MCP sunucusu olarak da çalışır.
+OpenAI uyumlu bir temel URL’ye bağlanabilen tüm istemciler çalışır: adresi `http://localhost:3001/v1` olarak ayarlayın ve paneldeki birleşik anahtarı kullanın. Tüm yapılandırma üreticileri `--dry-run` seçeneğini destekler. `npm run cli -- launch` (Claude Code) ve `launch-codex` (Codex), kimlik bilgilerini yapılandırma dosyalarına hiç yazmaz. Yönlendirici, ajanlarınızın oturum sırasında inceleyebileceği bir MCP sunucusu olarak da çalışır.
 
 **ChatGPT**, özel bir Secure MCP Tunnel üzerinden aynı yerel yönlendiriciye bağlanır. `ask_llmharbor` MCP aracı, ChatGPT’nin istediği görevi `/v1/chat/completions` üzerinden yönlendirir; yanıtı kullanılan model, yedek modele geçiş, önbellek, yürütme ve token üst verileriyle döndürür. Temel URL ve bearer kimlik doğrulaması tünel istemcisinin yapılandırmasında tutulur. Varsayılan model `MCP_INFERENCE_DEFAULT_MODEL` ile ayarlanır (belirtilmezse `auto`). Anahtarları Git’e veya MCP URL’sine eklemeyin. **[ChatGPT kurulumu →](docs/en/clients/01-agent-clients.md#chatgpt-private-secure-mcp-tunnel)**
 
-Sağlayıcı anahtarlarını panel oturum tokenıyla (`LLMHarbor_DASHBOARD_TOKEN` veya `--token`) terminalden de yönetebilirsiniz: `npx llmharbor keys add|list|remove|test <platform>`. Buradaki `keys test`, kayıtlı anahtarları yeniden sınar. Bkz. [CLI rehberi](cli/README.md#provider-keys).
+Sağlayıcı anahtarlarını panel oturum tokenıyla (`LLMHarbor_DASHBOARD_TOKEN` veya `--token`) terminalden de yönetebilirsiniz: `npm run cli -- keys add|list|remove|test <platform>`. Buradaki `keys test`, kayıtlı anahtarları yeniden sınar. Bkz. [CLI rehberi](cli/README.md#provider-keys).
 
 OSLLMAPI, yerelde çalışmayı esas alan ve tek kullanıcı için tasarlanmış bir uygulamadır. Sağlayıcı anahtarlarınız SQLite veritabanınızda şifreli saklanır; istekler makinenizden etkinleştirdiğiniz sağlayıcılara gider.
 

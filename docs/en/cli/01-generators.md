@@ -4,14 +4,16 @@
 
 ## Usage
 
+Run these from your LLMHarbor checkout (after `npm install`). The CLI is not on npm, so `npx llmharbor` does not work. From another directory, use `npm --prefix /path/to/llmharbor run cli -- <command>`.
+
 ```bash
-npx llmharbor setup-claude        # wire Claude Code
-npx llmharbor setup-codex         # wire Codex CLI
-npx llmharbor setup-dsh           # wire DeepSeek Harness
-npx llmharbor setup-mimo          # wire MiMo Code
-npx llmharbor setup-atomcode      # wire AtomCode
-npx llmharbor --dry-run setup-claude  # preview without writing
-npx llmharbor setup-claude --model gpt-4o  # pin a model
+npm run cli -- setup-claude        # wire Claude Code
+npm run cli -- setup-codex         # wire Codex CLI
+npm run cli -- setup-dsh           # wire DeepSeek Harness
+npm run cli -- setup-mimo          # wire MiMo Code
+npm run cli -- setup-atomcode      # wire AtomCode
+npm run cli -- --dry-run setup-claude  # preview without writing
+npm run cli -- setup-claude --model gpt-4o  # pin a model
 ```
 
 Every generator (`cli/src/tools.ts:52-622`) fetches the live catalog, resolves `--model` against the unfiltered catalog (`c942352`), backs up existing config with a timestamped copy, merges without clobbering unrelated keys, and writes with `0600`.
@@ -40,8 +42,8 @@ Every generator (`cli/src/tools.ts:52-622`) fetches the live catalog, resolves `
 ## Zero-persistence launchers
 
 ```bash
-npx llmharbor launch            # injects LLMHarbor_API_KEY + model into `claude`
-npx llmharbor launch-codex      # injects into `codex --profile NAME`
+npm run cli -- launch            # injects LLMHarbor_API_KEY + model into `claude`
+npm run cli -- launch-codex      # injects into `codex --profile NAME`
 ```
 
 These do not write config files; they spawn the child process with `LLMHarbor_API_KEY`/`LLMHarbor_MODEL` in env only. Useful for ephemeral or shared machines.
@@ -49,7 +51,7 @@ These do not write config files; they spawn the child process with `LLMHarbor_AP
 ## `llmharbor doctor`
 
 ```bash
-npx llmharbor doctor
+npm run cli -- doctor
 ```
 
 Proves a client's requests reach this gateway (checks routed `Authorization` header, catalog, live probe).

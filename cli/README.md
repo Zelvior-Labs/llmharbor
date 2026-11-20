@@ -1,15 +1,26 @@
 # llmharbor
 
-Point your coding agent at a [OSLLMAPI](https://github.com/tashfeenahmed/llmharbor)
+Point your coding agent at an [LLMHarbor](https://github.com/Zelvior-Labs/llmharbor)
 gateway in one command. The generators read the models your server is actually
 serving and write the config file each tool expects.
 
 ```bash
-npx llmharbor setup-claude --url http://localhost:3001 --api-key <your-key>
+npm run cli -- setup-claude --url http://localhost:3001 --api-key <your-key>
 ```
 
-No install step, no account. The unified API key comes from your OSLLMAPI
-dashboard (or the tray popover in the desktop app).
+Run it from your LLMHarbor checkout after `npm install`. The CLI isn't
+published to npm, so there is no `npx llmharbor`; `npm run cli` builds it on
+first use. The unified API key comes from your LLMHarbor dashboard (or the
+tray popover in the desktop app).
+
+`launch` and `doctor` care which directory you run them in (`launch` starts the
+agent there; `doctor` reads that project's `.claude/` settings). To run them
+from another project, point npm at the checkout:
+
+```bash
+cd ~/my-project
+npm --prefix ~/llmharbor run cli -- launch
+```
 
 ## Commands
 
@@ -66,12 +77,12 @@ The CLI does not log in or persist the dashboard token.
 export LLMHarbor_URL=http://localhost:3001
 export LLMHarbor_DASHBOARD_TOKEN='<dashboard-session-token>'
 
-npx llmharbor keys add groq                 # hidden provider-key prompt
-npx llmharbor keys add groq --key '<key>'   # non-interactive alternative
-npx llmharbor keys list
-npx llmharbor keys test groq                # check every stored Groq key
-npx llmharbor keys test groq --id 7         # check one key
-npx llmharbor keys remove groq --id 7
+npm run cli -- keys add groq                 # hidden provider-key prompt
+npm run cli -- keys add groq --key '<key>'   # non-interactive alternative
+npm run cli -- keys list
+npm run cli -- keys test groq                # check every stored Groq key
+npm run cli -- keys test groq --id 7         # check one key
+npm run cli -- keys remove groq --id 7
 ```
 
 `keys list` prints each key's ID, platform, enabled chat model count,

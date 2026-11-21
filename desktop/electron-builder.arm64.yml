@@ -1,0 +1,9 @@
+# Linux arm64 desktop build. Pass `--linux AppImage tar.xz deb rpm --arm64`
+# explicitly: electron-builder merges target lists from parent configs, which
+# would otherwise also select the base x64 targets. electron-updater on arm64
+# Linux reads latest-linux-arm64.yml, which electron-builder names by itself.
+extends: ./electron-builder.yml
+directories:
+  output: dist-electron/arm64
+linux:
+  artifactName: "${productName}-${version}-linux-arm64.${ext}"

@@ -10,9 +10,9 @@ Termux, root or a PC. The full guide, including signing and building, is
 
 ## Install
 
-1. Download an APK from the
-   [Android releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=android). They are
-   published as pre-releases under `android-v*` tags. Pick the ABI that matches your device:
+1. Download an APK (`LLMHarbor-<version>-android-<abi>.apk`) from the
+   [latest release](https://github.com/Zelvior-Labs/llmharbor/releases/latest). Every `v*` release
+   carries all three. Older previews are under `android-v*` tags. Pick the ABI that matches your device:
    - `arm64-v8a`: most current phones.
    - `armeabi-v7a`: 32-bit ARM phones.
    - `x86_64`: emulators and x86 devices.
@@ -55,7 +55,7 @@ be started manually (`workflow_dispatch`) or called by another workflow, never b
 confirms the setup-code prompt). If you exempt the app from an OEM battery manager, record that,
 because users on the same phone will need the same setting.
 
-**Run.** Use the run id of a finished `Android standalone preview` workflow:
+**Run.** Use the run id of a finished `Release` workflow run (its `android-apks` artifact):
 
 ```sh
 gh workflow run android-device.yml -f run_id=<run_id> -f abi=arm64-v8a -f note="Android Go 2 GB"

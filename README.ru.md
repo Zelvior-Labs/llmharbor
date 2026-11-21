@@ -72,10 +72,10 @@ LLMHarbor — модифицированная версия [freellmapi](https:/
 
 | Платформа | Загрузка | Руководство |
 | --- | --- | --- |
-| Windows 10/11, macOS 12+, Linux x64 | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases) (`v*`) | [Desktop](docs/en/desktop.md) |
-| Windows 7 SP1 | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=win7) (`win7-v*`, пререлиз) | [desktop/win7](desktop/win7/README.md) |
-| 32-битный Intel Linux | `-linux-i686-server.tar.gz` в релизах `v*` | [desktop/linux-browser](desktop/linux-browser/README.md) |
-| Android 8.0+ | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=android) (`android-v*`, пререлиз) | [Android](docs/en/android.md) |
+| Windows 10/11, macOS 12+, Linux x64/arm64 | [Последний релиз](https://github.com/Zelvior-Labs/llmharbor/releases/latest) (`v*`) | [Desktop](docs/en/desktop.md) |
+| Windows 7 / 8 / 8.1 | установщик или портативный ZIP `-windows-legacy-*` в [релизах `v*`](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [desktop/win7](desktop/win7/README.md) |
+| Linux Legacy (x86/x64, Node.js 18+) | `-linux-legacy-*` .deb, AppImage или портативный архив в [релизах `v*`](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [desktop/linux-browser](desktop/linux-browser/README.md) |
+| Android 8.0+ | `-android-*.apk` в [релизах `v*`](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [Android](docs/en/android.md) |
 | Docker | Сборка из этого репозитория или `ghcr.io/zelvior-labs/llmharbor` | [Docker](docs/en/docker.md) |
 | Node.js (исходный код) | `git clone` | [Install](docs/en/install.md) |
 

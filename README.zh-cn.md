@@ -58,10 +58,10 @@ LLMHarbor 是 Tashfeen Ahmed 的 [freellmapi](https://github.com/tashfeenahmed/f
 
 | 平台 | 下载 | 指南 |
 | --- | --- | --- |
-| Windows 10/11、macOS 12+、Linux x64 | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases)（`v*`） | [桌面版](docs/zh-cn/desktop.md) |
-| Windows 7 SP1 | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=win7)（`win7-v*`，预发布） | [desktop/win7](desktop/win7/README.md)（英文） |
-| 32 位 Intel Linux | `v*` 版本中的 `-linux-i686-server.tar.gz` | [desktop/linux-browser](desktop/linux-browser/README.md)（英文） |
-| Android 8.0+ | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=android)（`android-v*`，预发布） | [Android](docs/zh-cn/android.md) |
+| Windows 10/11、macOS 12+、Linux x64/arm64 | [最新版本](https://github.com/Zelvior-Labs/llmharbor/releases/latest)（`v*`） | [桌面版](docs/zh-cn/desktop.md) |
+| Windows 7 / 8 / 8.1 | [`v*` 版本](https://github.com/Zelvior-Labs/llmharbor/releases/latest)中的 `-windows-legacy-*` 安装程序或便携 ZIP | [desktop/win7](desktop/win7/README.md)（英文） |
+| Linux Legacy（x86/x64，Node.js 18+） | [`v*` 版本](https://github.com/Zelvior-Labs/llmharbor/releases/latest)中的 `-linux-legacy-*` .deb、AppImage 或便携包 | [desktop/linux-browser](desktop/linux-browser/README.md)（英文） |
+| Android 8.0+ | [`v*` 版本](https://github.com/Zelvior-Labs/llmharbor/releases/latest)中的 `-android-*.apk` | [Android](docs/zh-cn/android.md) |
 | Docker | 从本仓库构建，或使用 `ghcr.io/zelvior-labs/llmharbor` | [Docker](docs/zh-cn/docker.md) |
 | Node.js（源码） | `git clone` | [安装](docs/zh-cn/install.md) |
 

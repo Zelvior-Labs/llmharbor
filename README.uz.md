@@ -72,10 +72,10 @@ Panelning lokal yig'ilmasidan olingan; so'rovlar lokal OpenAI-mos test serveriga
 
 | Platforma | Yuklab olish | Qo'llanma |
 | --- | --- | --- |
-| Windows 10/11, macOS 12+, Linux x64 | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases) (`v*`) | [Desktop](docs/en/desktop.md) |
-| Windows 7 SP1 | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=win7) (`win7-v*`, dastlabki reliz) | [desktop/win7](desktop/win7/README.md) |
-| 32 bitli Intel Linux | `v*` relizlaridagi `-linux-i686-server.tar.gz` | [desktop/linux-browser](desktop/linux-browser/README.md) |
-| Android 8.0+ | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=android) (`android-v*`, dastlabki reliz) | [Android](docs/en/android.md) |
+| Windows 10/11, macOS 12+, Linux x64/arm64 | [Oxirgi reliz](https://github.com/Zelvior-Labs/llmharbor/releases/latest) (`v*`) | [Desktop](docs/en/desktop.md) |
+| Windows 7 / 8 / 8.1 | [`v*` relizlaridagi](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-windows-legacy-*` o'rnatuvchi yoki ko'chma ZIP | [desktop/win7](desktop/win7/README.md) |
+| Linux Legacy (x86/x64, Node.js 18+) | [`v*` relizlaridagi](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-linux-legacy-*` .deb, AppImage yoki ko'chma arxiv | [desktop/linux-browser](desktop/linux-browser/README.md) |
+| Android 8.0+ | [`v*` relizlaridagi](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-android-*.apk` | [Android](docs/en/android.md) |
 | Docker | Ushbu repozitoriydan yig'ing yoki `ghcr.io/zelvior-labs/llmharbor` | [Docker](docs/en/docker.md) |
 | Node.js (manba kod) | `git clone` | [Install](docs/en/install.md) |
 

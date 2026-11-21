@@ -13,7 +13,7 @@ opens in your phone's browser so uploads, downloads and the clipboard work norma
 Android refuses an APK whose CPUs do not match the device, so try `arm64-v8a` first on a modern
 phone and `armeabi-v7a` on an older or low-RAM one.
 
-1. Download the APK from the [Android releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=android).
+1. Download the APK (`LLMHarbor-<version>-android-<abi>.apk`) from the [latest release](https://github.com/Zelvior-Labs/llmharbor/releases/latest).
    Tap it, allow **Install unknown apps** for that browser or file manager if prompted, then install.
    You can turn that permission off again afterward.
 2. Open **LLMHarbor → Start gateway**. Wait for **Gateway running**, then tap **Show setup/reset code**
@@ -43,7 +43,7 @@ phone and `armeabi-v7a` on an older or low-RAM one.
 - **Background options, both opt-in.** Start the gateway when the phone boots, and let Android
   restart it after memory pressure. A "battery optimization" button opens the system exemption page
   for phones that kill long-running services.
-- **Updates.** **Check for updates** reads the project's GitHub pre-releases, verifies the published
+- **Updates.** **Check for updates** reads the project's GitHub releases (`v*`, and older `android-v*` previews), verifies the published
   SHA-256, and only hands an APK to Android when its package name and signing certificate match this
   install. A version-locked preview cannot update itself: the app says so and points at the releases
   page instead of downloading a file Android would reject.
@@ -79,8 +79,8 @@ removes the database **and** its key.
 Public previews use a **one-time signing certificate and a version-specific application ID**, so a newer
 preview installs **beside** the old one and cannot read its data. Keep the old install until you have
 exported/imported your provider keys and checked the new one, run only one gateway at a time, and protect
-any plaintext key export. `SHA256SUMS.txt` is published beside the APKs, and the stable desktop
-release/feed stays separate.
+any plaintext key export. `SHA256SUMS.txt` is published beside the APKs. The desktop update feeds
+in the same release never offer an APK.
 
 Builders who want **in-place updates** sign with their own durable key and a stable ID.
 
@@ -132,7 +132,7 @@ ANDROID_PACKAGE_ID=io.github.zelvior.llmharbor.android android/scripts/package.s
 `android/build/apks/`. For a throwaway local test only, `source android/scripts/preview-key.sh` first.
 Never distribute its keystore.
 
-The tagged workflow runs the same signed APKs it publishes through installation, launch, hidden-code
+The release workflow runs the same signed APKs it publishes through installation, launch, hidden-code
 behaviour, dashboard rendering, first-run security, authenticated models, a chat routed to a controlled
 upstream, stop/restart persistence, password reset and LAN mode. `armeabi-v7a` is exercised on an
 Android 11 system image through its ARM native bridge; `x86_64` runs natively on Android 14, which also

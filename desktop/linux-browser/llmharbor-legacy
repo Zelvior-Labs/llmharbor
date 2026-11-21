@@ -1,0 +1,20 @@
+#!/bin/sh
+# LLMHarbor Linux Legacy launcher. Runs the bundled API server and browser
+# dashboard with the system's Node.js 18 or newer; nothing else is required.
+set -eu
+here=$(dirname "$(readlink -f "$0")")
+node=${LLMHARBOR_NODE:-node}
+if ! command -v "$node" >/dev/null 2>&1; then
+  echo "LLMHarbor needs Node.js 18 or newer, and no 'node' command was found." >&2
+  echo "Install it with your package manager (for example: sudo apt install nodejs), or set LLMHARBOR_NODE." >&2
+  exit 127
+fi
+major=$("$node" -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0)
+if [ "$major" -lt 18 ]; then
+  echo "LLMHarbor needs Node.js 18 or newer, but $("$node" -v 2>/dev/null || echo 'an unknown version') was found." >&2
+  exit 1
+fi
+if [ "${1:-}" = --open ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v xdg-open >/dev/null 2>&1; then
+  (sleep 3; xdg-open "http://127.0.0.1:${PORT:-3001}" >/dev/null 2>&1 || true) &
+fi
+exec "$node" "$here/start.mjs"

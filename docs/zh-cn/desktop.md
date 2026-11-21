@@ -7,18 +7,21 @@
 
 ## 下载
 
-推送 `v*` 标签时，`desktop-release.yml` 工作流会把安装包发布到
-[GitHub Releases](https://github.com/Zelvior-Labs/llmharbor/releases)。按文件后缀选择：
+`release.yml` 工作流（在 **Actions → Release → Run workflow** 手动启动）为每个 `v*` 标签把所有平台的文件一起发布到同一个
+[GitHub Release](https://github.com/Zelvior-Labs/llmharbor/releases/latest)。按文件后缀选择：
 
 | 系统 | 文件后缀 |
 | --- | --- |
-| Windows 10/11，64 位 | `-windows-x64-setup.exe`（安装程序）或 `-windows-x64.zip`（便携版） |
-| Windows 10/11，32 位 | `-windows-x86-setup.exe` 或 `-windows-x86.zip` |
+| Windows 10/11，64 位 | `-windows-x64-setup.exe`（安装程序）或 `-windows-x64-portable.zip`（便携版） |
+| Windows 10/11，32 位 | `-windows-x86-setup.exe` 或 `-windows-x86-portable.zip` |
+| Windows 7 / 8 / 8.1 | `-windows-legacy-x86-setup.exe` / `-windows-legacy-x64-setup.exe`（按用户安装）或 `-windows-legacy-{x86,x64}-portable.zip`。见 [desktop/win7/README.md](../../desktop/win7/README.md)（英文）。 |
 | macOS 12+，Apple Silicon | `-macos-arm64.dmg` 或 `.zip` |
 | macOS 12+，Intel | `-macos-x64.dmg` 或 `.zip` |
 | Linux x64 | `-linux-x64.AppImage`、`.deb`、`.rpm` 或 `.tar.xz` |
-| 32 位 Intel Linux | `-linux-i686-server.tar.gz`：服务器加浏览器仪表板，不是 Electron。见 [desktop/linux-browser/README.md](../../desktop/linux-browser/README.md)（英文）。 |
-| Windows 7 SP1 | `-windows7-x86.zip` / `-windows7-x64.zip`，以 `win7-v*` 标签单独发布。见 [desktop/win7/README.md](../../desktop/win7/README.md)（英文）。 |
+| Linux arm64 | `-linux-arm64.AppImage`、`.deb`、`.rpm` 或 `.tar.xz` |
+| Linux Legacy（x86 或 x64，Node.js 18+） | `-linux-legacy-{x86,x64}.deb`、`.AppImage` 或 `-portable.tar.gz`：服务器加浏览器仪表板，不是 Electron。见 [desktop/linux-browser/README.md](../../desktop/linux-browser/README.md)（英文）。 |
+
+同一发布中的 `SHA256SUMS.txt` 列出了每个文件的校验和。
 
 ## 运行方式
 

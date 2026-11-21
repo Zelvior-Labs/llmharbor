@@ -9,8 +9,8 @@ import { describe, expect, it } from 'vitest';
 const yaml = createRequire(import.meta.url)('js-yaml');
 const here = dirname(fileURLToPath(import.meta.url));
 type Step = { name?: string; if?: string; run?: string; shell?: string };
-const workflow = yaml.load(readFileSync(resolve(here, '../../../.github/workflows/desktop-release.yml'), 'utf8'));
-const steps: Step[] = workflow.jobs.build.steps;
+const workflow = yaml.load(readFileSync(resolve(here, '../../../.github/workflows/release.yml'), 'utf8'));
+const steps: Step[] = workflow.jobs.desktop.steps;
 const mitigation = steps.find(step => step.name === 'Use TCP for Apple notarization on Intel macOS')!;
 
 describe('Intel notarization network workaround', () => {
@@ -22,7 +22,7 @@ describe('Intel notarization network workaround', () => {
     expect(index).toBeLessThan(steps.findIndex(step => step.name === 'Package installer'));
     expect(index).toBeLessThan(steps.findIndex(step => step.name === 'Notarize and staple the DMG'));
     const credentials = steps.find(step => step.name === 'Validate macOS signing credentials')!;
-    expect(credentials.if).toContain("startsWith(github.ref, 'refs/tags/')");
+    expect(credentials.if).toBe("runner.os == 'macOS' && env.PUBLISH == 'true'");
   });
 
   it('does not bypass notarization, ticket validation, Gatekeeper or metadata verification', () => {
@@ -33,8 +33,8 @@ describe('Intel notarization network workaround', () => {
     expect(notarize.run).toContain('xcrun stapler validate');
     expect(notarize.run).toContain('spctl -a -vv -t install');
     expect(notarize.run).toContain('refresh-mac-update-metadata.mjs');
-    expect(workflow.jobs['macos-release'].needs).toBe('build');
-    expect(workflow.jobs.publish.needs).toEqual(['build', 'linux-browser', 'macos-release']);
+    expect(workflow.jobs['macos-release'].needs).toBe('desktop');
+    expect(workflow.jobs.publish.needs).toEqual(expect.arrayContaining(['prepare', 'desktop', 'macos-release', 'linux-legacy-test', 'windows-legacy', 'android-device']));
   });
 
   // The actual workflow shell is exercised with a fake sudo/pfctl. This never

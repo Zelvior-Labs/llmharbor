@@ -1,6 +1,6 @@
 {
   "name": "llmharbor-desktop",
-  "version": "0.16.34",
+  "version": "1.0.0",
   "description": "LLMHarbor desktop — local OpenAI-compatible LLM router",
   "author": {
     "name": "tashfeenahmed",
@@ -30,7 +30,7 @@
     "dist:linux": "npm run build:all && npm run stage:client && electron-builder --linux --x64 --publish never",
     "test": "vitest run",
     "test:agent-setup": "node scripts/smoke-agent-setup.mjs",
-    "dist:linux:x86-server": "node scripts/build-linux-browser.mjs"
+    "dist:linux:legacy": "node scripts/build-linux-browser.mjs"
   },
   "dependencies": {
     "better-sqlite3": "^12.10.0",

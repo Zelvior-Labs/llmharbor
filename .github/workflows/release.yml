@@ -1,31 +1,119 @@
-name: Desktop release
+name: Release
 
-# PRs and ordinary manual runs build artifacts only. A version tag, or a
-# manual run with publish checked, releases this exact commit after all jobs
-# pass. Only the publisher may write a release; a partial set stays private.
+# ONE workflow builds, tests, renames and publishes every LLMHarbor download:
+#
+#   Windows 10/11   x64 + x86 NSIS installers (auto-update feeds) and portable ZIPs
+#   Windows 7/8/8.1 x64 + x86 per-user installers and portable ZIPs (Electron-Legacy)
+#   macOS           Apple silicon + Intel DMG/ZIP (signed when the Apple secrets exist)
+#   Linux           x64 + arm64 desktop AppImage, .deb, .rpm, .tar.xz
+#   Linux Legacy    x86 + x64 .deb, AppImage and portable tar.gz (system Node.js 18+)
+#   Android         armeabi-v7a, arm64-v8a and x86_64 APKs
+#
+# Run it from Actions → Release → "Run workflow" and fill in the tag (v + the
+# desktop/package.json version), title, release type and notes. Nothing is
+# uploaded until every build and smoke test has passed; a partial set never
+# becomes visible. Pull requests that touch the packaged code run every build
+# and test without publishing.
 
 on:
   workflow_dispatch:
     inputs:
+      tag:
+        description: Release tag. Must be v + desktop/package.json version, e.g. v1.0.0
+        required: true
+        type: string
+      title:
+        description: Release title (leave empty for "LLMHarbor <tag>")
+        required: false
+        type: string
+        default: ''
+      release_type:
+        description: latest = stable and marked Latest (auto-update feeds), prerelease = not Latest, draft = hidden until published by hand
+        required: true
+        type: choice
+        options: [latest, prerelease, draft]
+        default: latest
+      notes:
+        description: auto = download guide + GitHub's generated changelog, table = download guide only
+        required: true
+        type: choice
+        options: [auto, table]
+        default: auto
       publish:
-        description: Publish this commit as the desktop/package.json version after all checks pass
+        description: Publish to GitHub Releases (uncheck to only build and test everything)
         required: false
         type: boolean
-        default: false
-  push:
-    tags:
-      - 'v*'
+        default: true
   pull_request:
     paths:
+      - 'android/**'
+      - 'client/**'
       - 'desktop/**'
-      - '.github/workflows/desktop-release.yml'
+      - 'server/**'
+      - 'shared/**'
+      - 'package-lock.json'
+      - '.github/workflows/release.yml'
 
 permissions:
   contents: read
 
+concurrency:
+  group: release-${{ github.event_name == 'pull_request' && github.ref || 'publish' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PUBLISH: ${{ github.event_name == 'workflow_dispatch' && inputs.publish && 'true' || 'false' }}
+
 jobs:
-  build:
-    name: Build (${{ matrix.label || matrix.os }})
+  prepare:
+    name: Check the tag, version and release
+    runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.check.outputs.tag }}
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      # #948: v0.8.2–v0.8.4 shipped installers stamped 0.8.1 because
+      # desktop/package.json was never bumped after v0.8.1. electron-builder
+      # reads that field for the artifact filenames AND the latest*.yml updater
+      # manifests, and the Android and Windows legacy packages derive their
+      # versions from it, so a stale number silently mislabels the whole
+      # release and breaks auto-update. Fail here, before any build starts.
+      - name: Verify the tag matches desktop/package.json
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./desktop/package.json').version")
+          tag=${INPUT_TAG:-v$version}
+          tag=${tag// /}
+          if [ "$tag" != "v$version" ]; then
+            echo "::error file=desktop/package.json::desktop/package.json is $version, so every file would be stamped v$version, but the tag is $tag. Set desktop/package.json and desktop/package-lock.json to ${tag#v} first."
+            exit 1
+          fi
+          if [ "$PUBLISH" = true ]; then
+            sha=$(git rev-parse HEAD)
+            if git show-ref --verify --quiet "refs/tags/$tag"; then
+              test "$(git rev-parse "refs/tags/$tag^{commit}")" = "$sha" \
+                || { echo "::error::$tag already points to another commit than $sha"; exit 1; }
+            fi
+            if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft >/dev/null 2>&1; then
+              test "$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)" = true \
+                || { echo "::error::$tag is already published; refusing to replace a published release"; exit 1; }
+            fi
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "### Release $tag (publish: $PUBLISH)" >> "$GITHUB_STEP_SUMMARY"
+
+  desktop:
+    name: Desktop · ${{ matrix.label || matrix.os }}
+    needs: prepare
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -81,6 +169,19 @@ jobs:
               desktop/dist-electron/*.deb
               desktop/dist-electron/*.rpm
               desktop/dist-electron/latest-linux.yml
+          # Native arm64 runner (free for public repositories); the arm64
+          # config only renames the files and the feed (latest-linux-arm64.yml).
+          - os: ubuntu-24.04-arm
+            label: ubuntu-24.04-arm, arm64
+            arch: arm64
+            ebArgs: --linux AppImage tar.xz deb rpm --arm64 --config electron-builder.arm64.yml
+            artifact: linux-installer-arm64
+            glob: |
+              desktop/dist-electron/arm64/*.AppImage
+              desktop/dist-electron/arm64/*.tar.xz
+              desktop/dist-electron/arm64/*.deb
+              desktop/dist-electron/arm64/*.rpm
+              desktop/dist-electron/arm64/latest-linux-arm64.yml
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -107,26 +208,6 @@ jobs:
         if: runner.os == 'macOS'
         with:
           python-version: '3.11'
-
-      # #948: v0.8.2–v0.8.4 shipped installers stamped 0.8.1 because
-      # desktop/package.json was never bumped after v0.8.1. electron-builder
-      # reads that field for the artifact filenames AND the latest*.yml updater
-      # manifests, so a stale number silently mislabels the whole release and
-      # breaks auto-update. Fail the tagged run here — before the install,
-      # build and package steps — instead of publishing mislabeled artifacts.
-      # Untagged runs (workflow_dispatch, pull_request) have no tag to compare
-      # against and are skipped.
-      - name: Verify desktop version matches the tag
-        if: startsWith(github.ref, 'refs/tags/')
-        shell: bash
-        run: |
-          set -euo pipefail
-          VERSION=$(node -p "require('./desktop/package.json').version")
-          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
-            echo "::error file=desktop/package.json::desktop/package.json is $VERSION, so electron-builder would stamp the artifacts v$VERSION, but the tag is $GITHUB_REF_NAME. Set desktop/package.json and desktop/package-lock.json to ${GITHUB_REF_NAME#v}, then move the tag."
-            exit 1
-          fi
-          echo "desktop/package.json $VERSION matches tag $GITHUB_REF_NAME."
 
       - name: Install workspace dependencies
         shell: bash
@@ -174,7 +255,7 @@ jobs:
 
       - name: Validate macOS signing credentials
         id: maccreds
-        if: runner.os == 'macOS' && (startsWith(github.ref, 'refs/tags/') || inputs.publish == true)
+        if: runner.os == 'macOS' && env.PUBLISH == 'true'
         shell: bash
         env:
           CSC_LINK: ${{ secrets.MACOS_CSC_LINK }}
@@ -306,6 +387,16 @@ jobs:
           printf '%s\n' 'block return out quick proto udp from any to any port 443' | sudo pfctl -f -
           sudo pfctl -E
 
+      # electron-builder's bundled fpm (deb/rpm) is x86_64-only. On the arm64
+      # runner use a system fpm and rpmbuild instead.
+      - name: Install system fpm for Linux arm64 packages
+        if: runner.os == 'Linux' && matrix.arch == 'arm64'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ruby ruby-dev build-essential rpm libarchive-tools
+          sudo gem install fpm --no-document
+          echo "USE_SYSTEM_FPM=true" >> "$GITHUB_ENV"
+
       - name: Package installer
         shell: bash
         env:
@@ -319,7 +410,7 @@ jobs:
           # returns as soon as it is set, so leaving that pair configured would
           # silently shadow the API key — the two cannot coexist. The API key
           # also does not expire the way an app-specific password does.
-          CSC_IDENTITY_AUTO_DISCOVERY: ${{ runner.os == 'macOS' && (startsWith(github.ref, 'refs/tags/') || inputs.publish == true) && steps.maccreds.outputs.signed == 'true' && 'true' || 'false' }}
+          CSC_IDENTITY_AUTO_DISCOVERY: ${{ runner.os == 'macOS' && env.PUBLISH == 'true' && steps.maccreds.outputs.signed == 'true' && 'true' || 'false' }}
           # No CSC_LINK / CSC_KEY_PASSWORD: the step above imported the
           # certificate into a keychain of our own and exported CSC_KEYCHAIN +
           # CSC_NAME through $GITHUB_ENV. Setting CSC_LINK here would send
@@ -457,40 +548,306 @@ jobs:
           name: ${{ matrix.artifact }}
           path: ${{ matrix.glob }}
           if-no-files-found: error
-
-  linux-browser:
-    name: Linux i686 server and browser dashboard
+  # Electron has no 32-bit Linux build, so "Linux Legacy" is the API server and
+  # browser dashboard run by the system's Node.js 18+ (pure-WASM SQLite, no
+  # native addons), packaged for x86 and x64 as .deb, AppImage and tar.gz.
+  linux-legacy:
+    name: Linux Legacy · package x86 and x64
+    needs: prepare
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '22'
-      - name: Package server and static dashboard on x64
+      - name: Build the server bundle and static dashboard on x64
         run: |
-          npm ci --ignore-scripts
-          npm --prefix desktop ci --ignore-scripts
+          bash desktop/scripts/retry-network-step.sh npm ci --ignore-scripts
+          bash desktop/scripts/retry-network-step.sh npm --prefix desktop ci --ignore-scripts
           npm run build -w client
-          npm --prefix desktop run dist:linux:x86-server
-      - name: Run the extracted archive with 32-bit distro Node, without npm or Electron
+          npm --prefix desktop run dist:linux:legacy
+      - name: Fetch checksum-pinned AppImage tooling
         run: |
-          docker build --platform linux/386 -t llmharbor-i686-test - <<'EOF'
-          FROM alpine:3.22
-          RUN apk add --no-cache nodejs ca-certificates
-          EOF
-          docker run --rm --platform linux/386 --network none --user 65534:65534 \
-            -v "$PWD/desktop/dist-electron/browser:/downloads:ro" \
-            -v "$PWD/desktop/scripts/smoke-linux-browser.mjs:/smoke.mjs:ro" \
-            llmharbor-i686-test sh -ec 'cd /tmp; tar -xzf /downloads/*.tar.gz; node /smoke.mjs /tmp/LLMHarbor-* ia32'
+          set -euo pipefail
+          tools="$RUNNER_TEMP/appimage"
+          mkdir -p "$tools"
+          fetch() {
+            curl -fsSL --retry 3 --retry-all-errors --max-time 240 -o "$tools/$2" "$1"
+            echo "$3  $tools/$2" | sha256sum --check
+          }
+          fetch https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage \
+            appimagetool ed4ce84f0d9caff66f50bcca6ff6f35aae54ce8135408b3fa33abfc3cb384eb0
+          fetch https://github.com/AppImage/type2-runtime/releases/download/20251108/runtime-i686 \
+            runtime-i686 e72ea0b140a0a16e680713238a6f30aad278b62c4ca17919c554864124515498
+          fetch https://github.com/AppImage/type2-runtime/releases/download/20251108/runtime-x86_64 \
+            runtime-x86_64 2fca8b443c92510f1483a883f60061ad09b46b978b2631c807cd873a47ec260d
+          chmod +x "$tools/appimagetool"
+          echo "APPIMAGETOOL=$tools/appimagetool" >> "$GITHUB_ENV"
+          echo "APPIMAGE_RUNTIME_DIR=$tools" >> "$GITHUB_ENV"
+      - name: Package portable, .deb and AppImage for x86 and x64
+        run: desktop/linux-browser/package-legacy.sh
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: linux-i686-server
-          path: desktop/dist-electron/browser/*.tar.gz
+          name: linux-legacy
+          path: desktop/dist-electron/linux-legacy/*
+          if-no-files-found: error
+          compression-level: 0
+
+  # Every file is started and exercised (SQLite, dashboard, login, /v1/models)
+  # on old and current Node lines; x86 runs a real 32-bit userland, offline.
+  linux-legacy-test:
+    name: Linux Legacy · ${{ matrix.label }}
+    needs: linux-legacy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { label: 'x64 · Node 18', arch: x64, node: '18' }
+          - { label: 'x64 · Node 20', arch: x64, node: '20' }
+          - { label: 'x64 · Node 22', arch: x64, node: '22' }
+          - { label: 'x86 · Alpine 3.18 · Node 18', arch: x86, image: 'alpine:3.18' }
+          - { label: 'x86 · Alpine 3.22 · Node 22', arch: x86, image: 'alpine:3.22' }
+          - { label: 'x86 · Debian 12 · Node 18', arch: x86, image: 'debian:12' }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: linux-legacy
+          path: downloads
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        if: matrix.arch == 'x64'
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Run the x64 portable, AppImage and installed .deb
+        if: matrix.arch == 'x64'
+        run: |
+          set -euo pipefail
+          smoke="$PWD/desktop/scripts/smoke-linux-browser.mjs"
+          node -v
+          mkdir -p "$RUNNER_TEMP/portable"
+          tar -xzf downloads/*-linux-legacy-x64-portable.tar.gz -C "$RUNNER_TEMP/portable"
+          node "$smoke" "$RUNNER_TEMP"/portable/LLMHarbor-* x64
+          appimage=$(ls "$PWD"/downloads/*-linux-legacy-x64.AppImage)
+          chmod +x "$appimage"
+          SMOKE_LAUNCHER="$appimage" node "$smoke" - x64
+          sudo dpkg -i downloads/*-linux-legacy-x64.deb
+          dpkg-query -W -f='${Package} ${Version} ${Architecture}\n' llmharbor-legacy
+          SMOKE_LAUNCHER=/usr/bin/llmharbor-legacy node "$smoke" - x64
+          sudo dpkg -r llmharbor-legacy
+          test ! -e /usr/lib/llmharbor-legacy && test ! -e /usr/bin/llmharbor-legacy
+      - name: Run the x86 files in a 32-bit ${{ matrix.image }} container without network
+        if: matrix.arch == 'x86'
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: |
+          set -euo pipefail
+          case "$IMAGE" in
+            alpine:*) install='apk add --no-cache nodejs ca-certificates' ;;
+            debian:*) install='apt-get update && apt-get install -y --no-install-recommends nodejs ca-certificates && rm -rf /var/lib/apt/lists/*' ;;
+          esac
+          printf 'FROM %s\nRUN %s\n' "$IMAGE" "$install" | docker build --platform linux/386 -t llmharbor-legacy-x86 -
+          docker run --rm --platform linux/386 --network none \
+            -v "$PWD/downloads:/downloads:ro" \
+            -v "$PWD/desktop/scripts/smoke-linux-browser.mjs:/smoke.mjs:ro" \
+            -v "$PWD/desktop/linux-browser/smoke-legacy-x86.sh:/smoke-legacy-x86.sh:ro" \
+            llmharbor-legacy-x86 sh /smoke-legacy-x86.sh
+
+  # Electron 23+ dropped Windows 7, 8 and 8.1. These run on the checksum-pinned
+  # Electron-Legacy community runtime (see desktop/win7/README.md).
+  windows-legacy:
+    name: Windows 7/8/8.1 · ${{ matrix.arch }} portable and installer
+    needs: prepare
+    runs-on: windows-2022
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86, x64]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+      - name: Build dashboard and gateway (x64 build tools, no native npm addons)
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash desktop/scripts/retry-network-step.sh npm ci --ignore-scripts
+          bash desktop/scripts/retry-network-step.sh npm --prefix desktop ci --ignore-scripts
+          npm run build -w client -- --mode win7 --outDir ../desktop/dist-electron/windows7/client --emptyOutDir
+          npm --prefix desktop run bundle:win7
+      - name: Package checksum-pinned Electron-Legacy
+        run: python desktop/win7/package.py ${{ matrix.arch }}
+      - name: Launch extracted ZIP, exercise dashboard, SQLite, API and update isolation
+        shell: pwsh
+        run: |
+          $zip = Get-Item 'desktop/dist-electron/windows7/LLMHarbor-*-windows7-${{ matrix.arch }}.zip'
+          $temp = Join-Path $env:RUNNER_TEMP 'win7 smoke'
+          Expand-Archive -LiteralPath $zip.FullName -DestinationPath $temp
+          node desktop/win7/smoke.mjs (Join-Path $temp $zip.BaseName) ${{ matrix.arch }}
+          exit $LASTEXITCODE
+      - name: Build the per-user installer from the verified ZIP
+        shell: pwsh
+        run: |
+          $zip = Get-Item 'desktop/dist-electron/windows7/LLMHarbor-*-windows7-${{ matrix.arch }}.zip'
+          $src = Join-Path $env:RUNNER_TEMP 'installer-src'
+          Expand-Archive -LiteralPath $zip.FullName -DestinationPath $src
+          $version = (python desktop/win7/package.py --version).Trim()
+          $preview = (Get-Content desktop/win7/runtime.json -Raw | ConvertFrom-Json).preview
+          $base = (Get-Content desktop/package.json -Raw | ConvertFrom-Json).version
+          $makensis = (Get-Command makensis.exe -ErrorAction SilentlyContinue).Source
+          if (-not $makensis) {
+            $makensis = @("${env:ProgramFiles(x86)}\NSIS\makensis.exe", "$env:ProgramFiles\NSIS\makensis.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1
+          }
+          if (-not $makensis) {
+            choco install nsis -y --no-progress | Out-Host
+            $makensis = "${env:ProgramFiles(x86)}\NSIS\makensis.exe"
+          }
+          $out = Join-Path $zip.DirectoryName "$($zip.BaseName)-setup.exe"
+          & $makensis /V2 "/DVERSION=$version" "/DNUMVER=$base.$preview" "/DARCH=${{ matrix.arch }}" `
+            "/DSRC=$(Join-Path $src $zip.BaseName)" "/DICON=$PWD\desktop\assets\tray.ico" `
+            "/DLICENSE=$PWD\LICENSE" "/DOUTFILE=$out" desktop\win7\installer.nsi
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          Get-Item $out | Format-List Name, Length
+      - name: Install silently, launch the installed copy, then uninstall
+        shell: pwsh
+        run: |
+          # smoke.mjs insists on a fresh profile; the ZIP run above created one.
+          $data = Join-Path $env:APPDATA 'LLMHarbor-Win7'
+          for ($i = 0; (Test-Path $data) -and $i -lt 10; $i++) {
+            Remove-Item -Recurse -Force $data -ErrorAction SilentlyContinue
+            if (Test-Path $data) { Start-Sleep -Seconds 2 }
+          }
+          if (Test-Path $data) { throw "Could not reset $data" }
+          $setup = Get-Item 'desktop/dist-electron/windows7/LLMHarbor-*-windows7-${{ matrix.arch }}-setup.exe'
+          $dir = Join-Path $env:RUNNER_TEMP 'legacy-install'
+          $run = Start-Process -FilePath $setup.FullName -ArgumentList '/S', "/D=$dir" -Wait -PassThru
+          if ($run.ExitCode) { throw "Installer exited with $($run.ExitCode)" }
+          $menu = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\LLMHarbor Legacy.lnk'
+          if (-not (Test-Path $menu)) { throw 'Start Menu shortcut missing' }
+          node desktop/win7/smoke.mjs $dir ${{ matrix.arch }}
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          $run = Start-Process -FilePath (Join-Path $dir 'Uninstall.exe') -ArgumentList '/S', "_?=$dir" -Wait -PassThru
+          if ($run.ExitCode) { throw "Uninstaller exited with $($run.ExitCode)" }
+          if (Test-Path (Join-Path $dir 'LLMHarbor.exe')) { throw 'Uninstall left the app behind' }
+          if (Test-Path $menu) { throw 'Uninstall left the Start Menu shortcut behind' }
+          Write-Host "Installer, installed app and uninstaller passed for ${{ matrix.arch }}"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: win7-${{ matrix.arch }}
+          path: |
+            desktop/dist-electron/windows7/LLMHarbor-*-windows7-${{ matrix.arch }}.zip
+            desktop/dist-electron/windows7/LLMHarbor-*-windows7-${{ matrix.arch }}-setup.exe
+          compression-level: 0
           if-no-files-found: error
 
+  android:
+    name: Android · build, sign and verify every ABI
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Build production dashboard and gateway
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run build -w client -- --mode android --outDir ../android/build/dashboard --emptyOutDir
+          node android/scripts/bundle.mjs
+          python3 android/scripts/check-strings.py
+          python3 android/tests/host.py
+      - name: Prepare the signing identity
+        env:
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          DURABLE_ID: ${{ vars.ANDROID_PACKAGE_ID }}
+        run: |
+          # With no durable secret the build is a version-locked preview signed by
+          # a one-time key; with one it keeps a stable ID so updates install in place.
+          if [[ -n "${ANDROID_KEYSTORE_B64:-}" ]]; then
+            source android/scripts/durable-key.sh
+            echo "ANDROID_SIGNING_MODE=durable" >> "$GITHUB_ENV"
+            echo "ANDROID_PACKAGE_ID=${DURABLE_ID:-io.github.zelvior.llmharbor.android}" >> "$GITHUB_ENV"
+          else
+            source android/scripts/preview-key.sh
+            echo "ANDROID_SIGNING_MODE=preview" >> "$GITHUB_ENV"
+          fi
+          echo "::add-mask::$APK_PASSWORD"
+          {
+            echo "APK_KEYSTORE=$APK_KEYSTORE"
+            echo "APK_ALIAS=$APK_ALIAS"
+            echo "APK_PASSWORD=$APK_PASSWORD"
+            echo "ANDROID_KEY_DIR=$APK_KEY_DIR"
+          } >> "$GITHUB_ENV"
+      - name: Package, sign and verify every ABI
+        run: |
+          trap 'rm -rf "$ANDROID_KEY_DIR"' EXIT
+          android/scripts/package.sh
+          cp android/build/package/package-id android/build/apks/package-id
+          (cd android/build/apks && sha256sum *.apk > SHA256SUMS.txt && cat SHA256SUMS.txt)
+      # Artifact name kept for android-device.yml (`gh run download -n android-apks`).
+      - name: Upload the signed APKs
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: android-apks
+          path: android/build/apks
+          if-no-files-found: error
+          compression-level: 0
+
+  android-device:
+    name: Android · ${{ matrix.label }}
+    needs: android
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { label: 'ARMv7 APK on Android 11 (native bridge)', abi: armeabi-v7a, api: 30, target: google_apis, arch: x86, build: '16428233' }
+          - { label: 'Android 9, oldest supported', abi: x86_64, api: 28, target: default, arch: x86_64, build: '' }
+          - { label: 'x86_64 APK on Android 14', abi: x86_64, api: 34, target: google_apis, arch: x86_64, build: '16428233' }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: android-apks
+          path: downloads
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - name: Install and exercise the APK
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
+        with:
+          api-level: ${{ matrix.api }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
+          emulator-build: ${{ matrix.build }}
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            ABI=${{ matrix.abi }} EXPECTED_SDK=${{ matrix.api }} APK_DIR=downloads python3 android/tests/device.py
+
   macos-release:
-    name: Verify and combine macOS artifacts
-    needs: build
+    name: macOS · verify and combine update metadata
+    needs: desktop
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -517,13 +874,15 @@ jobs:
           if-no-files-found: error
 
   publish:
-    name: Publish verified LLMHarbor downloads
-    if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.publish == true)
-    needs: [build, linux-browser, macos-release]
+    name: Publish ${{ needs.prepare.outputs.tag }} to GitHub Releases
+    if: github.event_name == 'workflow_dispatch' && inputs.publish
+    needs: [prepare, desktop, macos-release, linux-legacy, linux-legacy-test, windows-legacy, android, android-device]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
-    concurrency: desktop-release-publisher
+    concurrency: release-publisher
+    env:
+      TAG: ${{ needs.prepare.outputs.tag }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -536,26 +895,49 @@ jobs:
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           path: artifacts
-      - name: Validate every expected filename and update feed before upload
-        run: node desktop/scripts/stage-release.mjs artifacts release
-      - name: Attach to draft, verify uploads, then publish
+      - name: Rename every file and validate names and update feeds
+        run: |
+          node desktop/scripts/stage-release.mjs artifacts release
+          ls -l release
+      - name: Write the release notes
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          NOTES: ${{ inputs.notes }}
         run: |
           set -euo pipefail
-          tag="v$(node -p 'require("./desktop/package.json").version')"
+          node desktop/scripts/release-notes.mjs release "$TAG" "$GITHUB_REPOSITORY" > "$RUNNER_TEMP/notes.md"
+          if [ "$NOTES" = auto ]; then
+            # Compare against the previous desktop release, not the newest
+            # android-v*/win7-v* preview tag GitHub would otherwise pick.
+            previous=$(git tag --list 'v[0-9]*' --sort=-v:refname | grep -vxF "$TAG" | head -n 1 || true)
+            args=(-f "tag_name=$TAG" -f "target_commitish=$(git rev-parse HEAD)")
+            if [ -n "$previous" ]; then args+=(-f "previous_tag_name=$previous"); fi
+            { echo; gh api "repos/$GITHUB_REPOSITORY/releases/generate-notes" "${args[@]}" --jq .body; } >> "$RUNNER_TEMP/notes.md"
+          fi
+          cat "$RUNNER_TEMP/notes.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Attach to a draft, verify uploads, then publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: ${{ inputs.title }}
+          TYPE: ${{ inputs.release_type }}
+        run: |
+          set -euo pipefail
           sha=$(git rev-parse HEAD)
-          if git show-ref --verify --quiet "refs/tags/$tag"; then
-            test "$(git rev-parse "refs/tags/$tag^{commit}")" = "$sha" || { echo "::error::$tag already points to another commit"; exit 1; }
-          fi
-          if gh release view "$tag" --json isDraft >/dev/null 2>&1; then
-            test "$(gh release view "$tag" --json isDraft --jq .isDraft)" = true || { echo "::error::refusing to replace a published release"; exit 1; }
+          title=${TITLE:-LLMHarbor $TAG}
+          if gh release view "$TAG" --json isDraft >/dev/null 2>&1; then
+            test "$(gh release view "$TAG" --json isDraft --jq .isDraft)" = true || { echo "::error::refusing to replace a published release"; exit 1; }
+            gh release edit "$TAG" --title "$title" --notes-file "$RUNNER_TEMP/notes.md"
           else
-            gh release create "$tag" --draft --target "$sha" --title "LLMHarbor $tag" --generate-notes
+            gh release create "$TAG" --draft --target "$sha" --title "$title" --notes-file "$RUNNER_TEMP/notes.md"
           fi
-          gh release upload "$tag" release/* --clobber
+          gh release upload "$TAG" release/* --clobber
           # A successful upload alone does not rule out stale assets on a draft.
           (cd release && find . -type f -printf '%f\t%s\n' | sort) > expected.txt
-          gh release view "$tag" --json assets --jq '.assets[] | [.name, .size] | @tsv' | sort > actual.txt
+          gh release view "$TAG" --json assets --jq '.assets[] | [.name, .size] | @tsv' | sort > actual.txt
           diff -u expected.txt actual.txt
-          gh release edit "$tag" --target "$sha" --draft=false
+          case "$TYPE" in
+            latest) gh release edit "$TAG" --target "$sha" --draft=false --prerelease=false --latest ;;
+            prerelease) gh release edit "$TAG" --target "$sha" --draft=false --prerelease --latest=false ;;
+            draft) echo "::notice::$TAG stays a draft; publish it from the Releases page." ;;
+          esac
+          echo "Release: $(gh release view "$TAG" --json url --jq .url)" >> "$GITHUB_STEP_SUMMARY"

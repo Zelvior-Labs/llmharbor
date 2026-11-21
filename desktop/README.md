@@ -10,10 +10,14 @@ Installers are on [GitHub Releases](https://github.com/Zelvior-Labs/llmharbor/re
 
 Other editions in this folder:
 
-- [`win7/`](win7/README.md): the Windows 7 SP1 portable edition (x86/x64), released under `win7-v*`
-  tags.
-- [`linux-browser/`](linux-browser/README.md): the server and browser-dashboard package for 32-bit
-  Intel Linux (`linux-i686-server.tar.gz`).
+- [`win7/`](win7/README.md): the Windows 7 / 8 / 8.1 edition (x86/x64), as a per-user installer and a
+  portable ZIP (`-windows-legacy-*`).
+- [`linux-browser/`](linux-browser/README.md): Linux Legacy, the server and browser-dashboard package
+  for x86 and x64 Linux with Node.js 18+ (`-linux-legacy-*` .deb, AppImage and portable tar.gz).
+
+All of them are built, tested and published together by
+[`.github/workflows/release.yml`](../.github/workflows/release.yml): run **Actions → Release → Run
+workflow** with the tag `v<desktop/package.json version>`.
 
 ## Prerequisites
 
@@ -57,15 +61,31 @@ npm --prefix desktop run dist:win:ia32
 Output goes to `desktop/dist-electron/ia32/`. Rerun `npm --prefix desktop ci` under x64 Node before
 going back to x64 work.
 
-### 32-bit Linux browser package
+### Linux Legacy package (x86 and x64)
 
 On a Linux x64 host, after `npm ci` and `npm --prefix desktop ci --ignore-scripts`:
 
 ```bash
-npm run build -w client && npm --prefix desktop run dist:linux:x86-server
+npm run build -w client && npm --prefix desktop run dist:linux:legacy
 ```
 
-Output goes to `desktop/dist-electron/browser/`.
+That writes the architecture-neutral `desktop/dist-electron/linux-legacy/LLMHarbor-<version>-linux-legacy.tar.gz`.
+`desktop/linux-browser/package-legacy.sh` turns it into the x86/x64 `.deb`, AppImage and portable files.
+It needs `dpkg-deb`, plus `APPIMAGETOOL` and `APPIMAGE_RUNTIME_DIR`, which the release workflow downloads
+with pinned checksums.
+
+### Linux arm64
+
+On an arm64 Linux host, run `npm --prefix desktop run build:all && npm --prefix desktop run stage:client`,
+then from `desktop/`:
+
+```bash
+USE_SYSTEM_FPM=true npx --no-install electron-builder --linux AppImage tar.xz deb rpm --arm64 \
+  --config electron-builder.arm64.yml --publish never
+```
+
+electron-builder's bundled `fpm` is x86_64-only, so install `fpm` (Ruby gem) and `rpm` first. Output
+goes to `desktop/dist-electron/arm64/`.
 
 ## Develop
 

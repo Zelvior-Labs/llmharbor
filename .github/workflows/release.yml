@@ -874,7 +874,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    name: Publish ${{ needs.prepare.outputs.tag }} to GitHub Releases
+    name: Publish to GitHub Releases
     if: github.event_name == 'workflow_dispatch' && inputs.publish
     needs: [prepare, desktop, macos-release, linux-legacy, linux-legacy-test, windows-legacy, android, android-device]
     runs-on: ubuntu-24.04

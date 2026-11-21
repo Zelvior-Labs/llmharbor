@@ -63,9 +63,9 @@ Use the generator instead of hand-editing a client configuration:
 
 ```bash
 export LLMHarbor_API_KEY=<unified-key>   # or pass --api-key on each command
-npx llmharbor setup-claude --url http://localhost:3001 --dry-run
-npx llmharbor setup-claude --url http://localhost:3001
-npx llmharbor setup-dsh --url http://localhost:3001 --api-key <unified-key>
+npm run cli -- setup-claude --url http://localhost:3001 --dry-run
+npm run cli -- setup-claude --url http://localhost:3001
+npm run cli -- setup-dsh --url http://localhost:3001 --api-key <unified-key>
 ```
 
 `--dry-run` prints a diff. Real writes merge with the existing configuration
@@ -132,7 +132,7 @@ own, so nothing needs exporting. Both writes are structural merges: other
 routes, comments, and settings in the file are left as they were.
 
 ```bash
-npx llmharbor setup-dsh --url http://localhost:3001 --api-key <unified-key>
+npm run cli -- setup-dsh --url http://localhost:3001 --api-key <unified-key>
 npx @deepseek-ai/dsh web
 ```
 
@@ -159,7 +159,7 @@ generated file is the weakest layer and anything you hand-write in
 providers and settings already in `config.json` are left as they were.
 
 ```bash
-npx llmharbor setup-mimo --url http://localhost:3001
+npm run cli -- setup-mimo --url http://localhost:3001
 export LLMHarbor_API_KEY=<unified-key>
 mimo
 ```
@@ -185,7 +185,7 @@ tables, the two generated tables are replaced, and unrelated accounts,
 models, legacy providers and settings are preserved.
 
 ```bash
-npx llmharbor setup-atomcode --url http://localhost:3001 --api-key <unified-key>
+npm run cli -- setup-atomcode --url http://localhost:3001 --api-key <unified-key>
 atomcode
 ```
 
@@ -212,7 +212,7 @@ providers, `fallbacks` on the default model, and every other setting in the
 file are left as they were.
 
 ```bash
-npx llmharbor setup-openclaw --url http://localhost:3001 --api-key <unified-key>
+npm run cli -- setup-openclaw --url http://localhost:3001 --api-key <unified-key>
 npm install -g openclaw@latest --allow-scripts=openclaw
 openclaw agent exec --model llmharbor/auto "Say hello"   # no gateway daemon needed
 ```
@@ -245,7 +245,7 @@ exactly what `hermes setup` would do, and it is what lets a headless first
 run skip the wizard. Every other key in the file is left as it was.
 
 ```bash
-npx llmharbor setup-hermes --url http://localhost:3001 --api-key <unified-key>
+npm run cli -- setup-hermes --url http://localhost:3001 --api-key <unified-key>
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --skip-setup
 hermes -z "Say hello"
 ```
@@ -272,7 +272,7 @@ created with mode 0600. Other providers and settings in both files are left
 as they were.
 
 ```bash
-npx llmharbor setup-pi --url http://localhost:3001 --api-key <unified-key>
+npm run cli -- setup-pi --url http://localhost:3001 --api-key <unified-key>
 npm install -g @earendil-works/pi-coding-agent
 pi -p "Say hello"
 ```
@@ -302,7 +302,7 @@ at `llmharbor/<model>`. The entry names its key with
 replaces only the `llmharbor` entry.
 
 ```bash
-npx llmharbor setup-reasonix --url http://localhost:3001 --api-key <unified-key>
+npm run cli -- setup-reasonix --url http://localhost:3001 --api-key <unified-key>
 npm install -g reasonix
 reasonix -p "Say hello"
 ```
@@ -331,7 +331,7 @@ providers, so the key lives in that file; the writer backs the file up first
 and keeps it at `0600`.
 
 ```bash
-npx llmharbor setup-zcode --url http://localhost:3001 --api-key <unified-key>
+npm run cli -- setup-zcode --url http://localhost:3001 --api-key <unified-key>
 ```
 
 Quit ZCode Desktop before running it so the app does not save its in-memory

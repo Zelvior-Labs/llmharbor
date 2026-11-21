@@ -1,5 +1,6 @@
 {
   "name": "llmharbor",
+  "private": true,
   "version": "0.8.2",
   "description": "Set up coding agents to use an LLMHarbor gateway",
   "license": "MIT",

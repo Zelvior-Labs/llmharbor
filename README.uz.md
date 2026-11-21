@@ -128,7 +128,7 @@ To'liq va doim dolzarb ro'yxat **[llmharbor.co/models](https://llmharbor.co/mode
 Ko'pchilik agentlar bitta buyruq bilan sozlanadi: u jonli katalogingizni o'qiydi, mavjud konfiguratsiyaning zaxira nusxasini oladi va o'zgarishlarni unga qo'shadi:
 
 ```bash
-npx llmharbor setup-claude --url http://localhost:3001 --api-key <unified-key>
+npm run cli -- setup-claude --url http://localhost:3001 --api-key <unified-key>
 ```
 
 **[Barcha qo'llab-quvvatlanadigan agentlar va ularni sozlash buyruqlari →](docs/en/clients/02-supported-agents.md)** · [Har bir vosita uchun retseptlar, MCP server va URL tokenlar →](docs/en/clients/01-agent-clients.md)
@@ -191,7 +191,7 @@ macOS 12 Monterey yoki undan yangi versiyalar uchun **arm64 (Apple Silicon)** yo
 
 ## OpenAI bilan mos klientlar
 
-OpenAI bilan mos base URL'ga ulana oladigan har qanday dastur ishlaydi: uni dashboard'dagi birlashtirilgan kalit bilan `http://localhost:3001/v1` ga sozlang. Har bir generator `--dry-run` ni qo'llab-quvvatlaydi. `npx llmharbor launch` (Claude Code) va `launch-codex` (Codex) maxfiy ma'lumotlarni konfiguratsiya fayllariga umuman yozmaydi. Router bir vaqtning o'zida MCP server ham bo'lib xizmat qiladi, agentlaringiz sessiya davomida u orqali ma'lumot olishi mumkin.
+OpenAI bilan mos base URL'ga ulana oladigan har qanday dastur ishlaydi: uni dashboard'dagi birlashtirilgan kalit bilan `http://localhost:3001/v1` ga sozlang. Har bir generator `--dry-run` ni qo'llab-quvvatlaydi. `npm run cli -- launch` (Claude Code) va `launch-codex` (Codex) maxfiy ma'lumotlarni konfiguratsiya fayllariga umuman yozmaydi. Router bir vaqtning o'zida MCP server ham bo'lib xizmat qiladi, agentlaringiz sessiya davomida u orqali ma'lumot olishi mumkin.
 
 **ChatGPT** xuddi shu lokal routerga xususiy Secure MCP Tunnel orqali ulanadi. `ask_llmharbor`
 MCP vositasi ChatGPT so'ragan vazifani `/v1/chat/completions` orqali yo'naltiradi va javobni
@@ -200,7 +200,7 @@ Base URL va bearer autentifikatsiyasi tunnel-klient konfiguratsiyasida saqlanadi
 `MCP_INFERENCE_DEFAULT_MODEL` orqali belgilanadi (berilmasa `auto`). Hech qanday kalit Git'da
 yoki MCP URL'da bo'lmasligi kerak. **[ChatGPT'ni sozlash →](docs/en/clients/01-agent-clients.md#chatgpt-private-secure-mcp-tunnel)**
 
-Provayder kalitlarini terminaldan ham boshqarish mumkin, buning uchun dashboard sessiya tokeni kerak (`LLMHarbor_DASHBOARD_TOKEN` yoki `--token`): `npx llmharbor keys add|list|remove|test <platform>`, bunda `keys test` saqlangan kalitlarni qayta tekshiradi. [cli/README.md](cli/README.md#provider-keys) ga qarang.
+Provayder kalitlarini terminaldan ham boshqarish mumkin, buning uchun dashboard sessiya tokeni kerak (`LLMHarbor_DASHBOARD_TOKEN` yoki `--token`): `npm run cli -- keys add|list|remove|test <platform>`, bunda `keys test` saqlangan kalitlarni qayta tekshiradi. [cli/README.md](cli/README.md#provider-keys) ga qarang.
 
 OSLLMAPI ataylab lokal va bir foydalanuvchili qilib yaratilgan. Provayder kalitlaringiz SQLite bazangizda shifrlangan holda qoladi, so'rovlar esa sizning kompyuteringizdan to'g'ridan-to'g'ri siz yoqqan provayderlarga boradi.
 

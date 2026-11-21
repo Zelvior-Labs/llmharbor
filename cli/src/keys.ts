@@ -29,10 +29,10 @@ interface ModelRow {
 export function keysHelp(): string {
   return [
     'Provider key management (dashboard authentication):',
-    '  llmharbor keys add <platform> [--key KEY]',
-    '  llmharbor keys list',
-    '  llmharbor keys remove <platform> [--id ID]',
-    '  llmharbor keys test <platform> [--id ID]',
+    '  npm run cli -- keys add <platform> [--key KEY]',
+    '  npm run cli -- keys list',
+    '  npm run cli -- keys remove <platform> [--id ID]',
+    '  npm run cli -- keys test <platform> [--id ID]',
     '',
     'Options: --url URL, --token TOKEN, --timeout MS (default 30000)',
     'Use LLMHarbor_DASHBOARD_TOKEN or --token for the dashboard session token.',

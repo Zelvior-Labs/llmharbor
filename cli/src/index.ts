@@ -262,10 +262,10 @@ export function resolvePinnedModel(
 
 function help(): string {
   return [
-    'OSLLMAPI coding-agent setup and provider key management',
+    'LLMHarbor coding-agent setup and provider key management',
     '',
     'Usage:',
-    '  llmharbor <command> [--url URL] [--api-key KEY] [--profile NAME] [--model ID] [--dry-run]',
+    '  npm run cli -- <command> [--url URL] [--api-key KEY] [--profile NAME] [--model ID] [--dry-run]',
     '',
     'Commands:',
     ...tools.map(tool => `  ${tool.command.padEnd(17)} ${tool.name}`),

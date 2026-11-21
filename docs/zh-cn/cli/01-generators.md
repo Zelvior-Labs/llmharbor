@@ -4,14 +4,16 @@
 
 ## 用法
 
+请在 LLMHarbor 仓库目录中运行（先执行 `npm install`）。该 CLI 不在 npm 上，因此 `npx llmharbor` 不可用。在其他目录中可使用 `npm --prefix /path/to/llmharbor run cli -- <命令>`。
+
 ```bash
-npx llmharbor setup-claude        # 接入 Claude Code
-npx llmharbor setup-codex         # 接入 Codex CLI
-npx llmharbor setup-dsh           # 接入 DeepSeek Harness
-npx llmharbor setup-mimo          # 接入 MiMo Code
-npx llmharbor setup-atomcode      # 接入 AtomCode
-npx llmharbor --dry-run setup-claude  # 预览而不写入
-npx llmharbor setup-claude --model gpt-4o  # 固定模型
+npm run cli -- setup-claude        # 接入 Claude Code
+npm run cli -- setup-codex         # 接入 Codex CLI
+npm run cli -- setup-dsh           # 接入 DeepSeek Harness
+npm run cli -- setup-mimo          # 接入 MiMo Code
+npm run cli -- setup-atomcode      # 接入 AtomCode
+npm run cli -- --dry-run setup-claude  # 预览而不写入
+npm run cli -- setup-claude --model gpt-4o  # 固定模型
 ```
 
 每个生成器（`cli/src/tools.ts:52-622`）都会拉取实时目录、对照未过滤目录解析 `--model`（`c942352`）、对已有配置做带时间戳的备份、在不覆盖无关键的前提下合并，并以 `0600` 权限写入。
@@ -40,8 +42,8 @@ npx llmharbor setup-claude --model gpt-4o  # 固定模型
 ## 零持久化启动器
 
 ```bash
-npx llmharbor launch            # 仅在 env 中注入 LLMHarbor_API_KEY + model 并启动 `claude`
-npx llmharbor launch-codex      # 注入到 `codex --profile NAME`
+npm run cli -- launch            # 仅在 env 中注入 LLMHarbor_API_KEY + model 并启动 `claude`
+npm run cli -- launch-codex      # 注入到 `codex --profile NAME`
 ```
 
 这些命令不会写入配置文件；它们仅在子进程的环境变量中注入 `LLMHarbor_API_KEY`/`LLMHarbor_MODEL`。适用于临时或共享机器。
@@ -49,7 +51,7 @@ npx llmharbor launch-codex      # 注入到 `codex --profile NAME`
 ## `llmharbor doctor`
 
 ```bash
-npx llmharbor doctor
+npm run cli -- doctor
 ```
 
 验证客户端请求是否到达本网关（检查已路由的 `Authorization` 头、目录、实时探针）。

@@ -67,7 +67,7 @@ export function resolveLaunchModel(
     throw new UnknownModelError(
       `No model '${id}' in this gateway's catalog.`
       + (suggestions.length ? ` Did you mean: ${suggestions.join(', ')}?` : '')
-      + ' Run `llmharbor list-models` to see what is registered.',
+      + ' See the Models page in the dashboard (or GET /v1/models on the gateway) for what is registered.',
     );
   }
 

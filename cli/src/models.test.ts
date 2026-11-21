@@ -32,6 +32,18 @@ describe('resolveLaunchModel', () => {
       .toThrow(UnknownModelError);
   });
 
+  it('points an unknown id at somewhere that actually lists models', () => {
+    // It used to say "Run `llmharbor list-models`", a command the CLI never had.
+    let message = '';
+    try {
+      resolveLaunchModel('no-such-model', AVAILABLE, FULL);
+    } catch (error) {
+      message = (error as Error).message;
+    }
+    expect(message).toContain('/v1/models');
+    expect(message).not.toContain('list-models');
+  });
+
   it('suggests near-matches on an unknown id rather than only refusing', () => {
     expect(() => resolveLaunchModel('coder', AVAILABLE, FULL))
       .toThrow(/fast-coder/);

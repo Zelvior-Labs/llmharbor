@@ -13,7 +13,7 @@
 
 ## Platforms
 
-Desktop apps for Windows, macOS and Linux; Android APK; Docker image (ghcr.io/zelvior-labs/llmharbor); agent-setup CLI run from the repository with `npm run cli`. Downloads: https://github.com/Zelvior-Labs/llmharbor/releases/latest
+Desktop apps for Windows, macOS and Linux; Android APK; iOS IPA; Docker image (ghcr.io/ossllmapi); CLI on npm. Downloads: https://github.com/Zelvior-Labs/llmharbor/releases/latest
 
 ## Install
 
@@ -26,7 +26,7 @@ Free (MIT, self-hosted). LLMHarbor has no paid plan. The paid plan at https://fr
 ## Details
 
 - Website: https://llmharbor.vercel.app
-- Source: https://github.com/zelvior/llmharbor
+- Source: https://github.com/Zelvior-Labs/llmharbor
 - License: MIT — a modified version of tashfeenahmed/freellmapi, made by Zelvior Labs
 - Maintainer: Zelvior Labs (https://zelviorlabs.vercel.app)
 

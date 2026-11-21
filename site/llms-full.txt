@@ -45,10 +45,10 @@ Three steps: pick a model from the 1,313 free endpoints, add your free provider 
 
 Pick the release that matches your device. Windows 7 SP1 users must take the portable zip — the latest .exe will not run there. Release links by audience:
 
-- **Windows 7 SP1** → portable zip: https://github.com/zelvior/llmharbor/releases#release-win7-v0.16.34-preview.1
-- **Android 8.0+ (armeabi-v7a, armeabi-v8a)** → .apk: https://github.com/zelvior/llmharbor/releases#release-android-v0.16.34-preview.3 (recommended — works on both legacy and modern)
-- **Android 11+ (armeabi-v7a, armeabi-v8a)** → .apk: https://github.com/zelvior/llmharbor/releases#release-android-v0.16.34-preview.2
-- **Android 11 (armeabi-v7a)** → .apk: https://github.com/zelvior/llmharbor/releases#release-android-v0.16.34-preview.1
+- **Windows 7 SP1** → portable zip: https://github.com/Zelvior-Labs/llmharbor/releases#release-win7-v0.16.34-preview.1
+- **Android 8.0+ (armeabi-v7a, armeabi-v8a)** → .apk: https://github.com/Zelvior-Labs/llmharbor/releases#release-android-v0.16.34-preview.3 (recommended — works on both legacy and modern)
+- **Android 11+ (armeabi-v7a, armeabi-v8a)** → .apk: https://github.com/Zelvior-Labs/llmharbor/releases#release-android-v0.16.34-preview.2
+- **Android 11 (armeabi-v7a)** → .apk: https://github.com/Zelvior-Labs/llmharbor/releases#release-android-v0.16.34-preview.1
 
 ## My Links (https://llmharbor.vercel.app/links.html)
 
@@ -57,7 +57,7 @@ Eleven links to LLMHarbor and Zelvior Labs: npm (https://www.npmjs.com/~zelnpm),
 ## Details
 
 - Website: https://llmharbor.vercel.app
-- Source: https://github.com/zelvior/llmharbor
+- Source: https://github.com/Zelvior-Labs/llmharbor
 - License: MIT — a modified version of tashfeenahmed/freellmapi, made by Zelvior Labs
 - No paid plan. The paid plan at https://freellmapi.co belongs to Tashfeen Ahmed, author of the original freellmapi.
 - Contact / feedback: zelvior@proton.me

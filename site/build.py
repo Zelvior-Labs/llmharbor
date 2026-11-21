@@ -1,6 +1,6 @@
 # Generates every page from shared parts. Run: python3 build.py
 import html
-GH="https://github.com/zelvior/llmharbor"; REL=GH+"/releases"
+GH="https://github.com/Zelvior-Labs/llmharbor"; REL=GH+"/releases"
 I={k:f'<svg viewBox="0 0 24 24" aria-hidden="true">{v}</svg>' for k,v in {
 "route":'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
 "swap":'<path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/>',
@@ -32,6 +32,7 @@ def page(slug,title,desc,body):
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}"><link rel="canonical" href="{url}">
+<meta name="google-site-verification" content="hUqXugrHc_xzhUYio3bjW6G1dcc87Iyi8IL4fpCIiN0" />
 <meta name="theme-color" content="#0b0d10"><meta property="og:title" content="{html.escape(title)}"><meta property="og:description" content="{html.escape(desc)}"><meta property="og:image" content="https://llmharbor.vercel.app/og-image.png"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

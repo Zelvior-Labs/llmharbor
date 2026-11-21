@@ -13,8 +13,8 @@
 | 系统 | 文件后缀 |
 | --- | --- |
 | Windows 10/11，64 位 | `-windows-x64-setup.exe`（安装程序）或 `-windows-x64-portable.zip`（便携版） |
-| Windows 10/11，32 位 | `-windows-x86-setup.exe` 或 `-windows-x86-portable.zip` |
-| Windows 7 / 8 / 8.1 | `-windows-legacy-x86-setup.exe` / `-windows-legacy-x64-setup.exe`（按用户安装）或 `-windows-legacy-{x86,x64}-portable.zip`。见 [desktop/win7/README.md](../../desktop/win7/README.md)（英文）。 |
+| Windows 7 / 8 / 8.1 · 32 位（x86） | `-windows-x86-setup.exe`（按用户安装）或 `-windows-x86-portable.zip`。这些文件是 Electron-Legacy 版本：新版 Electron 的二进制文件面向 Windows 10+ 链接，在 Windows 7/8/8.1 上加载器会报 "is not a valid Win32 application"，因此 x86 构建由 legacy 运行时提供。见 [desktop/win7/README.md](../../desktop/win7/README.md)（英文）。 |
+| Windows 7 / 8 / 8.1 · 64 位 | `-windows-legacy-x64-setup.exe`（按用户安装）或 `-windows-legacy-x64-portable.zip`。见 [desktop/win7/README.md](../../desktop/win7/README.md)（英文）。 |
 | macOS 12+，Apple Silicon | `-macos-arm64.dmg` 或 `.zip` |
 | macOS 12+，Intel | `-macos-x64.dmg` 或 `.zip` |
 | Linux x64 | `-linux-x64.AppImage`、`.deb`、`.rpm` 或 `.tar.xz` |

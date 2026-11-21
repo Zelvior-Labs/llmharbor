@@ -59,7 +59,8 @@ LLMHarbor 是 Tashfeen Ahmed 的 [freellmapi](https://github.com/tashfeenahmed/f
 | 平台 | 下载 | 指南 |
 | --- | --- | --- |
 | Windows 10/11、macOS 12+、Linux x64/arm64 | [最新版本](https://github.com/Zelvior-Labs/llmharbor/releases/latest)（`v*`） | [桌面版](docs/zh-cn/desktop.md) |
-| Windows 7 / 8 / 8.1 | [`v*` 版本](https://github.com/Zelvior-Labs/llmharbor/releases/latest)中的 `-windows-legacy-*` 安装程序或便携 ZIP | [desktop/win7](desktop/win7/README.md)（英文） |
+| Windows 7 / 8 / 8.1 · 32 位 | [`v*` 版本](https://github.com/Zelvior-Labs/llmharbor/releases/latest)中的 `-windows-x86-*` 安装程序或便携 ZIP — x86 文件采用 legacy 版本构建，可在 Windows 7/8/8.1 上运行 | [desktop/win7](desktop/win7/README.md)（英文） |
+| Windows 7 / 8 / 8.1 · 64 位 | [`v*` 版本](https://github.com/Zelvior-Labs/llmharbor/releases/latest)中的 `-windows-legacy-x64-*` 安装程序或便携 ZIP | [desktop/win7](desktop/win7/README.md)（英文） |
 | Linux Legacy（x86/x64，Node.js 18+） | [`v*` 版本](https://github.com/Zelvior-Labs/llmharbor/releases/latest)中的 `-linux-legacy-*` .deb、AppImage 或便携包 | [desktop/linux-browser](desktop/linux-browser/README.md)（英文） |
 | Android 8.0+ | [`v*` 版本](https://github.com/Zelvior-Labs/llmharbor/releases/latest)中的 `-android-*.apk` | [Android](docs/zh-cn/android.md) |
 | Docker | 从本仓库构建，或使用 `ghcr.io/zelvior-labs/llmharbor` | [Docker](docs/zh-cn/docker.md) |

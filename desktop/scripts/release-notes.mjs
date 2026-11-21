@@ -20,9 +20,8 @@ const row = (system, ...files) => `| ${system} | ${files.map(([label, suffix]) =
 
 const rows = [
   row('**Windows 10 / 11** · 64-bit', ['Installer (.exe)', 'windows-x64-setup.exe'], ['Portable (.zip)', 'windows-x64-portable.zip']),
-  row('**Windows 10 / 11** · 32-bit (x86)', ['Installer (.exe)', 'windows-x86-setup.exe'], ['Portable (.zip)', 'windows-x86-portable.zip']),
-  row('**Windows 7 / 8 / 8.1** · 64-bit (win7 legacy edition)', ['Installer (.exe)', 'windows-legacy-x64-setup.exe'], ['Portable (.zip)', 'windows-legacy-x64-portable.zip']),
-  row('**Windows 7 / 8 / 8.1** · 32-bit (win7 legacy edition)', ['Installer (.exe)', 'windows-legacy-x86-setup.exe'], ['Portable (.zip)', 'windows-legacy-x86-portable.zip']),
+  row('**Windows 7 / 8 / 8.1** · 32-bit (x86, legacy edition)', ['Installer (.exe)', 'windows-x86-setup.exe'], ['Portable (.zip)', 'windows-x86-portable.zip']),
+  row('**Windows 7 / 8 / 8.1** · 64-bit (legacy edition)', ['Installer (.exe)', 'windows-legacy-x64-setup.exe'], ['Portable (.zip)', 'windows-legacy-x64-portable.zip']),
   row('**macOS** · Apple silicon', ['.dmg', 'macos-arm64.dmg'], ['.zip', 'macos-arm64.zip']),
   row('**macOS** · Intel', ['.dmg', 'macos-x64.dmg'], ['.zip', 'macos-x64.zip']),
   row('**Linux** · x64 desktop', ['AppImage', 'linux-x64.AppImage'], ['.deb', 'linux-x64.deb'], ['.rpm', 'linux-x64.rpm'], ['.tar.xz', 'linux-x64.tar.xz']),
@@ -43,7 +42,7 @@ Pick the row that matches your system. \`SHA256SUMS.txt\` lists a checksum for e
 | --- | --- |
 ${rows.join('\n')}
 
-- **Auto-update:** the Windows 10/11 installers, the macOS apps and the Linux desktop AppImages update themselves from the newest release. The portable ZIPs, the Linux desktop .deb, .rpm and .tar.xz, and the legacy editions are updated by hand.
-- **Windows 7, 8 and 8.1** run on [Electron-Legacy ${electronLegacy}](https://github.com/Alex313031/electron-legacy), a community fork. The installer is per-user and needs no admin rights. Data is kept in \`%APPDATA%\\LLMHarbor-Win7\`. Updates are manual: install or extract the next legacy release. See [desktop/win7/README.md](https://github.com/${repo}/blob/${tag}/desktop/win7/README.md).
+- **Auto-update:** the Windows 10/11 x64 installer, the macOS apps and the Linux desktop AppImages update themselves from the newest release. The portable ZIPs, the Linux desktop .deb, .rpm and .tar.xz, and the legacy editions are updated by hand.
+- **Windows 7, 8 and 8.1 (and any 32-bit Windows)** run on [Electron-Legacy ${electronLegacy}](https://github.com/Alex313031/electron-legacy), a community fork — this is what the 32-bit (x86) files are built on, because modern Electron binaries are linked for Windows 10+ and the loader on older Windows reports "is not a valid Win32 application". The installer is per-user and needs no admin rights. Data is kept in \`%APPDATA%\\LLMHarbor-Win7\`. Updates are manual: install or extract the next legacy release. See [desktop/win7/README.md](https://github.com/${repo}/blob/${tag}/desktop/win7/README.md).
 - **Linux Legacy** is the API server with the browser dashboard, not the Electron app. It needs Node.js 18 or newer on the PC. Run \`llmharbor-legacy\` (from the .deb), the AppImage, or \`./llmharbor-legacy\` in the extracted folder, then open http://127.0.0.1:3001. See [desktop/linux-browser/README.md](https://github.com/${repo}/blob/${tag}/desktop/linux-browser/README.md).
 - **Android** will not install an APK built for a different CPU. Try \`arm64-v8a\` first, then \`armeabi-v7a\`. See [android/README.md](https://github.com/${repo}/blob/${tag}/android/README.md).`);

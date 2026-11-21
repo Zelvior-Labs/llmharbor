@@ -16,8 +16,8 @@ its suffix:
 | System | File suffix |
 | --- | --- |
 | Windows 10/11, 64-bit | `-windows-x64-setup.exe` (installer) or `-windows-x64-portable.zip` |
-| Windows 10/11, 32-bit | `-windows-x86-setup.exe` or `-windows-x86-portable.zip` |
-| Windows 7 / 8 / 8.1 | `-windows-legacy-x86-setup.exe` / `-windows-legacy-x64-setup.exe` (per-user installer) or `-windows-legacy-{x86,x64}-portable.zip`. See [desktop/win7/README.md](../../desktop/win7/README.md). |
+| Windows 7 / 8 / 8.1 · 32-bit (x86) | `-windows-x86-setup.exe` (per-user installer) or `-windows-x86-portable.zip`. These files are the Electron-Legacy edition: modern Electron binaries are linked for Windows 10+, so the loader on Windows 7/8/8.1 refuses them with "is not a valid Win32 application" — the legacy runtime is what makes an x86 build possible. See [desktop/win7/README.md](../../desktop/win7/README.md). |
+| Windows 7 / 8 / 8.1 · 64-bit | `-windows-legacy-x64-setup.exe` (per-user installer) or `-windows-legacy-x64-portable.zip`. See [desktop/win7/README.md](../../desktop/win7/README.md). |
 | macOS 12+, Apple Silicon | `-macos-arm64.dmg` or `.zip` |
 | macOS 12+, Intel | `-macos-x64.dmg` or `.zip` |
 | Linux x64 | `-linux-x64.AppImage`, `.deb`, `.rpm` or `.tar.xz` |

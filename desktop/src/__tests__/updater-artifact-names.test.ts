@@ -39,10 +39,10 @@ describe('updater artifact names', () => {
   });
 
   it('separates the Windows installers, ZIPs and feeds by architecture', () => {
-    const x86 = yaml.load(readFileSync(join(desktopRoot, 'electron-builder.ia32.yml'), 'utf8'));
-    expect(x86.publish.channel).toBe('latest-ia32');
-    expect(expand(x86.nsis.artifactName, 'ia32')).toBe('LLMHarbor-1.2.3-windows-x86-setup.exe');
-    expect(expand(x86.win.artifactName, 'ia32', 'zip')).toBe('LLMHarbor-1.2.3-windows-x86.zip');
+    // There is no 32-bit electron-builder config: the `windows-x86` release
+    // files are the Electron-Legacy edition (see desktop/win7/), because
+    // modern Electron binaries are linked for Windows 10+ and cannot load on
+    // Windows 7/8/8.1 ("is not a valid Win32 application").
     expect(expand(config.win.artifactName, 'x64', 'zip')).toBe('LLMHarbor-1.2.3-windows-x64.zip');
     expect(expand(config.nsis.artifactName)).toBe('LLMHarbor-1.2.3-windows-x64-setup.exe');
   });

@@ -70,7 +70,8 @@ Captured from a local build of the dashboard, routing to a local OpenAI-compatib
 | Platform | Download | Guide |
 | --- | --- | --- |
 | Windows 10/11, macOS 12+, Linux x64/arm64 | [Latest release](https://github.com/Zelvior-Labs/llmharbor/releases/latest) (`v*`) | [Desktop](docs/en/desktop.md) |
-| Windows 7 / 8 / 8.1 | `-windows-legacy-*` installer or portable ZIP in the [`v*` releases](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [desktop/win7](desktop/win7/README.md) |
+| Windows 7 / 8 / 8.1 · 32-bit | `-windows-x86-*` installer or portable ZIP in the [`v*` releases](https://github.com/Zelvior-Labs/llmharbor/releases/latest) — the x86 files are the legacy edition, so they load on Windows 7/8/8.1 | [desktop/win7](desktop/win7/README.md) |
+| Windows 7 / 8 / 8.1 · 64-bit | `-windows-legacy-x64-*` installer or portable ZIP in the [`v*` releases](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [desktop/win7](desktop/win7/README.md) |
 | Linux Legacy (x86/x64, Node.js 18+) | `-linux-legacy-*` .deb, AppImage or portable in the [`v*` releases](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [desktop/linux-browser](desktop/linux-browser/README.md) |
 | Android 8.0+ | `-android-*.apk` in the [`v*` releases](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [Android](docs/en/android.md) |
 | Docker | Build from this repo, or `ghcr.io/zelvior-labs/llmharbor` | [Docker](docs/en/docker.md) |

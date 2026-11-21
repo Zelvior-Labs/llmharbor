@@ -47,20 +47,26 @@ function verifyFeed(name, allowed, required) {
   assert.ok(feed.files.some(f => f.url === feed.path && f.sha512 === feed.sha512), `${name}: stale legacy fields`);
 }
 
-// Windows 10/11 (Electron): installers feed the updater, ZIPs are portable.
-for (const [arch, group, feed] of [['x64', 'windows-installer', 'latest.yml'], ['x86', 'windows-installer-ia32', 'latest-ia32.yml']]) {
+// Windows 10/11 (Electron): the installer feeds the updater, the ZIP is portable.
+for (const [arch, group, feed] of [['x64', 'windows-installer', 'latest.yml']]) {
   const stem = `${base}-windows-${arch}`;
   const exe = `${stem}-setup.exe`;
   stage(group, exe, `${exe}.blockmap`, [`${stem}.zip`, `${stem}-portable.zip`], feed);
   verifyFeed(feed, [exe], [exe]);
 }
 
-// Windows 7/8/8.1 (Electron-Legacy): manual updates only, no feed.
-for (const arch of ['x86', 'x64']) {
+// Windows 32-bit and Windows 7/8/8.1 (Electron-Legacy): manual updates only, no feed.
+// The x86 files are published as the plain `windows-x86` set: modern Electron is
+// linked for Windows 10+ (/SUBSYSTEM:...,10.0), so its 32-bit build can never load
+// on Windows 7/8/8.1 — the loader refuses it with "is not a valid Win32
+// application". The Electron-Legacy edition (PE subsystem ≤ 6.1, machine 0x14c,
+// both verified in CI) IS the 32-bit build, and it runs on Windows 7/8/8.1 as
+// well as any 32-bit Windows 10. The x64 legacy files keep the `-legacy-` name.
+for (const [arch, publicArch] of [['x86', 'x86'], ['x64', 'legacy-x64']]) {
   const stem = `LLMHarbor-${legacyWinVersion}-windows7-${arch}`;
   stage(`win7-${arch}`,
-    [`${stem}.zip`, `${base}-windows-legacy-${arch}-portable.zip`],
-    [`${stem}-setup.exe`, `${base}-windows-legacy-${arch}-setup.exe`]);
+    [`${stem}.zip`, `${base}-windows-${publicArch}-portable.zip`],
+    [`${stem}-setup.exe`, `${base}-windows-${publicArch}-setup.exe`]);
 }
 
 // macOS: both architectures; the ZIPs are the updater's payloads.

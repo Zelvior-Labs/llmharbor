@@ -1071,7 +1071,8 @@
     "upsellDescription": "新免費模型上線即用，無需等待 30 天。一個金鑰，所有裝置。隨時取消，路由器永久免費。",
     "goPremium": "升級到高級版",
     "bundled": "內含",
-    "planGeneric": "高級版"
+    "planGeneric": "高級版",
+    "originalToolPs": "附註：如果您想付費，請使用原版工具，網址："
   },
   "languages": {
     "en": "English",

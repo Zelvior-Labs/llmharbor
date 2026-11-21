@@ -124,7 +124,7 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
   fall through to whatever is still available until the counters reset at UTC midnight.
 - LLMHarbor is single-user and meant for trusted networks. Its API is protected only by the unified
   key, so don't expose it directly to the internet.
-- The model catalog syncs from `api.llmharbor.co`. Set `CATALOG_SYNC_DISABLED=1` to use only the
+- The model catalog syncs from `api.freellmapi.co`. Set `CATALOG_SYNC_DISABLED=1` to use only the
   catalog bundled with the build. See [Providers](docs/en/providers.md#model-catalog).
 
 This project is for personal experimentation and learning. If you build something that matters on
@@ -135,9 +135,12 @@ top of it, use a paid API.
 LLMHarbor has no paid plan. Everything in this repository is free under the MIT license.
 
 The original project, freellmapi, offers an optional paid plan at
-[freellmapi.co](https://freellmapi.co). The dashboard's **Premium** page and the `license` config
+[freellmapi.co](https://freellmapi.co/#pricing). The dashboard's **Premium** page and the `license` config
 field come from freellmapi's code. LLMHarbor doesn't sell license keys, so a standard install uses
 the free monthly snapshot of the signed catalog.
+
+P.S. If you want to pay for it, use the original tool, which is available at
+[freellmapi.co](https://freellmapi.co/).
 
 ## Contributing and security
 

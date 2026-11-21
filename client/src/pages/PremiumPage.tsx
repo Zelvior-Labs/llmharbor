@@ -12,6 +12,9 @@ import { CardSkeleton } from '@/components/ui/skeleton'
 import { usePremium } from '@/hooks/use-premium'
 import { useI18n } from '@/i18n'
 
+// The original tool. LLMHarbor has no paid plan of its own.
+const ORIGINAL_TOOL_URL = 'https://freellmapi.co/'
+
 function fmtWhen(ms: number | null): string | null {
   if (!ms) return null
   return new Date(ms).toLocaleString()
@@ -245,6 +248,20 @@ export default function PremiumPage() {
             </div>
           </section>
         )}
+
+        {/* LLMHarbor has no paid plan; the optional paid plan belongs to the
+            original freellmapi, so point people who want to pay there. */}
+        <p className="text-xs text-muted-foreground px-1">
+          {t('premium.originalToolPs')}{' '}
+          <a
+            className="underline hover:text-foreground"
+            href={ORIGINAL_TOOL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            freellmapi.co
+          </a>
+        </p>
       </div>
     </div>
   )

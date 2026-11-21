@@ -40,7 +40,7 @@ const MEDIA_MODALITIES = new Set(['image', 'audio']);
  * app version added via migrations.
  */
 
-const DEFAULT_BASE_URL = 'https://api.llmharbor.co';
+const DEFAULT_BASE_URL = 'https://api.freellmapi.co';
 
 // The Ed25519 public key the production catalog is signed with. The private
 // half was generated on the catalog host and has never left it. Self-hosters
@@ -79,7 +79,7 @@ let fallbackFetch: FetchLike | null = null;
  * Register a second network stack for calls to the catalog service. The
  * desktop app passes Electron's net.fetch (Chromium: the OS certificate
  * verifier and system proxy, same as a browser). On some Windows PCs Node's
- * fetch could not complete the TLS handshake to api.llmharbor.co, so license
+ * fetch could not complete the TLS handshake to the catalog service, so license
  * activation always showed "HTTP 502" while the same URL opened fine in a
  * browser. Server and Docker installs never set this.
  */

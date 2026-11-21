@@ -127,7 +127,7 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
   UTC yarim tunida nolga qaytguncha hali mavjud modellarga o'tadi.
 - LLMHarbor bitta foydalanuvchi va ishonchli tarmoq uchun mo'ljallangan. Uning API'si faqat umumiy kalit
   bilan himoyalangan, shuning uchun uni to'g'ridan-to'g'ri internetga ochmang.
-- Model katalogi `api.llmharbor.co` bilan sinxronlanadi. Faqat yig'ilma bilan kelgan katalogdan foydalanish
+- Model katalogi `api.freellmapi.co` bilan sinxronlanadi. Faqat yig'ilma bilan kelgan katalogdan foydalanish
   uchun `CATALOG_SYNC_DISABLED=1` ni o'rnating. Qarang: [Providers](docs/en/providers.md#model-catalog).
 
 Ushbu loyiha shaxsiy tajriba va o'rganish uchun. Uning ustida muhim narsa qursangiz, pullik API'dan
@@ -137,10 +137,13 @@ foydalaning.
 
 LLMHarbor'ning pullik tarifi yo'q. Ushbu repozitoriyadagi hamma narsa MIT litsenziyasi ostida bepul.
 
-Asl loyiha freellmapi [freellmapi.co](https://freellmapi.co) saytida ixtiyoriy pullik tarifni taklif
+Asl loyiha freellmapi [freellmapi.co](https://freellmapi.co/#pricing) saytida ixtiyoriy pullik tarifni taklif
 qiladi. Paneldagi **Premium** sahifasi va konfiguratsiyadagi `license` maydoni freellmapi kodidan
 kelgan. LLMHarbor litsenziya kalitlarini sotmaydi, shuning uchun oddiy o'rnatma imzolangan katalogning
 bepul oylik nusxasidan foydalanadi.
+
+P.S. Agar buning uchun pul to'lamoqchi bo'lsangiz, asl vositadan foydalaning:
+[freellmapi.co](https://freellmapi.co/).
 
 ## Hissa qo'shish va xavfsizlik
 

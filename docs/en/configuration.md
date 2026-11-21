@@ -149,7 +149,8 @@ The file contains plaintext secrets, so protect it like `ENCRYPTION_KEY`.
 | Variable | Meaning |
 | --- | --- |
 | `CATALOG_SYNC_DISABLED=1` | Turn off the model-catalog sync described in [Providers](providers.md#model-catalog). |
-| `CATALOG_BASE_URL`, `CATALOG_PUBKEY` | Point the sync at another catalog server and signing key. |
+| `CATALOG_BASE_URL`, `CATALOG_PUBKEY` | Point the sync at another catalog server and signing key. The default server is `https://api.freellmapi.co`. |
+| `PREMIUM_SITE_URL` | Where the **Premium** page links point (pricing and key recovery). Default `https://freellmapi.co`. |
 | `LLMHarbor_UPDATE_CHECK=off` | Hide the update checker in Settings and stop update-check requests. |
 | `LLMHarbor_UPDATE_GITHUB_TOKEN` | Optional token used only for update checks against GitHub. |
 | `WATCHTOWER_TOKEN` | Enables Docker "Update now". See [Docker](docker.md#self-update). |

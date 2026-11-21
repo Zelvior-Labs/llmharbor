@@ -141,7 +141,8 @@
 | 变量 | 含义 |
 | --- | --- |
 | `CATALOG_SYNC_DISABLED=1` | 关闭[提供方](providers.md#模型目录)中描述的模型目录同步。 |
-| `CATALOG_BASE_URL`、`CATALOG_PUBKEY` | 让同步使用另一个目录服务器和签名公钥。 |
+| `CATALOG_BASE_URL`、`CATALOG_PUBKEY` | 让同步使用另一个目录服务器和签名公钥。默认服务器是 `https://api.freellmapi.co`。 |
+| `PREMIUM_SITE_URL` | **Premium** 页面中链接（价格和找回密钥）指向的地址。默认 `https://freellmapi.co`。 |
 | `LLMHarbor_UPDATE_CHECK=off` | 隐藏 Settings 中的更新检查，并停止检查更新的请求。 |
 | `LLMHarbor_UPDATE_GITHUB_TOKEN` | 可选，仅用于向 GitHub 检查更新的令牌。 |
 | `WATCHTOWER_TOKEN` | 启用 Docker 的 “Update now”，见 [Docker](docker.md#自更新)。 |

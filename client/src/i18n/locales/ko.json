@@ -1071,7 +1071,8 @@
     "upsellDescription": "새로운 무료 모델은 30일 후가 아니라 존재하는 순간부터 가능합니다. 하나의 키, 모든 장치. 언제든지 취소하세요. 라우터는 영원히 무료로 유지됩니다.",
     "goPremium": "프리미엄으로 이동",
     "bundled": "번들로 제공",
-    "planGeneric": "프리미엄"
+    "planGeneric": "프리미엄",
+    "originalToolPs": "추신: 유료로 이용하고 싶다면 원래 도구를 사용하세요. 다음에서 이용할 수 있습니다:"
   },
   "languages": {
     "en": "English",

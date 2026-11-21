@@ -97,7 +97,8 @@ const adminSchema = z.object({
 
 const declarativeConfigSchema = z.object({
   admin: adminSchema.optional(),
-  // Premium license key (llmharbor.co). Same minimum as the dashboard's
+  // License key for the original freellmapi's optional paid plan
+  // (freellmapi.co); LLMHarbor has no paid plan of its own. Same minimum as the dashboard's
   // POST /api/premium/key length gate.
   license: z.string().min(8).optional(),
   keys: z.array(keySchema).optional(),

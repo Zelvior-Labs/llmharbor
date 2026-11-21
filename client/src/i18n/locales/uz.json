@@ -1071,7 +1071,8 @@
     "upsellDescription": "Yangi bepul modellar 30 kundan keyin emas, balki mavjud bo'lgan paytda paydo bo'ladi. Bitta kalit, har bir qurilma. Istalgan vaqtda bekor qilish; router abadiy bepul qoladi.",
     "goPremium": "Premiumga o'ting",
     "bundled": "to'plangan",
-    "planGeneric": "Premium"
+    "planGeneric": "Premium",
+    "originalToolPs": "P.S. Agar buning uchun pul to'lamoqchi bo'lsangiz, asl vositadan foydalaning. U quyidagi manzilda:"
   },
   "languages": {
     "en": "English",

@@ -142,7 +142,7 @@ transcription、search 或 decision。
 
 各平台提供的模型由 [`server/src/db/migrations/`](../../server/src/db/migrations) 中的数据库迁移写入。在此基础上，
 [`server/src/services/catalog-sync.ts`](../../server/src/services/catalog-sync.ts) 会在启动 10 秒后、之后每 12 小时，
-从 `https://api.llmharbor.co/v1/latest` 获取一份签名目录：
+从 `https://api.freellmapi.co/v1/latest` 获取一份签名目录：
 
 - 响应会用内置的 Ed25519 公钥校验，未签名或被篡改的目录会被丢弃。
 - 比构建中自带版本（`MIN_CATALOG_VERSION`）更旧的目录会被忽略，因此迁移始终是基线。

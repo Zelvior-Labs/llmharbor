@@ -1071,7 +1071,8 @@
     "upsellDescription": "Uusia ilmaisia malleja heti kun ne ovat olemassa, eivätkä 30 päivän päästä. Yksi avain, jokainen laite. Peruuta milloin tahansa; Reititin pysyy vapaana ikuisesti.",
     "goPremium": "Go Premium",
     "bundled": "niputettu",
-    "planGeneric": "Premium"
+    "planGeneric": "Premium",
+    "originalToolPs": "PS. Jos haluat maksaa siitä, käytä alkuperäistä työkalua. Se on saatavilla osoitteessa:"
   },
   "languages": {
     "en": "English",

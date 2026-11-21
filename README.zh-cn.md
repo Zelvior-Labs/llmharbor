@@ -110,7 +110,7 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 - 免费额度由提供方控制，额度、模型和条款都可能不经通知而变化。请查看各提供方当前的条款，通过本网关使用时这些条款同样适用。
 - 延迟不固定，也没有 SLA。最强的模型用完每日额度后，请求会落到仍然可用的模型上，直到计数在 UTC 午夜重置。
 - LLMHarbor 是单用户工具，面向可信网络。它的 API 只由统一密钥保护，不要直接暴露到互联网。
-- 模型目录从 `api.llmharbor.co` 同步。设置 `CATALOG_SYNC_DISABLED=1` 可只使用构建自带的目录。见[提供方](docs/zh-cn/providers.md#模型目录)。
+- 模型目录从 `api.freellmapi.co` 同步。设置 `CATALOG_SYNC_DISABLED=1` 可只使用构建自带的目录。见[提供方](docs/zh-cn/providers.md#模型目录)。
 
 本项目用于个人实验和学习。如果要在其上构建重要的东西，请使用付费 API。
 
@@ -118,8 +118,10 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 
 LLMHarbor 没有付费方案。本仓库中的一切都在 MIT 许可证下免费提供。
 
-原项目 freellmapi 在 [freellmapi.co](https://freellmapi.co) 提供可选的付费方案。仪表板的 **Premium**
+原项目 freellmapi 在 [freellmapi.co](https://freellmapi.co/#pricing) 提供可选的付费方案。仪表板的 **Premium**
 页面和配置中的 `license` 字段来自 freellmapi 的代码。LLMHarbor 不出售许可证密钥，因此标准安装使用签名目录的免费每月快照。
+
+附注：如果您想付费，请使用原版工具，网址：[freellmapi.co](https://freellmapi.co/)。
 
 ## 贡献与安全
 

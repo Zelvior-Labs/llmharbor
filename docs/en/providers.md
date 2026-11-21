@@ -148,7 +148,7 @@ addresses are allowed unless you set `FREEAPI_BLOCK_PRIVATE_PROVIDER_URLS=true`.
 The models each platform serves are seeded by database migrations in
 [`server/src/db/migrations/`](../../server/src/db/migrations). On top of that,
 [`server/src/services/catalog-sync.ts`](../../server/src/services/catalog-sync.ts) fetches a signed
-catalog from `https://api.llmharbor.co/v1/latest` 10 seconds after startup and then every 12 hours:
+catalog from `https://api.freellmapi.co/v1/latest` 10 seconds after startup and then every 12 hours:
 
 - The response is checked against a pinned Ed25519 public key. Unsigned or tampered catalogs are
   discarded.

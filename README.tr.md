@@ -125,7 +125,7 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
   gece yarısında sıfırlanana kadar hâlâ kullanılabilir olan modellere düşer.
 - LLMHarbor tek kullanıcılıdır ve güvenilir ağlar içindir. API'si yalnızca birleşik anahtarla korunur; onu
   doğrudan internete açmayın.
-- Model kataloğu `api.llmharbor.co` ile eşitlenir. Yalnızca derlemeyle gelen kataloğu kullanmak için
+- Model kataloğu `api.freellmapi.co` ile eşitlenir. Yalnızca derlemeyle gelen kataloğu kullanmak için
   `CATALOG_SYNC_DISABLED=1` ayarlayın. Bkz. [Providers](docs/en/providers.md#model-catalog).
 
 Bu proje kişisel deneme ve öğrenme içindir. Üzerine önemli bir şey inşa ediyorsanız ücretli bir API
@@ -135,10 +135,13 @@ kullanın.
 
 LLMHarbor'ın ücretli bir planı yoktur. Bu depodaki her şey MIT lisansı altında ücretsizdir.
 
-Asıl proje olan freellmapi, [freellmapi.co](https://freellmapi.co) adresinde isteğe bağlı bir ücretli
+Asıl proje olan freellmapi, [freellmapi.co](https://freellmapi.co/#pricing) adresinde isteğe bağlı bir ücretli
 plan sunar. Paneldeki **Premium** sayfası ve yapılandırmadaki `license` alanı freellmapi'nin kodundan
 gelir. LLMHarbor lisans anahtarı satmaz, bu yüzden standart bir kurulum imzalı kataloğun ücretsiz aylık
 anlık görüntüsünü kullanır.
+
+Not: Bunun için ödeme yapmak istiyorsanız orijinal aracı kullanın:
+[freellmapi.co](https://freellmapi.co/).
 
 ## Katkı ve güvenlik
 

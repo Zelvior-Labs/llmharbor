@@ -1128,7 +1128,8 @@
     "upsellDescription": "New free models the moment they exist, instead of 30 days later. One key, every device. Cancel anytime; the router stays free forever.",
     "goPremium": "Go Premium",
     "bundled": "bundled",
-    "planGeneric": "Premium"
+    "planGeneric": "Premium",
+    "originalToolPs": "P.S. If you want to pay for it, use the original tool instead. It's available at:"
   },
   "languages": {
     "en": "English",

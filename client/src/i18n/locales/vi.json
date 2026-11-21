@@ -1071,7 +1071,8 @@
     "upsellDescription": "Các mô hình miễn phí mới ngay khi chúng tồn tại, thay vì 30 ngày sau. Một chìa khóa cho mọi thiết bị. Hủy bỏ bất cứ lúc nào; bộ định tuyến sẽ miễn phí mãi mãi.",
     "goPremium": "Đi trả phí",
     "bundled": "đi kèm",
-    "planGeneric": "Cao cấp"
+    "planGeneric": "Cao cấp",
+    "originalToolPs": "T.B. Nếu bạn muốn trả phí, hãy dùng công cụ gốc. Công cụ có tại:"
   },
   "languages": {
     "en": "English",

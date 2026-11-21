@@ -13,7 +13,7 @@ the newest Docker image.
 
 ## Reporting a vulnerability
 
-Email **support@llmharbor.co** with `[llmharbor security]` in the subject. Don't open a public issue,
+Email **[zelvior@proton.me](mailto:zelvior@proton.me)** with `[llmharbor security]` in the subject. Don't open a public issue,
 PR or discussion about a security bug until a fix is released.
 
 A useful report includes:

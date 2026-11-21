@@ -108,8 +108,8 @@ function bearer(req: Request): string | undefined {
 // code exemption outright.
 //
 // But the socket peer alone is not sufficient either, because the reverse-proxy
-// deployment this project documents (docs/en/proxy/OVERVIEW.md, and
-// docs/en/troubleshooting/01-common-issues.md on TRUST_PROXY) puts Caddy/nginx/
+// deployment this project documents (docs/en/networking.md, and
+// docs/en/troubleshooting.md on TRUST_PROXY) puts Caddy/nginx/
 // Traefik on the SAME host: every request then arrives from 127.0.0.1 and the
 // socket test is true for the entire internet. So a forwarded hop can never
 // grant locality, but it can withdraw it — the nearest proxy's hop, which is

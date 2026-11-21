@@ -4,7 +4,7 @@ This is the desktop router and its built-in dashboard, not a shortcut to a hoste
 
 ## Download and start
 
-1. Open the [Windows 7 downloads](https://github.com/zelvior/llmharbor/releases?q=win7). Under **Assets**, choose the ZIP ending in `-windows7-x86.zip` for 32-bit Windows, or `-windows7-x64.zip` for 64-bit Windows. Check **Start → right-click Computer → Properties → System type** if unsure. This preview targets Windows 7 **Service Pack 1** (check with `winver`).
+1. Open the [Windows 7 downloads](https://github.com/Zelvior-Labs/llmharbor/releases?q=win7). Under **Assets**, choose the ZIP ending in `-windows7-x86.zip` for 32-bit Windows, or `-windows7-x64.zip` for 64-bit Windows. Check **Start → right-click Computer → Properties → System type** if unsure. This preview targets Windows 7 **Service Pack 1** (check with `winver`).
 2. Right-click the ZIP → **Extract All**. Open the extracted folder and double-click **LLMHarbor.exe**. Keep the EXE, DLLs, and `resources` folder together. Do **not** use the old Start Menu shortcut or the normal `windows-x86` / `windows-x64` installer: those builds need Windows 10 or newer.
 3. The dashboard opens on the first launch. After that, click the tray icon (it may be under the up arrow), or launch the EXE again to bring it forward. If you want a shortcut, right-click **this extracted EXE** → **Send to → Desktop (create shortcut)**. This ZIP does not install or repair a Start Menu entry.
 

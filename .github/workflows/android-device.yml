@@ -2,7 +2,7 @@ name: Android physical device
 # Runs the same launcher/API smoke test as CI on a real phone attached to a
 # self-hosted runner. Phones cannot be emulated here: Android Go memory
 # pressure, OEM battery killers and real Keystore hardware only exist on a
-# device. See docs/en/install/02-android-device-runner.md.
+# device. See docs/en/android.md ("Device test runner").
 on:
   workflow_dispatch:
     inputs:

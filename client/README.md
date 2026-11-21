@@ -1,73 +1,33 @@
-# React + TypeScript + Vite
+# LLMHarbor dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The React + Vite + Tailwind dashboard for LLMHarbor (npm workspace `client`). In production the
+server serves the built files from `client/dist`, so the dashboard and the API share one port.
 
-Currently, two official plugins are available:
+## Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Run from the repository root (`npm run <script> -w client`) or from this directory:
 
-## React Compiler
+| Script | What it does |
+| --- | --- |
+| `dev` | Vite dev server on port 5173. It proxies `/api` and `/v1` to `127.0.0.1:<PORT>` (`PORT` from the root `.env`, default 3001). |
+| `build` | Type-check (`tsc -b`) and build into `dist/`. |
+| `test` | Vitest, then `check:i18n`. |
+| `check:i18n` | Check that every locale has the same keys, value types and `{placeholder}` names as `en.json`. |
+| `lint` | ESLint. |
+| `preview` | Serve the production build locally. |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The root `npm run dev` starts this dev server together with the API server.
 
-## Expanding the ESLint configuration
+## Layout
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- `src/pages/`: one component per route (Models, Playground, Keys, Agents, Analytics, Logs,
+  Premium, …). Routes are defined in `src/App.tsx`.
+- `src/components/`: shared UI. `components/keys/shared.tsx` holds the provider list shown on the
+  Keys page.
+- `src/i18n/locales/`: 60 locale files. `en.json` is the source of truth, and locales are registered
+  in `src/i18n/locale-config.ts`.
+- `src/lib/api.ts`: API client. It keeps the session token in local storage under
+  `llmharbor_dashboard_token`.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Build modes used by other packages: `--mode android` (Android APK) and `--mode win7` (Windows 7
+edition). `VITE_BASE` sets the base path.

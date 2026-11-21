@@ -1,78 +1,69 @@
 # Translating
 
-The dashboard ships 60 locales under `client/src/i18n/locales/`. `en.json` is the source of
-truth: every other file mirrors its key structure exactly.
+## Dashboard strings
 
-Translating the README and the docs pages is a separate job: the tree is `docs/<lang>/<domain>/…`,
-one file per English page with the same name, and each language keeps its own index at
-`docs/<lang>/OVERVIEW.md` (see [zh-cn/OVERVIEW.md](zh-cn/OVERVIEW.md)). The terminology table
-below applies to both.
+The dashboard ships 60 locales under `client/src/i18n/locales/`. `en.json` is the source of truth,
+and every other file mirrors its key structure exactly.
 
-## Before you open a PR
-
-- Never add or remove keys in a locale file on its own. If a string needs to exist, it starts
-  in `en.json` and every locale follows.
+- Never add or remove keys in one locale on its own. A new string starts in `en.json`, and every
+  locale follows.
 - Run the validator from `client/`:
 
   ```bash
   npm run check:i18n
   ```
 
-  It checks all 60 locales for key parity, value types, and matching `{placeholder}` names.
-  It does not check whether the translation is any good, so read your diff too.
-- Keep a PR to one locale where you can. A 60-file diff is very hard to review.
+  It checks every locale for key parity, value types and matching `{placeholder}` names. It does
+  not check translation quality, so read your diff too.
+- Keep a PR to one locale where you can.
 - Translate the meaning, not the words. If an English string is ambiguous, look at where it
-  renders before guessing.
+  renders before you choose a translation.
 
-## Chinese terminology
+## README and docs
 
-The zh-CN terms below were settled in [#669](https://github.com/tashfeenahmed/llmharbor/pull/669)
-after a long review. They are written down so the next pass does not relitigate them. If you
-want to change one, bring a reason that is stronger than preference: a standards body, a
-reference product, or a real ambiguity in the current wording.
+The English pages live in `docs/en/`. A translation uses the same file names in `docs/<lang>/`
+(currently `docs/zh-cn/`). Each page starts with a language switcher line that links to the other
+language's copy of the same file. The root README is translated as `README.<lang>.md`. When you
+change an English page, update the translations or note in the PR that they are now behind.
+
+## Chinese (zh-CN) terminology
+
+These terms were settled in review. If you want to change one, give a reason stronger than
+preference: a standards body, a reference product, or a real ambiguity in the current wording.
 
 | English | zh-CN | Notes |
 | --- | --- | --- |
-| Provider | 提供方 | Not 提供商. Custom endpoints, local Ollama, and community-run instances are not vendors. |
-| Token (LLM) | 词元 | The [national standard term](https://termonline.cn). See the note below. |
-| Token (auth, API keys, URL tokens) | 令牌 | Never 词元. These are credentials, not word units. |
+| Provider | 提供方 | Not 提供商. Custom endpoints, local Ollama and community-run instances are not vendors. |
+| Token (LLM) | 词元 | The term published by the national sci-tech terminology committee ([termonline.cn](https://termonline.cn)). |
+| Token (auth, API keys, URL tokens) | 令牌 | Never 词元. These are credentials. |
 | Coding | 编程 | Not 编码, which reads as "encoding". |
-| Export | 导出 | Not 出口, which is the shipping sense. |
-| Request size | 请求大小 | Not 请求数据量, which reads as an aggregate across many requests. |
-| Request body | 请求正文 | What Google Cloud and Cloudflare use in their own Chinese docs. 请求体 is commoner in speech and is not wrong, but use 请求正文 here. |
-| Revoke | 撤销 | Not 废除, which is closer to repealing a law. |
-| Playground | 试验台 | It is a bench for testing models. Not 试玩台, where 试玩 suggests a game demo. |
+| Export | 导出 | Not 出口 (the shipping sense). |
+| Request size | 请求大小 | Not 请求数据量, which reads as an aggregate. |
+| Request body | 请求正文 | 请求体 is common in speech and not wrong, but use 请求正文 here. |
+| Revoke | 撤销 | Not 废除. |
+| Playground | 试验台 | Not 试玩台, where 试玩 suggests a game demo. |
 | Balance (the custom preset) | 权衡 | The numeric sliders themselves are 权重. |
-| you (second person) | 您 | Not 你. Settled in [#723](https://github.com/tashfeenahmed/llmharbor/pull/723) by unifying all 19 mixed keys; the file had been switching register mid-sentence. Dropping the pronoun entirely is still better where the sentence reads naturally without it. |
-| English (the UI language) | 英文 | Not 英语. 语 is the spoken tongue; an interface toggle is about written text, and its sibling label is 中文. |
+| you | 您 | Not 你. Dropping the pronoun is still better where the sentence reads naturally without it. |
+| English (UI language) | 英文 | Not 英语. Its sibling label is 中文. |
 
 The strategy presets are comparative, so they keep 最: 最快, 最稳定, 最智能.
 
-Punctuation is full-width (，。：；), and Chinese terms do not take Latin-style spaces around
-them. Latin words and numbers embedded in Chinese text do take a space on each side, as in
-`API 令牌`.
+Use full-width punctuation (，。：；). Latin words and numbers inside Chinese text take a space on
+each side, as in `API 令牌`.
 
-### On 词元
-
-This one has real dissent on the record and is worth understanding before you touch it.
-词元 is the term the national sci-tech terminology committee publishes, and it is unambiguous
-next to 令牌 for auth credentials, which the file previously confused. Against that, most
-Chinese AI products still show `Token` in Latin in their own interfaces, so 词元 will look
-formal to some users.
-
-It is decided, not unnoticed. Changing it means changing roughly 25 strings, so raise it as an
-issue first rather than folding it into an unrelated PR.
+词元 is a deliberate choice. Most Chinese AI products show `Token` in Latin script, so 词元 can look
+formal. Changing it touches many strings, so open an issue first instead of folding the change into
+an unrelated PR.
 
 ## zh-TW is not zh-CN
 
-zh-TW diverges on purpose and should not be synced to zh-CN term for term:
+zh-TW diverges on purpose. Don't sync it to zh-CN term for term:
 
 | English | zh-TW |
 | --- | --- |
-| Token | `Token`, left in Latin |
+| Token | `Token`, left in Latin script |
 | Provider | 提供者 |
 | Playground | 遊樂場 |
 
-Taiwanese technical writing keeps far more Latin than mainland writing does. If you are
-updating one of the two files, check the other for the same string, but match the local
+When you update one of the two files, check the other for the same string, but follow the local
 convention rather than making them identical.

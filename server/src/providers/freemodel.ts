@@ -19,7 +19,7 @@ function checkIdentity(requested: string, returned: unknown): void {
 
 /** Personal BYOK client. The account's monthly allowance is shared by every
  * route and requires Telegram verification. A funded wallet can incur charges
- * after that allowance: see docs/en/providers/freemodel.md. No model seeds or
+ * after that allowance: see docs/en/providers.md. No model seeds or
  * public roster discovery: model delivery stays in the signed catalog.
  * Docs: https://freemodel.in/docs/coding-agents */
 export class FreeModelProvider extends OpenAICompatProvider {

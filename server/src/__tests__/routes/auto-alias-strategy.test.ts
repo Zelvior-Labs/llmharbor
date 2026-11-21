@@ -5,8 +5,8 @@ import { initDb, getDb, getUnifiedApiKey } from '../../db/index.js';
 import { encrypt } from '../../lib/crypto.js';
 import { resolveRoutingChain, setRoutingStrategy, refreshStatsCache } from '../../services/router.js';
 
-// #1628: `auto:<axis>` promises per-request ordering ("add a suffix to steer a
-// single request instead — no dashboard changes needed", docs/en/api/01-rest-api.md).
+// #1628: `auto:<axis>` promises per-request ordering (a suffix steers a single
+// request with no dashboard changes; see docs/en/api.md).
 // routeRequest re-sorts every chain under the GLOBAL strategy, so the alias's
 // axis was discarded and `auto:fast` served the smart/slow model whenever the
 // operator sat on Smartest/Balanced. The alias must win for that request only:

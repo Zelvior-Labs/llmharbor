@@ -13,11 +13,11 @@
 
 ## Platforms
 
-Desktop apps for Windows, macOS and Linux; Android APK; iOS IPA; Docker image (ghcr.io/llmharbor); CLI on npm. Downloads: https://github.com/zelvior/llmharbor/releases/latest
+Desktop apps for Windows, macOS and Linux; Android APK; Docker image (ghcr.io/zelvior-labs/llmharbor); agent-setup CLI run from the repository with `npm run cli`. Downloads: https://github.com/Zelvior-Labs/llmharbor/releases/latest
 
 ## Install
 
-Point any OpenAI-compatible client at `http://localhost:3001/v1` with the unified key from the dashboard. Documentation: https://github.com/zelvior/llmharbor/blob/main/docs/en/README.md
+Point any OpenAI-compatible client at `http://localhost:3001/v1` with the unified key from the dashboard. Documentation: https://github.com/Zelvior-Labs/llmharbor/blob/main/docs/en/README.md
 
 ## Pricing
 

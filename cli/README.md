@@ -1,128 +1,73 @@
-# llmharbor
+# LLMHarbor CLI
 
-Point your coding agent at an [LLMHarbor](https://github.com/Zelvior-Labs/llmharbor)
-gateway in one command. The generators read the models your server is actually
-serving and write the config file each tool expects.
+Configures coding agents to use an [LLMHarbor](https://github.com/Zelvior-Labs/llmharbor) gateway,
+and manages provider keys from a terminal.
 
-```bash
-npm run cli -- setup-claude --url http://localhost:3001 --api-key <your-key>
-```
-
-Run it from your LLMHarbor checkout after `npm install`. The CLI isn't
-published to npm, so there is no `npx llmharbor`; `npm run cli` builds it on
-first use. The unified API key comes from your LLMHarbor dashboard (or the
-tray popover in the desktop app).
-
-`launch` and `doctor` care which directory you run them in (`launch` starts the
-agent there; `doctor` reads that project's `.claude/` settings). To run them
-from another project, point npm at the checkout:
+The package is private and **not published to npm**, so `npx llmharbor` does not exist. Run it from
+a checkout of the repository:
 
 ```bash
-cd ~/my-project
-npm --prefix ~/llmharbor run cli -- launch
+npm install                     # once, at the repository root
+npm run cli -- --help
+npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 ```
+
+`npm run cli` (`scripts/cli.mjs`) builds `cli/dist` the first time and whenever the sources change.
+It then runs in the directory you called it from. From another directory:
+`npm --prefix <checkout> run cli -- <command>`. This matters for `launch` (starts the agent in the
+current directory) and `doctor` (reads the current project's `.claude/` settings).
 
 ## Commands
 
-| Command | Tool |
+| Command | What it does |
 | --- | --- |
-| `setup-claude` | Claude Code |
-| `setup-codex` | Codex CLI |
-| `setup-cline` | Cline |
-| `setup-continue` | Continue |
-| `setup-aider` | Aider |
-| `setup-opencode` | OpenCode |
-| `setup-goose` | Goose |
-| `setup-qwen` | Qwen Code |
-| `setup-roo` | Roo Code |
-| `setup-kilo` | Kilo Code |
-| `setup-crush` | Crush |
-| `setup-dsh` | DeepSeek Harness (`dsh`) |
-| `setup-mimo` | MiMo Code (`mimo`) |
-| `setup-atomcode` | AtomCode (`atomcode`) |
-| `setup-openclaw` | OpenClaw |
-| `setup-hermes` | Hermes Agent (`hermes`) |
-| `setup-pi` | Pi (`pi`) |
-| `setup-reasonix` | Reasonix (`reasonix`) |
-| `setup-zcode` | ZCode (`zcode`) |
-| `setup-cursor` | Cursor |
-| `setup-generic` | Any OpenAI-compatible client |
-| `launch` | Run Claude Code with credentials injected into the child process |
-| `launch-codex` | Run Codex the same way |
-| `list` | Print the supported tools and their base URLs |
-| `keys` | Add, list, remove, or test provider keys (`keys --help`) |
+| `setup-claude` | Claude Code (Anthropic Messages, server root URL) |
+| `setup-codex` | Codex CLI (OpenAI Responses) |
+| `setup-cline`, `setup-continue`, `setup-aider`, `setup-opencode`, `setup-goose`, `setup-qwen`, `setup-roo`, `setup-kilo`, `setup-crush`, `setup-dsh`, `setup-mimo`, `setup-atomcode`, `setup-openclaw`, `setup-hermes`, `setup-pi`, `setup-reasonix`, `setup-zcode` | The matching tool |
+| `setup-cursor` | Prints instructions (Cursor needs a public HTTPS URL) |
+| `setup-generic` | Prints the base URL, key and a test `curl` command |
+| `launch` | Run Claude Code with credentials injected into its environment |
+| `launch-codex` | Run Codex CLI with provider overrides and credentials injected |
+| `doctor [claude\|codex]` | Check whether the tool's settings reach this gateway (non-zero exit if not) |
+| `list` | Print tool id, protocol and base URL form |
+| `keys` | Add, list, remove or test provider keys (`keys --help`) |
 
 ## Options
 
-| Flag | Meaning |
-| --- | --- |
-| `--url URL` | Gateway base URL (default `http://localhost:3001`) |
-| `--api-key KEY` | Unified API key |
-| `--profile NAME` | Name the generated profile/provider entry |
-| `--model ID` | Pin a specific model instead of the catalog default |
-| `--dry-run` | Print the diff and write nothing |
+| Flag | Environment | Meaning |
+| --- | --- | --- |
+| `--url URL` | `LLMHarbor_URL` | Gateway URL (default `http://localhost:3001`) |
+| `--api-key KEY` | `LLMHarbor_API_KEY` | Unified API key (prompted for if missing) |
+| `--profile NAME` | — | Profile or provider entry name (default `default`) |
+| `--model ID` | — | Pin a model, checked against the gateway's catalog |
+| `--dry-run` | — | Show the diff, write nothing |
+| `--timeout MS` | — | `doctor` probe wait, or per-request timeout for `keys` (default 30000) |
+| `--token TOKEN` | `LLMHarbor_DASHBOARD_TOKEN` | Dashboard session token (`keys` only) |
 
-`LLMHarbor_URL` and `LLMHarbor_API_KEY` work in place of `--url` / `--api-key`.
+Generators merge into existing config files and back up any file they change to
+`<file>.backup-<timestamp>-<id>`. Files containing the key are written with mode `0600`. `launch` and
+`launch-codex` write nothing to disk.
 
 ## Provider keys
 
-The `keys` commands use a **dashboard session token**. Set
-`LLMHarbor_DASHBOARD_TOKEN`, or pass `--token TOKEN` to override it. This is the
-session returned by dashboard sign-in (stored in the signed-in browser's local
-storage as `llmharbor_dashboard_token`). The unified `--api-key` /
-`LLMHarbor_API_KEY` used by coding agents cannot authenticate these commands.
-The CLI does not log in or persist the dashboard token.
-
 ```bash
-export LLMHarbor_URL=http://localhost:3001
 export LLMHarbor_DASHBOARD_TOKEN='<dashboard-session-token>'
-
-npm run cli -- keys add groq                 # hidden provider-key prompt
-npm run cli -- keys add groq --key '<key>'   # non-interactive alternative
+npm run cli -- keys add groq           # hidden prompt
 npm run cli -- keys list
-npm run cli -- keys test groq                # check every stored Groq key
-npm run cli -- keys test groq --id 7         # check one key
+npm run cli -- keys test groq
 npm run cli -- keys remove groq --id 7
 ```
 
-`keys list` prints each key's ID, platform, enabled chat model count,
-enabled/disabled state, and stored health status. Counts respect the key's model
-scope; custom keys count models registered to their endpoint. Credentials and
-masked keys are never printed. Use the IDs from this list when a platform has
-multiple keys: `remove` requires `--id` in that case, and also checks that the ID
-belongs to the requested platform. With one matching key, `--id` is optional.
-
-`add` saves the key and immediately validates it through the gateway. A failed or
-inconclusive check exits with code 1 and **leaves the key saved** for later testing
-or removal. `test` also exits with code 1 if any selected key is not healthy or the
-gateway cannot confirm its validity (for example, after a provider network
-failure). Successful commands exit with code 0; argument, authentication, and
-request errors exit with code 1. Validation uses the gateway's usual health
-checks, including its policy of disabling a key after repeated confirmed failures.
-
-Keyless providers skip the prompt. Custom endpoints need a URL and model
-registration, so create them in the dashboard; existing custom keys can be
-listed, tested, and removed here. Requests accept `--url` / `LLMHarbor_URL` and
-`--timeout MS` (30,000 ms per request by default). `--dry-run` is not supported for
-`keys`; it is rejected before any request.
-
-## Safety
-
-Every generator is non-destructive: it merges into your existing configuration
-rather than replacing it, and takes a timestamped backup before touching a file
-that already exists. `--dry-run` shows the exact diff first.
-
-The two `launch` commands never write credentials to disk at all — they inject
-them into the child process environment for that run only.
+The token comes from a signed-in dashboard (browser local storage key
+`llmharbor_dashboard_token`). The unified API key is not accepted here. `add` validates after saving.
+If validation fails, the key stays saved and the command exits with code 1. Custom endpoints must
+be created in the dashboard.
 
 ## Requirements
 
-Node.js >= 20.18. A running OSLLMAPI gateway
-([install guide](https://github.com/tashfeenahmed/llmharbor/blob/main/docs/en/install/01-install.md)).
+Node.js `>=20.18.0 <25.0.0` and a running LLMHarbor gateway. More detail:
+[docs/en/agents.md](../docs/en/agents.md).
 
-## Links
+## License
 
-- [Clients & coding agents guide](https://github.com/tashfeenahmed/llmharbor/blob/main/docs/en/clients/01-agent-clients.md)
-- [Issue tracker](https://github.com/tashfeenahmed/llmharbor/issues)
-
-MIT © Tashfeen Ahmed
+MIT. See [LICENSE](LICENSE).

@@ -1,125 +1,30 @@
-# Docker Guide
+# Docker
 
-Docker Compose is the recommended way to run OSLLMAPI for personal use. The container serves the Express API and the built React dashboard from one process on port 3001, with SQLite persisted in a named volume.
-
-## Prerequisites
-
-- Docker
-- Docker Compose
-- OpenSSL for generating `ENCRYPTION_KEY`
-
-## Quick Start
-
-Create a `.env` file with a 32-byte encryption key:
+The image is built from the root [`Dockerfile`](../Dockerfile) and run with
+[`docker-compose.yml`](../docker-compose.yml). One process serves the API and the dashboard on port
+3001. SQLite lives in the `llmharbor-data` volume at `/app/server/data`.
 
 ```bash
-ENCRYPTION_KEY="$(openssl rand -hex 32)"
-printf "ENCRYPTION_KEY=%s\nPORT=3001\n" "$ENCRYPTION_KEY" > .env
-```
-
-Start the app:
-
-```bash
-docker compose up -d
-```
-
-Open http://localhost:3001, add provider keys on the **Keys** page, then use the generated `llmharbor-...` key with any OpenAI-compatible client.
-
-## Example API Call
-
-```bash
-curl http://localhost:3001/v1/chat/completions \
-  -H "Authorization: Bearer llmharbor-your-unified-key" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "auto",
-    "messages": [{"role": "user", "content": "Say hello from OSLLMAPI."}]
-  }'
-```
-
-## Operations
-
-Check status:
-
-```bash
-docker compose ps
-```
-
-Tail logs:
-
-```bash
+printf "ENCRYPTION_KEY=%s\n" "$(openssl rand -hex 32)" > .env
+docker compose up -d --build
 docker compose logs -f llmharbor
 ```
 
-Stop the app:
+Open <http://localhost:3001>. Keep the same volume and `ENCRYPTION_KEY` across upgrades. Without
+the key, stored provider keys cannot be decrypted.
 
-```bash
-docker compose down
-```
+Variables commonly used with Docker:
 
-Update to the latest GHCR image after a release:
+| Variable | Default | Meaning |
+| --- | --- | --- |
+| `ENCRYPTION_KEY` | — (required) | 64 hex characters. Encrypts provider keys at rest. |
+| `PORT` | `3001` | Host port published by Compose. The container always listens on 3001. |
+| `HOST_BIND` | `127.0.0.1` | Host address the port is published on. Set `0.0.0.0` for LAN access. |
+| `WATCHTOWER_TOKEN` | — | Enables the dashboard's **Update now** with `--profile autoupdate`. |
+| `FREEAPI_DB_PATH` | `/app/server/data/freeapi.db` | SQLite file path. |
+| `FREEAPI_DB_BACKUP_PATH` / `FREEAPI_DB_BACKUP_URL` | — | Encrypted database backup to a file or an HTTP(S) URL. It is restored at startup when the database is missing. |
+| `FREEAPI_CONFIG_PATH` / `FREEAPI_CONFIG_JSON` | — | Declarative config applied on every boot. |
 
-```bash
-docker compose pull
-docker compose up -d
-```
-
-Rebuild locally from source:
-
-```bash
-docker compose up -d --build
-```
-
-## Configuration
-
-| Variable | Required | Default | Description |
-| --- | --- | --- | --- |
-| `ENCRYPTION_KEY` | Yes | None | 64-character hex key used to encrypt provider API keys at rest. Generate it once and keep it stable. |
-| `PORT` | No | `3001` | Host port exposed by Docker Compose. The container listens on port 3001. |
-| `FREEAPI_DB_PATH` | No | `/app/server/data/llmharbor.db` | SQLite file path. Set this when your host only persists one mounted directory. |
-| `FREEAPI_DB_BACKUP_PATH` | No | None | Local encrypted backup file. Restored on startup if the DB file is missing, then refreshed while the app runs. |
-| `FREEAPI_DB_BACKUP_URL` | No | None | HTTP(S) encrypted backup target. Startup uses `GET`; periodic backups use `PUT`. |
-| `FREEAPI_DB_BACKUP_TOKEN` | No | None | Optional bearer token for `FREEAPI_DB_BACKUP_URL`. |
-| `FREEAPI_DB_BACKUP_KEY` | No | `ENCRYPTION_KEY` | 64-character hex key for backup encryption. Use a separate stable key if possible. |
-| `FREEAPI_CONFIG_PATH` | No | None | JSON config file applied idempotently after migrations on every boot. |
-| `FREEAPI_CONFIG_JSON` | No | None | Inline JSON config. Takes precedence over `FREEAPI_CONFIG_PATH`. |
-
-The `llmharbor-data` volume stores SQLite data at `/app/server/data`. Keep the same volume and `ENCRYPTION_KEY` when upgrading, otherwise existing encrypted provider keys cannot be decrypted.
-
-Example `llmharbor.config.json`:
-
-```json
-{
-  "admin": { "email": "ops@example.com", "password": "change-me-min-8-chars" },
-  "license": "premium license key from llmharbor.co",
-  "keys": [
-    { "platform": "groq", "key": "gsk_...", "label": "main" }
-  ],
-  "customProviders": [
-    {
-      "baseUrl": "http://host.docker.internal:11434/v1",
-      "label": "Ollama",
-      "models": [
-        { "model": "llama3.1:8b", "displayName": "Local Llama", "supportsTools": true }
-      ]
-    }
-  ],
-  "routing": { "strategy": "balanced" }
-}
-```
-
-The optional `admin` entry creates the first dashboard account while no account
-exists (ignored with a warning afterwards — a claimed install can't be taken
-over by config), and `license` activates a Premium key against the license
-service in the background. Both fields are optional; the file carries plaintext
-secrets, so protect it like `ENCRYPTION_KEY`.
-
-## Published Image
-
-Images are published to GitHub Container Registry:
-
-```bash
-docker pull ghcr.io/tashfeenahmed/llmharbor:latest
-```
-
-The Docker workflow builds pull requests without pushing. After this repository receives the workflow on `main`, pushes to `main` and version tags publish images to GHCR automatically.
+Full guide (published image tags, self-update, proxies on the host):
+[docs/en/docker.md](../docs/en/docker.md). All variables:
+[docs/en/configuration.md](../docs/en/configuration.md).

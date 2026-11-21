@@ -1,7 +1,7 @@
 # Universal Fetch Relay Worker
 
 This provider-agnostic, single-file Cloudflare Worker implements the protocol
-documented in [`docs/en/proxy/01-fetch-relay.md`](../../docs/en/proxy/01-fetch-relay.md). It stores no
+documented in [`docs/en/networking.md`](../../docs/en/networking.md#fetch-relay). It stores no
 target-site or LLM-provider configuration. Each request supplies its complete
 public HTTP(S) target through `Fetch-Relay-Target`.
 
@@ -15,7 +15,7 @@ npx wrangler secret put RELAY_TOKEN
 npx wrangler deploy
 ```
 
-Do not put the token in `wrangler.jsonc` or commit it. Configure OSLLMAPI:
+Do not put the token in `wrangler.jsonc` or commit it. Configure LLMHarbor:
 
 ```dotenv
 PROXY_MODE=fetch-relay

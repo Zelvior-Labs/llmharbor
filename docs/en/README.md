@@ -12,6 +12,7 @@ over to the next one when a provider is rate-limited or down.
 | [Configuration](configuration.md) | Environment variables and declarative startup config |
 | [Providers](providers.md) | Supported platforms, keyless and custom providers, the model catalog |
 | [API](api.md) | Endpoints, authentication, model selection, response headers |
+| [Playground](playground.md) | Chat, agent, coding, research, compare and create modes; files, knowledge, GitHub |
 | [Agents and CLI](agents.md) | `npm run cli`, coding-agent setup, provider keys from the terminal, MCP |
 | [Desktop](desktop.md) | Desktop downloads, ports, data folder |
 | [Android](android.md) | The standalone APK |

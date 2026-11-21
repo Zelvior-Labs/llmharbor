@@ -29,6 +29,9 @@ LLMHarbor 是 Tashfeen Ahmed 的 [freellmapi](https://github.com/tashfeenahmed/f
 - **密钥留在本地。**提供方密钥以 AES-256-GCM 加密存储在您机器上的 SQLite 中。客户端只会看到一个统一的 `llmharbor-…`
   密钥，或您创建的客户端配置密钥和可撤销的 URL 令牌。
 - **仪表板。**管理密钥、模型和回退链，并提供试验台、分析、日志和备份。仪表板界面提供 60 种语言。
+- **试验台模式。**可以直接对话，也可以在智能体、编程和研究模式中让智能体使用工具：写文件、创建 zip/tar 压缩包、搜索网页、
+  生成图片、视频和语音、搜索你的知识文件并使用 GitHub。对比模式把同一个提示词并排发给最多四个模型。默认使用路由器（`auto`），
+  也可以改选任意模型。可在桌面应用和手机浏览器中使用。见[试验台](docs/zh-cn/playground.md)。
 - **编程智能体配置。**`npm run cli -- setup-<tool>` 可为 Claude Code、Codex CLI、Cline、Continue、Aider、OpenCode、
   Qwen Code 等写入配置。见[智能体与 CLI](docs/zh-cn/agents.md)。
 
@@ -39,11 +42,15 @@ LLMHarbor 是 Tashfeen Ahmed 的 [freellmapi](https://github.com/tashfeenahmed/f
 <table>
 <tr>
 <td width="50%"><img src="docs/images/models.png" alt="模型：路由策略与实时评分"><br><sub>模型：路由策略与实时评分</sub></td>
-<td width="50%"><img src="docs/images/playground.png" alt="Playground：回复及其实际使用的模型"><br><sub>Playground：回复及其实际使用的模型</sub></td>
+<td width="50%"><img src="docs/images/playground.png" alt="试验台：对话模式，回复及其实际使用的模型"><br><sub>试验台：对话模式，回复及其实际使用的模型</sub></td>
 </tr>
 <tr>
 <td><img src="docs/images/analytics.png" alt="分析：请求、延迟与 token"><br><sub>分析：请求、延迟与 token</sub></td>
 <td><img src="docs/images/agents.png" alt="Agents：编码工具的配置命令"><br><sub>Agents：编码工具的配置命令</sub></td>
+</tr>
+<tr>
+<td><img src="docs/images/playground-coding.png" alt="试验台：编程模式，智能体写了文件并打包成 zip"><br><sub>试验台：编程模式，智能体写了文件并打包成 zip</sub></td>
+<td><img src="docs/images/playground-compare.png" alt="试验台：对比模式，两个模型并排回答"><br><sub>试验台：对比模式，两个模型并排回答</sub></td>
 </tr>
 </table>
 
@@ -101,7 +108,7 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 ## 文档
 
 [安装](docs/zh-cn/install.md) · [配置](docs/zh-cn/configuration.md) · [提供方](docs/zh-cn/providers.md) ·
-[API](docs/zh-cn/api.md) · [智能体与 CLI](docs/zh-cn/agents.md) · [桌面版](docs/zh-cn/desktop.md) ·
+[API](docs/zh-cn/api.md) · [试验台](docs/zh-cn/playground.md) · [智能体与 CLI](docs/zh-cn/agents.md) · [桌面版](docs/zh-cn/desktop.md) ·
 [Android](docs/zh-cn/android.md) · [Docker](docs/zh-cn/docker.md) · [网络](docs/zh-cn/networking.md) ·
 [架构](docs/zh-cn/architecture.md) · [故障排查](docs/zh-cn/troubleshooting.md)
 

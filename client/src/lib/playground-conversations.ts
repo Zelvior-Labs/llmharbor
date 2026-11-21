@@ -9,6 +9,7 @@
 // Relative, not the `@/` alias: the unit tests run under the standalone
 // vitest config, which does not carry the app's path aliases.
 import { apiFetch } from './api'
+import type { AgentStep } from './agent-loop'
 
 export interface FusionPanelEntry {
   platform: string
@@ -53,6 +54,9 @@ export interface ChatMessage {
     fusionStreaming?: boolean
     // Set when the question was looked up on the web first (#1174).
     webSearch?: WebSearchMeta
+    // Agent modes: the mode that answered and the tool calls it made.
+    mode?: string
+    agentSteps?: AgentStep[]
   }
 }
 
@@ -126,6 +130,17 @@ export function toStoredMessages(messages: ChatMessage[]): ChatMessage[] {
     if (stored.meta && stored.meta.fusionStreaming !== undefined) {
       stored.meta = { ...stored.meta }
       delete stored.meta.fusionStreaming
+    }
+    if (stored.meta?.agentSteps) {
+      // `running` is live-only, like `streaming`.
+      stored.meta = {
+        ...stored.meta,
+        agentSteps: stored.meta.agentSteps.map(step => {
+          const copy = { ...step }
+          delete copy.running
+          return copy
+        }),
+      }
     }
     return stored
   })

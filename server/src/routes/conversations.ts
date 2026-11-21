@@ -46,6 +46,16 @@ const metaSchema = z.object({
     latency: z.number().optional(),
     sources: z.array(z.object({ title: z.string().max(1000), url: z.string().max(4000) })).max(50).optional(),
   }).optional(),
+  // Playground agent modes: which mode answered, and the tool calls it made
+  // on the way (clipped on the client), so a reloaded chat shows its work.
+  mode: z.string().max(20).optional(),
+  agentSteps: z.array(z.object({
+    tool: z.string().max(100),
+    args: z.string().max(5000),
+    result: z.string().max(5000),
+    ok: z.boolean(),
+    files: z.array(z.string().max(500)).max(50).optional(),
+  })).max(200).optional(),
 });
 
 const messageSchema = z.object({

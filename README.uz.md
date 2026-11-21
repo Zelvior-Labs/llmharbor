@@ -39,6 +39,12 @@ o'zgartirilgan versiyasi bo'lib, uni Zelvior Labs qo'llab-quvvatlaydi.
   profili kalitlari va bekor qilinadigan URL tokenlarini ko'radi.
 - **Boshqaruv paneli.** Kalitlar, modellar va zaxira zanjirlarini boshqaring; playground, analitika,
   jurnallar va zaxira nusxalar ham bor. Panel interfeysi 60 tilda mavjud.
+- **Playground rejimlari.** To'g'ridan-to'g'ri suhbatlashing yoki Agent, Coding va Research
+  rejimlarida agentga vositalar bilan ishlashga ruxsat bering: u fayl yozadi, zip/tar arxivlar
+  yaratadi, internetda qidiradi, rasm, video va nutq yaratadi, bilim fayllaringizdan qidiradi va
+  GitHub bilan ishlaydi. Compare bitta so'rovni to'rttagacha modelda yonma-yon ishga tushiradi.
+  Standart holatda marshrutizator (`auto`) ishlatiladi, istalgan modelni ham tanlash mumkin. Desktop
+  ilovalarida va telefon brauzerida ishlaydi. Qarang: [Playground](docs/en/playground.md).
 - **Dasturlash agentlarini sozlash.** `npm run cli -- setup-<tool>` Claude Code, Codex CLI, Cline,
   Continue, Aider, OpenCode, Qwen Code va boshqalar uchun konfiguratsiyani yozadi. Qarang:
   [Agents and CLI](docs/en/agents.md).
@@ -50,11 +56,15 @@ Panelning lokal yig'ilmasidan olingan; so'rovlar lokal OpenAI-mos test serveriga
 <table>
 <tr>
 <td width="50%"><img src="docs/images/models.png" alt="Models: marshrutlash strategiyasi va jonli ballar"><br><sub>Models: marshrutlash strategiyasi va jonli ballar</sub></td>
-<td width="50%"><img src="docs/images/playground.png" alt="Playground: javob va uni bergan model"><br><sub>Playground: javob va uni bergan model</sub></td>
+<td width="50%"><img src="docs/images/playground.png" alt="Playground: Chat rejimi, javob va uni bergan model"><br><sub>Playground: Chat rejimi, javob va uni bergan model</sub></td>
 </tr>
 <tr>
 <td><img src="docs/images/analytics.png" alt="Analytics: so'rovlar, kechikish va tokenlar"><br><sub>Analytics: so'rovlar, kechikish va tokenlar</sub></td>
 <td><img src="docs/images/agents.png" alt="Agents: kod yozish vositalari uchun sozlash buyruqlari"><br><sub>Agents: kod yozish vositalari uchun sozlash buyruqlari</sub></td>
+</tr>
+<tr>
+<td><img src="docs/images/playground-coding.png" alt="Playground: Coding rejimi, agent fayllarni yozib, zip qildi"><br><sub>Playground: Coding rejimi, agent fayllarni yozib, zip qildi</sub></td>
+<td><img src="docs/images/playground-compare.png" alt="Playground: Compare rejimi, ikki model yonma-yon"><br><sub>Playground: Compare rejimi, ikki model yonma-yon</sub></td>
 </tr>
 </table>
 
@@ -113,7 +123,7 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 ## Hujjatlar (inglizcha)
 
 [Install](docs/en/install.md) · [Configuration](docs/en/configuration.md) ·
-[Providers](docs/en/providers.md) · [API](docs/en/api.md) · [Agents and CLI](docs/en/agents.md) ·
+[Providers](docs/en/providers.md) · [API](docs/en/api.md) · [Playground](docs/en/playground.md) · [Agents and CLI](docs/en/agents.md) ·
 [Desktop](docs/en/desktop.md) · [Android](docs/en/android.md) · [Docker](docs/en/docker.md) ·
 [Networking](docs/en/networking.md) · [Architecture](docs/en/architecture.md) ·
 [Troubleshooting](docs/en/troubleshooting.md)

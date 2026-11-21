@@ -39,6 +39,12 @@ LLMHarbor — модифицированная версия [freellmapi](https:/
   клиентских профилей и отзываемые URL-токены.
 - **Панель управления.** Управление ключами, моделями и цепочками, а также playground, аналитика, журналы и
   резервные копии. Интерфейс доступен на 60 языках.
+- **Режимы Playground.** Обычный чат или агент с инструментами в режимах Agent, Coding и Research:
+  он пишет файлы, собирает архивы zip/tar, ищет в интернете, генерирует изображения, видео и речь,
+  ищет по вашим файлам знаний и работает с GitHub. Compare отправляет один запрос сразу нескольким
+  моделям (до четырёх). По умолчанию используется маршрутизатор (`auto`), но можно выбрать любую
+  модель. Работает в настольных приложениях и в браузере телефона. См.
+  [Playground](docs/en/playground.md).
 - **Настройка агентов для программирования.** `npm run cli -- setup-<tool>` записывает конфигурацию для
   Claude Code, Codex CLI, Cline, Continue, Aider, OpenCode, Qwen Code и других. См.
   [Agents and CLI](docs/en/agents.md).
@@ -50,11 +56,15 @@ LLMHarbor — модифицированная версия [freellmapi](https:/
 <table>
 <tr>
 <td width="50%"><img src="docs/images/models.png" alt="Models: стратегия маршрутизации и текущие оценки"><br><sub>Models: стратегия маршрутизации и текущие оценки</sub></td>
-<td width="50%"><img src="docs/images/playground.png" alt="Playground: ответ и модель, которая его дала"><br><sub>Playground: ответ и модель, которая его дала</sub></td>
+<td width="50%"><img src="docs/images/playground.png" alt="Playground: режим Chat, ответ и модель, которая его дала"><br><sub>Playground: режим Chat, ответ и модель, которая его дала</sub></td>
 </tr>
 <tr>
 <td><img src="docs/images/analytics.png" alt="Analytics: запросы, задержка и токены"><br><sub>Analytics: запросы, задержка и токены</sub></td>
 <td><img src="docs/images/agents.png" alt="Agents: команды настройки для инструментов разработки"><br><sub>Agents: команды настройки для инструментов разработки</sub></td>
+</tr>
+<tr>
+<td><img src="docs/images/playground-coding.png" alt="Playground: режим Coding, агент написал файлы и упаковал их в zip"><br><sub>Playground: режим Coding, агент написал файлы и упаковал их в zip</sub></td>
+<td><img src="docs/images/playground-compare.png" alt="Playground: режим Compare, две модели рядом"><br><sub>Playground: режим Compare, две модели рядом</sub></td>
 </tr>
 </table>
 
@@ -113,7 +123,7 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 ## Документация (на английском)
 
 [Install](docs/en/install.md) · [Configuration](docs/en/configuration.md) ·
-[Providers](docs/en/providers.md) · [API](docs/en/api.md) · [Agents and CLI](docs/en/agents.md) ·
+[Providers](docs/en/providers.md) · [API](docs/en/api.md) · [Playground](docs/en/playground.md) · [Agents and CLI](docs/en/agents.md) ·
 [Desktop](docs/en/desktop.md) · [Android](docs/en/android.md) · [Docker](docs/en/docker.md) ·
 [Networking](docs/en/networking.md) · [Architecture](docs/en/architecture.md) ·
 [Troubleshooting](docs/en/troubleshooting.md)

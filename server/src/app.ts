@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { keysRouter } from './routes/keys.js';
 import { clientProfilesRouter } from './routes/client-profiles.js';
 import { conversationsRouter } from './routes/conversations.js';
+import { playgroundGithubRouter } from './routes/playground-github.js';
 import { logsRouter } from './routes/logs.js';
 import { modelsRouter } from './routes/models.js';
 import { proxyRouter } from './routes/proxy.js';
@@ -153,7 +154,10 @@ export function createApp(config?: Config) {
         // so editing that script fails the suite instead of silently breaking it.
         scriptSrc: ["'self'", INLINE_BOOTSTRAP_SHA],
         styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:"],
+        // blob: lets the Playground preview images, audio and video its agent
+        // generated, which live in the browser as Blobs (never on a remote host).
+        imgSrc: ["'self'", "data:", "blob:"],
+        mediaSrc: ["'self'", "blob:"],
         connectSrc: ["'self'"],
         fontSrc: ["'self'"],
         formAction: ["'self'"],
@@ -281,6 +285,7 @@ export function createApp(config?: Config) {
   // Saved Playground transcripts (the chat sidebar). Dashboard-session gated
   // like every other admin route; the unified /v1 key does not open it.
   app.use('/api/conversations', requireAuth, conversationsRouter);
+  app.use('/api/playground/github', requireAuth, playgroundGithubRouter);
   // Server logs for the dashboard viewer. Dashboard-session gated like the rest
   // of /api — these lines name providers, models and key ids, so the unified
   // /v1 key must not open them.

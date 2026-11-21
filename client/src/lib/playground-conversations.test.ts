@@ -93,6 +93,27 @@ describe('toStoredMessages', () => {
     expect('fusionStreaming' in (stored[1].meta ?? {})).toBe(false)
   })
 
+  it('keeps agent steps but drops their live running flag', () => {
+    const messages: ChatMessage[] = [{
+      role: 'assistant',
+      content: 'done',
+      meta: {
+        mode: 'code',
+        agentSteps: [
+          { tool: 'write_file', args: '{}', result: 'ok', ok: true, files: ['a.ts'] },
+          { tool: 'read_file', args: '{}', result: '', ok: true, running: true },
+        ],
+      },
+    }]
+    const stored = toStoredMessages(messages)
+    expect(stored[0].meta?.agentSteps).toEqual([
+      { tool: 'write_file', args: '{}', result: 'ok', ok: true, files: ['a.ts'] },
+      { tool: 'read_file', args: '{}', result: '', ok: true },
+    ])
+    expect(stored[0].meta?.mode).toBe('code')
+    expect(messages[0].meta?.agentSteps?.[1].running).toBe(true)
+  })
+
   it('leaves an error bubble and a meta-less message alone', () => {
     const messages: ChatMessage[] = [
       { role: 'assistant', content: 'boom', isError: true },

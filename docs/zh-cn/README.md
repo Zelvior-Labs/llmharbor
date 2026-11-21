@@ -11,6 +11,7 @@ API 之后，为每个请求挑选可用的模型，并在某个提供方限流�
 | [配置](configuration.md) | 环境变量与声明式启动配置 |
 | [提供方](providers.md) | 支持的平台、免密钥与自定义提供方、模型目录 |
 | [API](api.md) | 端点、认证、模型选择、响应头 |
+| [试验台](playground.md) | 对话、智能体、编程、研究、对比和创作模式；文件、知识、GitHub |
 | [智能体与 CLI](agents.md) | `npm run cli`、编程智能体配置、命令行管理提供方密钥、MCP |
 | [桌面版](desktop.md) | 桌面版下载、端口、数据目录 |
 | [Android](android.md) | 独立 APK |

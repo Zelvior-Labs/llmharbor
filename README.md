@@ -38,6 +38,11 @@ Tashfeen Ahmed, maintained by Zelvior Labs.
   that you create.
 - **Dashboard.** Manage keys, models and fallback chains. It also has a playground, analytics,
   logs and backups. The dashboard UI ships in 60 locales.
+- **Playground modes.** Chat directly, or let an agent work with tools in Agent, Coding and Research
+  modes: it writes files, builds zip/tar archives, searches the web, generates images, video and
+  speech, searches your knowledge files and uses GitHub. Compare runs one prompt on up to four
+  models side by side. The router (`auto`) is the default; any model can be picked instead. Works
+  in the desktop apps and phone browsers. See [Playground](docs/en/playground.md).
 - **Coding-agent setup.** `npm run cli -- setup-<tool>` writes the config for Claude Code, Codex CLI,
   Cline, Continue, Aider, OpenCode, Qwen Code and more. See [Agents and CLI](docs/en/agents.md).
 
@@ -48,11 +53,15 @@ Captured from a local build of the dashboard, routing to a local OpenAI-compatib
 <table>
 <tr>
 <td width="50%"><img src="docs/images/models.png" alt="Models: routing strategy and live scores"><br><sub>Models: routing strategy and live scores</sub></td>
-<td width="50%"><img src="docs/images/playground.png" alt="Playground: a reply with the model that served it"><br><sub>Playground: a reply with the model that served it</sub></td>
+<td width="50%"><img src="docs/images/playground.png" alt="Playground: Chat mode, a reply with the model that served it"><br><sub>Playground: Chat mode, a reply with the model that served it</sub></td>
 </tr>
 <tr>
 <td><img src="docs/images/analytics.png" alt="Analytics: requests, latency and tokens"><br><sub>Analytics: requests, latency and tokens</sub></td>
 <td><img src="docs/images/agents.png" alt="Agents: setup commands for coding tools"><br><sub>Agents: setup commands for coding tools</sub></td>
+</tr>
+<tr>
+<td><img src="docs/images/playground-coding.png" alt="Playground: Coding mode, the agent wrote files and zipped them"><br><sub>Playground: Coding mode, the agent wrote files and zipped them</sub></td>
+<td><img src="docs/images/playground-compare.png" alt="Playground: Compare mode, two models side by side"><br><sub>Playground: Compare mode, two models side by side</sub></td>
 </tr>
 </table>
 
@@ -111,7 +120,7 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 ## Documentation
 
 [Install](docs/en/install.md) · [Configuration](docs/en/configuration.md) ·
-[Providers](docs/en/providers.md) · [API](docs/en/api.md) · [Agents and CLI](docs/en/agents.md) ·
+[Providers](docs/en/providers.md) · [API](docs/en/api.md) · [Playground](docs/en/playground.md) · [Agents and CLI](docs/en/agents.md) ·
 [Desktop](docs/en/desktop.md) · [Android](docs/en/android.md) · [Docker](docs/en/docker.md) ·
 [Networking](docs/en/networking.md) · [Architecture](docs/en/architecture.md) ·
 [Troubleshooting](docs/en/troubleshooting.md)

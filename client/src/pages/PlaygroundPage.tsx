@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo, useCallback, type ReactNode } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { ChevronRight, CircleAlert, FileText, Globe, X } from 'lucide-react'
+import { ChevronRight, CircleAlert, FileText, Globe, Square, X } from 'lucide-react'
 import { apiFetch } from '@/lib/api'
 import { buildModelOptions } from '@/lib/model-groups'
 import type { Chain } from '@/components/chain-manager'
@@ -69,6 +69,18 @@ import {
   type FusionPanelEntry,
 } from '@/lib/playground-conversations'
 import { useI18n } from '@/i18n'
+import { ModeBar } from '@/components/playground/mode-bar'
+import { AgentSteps } from '@/components/playground/agent-steps'
+import { WorkspaceDrawer } from '@/components/playground/workspace-drawer'
+import { CompareView, type CompareHandle } from '@/components/playground/compare-view'
+import { CreateView, type CreateHandle } from '@/components/playground/create-view'
+import { AdvancedOptionsSection, GithubSection } from '@/components/playground/rail-extras'
+import { useKnowledge, useWorkspace } from '@/hooks/use-agent-stores'
+import { isAgentMode, modeForConversation, readMode, writeMode, agentSystemPrompt, type AgentMode, type PlaygroundMode } from '@/lib/playground-modes'
+import { advancedActiveCount, advancedRequestParams, readAdvanced, writeAdvanced, type AdvancedSettings } from '@/lib/playground-advanced'
+import { agentToolDefinitions, executeAgentTool, type AgentToolEnv } from '@/lib/agent-tools'
+import { AgentCallError, runAgent, type AgentProgress, type WireMessage } from '@/lib/agent-loop'
+import { embeddingsAvailable, githubApi, makeChatCall, makeEmbed, makeV1, type EmbeddingsListing, type GithubStatus } from '@/lib/agent-runtime'
 
 interface FallbackEntry {
   modelDbId: number
@@ -276,6 +288,27 @@ export default function PlaygroundPage() {
     setWebSearch(enabled)
     localStorage.setItem('playground.webSearch', enabled ? '1' : '0')
   }
+  // Playground mode (direct chat, agent, agentic coding, research, compare,
+  // create). A preference like the model, remembered in localStorage.
+  const [mode, setMode] = useState<PlaygroundMode>(() => readMode())
+  const changeMode = (next: PlaygroundMode) => {
+    setMode(next)
+    writeMode(next)
+  }
+  // Advanced request options (seed, top_k, penalties, stop, JSON, effort).
+  const [advanced, setAdvanced] = useState<AdvancedSettings>(() => readAdvanced())
+  const updateAdvanced = (next: AdvancedSettings) => {
+    setAdvanced(next)
+    writeAdvanced(next)
+  }
+  const [filesOpen, setFilesOpen] = useState(false)
+  const [filesFocus, setFilesFocus] = useState<string | null>(null)
+  const openFile = useCallback((path: string) => { setFilesFocus(path); setFilesOpen(true) }, [])
+  const compareRef = useRef<CompareHandle>(null)
+  // Set by the Stop button so the agent loop can tell a deliberate stop from
+  // an abort caused by leaving the conversation.
+  const userStopRef = useRef(false)
+  const createViewRef = useRef<CreateHandle>(null)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [selectedModel, setSelectedModel] = useState<string>(
@@ -336,6 +369,27 @@ export default function PlaygroundPage() {
   })
   const mediaModels = mediaData?.models ?? []
 
+  // ---- Agent modes --------------------------------------------------------
+  // The workspace and knowledge files live in the browser (IndexedDB); the
+  // tools reach the gateway through the same /v1 API every client uses.
+  const workspace = useWorkspace()
+  const knowledge = useKnowledge()
+  const knowledgeDocs = knowledge.list()
+  const { data: githubStatus } = useQuery<GithubStatus>({
+    queryKey: ['playground-github'],
+    queryFn: githubApi.status,
+    staleTime: 60_000,
+  })
+  const v1 = useMemo(() => makeV1(keyData?.apiKey), [keyData?.apiKey])
+  const { data: embeddingsListing } = useQuery<EmbeddingsListing>({
+    queryKey: ['embeddings'],
+    queryFn: () => apiFetch('/api/embeddings'),
+    staleTime: 60_000,
+  })
+  const canEmbed = embeddingsAvailable(embeddingsListing)
+  const embed = useMemo(() => (canEmbed ? makeEmbed(v1) : null), [v1, canEmbed])
+  const hasMedia = (modality: string) => mediaModels.some(m => m.modality === modality && m.enabled)
+
   const searchReadiness = useSearchReadiness()
   const usableEngines = searchReadiness.readyEngines
   const webSearchAvailable = searchReadiness.available
@@ -352,6 +406,33 @@ export default function PlaygroundPage() {
     localStorage.setItem(DICTATION_MODEL_STORAGE_KEY, v)
   }
   const dictationOptions = transcriptionOptions(mediaModels, t('playground.autoModel'))
+  const toolEnv = useMemo<AgentToolEnv>(() => ({
+    workspace,
+    v1,
+    github: githubApi.request,
+    capabilities: {
+      webSearch: webSearchAvailable,
+      image: hasMedia('image'),
+      video: hasMedia('video'),
+      speech: hasMedia('audio'),
+      github: !!githubStatus?.connected,
+      knowledge: knowledgeDocs.length > 0,
+    },
+    knowledge: () => knowledge.list(),
+    embed,
+    // hasMedia reads mediaModels, which is in the list.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }), [workspace, v1, webSearchAvailable, mediaModels, githubStatus?.connected, knowledgeDocs.length, knowledge, embed])
+  // Sampling knobs plus the advanced options, in request spelling. Both are
+  // opt-in, so an untouched rail adds nothing.
+  const requestParams = useMemo(
+    () => ({ ...samplingRequestParams(sampling), ...advancedRequestParams(advanced) }),
+    [sampling, advanced],
+  )
+  const compareSystem = useMemo(
+    () => (systemPrompt.trim() ? [{ role: 'system' as const, content: systemPrompt.trim() }] : []),
+    [systemPrompt],
+  )
   const dictationModel = resolveDictationModel(dictationChoice, mediaModels)
 
   // Artifacts (#playground): runnable code in a reply (HTML, SVG) opens in a
@@ -581,6 +662,8 @@ export default function PlaygroundPage() {
     createRef.current = null
     setMessages(conversation.messages)
     setAttachments([])
+    const nextMode = modeForConversation(conversation.messages, mode)
+    if (nextMode !== mode) changeMode(nextMode)
     pickModel(conversation.model ?? 'auto')
     updateSystemPrompt(conversation.systemPrompt ?? '')
     adoptConversation(conversation.id, conversation.title)
@@ -819,9 +902,109 @@ export default function PlaygroundPage() {
 
   const removeAttachment = (id: string) => setAttachments(prev => prev.filter(a => a.id !== id))
 
+  // One agent turn: the tool loop in lib/agent-loop.ts, rendered into the
+  // transcript as it goes (tool steps above the answer) and saved like any
+  // other exchange when it finishes.
+  const runAgentTurn = async (newMessages: ChatMessage[], agentMode: AgentMode) => {
+    abortRef.current?.abort()
+    userStopRef.current = false
+    const controller = new AbortController()
+    abortRef.current = controller
+    const tools = agentToolDefinitions(toolEnv)
+    const wire: WireMessage[] = [
+      {
+        role: 'system',
+        content: agentSystemPrompt({
+          mode: agentMode,
+          userPrompt: systemPrompt,
+          files: workspace.list(),
+          knowledge: knowledge.list(),
+          toolNames: tools.map(tool => tool.function.name),
+        }),
+      },
+      ...newMessages
+        .filter(m => !m.isError)
+        .map(m => ({ role: m.role, content: m.role === 'user' ? toMessageContent(m.content, m.images) : m.content }) as WireMessage),
+    ]
+    const start = Date.now()
+    let last: AgentProgress = { content: '', reasoning: '', steps: [] }
+    const render = (p: AgentProgress, working: boolean): ChatMessage[] => {
+      last = p
+      const next: ChatMessage[] = [...newMessages, {
+        role: 'assistant',
+        content: p.content,
+        ...(p.reasoning ? { reasoning: p.reasoning } : {}),
+        ...(working ? { streaming: true } : {}),
+        meta: { platform: p.platform, model: p.model, latency: Date.now() - start, mode: agentMode, agentSteps: p.steps },
+      }]
+      setMessages(next)
+      return next
+    }
+    render(last, true)
+    try {
+      const result = await runAgent({
+        call: makeChatCall(v1, selectedModel, requestParams),
+        tools,
+        execute: (name, args) => executeAgentTool(name, args, { ...toolEnv, signal: controller.signal }),
+        messages: wire,
+        onProgress: p => render(p, true),
+        signal: controller.signal,
+      })
+      const content = result.content || (result.stoppedAtLimit ? t('playgroundAgent.stepLimit') : t('playgroundAgent.noAnswer'))
+      await persistConversation(render({ ...result, content }, false))
+    } catch (err) {
+      if ((err as { name?: string })?.name === 'AbortError') {
+        // Stopped with the Stop button: keep what the agent had done so far.
+        // Any other abort (new chat, switching conversations) means this
+        // transcript is no longer on screen, so nothing is rendered over it.
+        if (userStopRef.current) {
+          userStopRef.current = false
+          await persistConversation(render({ ...last, content: last.content || t('playgroundAgent.stopped') }, false))
+        }
+        return
+      }
+      const message = err instanceof AgentCallError && err.code === 'no_tools_model'
+        ? t('playgroundAgent.noToolsModel')
+        : err instanceof Error ? err.message : String(err)
+      const kept = last.steps.length > 0 ? render(last, false) : newMessages
+      const failed: ChatMessage[] = [...kept, { role: 'assistant', isError: true, content: message }]
+      setMessages(failed)
+      await persistConversation(failed)
+    } finally {
+      if (abortRef.current === controller) abortRef.current = null
+    }
+  }
+
+  // Compare and Create keep their own results; the composer just hands them
+  // the prompt.
+  const sendToView = async (text: string) => {
+    if (mode === 'create') {
+      if (!text) return
+      setInput('')
+      await createViewRef.current?.send(text)
+      return
+    }
+    const composed = composeText(text, attachments)
+    const content = toMessageContent(composed, pendingImages)
+    setInput('')
+    setAttachments([])
+    await compareRef.current?.send(composed, content)
+  }
+
+  const stopRun = () => {
+    userStopRef.current = true
+    abortRef.current?.abort()
+    abortRef.current = null
+    compareRef.current?.stop()
+  }
+
   const handleSend = async () => {
     const text = input.trim()
     if ((!text && attachments.length === 0) || loading) return
+    if (mode === 'compare' || mode === 'create') {
+      void sendToView(text)
+      return
+    }
 
     // Text-like files are inlined into the prompt; images ride along as data
     // URIs and become `image_url` parts in the request envelope below.
@@ -845,6 +1028,16 @@ export default function PlaygroundPage() {
     // Not awaited: the create runs alongside the completion, and every save
     // below waits on the same memoised promise.
     void conversationIdFor(newMessages)
+
+    if (isAgentMode(mode)) {
+      try {
+        await runAgentTurn(newMessages, mode)
+      } finally {
+        setLoading(false)
+        setTimeout(() => inputRef.current?.focus(), 0)
+      }
+      return
+    }
 
     try {
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }
@@ -893,6 +1086,9 @@ export default function PlaygroundPage() {
         // and max_tokens, spelled as /v1/chat/completions parses them. An
         // untouched rail adds nothing at all, leaving provider defaults alone.
         ...samplingRequestParams(sampling),
+        // The advanced options (seed, top_k, penalties, stop, JSON, effort):
+        // also opt-in, so an untouched panel adds nothing here either.
+        ...advancedRequestParams(advanced),
       }
       if (selectedModel !== 'auto') body.model = selectedModel
       // Everything streams: fusion so you can watch the panel and the judge
@@ -1068,10 +1264,32 @@ export default function PlaygroundPage() {
       />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <div ref={transcriptRef} className="min-h-0 flex-1 overflow-y-auto p-6">
-          {/* The chat sits in a centred column; the composer below shares its width. */}
-          <div className="mx-auto h-full w-full max-w-3xl space-y-4">
-          {messages.length === 0 ? (
+        <ModeBar mode={mode} onModeChange={changeMode} fileCount={workspace.list().length} onOpenFiles={() => { setFilesFocus(null); setFilesOpen(true) }} />
+        <div ref={transcriptRef} className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
+          {/* The chat sits in a centred column; the composer below shares its width.
+              Compare gets a wider one for its columns. */}
+          <div className={`mx-auto h-full w-full space-y-4 ${mode === 'compare' ? 'max-w-7xl' : 'max-w-3xl'}`}>
+          {mode === 'compare' ? (
+            <CompareView
+              handle={compareRef}
+              v1={v1}
+              options={pickerOptions}
+              systemMessages={compareSystem}
+              requestParams={requestParams}
+              onBusyChange={setLoading}
+            />
+          ) : mode === 'create' ? (
+            <CreateView handle={createViewRef} env={toolEnv} onBusyChange={setLoading} />
+          ) : messages.length === 0 && isAgentMode(mode) ? (
+            <div className="flex items-center justify-center h-full text-center">
+              <div className="space-y-2 max-w-md">
+                <p className="text-base font-medium">{t(`playgroundAgent.empty.${mode}Title`)}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t(`playgroundAgent.empty.${mode}Help`, { model: activeModelLabel })}
+                </p>
+              </div>
+            </div>
+          ) : messages.length === 0 ? (
             <div className="flex items-center justify-center h-full text-center">
               <div className="space-y-2 max-w-sm">
                 <p className="text-base font-medium">{t('playground.emptyTitle')}</p>
@@ -1089,7 +1307,9 @@ export default function PlaygroundPage() {
                 // streaming in (no final answer yet) — the trace shows below.
                 // Reasoning that arrives before the first answer token counts:
                 // that IS the bubble's content for the moment.
+                const agentSteps = msg.meta?.agentSteps
                 const showBubble = msg.role === 'user' || msg.content.length > 0 || !!msg.reasoning
+                  || (msg.role === 'assistant' && (!!agentSteps?.length || (!!msg.streaming && !!msg.meta?.mode)))
                 return (
                   <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     {/* The user speaks in a bubble; the assistant answers as plain
@@ -1123,6 +1343,9 @@ export default function PlaygroundPage() {
                             </div>
                           ) : msg.role === 'assistant' ? (
                             <>
+                              {msg.meta?.mode && (
+                                <AgentSteps steps={agentSteps ?? []} working={msg.streaming} onOpenFile={openFile} />
+                              )}
                               {(msg.reasoning || (msg.meta?.webSearch && msg.meta.webSearch.sources.length > 0)) && (
                                 <ReplyTrace
                                   reasoning={msg.reasoning}
@@ -1271,6 +1494,23 @@ export default function PlaygroundPage() {
               e.target.value = ''
             }}
           />
+          {loading && (isAgentMode(mode) || mode === 'compare') && (
+            <div className="mb-2 flex justify-center">
+              <button
+                type="button"
+                onClick={stopRun}
+                className="inline-flex items-center gap-1.5 rounded-full border bg-background px-3 py-1 text-xs text-muted-foreground shadow-sm transition-colors hover:text-foreground"
+              >
+                <Square className="size-3 fill-current" /> {t('playgroundAgent.stop')}
+              </button>
+            </div>
+          )}
+          {mode === 'research' && !webSearchAvailable && (
+            <div className="mb-2 flex items-start gap-1.5 text-xs text-amber-600 dark:text-amber-400">
+              <CircleAlert className="mt-0.5 size-3.5 shrink-0" />
+              <span>{t('playgroundAgent.researchNoSearch')}</span>
+            </div>
+          )}
           <LiquidComposer
             inputRef={inputRef}
             value={input}
@@ -1284,11 +1524,15 @@ export default function PlaygroundPage() {
               e.preventDefault()
               addFiles(files)
             }}
-            placeholder={t('playground.inputPlaceholder')}
+            placeholder={mode === 'chat' ? t('playground.inputPlaceholder') : t(`playgroundAgent.placeholder.${mode}`)}
             hasContent={composerHasContent(input, attachments.length)}
             loading={loading}
             onSend={handleSend}
-            onAttach={() => fileInputRef.current?.click()}
+            onAttach={() => {
+              // Create has no chat turn to attach to: its inputs live in the workspace.
+              if (mode === 'create') { setFilesFocus(null); setFilesOpen(true) }
+              else fileInputRef.current?.click()
+            }}
             labels={{ add: t('playground.addMenu'), attach: t('playground.attach'), send: t('playground.send'), sending: t('playground.sending') }}
             dictation={{
               onUnavailable: dictationUnavailableHint ? () => {
@@ -1302,13 +1546,15 @@ export default function PlaygroundPage() {
                 inputRef.current?.focus()
               },
             }}
-            webSearch={{
+            // The agent modes search with their own web_search tool, so the
+            // search-first switch belongs to direct chat only.
+            webSearch={mode === 'chat' ? {
               enabled: webSearchOn,
               available: webSearchAvailable,
               label: t('search.playgroundToggle'),
               unavailableHint: webSearchUnavailableHint,
               onToggle: updateWebSearch,
-            }}
+            } : undefined}
           />
         </div>
       </div>
@@ -1348,8 +1594,23 @@ export default function PlaygroundPage() {
         webSearchAvailable={webSearchAvailable}
         webSearchUnavailableHint={webSearchUnavailableHint}
         webSearchChain={usableEngines.map(e => e.displayName).join(' → ')}
+        extraTweaked={advancedActiveCount(advanced) > 0}
+        extra={
+          <>
+            <AdvancedOptionsSection settings={advanced} onChange={updateAdvanced} />
+            <GithubSection />
+          </>
+        }
       />
       )}
+      <WorkspaceDrawer
+        open={filesOpen}
+        onClose={() => setFilesOpen(false)}
+        workspace={workspace}
+        knowledge={knowledge}
+        embed={embed}
+        focusPath={filesFocus}
+      />
     </div>
   )
 }

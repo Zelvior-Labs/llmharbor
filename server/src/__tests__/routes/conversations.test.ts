@@ -109,6 +109,25 @@ describe('playground conversations', () => {
       expect(fetched.body.messages).toEqual(messages);
     });
 
+    it('round-trips an agent turn with its mode and tool steps', async () => {
+      const agentTurn = {
+        role: 'assistant',
+        content: 'Created the site.',
+        meta: {
+          platform: 'groq',
+          model: 'llama-3.3-70b',
+          mode: 'code',
+          agentSteps: [
+            { tool: 'write_file', args: '{"path":"index.html"}', result: 'Created index.html (12 B).', ok: true, files: ['index.html'] },
+            { tool: 'web_search', args: '{"query":"x"}', result: 'Error: no engines', ok: false },
+          ],
+        },
+      };
+      const created = await create({ messages: [USER_TURN, agentTurn] });
+      const fetched = await request(app, 'GET', `/api/conversations/${created.id}`, { token: dashToken });
+      expect(fetched.body.messages[1]).toEqual(agentTurn);
+    });
+
     it('drops the transient streaming flag — a stored message is finished', async () => {
       const created = await create({ messages: [{ role: 'assistant', content: 'half', streaming: true }] });
       expect(created.messages[0]).toEqual({ role: 'assistant', content: 'half' });

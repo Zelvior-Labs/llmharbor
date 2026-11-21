@@ -14,6 +14,8 @@ The examples below use `http://localhost:3001`. The desktop and Android apps use
 
 <sub>The dashboard Playground sends chat requests to /v1/chat/completions with the unified key and shows which model answered.</sub>
 
+The Playground's modes, agent tools and workspace are described in [Playground](playground.md).
+
 ## Authentication
 
 Inference routes accept the **unified API key** (`llmharbor-…`, shown on **Keys → Unified API key**)

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { ChevronsLeft, ChevronsRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
@@ -65,6 +66,10 @@ export interface SettingsRailProps {
   webSearchUnavailableHint?: string
   /** Enabled engines in failover order, e.g. "Tavily → Exa". */
   webSearchChain: string
+  /** Extra sections (advanced options, GitHub) rendered at the end of the rail. */
+  extra?: ReactNode
+  /** Whether anything in `extra` is changing requests, for the collapsed dot. */
+  extraTweaked?: boolean
 }
 
 function SamplingControlRow({
@@ -159,11 +164,13 @@ export function SettingsRail({
   webSearchAvailable,
   webSearchUnavailableHint,
   webSearchChain,
+  extra,
+  extraTweaked = false,
 }: SettingsRailProps) {
   const { t } = useI18n()
   // Anything the collapsed strip should own up to: a system prompt riding on
   // every request, or a knob overriding the provider's default.
-  const tweaked = samplingActiveCount(sampling) > 0 || systemPrompt.trim().length > 0 || webSearch
+  const tweaked = samplingActiveCount(sampling) > 0 || systemPrompt.trim().length > 0 || webSearch || extraTweaked
 
   return (
     <div
@@ -309,6 +316,7 @@ export function SettingsRail({
               </p>
             )}
           </div>
+          {extra}
         </div>
       </div>
     </div>

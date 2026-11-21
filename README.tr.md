@@ -38,6 +38,12 @@ değiştirilmiş bir sürümüdür ve Zelvior Labs tarafından sürdürülmekted
   oluşturduğunuz istemci profili anahtarlarını ve iptal edilebilir URL belirteçlerini görür.
 - **Panel.** Anahtarları, modelleri ve yedek zincirlerini yönetin; playground, analiz, günlükler ve
   yedekler de vardır. Panel arayüzü 60 dilde sunulur.
+- **Playground modları.** Doğrudan sohbet edin ya da Agent, Coding ve Research modlarında bir ajanın
+  araçlarla çalışmasına izin verin: dosya yazar, zip/tar arşivleri oluşturur, web'de arar, görsel,
+  video ve ses üretir, bilgi dosyalarınızda arar ve GitHub'ı kullanır. Compare tek bir istemi en fazla
+  dört modelde yan yana çalıştırır. Varsayılan yönlendiricidir (`auto`); istediğiniz modeli de
+  seçebilirsiniz. Masaüstü uygulamalarında ve telefon tarayıcısında çalışır. Bkz.
+  [Playground](docs/en/playground.md).
 - **Kodlama ajanı kurulumu.** `npm run cli -- setup-<tool>` Claude Code, Codex CLI, Cline, Continue,
   Aider, OpenCode, Qwen Code ve diğerleri için yapılandırmayı yazar. Bkz.
   [Agents and CLI](docs/en/agents.md).
@@ -49,11 +55,15 @@ Panelin yerel bir derlemesinden alındı; istekler yerel, OpenAI uyumlu bir test
 <table>
 <tr>
 <td width="50%"><img src="docs/images/models.png" alt="Models: yönlendirme stratejisi ve canlı puanlar"><br><sub>Models: yönlendirme stratejisi ve canlı puanlar</sub></td>
-<td width="50%"><img src="docs/images/playground.png" alt="Playground: yanıt ve onu üreten model"><br><sub>Playground: yanıt ve onu üreten model</sub></td>
+<td width="50%"><img src="docs/images/playground.png" alt="Playground: Chat modu, yanıt ve onu üreten model"><br><sub>Playground: Chat modu, yanıt ve onu üreten model</sub></td>
 </tr>
 <tr>
 <td><img src="docs/images/analytics.png" alt="Analytics: istekler, gecikme ve token"><br><sub>Analytics: istekler, gecikme ve token</sub></td>
 <td><img src="docs/images/agents.png" alt="Agents: kodlama araçları için kurulum komutları"><br><sub>Agents: kodlama araçları için kurulum komutları</sub></td>
+</tr>
+<tr>
+<td><img src="docs/images/playground-coding.png" alt="Playground: Coding modu, ajan dosyaları yazıp zip yaptı"><br><sub>Playground: Coding modu, ajan dosyaları yazıp zip yaptı</sub></td>
+<td><img src="docs/images/playground-compare.png" alt="Playground: Compare modu, iki model yan yana"><br><sub>Playground: Compare modu, iki model yan yana</sub></td>
 </tr>
 </table>
 
@@ -112,7 +122,7 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 ## Belgeler (İngilizce)
 
 [Install](docs/en/install.md) · [Configuration](docs/en/configuration.md) ·
-[Providers](docs/en/providers.md) · [API](docs/en/api.md) · [Agents and CLI](docs/en/agents.md) ·
+[Providers](docs/en/providers.md) · [API](docs/en/api.md) · [Playground](docs/en/playground.md) · [Agents and CLI](docs/en/agents.md) ·
 [Desktop](docs/en/desktop.md) · [Android](docs/en/android.md) · [Docker](docs/en/docker.md) ·
 [Networking](docs/en/networking.md) · [Architecture](docs/en/architecture.md) ·
 [Troubleshooting](docs/en/troubleshooting.md)

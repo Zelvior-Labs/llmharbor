@@ -8,6 +8,10 @@
 
 下面的示例使用 `http://localhost:3001`；桌面版和 Android 默认使用 `http://127.0.0.1:31415`。
 
+![仪表板的 Playground 使用统一密钥向 /v1/chat/completions 发送聊天请求，并显示实际回答的模型。](../images/playground.png)
+
+<sub>仪表板的 Playground 使用统一密钥向 /v1/chat/completions 发送聊天请求，并显示实际回答的模型。</sub>
+
 ## 认证
 
 推理路由接受放在以下任一请求头中的**统一 API 密钥**（`llmharbor-…`，在 **Keys → Unified API key** 中显示）：

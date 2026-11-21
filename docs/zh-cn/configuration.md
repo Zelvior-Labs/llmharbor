@@ -118,7 +118,7 @@
 监听开始前应用。schema 在 `server/src/services/declarative-config.ts`。以下顶层字段均为可选：
 
 - `admin`：`{ "email", "password" }`，仅在还没有账户时创建第一个账户（密码至少 8 个字符）。
-- `license`：Premium 许可证密钥。
+- `license`：仪表板 **Premium** 页面使用的许可证密钥。该字段来自 freellmapi；LLMHarbor 没有付费方案，也不出售密钥。
 - `keys`：`[{ "platform", "key", "label", "baseUrl", "enabled" }]`。
 - `customProviders`：`[{ "baseUrl", "apiKey", "label", "models": [...] }]`。
 - `models`：逐个模型的覆盖设置（`platform`、`modelId`、排名、限额、`enabled` 等）。

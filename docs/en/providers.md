@@ -139,6 +139,10 @@ transcription, search or decision.
 Cloud-metadata and link-local addresses are always rejected as custom base URLs. Loopback and LAN
 addresses are allowed unless you set `FREEAPI_BLOCK_PRIVATE_PROVIDER_URLS=true`.
 
+![A custom OpenAI-compatible endpoint on the Keys page.](../images/keys.png)
+
+<sub>A custom OpenAI-compatible endpoint on the Keys page.</sub>
+
 ## Model catalog
 
 The models each platform serves are seeded by database migrations in
@@ -150,8 +154,9 @@ catalog from `https://api.llmharbor.co/v1/latest` 10 seconds after startup and t
   discarded.
 - A catalog older than the version bundled with the build (`MIN_CATALOG_VERSION`) is ignored, so
   the migrations remain the baseline.
-- Without a Premium license key the server receives the monthly snapshot. With a valid key
-  (activated on the dashboard's **Premium** page) it receives the live tier.
+- Without a license key the server receives the free monthly snapshot. A valid key (entered on the
+  dashboard's **Premium** page) gets the live tier. The license feature comes from freellmapi;
+  LLMHarbor has no paid plan and sells no keys.
 - The request carries only the license key (if one is set) and the last applied catalog version.
   It never includes prompts, completions or provider keys.
 

@@ -52,6 +52,10 @@
 - **Health checks.** Every stored key is validated on a schedule (`HEALTH_CHECK_INTERVAL_MS`,
   default 5 minutes, with jitter).
 
+![The Models page: the active strategy and the live scores behind the current order.](../images/models.png)
+
+<sub>The Models page: the active strategy and the live scores behind the current order.</sub>
+
 ## Storage
 
 - SQLite through `better-sqlite3` on server and desktop installs, built-in `node:sqlite` on Android
@@ -64,6 +68,10 @@
   re-encrypts them under a new key (see [Troubleshooting](troubleshooting.md)).
 - A signed catalog sync can add or update models on top of the migrations. See
   [Providers](providers.md#model-catalog).
+
+![The Analytics page reads the recorded requests.](../images/analytics.png)
+
+<sub>The Analytics page reads the recorded requests.</sub>
 
 ## Limits of the approach
 

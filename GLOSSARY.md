@@ -37,8 +37,8 @@ Shared vocabulary for working in this repository, especially in `server/src/serv
 - **Pool**: a shared quota bucket that several models draw from, for example a provider-wide daily
   cap.
 - **Catalog**: the model list. The baseline comes from migrations, and the signed catalog sync adds
-  to it. New catalog entries reach the Premium (live) tier first. Free installs get them later
-  through the monthly snapshot.
+  to it. New catalog entries reach the live tier first. Installs without a license key get
+  them later through the monthly snapshot. LLMHarbor has no paid plan.
 - **Custom model**: a row that points at a user-supplied `base_url`. The same `model_id` on two
   endpoints is two different rows.
 - **Tombstone / override / retirement**: the ways a catalog row is hidden by the user, edited
@@ -73,7 +73,7 @@ Shared vocabulary for working in this repository, especially in `server/src/serv
 - Platform ≠ provider adapter ≠ model row ≠ key.
 - Chain (ordered attempts) ≠ pool (shared quota bucket).
 - Catalog (what exists) ≠ chain (what this request tries).
-- Custom model (your endpoint) ≠ Premium catalog entry.
+- Custom model (your endpoint) ≠ catalog entry.
 - Cooldown (benched after a failure) ≠ quota (allowance not yet spent).
 - Headroom (steering factor) ≠ reliability (bandit posterior).
 - Named chain (saved list of models) ≠ strategy (score weights).

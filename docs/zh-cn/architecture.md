@@ -38,6 +38,10 @@
 - **粘性会话：**一个对话在最多 30 分钟内保持使用它开始时的模型，多轮会话不会在模型之间跳来跳去。
 - **健康检查：**按计划验证每个已存储的密钥（`HEALTH_CHECK_INTERVAL_MS`，默认 5 分钟，带随机抖动）。
 
+![Models 页面：当前策略以及决定当前顺序的实时评分。](../images/models.png)
+
+<sub>Models 页面：当前策略以及决定当前顺序的实时评分。</sub>
+
 ## 存储
 
 - SQLite：服务器和桌面安装使用 `better-sqlite3`，Android 和 Windows 7 版使用内置 `node:sqlite`，32 位 Linux 包使用 WebAssembly
@@ -46,6 +50,10 @@
 - 提供方密钥用 `ENCRYPTION_KEY`（或生成的 `.encryption-key` 文件）以 AES-256-GCM 加密。`server/src/scripts/rotate-encryption-key.ts`
   可用新密钥重新加密它们（见[故障排查](troubleshooting.md)）。
 - 签名目录同步可以在迁移之上添加或更新模型，见[提供方](providers.md#模型目录)。
+
+![Analytics 页面读取已记录的请求。](../images/analytics.png)
+
+<sub>Analytics 页面读取已记录的请求。</sub>
 
 ## 这种方式的局限
 

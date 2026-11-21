@@ -32,6 +32,21 @@ LLMHarbor 是 Tashfeen Ahmed 的 [freellmapi](https://github.com/tashfeenahmed/f
 - **编程智能体配置。**`npm run cli -- setup-<tool>` 可为 Claude Code、Codex CLI、Cline、Continue、Aider、OpenCode、
   Qwen Code 等写入配置。见[智能体与 CLI](docs/zh-cn/agents.md)。
 
+## 截图
+
+截取自本地构建的仪表板，请求路由到一个本地 OpenAI 兼容测试服务器。
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/models.png" alt="模型：路由策略与实时评分"><br><sub>模型：路由策略与实时评分</sub></td>
+<td width="50%"><img src="docs/images/playground.png" alt="Playground：回复及其实际使用的模型"><br><sub>Playground：回复及其实际使用的模型</sub></td>
+</tr>
+<tr>
+<td><img src="docs/images/analytics.png" alt="分析：请求、延迟与 token"><br><sub>分析：请求、延迟与 token</sub></td>
+<td><img src="docs/images/agents.png" alt="Agents：编码工具的配置命令"><br><sub>Agents：编码工具的配置命令</sub></td>
+</tr>
+</table>
+
 ## 获取
 
 | 平台 | 下载 | 指南 |
@@ -99,10 +114,12 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 
 本项目用于个人实验和学习。如果要在其上构建重要的东西，请使用付费 API。
 
-## Premium
+## 付费方案
 
-路由器是免费的。没有许可证时，目录同步收到的是签名目录的免费每月快照。来自 [llmharbor.co](https://llmharbor.co) 的 Premium
-许可证（年付或终身，在仪表板的 **Premium** 页面激活）会把同步切换到实时目录，新模型无需再等 30 天。许可证失效后，安装会回到每月快照。
+LLMHarbor 没有付费方案。本仓库中的一切都在 MIT 许可证下免费提供。
+
+原项目 freellmapi 在 [freellmapi.co](https://freellmapi.co) 提供可选的付费方案。仪表板的 **Premium**
+页面和配置中的 `license` 字段来自 freellmapi 的代码。LLMHarbor 不出售许可证密钥，因此标准安装使用签名目录的免费每月快照。
 
 ## 贡献与安全
 

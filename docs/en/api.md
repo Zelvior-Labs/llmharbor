@@ -10,6 +10,10 @@ MCP endpoint (`/mcp`). An OpenAPI document is served at `GET /v1/openapi.json`, 
 The examples below use `http://localhost:3001`. The desktop and Android apps use
 `http://127.0.0.1:31415` by default.
 
+![The dashboard Playground sends chat requests to /v1/chat/completions with the unified key and shows which model answered.](../images/playground.png)
+
+<sub>The dashboard Playground sends chat requests to /v1/chat/completions with the unified key and shows which model answered.</sub>
+
 ## Authentication
 
 Inference routes accept the **unified API key** (`llmharbor-…`, shown on **Keys → Unified API key**)

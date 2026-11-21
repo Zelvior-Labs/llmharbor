@@ -43,6 +43,21 @@ o'zgartirilgan versiyasi bo'lib, uni Zelvior Labs qo'llab-quvvatlaydi.
   Continue, Aider, OpenCode, Qwen Code va boshqalar uchun konfiguratsiyani yozadi. Qarang:
   [Agents and CLI](docs/en/agents.md).
 
+## Skrinshotlar
+
+Panelning lokal yig'ilmasidan olingan; so'rovlar lokal OpenAI-mos test serveriga yo'naltiriladi.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/models.png" alt="Models: marshrutlash strategiyasi va jonli ballar"><br><sub>Models: marshrutlash strategiyasi va jonli ballar</sub></td>
+<td width="50%"><img src="docs/images/playground.png" alt="Playground: javob va uni bergan model"><br><sub>Playground: javob va uni bergan model</sub></td>
+</tr>
+<tr>
+<td><img src="docs/images/analytics.png" alt="Analytics: so'rovlar, kechikish va tokenlar"><br><sub>Analytics: so'rovlar, kechikish va tokenlar</sub></td>
+<td><img src="docs/images/agents.png" alt="Agents: kod yozish vositalari uchun sozlash buyruqlari"><br><sub>Agents: kod yozish vositalari uchun sozlash buyruqlari</sub></td>
+</tr>
+</table>
+
 ## Qayerdan olish mumkin
 
 | Platforma | Yuklab olish | Qo'llanma |
@@ -118,12 +133,14 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 Ushbu loyiha shaxsiy tajriba va o'rganish uchun. Uning ustida muhim narsa qursangiz, pullik API'dan
 foydalaning.
 
-## Premium
+## Pullik tariflar
 
-Marshrutizator bepul. Litsenziyasiz katalog sinxronizatsiyasi imzolangan katalogning bepul oylik
-nusxasini oladi. [llmharbor.co](https://llmharbor.co) dan olingan Premium litsenziya (yillik yoki umrbod,
-paneldagi **Premium** sahifasida faollashtiriladi) sinxronizatsiyani jonli katalogga o'tkazadi, shunda
-yangi modellar 30 kun kutmasdan keladi. Litsenziya muddati tugasa, o'rnatma oylik nusxaga qaytadi.
+LLMHarbor'ning pullik tarifi yo'q. Ushbu repozitoriyadagi hamma narsa MIT litsenziyasi ostida bepul.
+
+Asl loyiha freellmapi [freellmapi.co](https://freellmapi.co) saytida ixtiyoriy pullik tarifni taklif
+qiladi. Paneldagi **Premium** sahifasi va konfiguratsiyadagi `license` maydoni freellmapi kodidan
+kelgan. LLMHarbor litsenziya kalitlarini sotmaydi, shuning uchun oddiy o'rnatma imzolangan katalogning
+bepul oylik nusxasidan foydalanadi.
 
 ## Hissa qo'shish va xavfsizlik
 

@@ -31,6 +31,10 @@ npm --prefix ~/llmharbor run cli -- launch
 
 桌面版的 **Agents** 页面也可以在应用内配置支持的工具（**Apply** 按钮），桌面用户无需检出仓库。
 
+![仪表板的 Agents 页面会显示填好服务器地址的配置命令，以及手动配置所需的基础 URL 和密钥。](../images/agents.png)
+
+<sub>仪表板的 Agents 页面会显示填好服务器地址的配置命令，以及手动配置所需的基础 URL 和密钥。</sub>
+
 ## 命令
 
 | 命令 | 作用 |

@@ -42,6 +42,21 @@ değiştirilmiş bir sürümüdür ve Zelvior Labs tarafından sürdürülmekted
   Aider, OpenCode, Qwen Code ve diğerleri için yapılandırmayı yazar. Bkz.
   [Agents and CLI](docs/en/agents.md).
 
+## Ekran görüntüleri
+
+Panelin yerel bir derlemesinden alındı; istekler yerel, OpenAI uyumlu bir test sunucusuna yönlendiriliyor.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/models.png" alt="Models: yönlendirme stratejisi ve canlı puanlar"><br><sub>Models: yönlendirme stratejisi ve canlı puanlar</sub></td>
+<td width="50%"><img src="docs/images/playground.png" alt="Playground: yanıt ve onu üreten model"><br><sub>Playground: yanıt ve onu üreten model</sub></td>
+</tr>
+<tr>
+<td><img src="docs/images/analytics.png" alt="Analytics: istekler, gecikme ve token"><br><sub>Analytics: istekler, gecikme ve token</sub></td>
+<td><img src="docs/images/agents.png" alt="Agents: kodlama araçları için kurulum komutları"><br><sub>Agents: kodlama araçları için kurulum komutları</sub></td>
+</tr>
+</table>
+
 ## Edinin
 
 | Platform | İndirme | Kılavuz |
@@ -116,13 +131,14 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 Bu proje kişisel deneme ve öğrenme içindir. Üzerine önemli bir şey inşa ediyorsanız ücretli bir API
 kullanın.
 
-## Premium
+## Ücretli planlar
 
-Yönlendirici ücretsizdir. Lisans olmadan katalog eşitlemesi, imzalı kataloğun ücretsiz aylık
-anlık görüntüsünü alır. [llmharbor.co](https://llmharbor.co) adresinden alınan bir Premium lisansı
-(yıllık veya ömür boyu; paneldeki **Premium** sayfasında etkinleştirilir) eşitlemeyi canlı kataloğa
-geçirir, böylece yeni modeller 30 gün beklemeden gelir. Lisans sona ererse kurulum aylık anlık görüntüye
-geri döner.
+LLMHarbor'ın ücretli bir planı yoktur. Bu depodaki her şey MIT lisansı altında ücretsizdir.
+
+Asıl proje olan freellmapi, [freellmapi.co](https://freellmapi.co) adresinde isteğe bağlı bir ücretli
+plan sunar. Paneldeki **Premium** sayfası ve yapılandırmadaki `license` alanı freellmapi'nin kodundan
+gelir. LLMHarbor lisans anahtarı satmaz, bu yüzden standart bir kurulum imzalı kataloğun ücretsiz aylık
+anlık görüntüsünü kullanır.
 
 ## Katkı ve güvenlik
 

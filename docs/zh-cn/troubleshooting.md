@@ -6,11 +6,15 @@
 
 | 安装方式 | 日志 |
 | --- | --- |
-| 源码 | 运行服务器的终端。警告和错误也会保存在仪表板的 **Logs** 页面。 |
+| 源码 | 运行服务器的终端。仪表板的 **Logs** 页面显示各级别的最近日志；警告和错误还会保存到数据库，重启后仍然保留。 |
 | Docker | `docker compose logs -f llmharbor` |
 | 桌面版 | `<数据目录>/logs/freeapi.log`，可用托盘菜单的 **Open Logs Folder** 打开。见[桌面版](desktop.md#数据目录)。 |
 | Windows 7 版 | `%APPDATA%\LLMHarbor-Win7\logs\freeapi.log` |
 | Android | 应用可以导出诊断 zip，见 [android/README.md](../../android/README.md)（英文）。 |
+
+![仪表板的 Logs 页面。](../images/logs.png)
+
+<sub>仪表板的 Logs 页面。</sub>
 
 ## 无法从其他设备创建第一个账户
 

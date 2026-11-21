@@ -125,7 +125,8 @@ after migrations on every boot, before the HTTP listener starts. The schema is i
 
 - `admin`: `{ "email", "password" }`. Creates the first account, only while no account exists.
   The password needs at least 8 characters.
-- `license`: a Premium license key.
+- `license`: a license key for the dashboard's **Premium** page. This field comes from freellmapi;
+  LLMHarbor has no paid plan and sells no keys.
 - `keys`: `[{ "platform", "key", "label", "baseUrl", "enabled" }]`.
 - `customProviders`: `[{ "baseUrl", "apiKey", "label", "models": [...] }]`.
 - `models`: per-model overrides (`platform`, `modelId`, ranks, limits, `enabled`, …).

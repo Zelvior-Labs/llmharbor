@@ -134,6 +134,10 @@ transcription、search 或 decision。
 云元数据地址和链路本地地址始终不能用作自定义基础 URL；回环和局域网地址默认允许，除非设置
 `FREEAPI_BLOCK_PRIVATE_PROVIDER_URLS=true`。
 
+![Keys 页面上的一个自定义 OpenAI 兼容端点。](../images/keys.png)
+
+<sub>Keys 页面上的一个自定义 OpenAI 兼容端点。</sub>
+
 ## 模型目录
 
 各平台提供的模型由 [`server/src/db/migrations/`](../../server/src/db/migrations) 中的数据库迁移写入。在此基础上，
@@ -142,7 +146,7 @@ transcription、search 或 decision。
 
 - 响应会用内置的 Ed25519 公钥校验，未签名或被篡改的目录会被丢弃。
 - 比构建中自带版本（`MIN_CATALOG_VERSION`）更旧的目录会被忽略，因此迁移始终是基线。
-- 没有 Premium 许可证密钥时，服务器收到的是每月快照；有有效密钥（在仪表板的 **Premium** 页面激活）时，收到的是实时版本。
+- 没有许可证密钥时，服务器收到的是免费的每月快照；有有效密钥（在仪表板的 **Premium** 页面输入）时，收到的是实时版本。许可证功能来自 freellmapi；LLMHarbor 没有付费方案，也不出售密钥。
 - 请求只携带许可证密钥（如果设置了）和上次应用的目录版本，从不包含提示词、回复或提供方密钥。
 
 设置 `CATALOG_SYNC_DISABLED=1` 可关闭同步，此时路由器只使用自带目录和您自己的修改。`CATALOG_BASE_URL` 和

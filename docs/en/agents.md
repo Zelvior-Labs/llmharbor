@@ -35,6 +35,10 @@ npm --prefix ~/llmharbor run cli -- launch
 The desktop app's **Agents** page can also configure supported tools from inside the app (its
 **Apply** button), so desktop users don't need a checkout.
 
+![The dashboard's Agents page shows each setup command with your server's URL filled in, plus the base URL and key for manual setup.](../images/agents.png)
+
+<sub>The dashboard's Agents page shows each setup command with your server's URL filled in, plus the base URL and key for manual setup.</sub>
+
 ## Commands
 
 | Command | What it does |

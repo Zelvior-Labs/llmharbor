@@ -6,11 +6,15 @@
 
 | Install | Logs |
 | --- | --- |
-| Source | The terminal running the server. Warnings and errors are also kept in the dashboard's **Logs** page. |
+| Source | The terminal running the server. The dashboard's **Logs** page shows recent lines of every level. Warnings and errors are also saved to the database, so they survive a restart. |
 | Docker | `docker compose logs -f llmharbor` |
 | Desktop | `<data folder>/logs/freeapi.log`. Use **Open Logs Folder** in the tray menu. See [Desktop](desktop.md#data-folder). |
 | Windows 7 edition | `%APPDATA%\LLMHarbor-Win7\logs\freeapi.log` |
 | Android | The app can export a diagnostics zip. See [android/README.md](../../android/README.md). |
+
+![The dashboard's Logs page.](../images/logs.png)
+
+<sub>The dashboard's Logs page.</sub>
 
 ## I can't create the first account from another device
 

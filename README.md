@@ -41,6 +41,21 @@ Tashfeen Ahmed, maintained by Zelvior Labs.
 - **Coding-agent setup.** `npm run cli -- setup-<tool>` writes the config for Claude Code, Codex CLI,
   Cline, Continue, Aider, OpenCode, Qwen Code and more. See [Agents and CLI](docs/en/agents.md).
 
+## Screenshots
+
+Captured from a local build of the dashboard, routing to a local OpenAI-compatible test server.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/models.png" alt="Models: routing strategy and live scores"><br><sub>Models: routing strategy and live scores</sub></td>
+<td width="50%"><img src="docs/images/playground.png" alt="Playground: a reply with the model that served it"><br><sub>Playground: a reply with the model that served it</sub></td>
+</tr>
+<tr>
+<td><img src="docs/images/analytics.png" alt="Analytics: requests, latency and tokens"><br><sub>Analytics: requests, latency and tokens</sub></td>
+<td><img src="docs/images/agents.png" alt="Agents: setup commands for coding tools"><br><sub>Agents: setup commands for coding tools</sub></td>
+</tr>
+</table>
+
 ## Get it
 
 | Platform | Download | Guide |
@@ -115,12 +130,14 @@ npm run cli -- setup-claude --url http://localhost:3001 --api-key llmharbor-...
 This project is for personal experimentation and learning. If you build something that matters on
 top of it, use a paid API.
 
-## Premium
+## Paid plans
 
-The router is free. Without a license, the catalog sync receives the free monthly snapshot of the
-signed catalog. A Premium license from [llmharbor.co](https://llmharbor.co) (annual or lifetime,
-activated on the dashboard's **Premium** page) switches the sync to the live catalog, so new models
-arrive without the 30-day wait. If a license lapses, the install goes back to the monthly snapshot.
+LLMHarbor has no paid plan. Everything in this repository is free under the MIT license.
+
+The original project, freellmapi, offers an optional paid plan at
+[freellmapi.co](https://freellmapi.co). The dashboard's **Premium** page and the `license` config
+field come from freellmapi's code. LLMHarbor doesn't sell license keys, so a standard install uses
+the free monthly snapshot of the signed catalog.
 
 ## Contributing and security
 

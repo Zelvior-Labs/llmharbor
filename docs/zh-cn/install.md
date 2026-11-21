@@ -74,6 +74,10 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 桌面版会自动登录自己的仪表板。通过局域网访问桌面版的设备仍然会看到登录表单。
 
+![添加了一个自定义端点的 Keys 页面。统一 API 密钥在 Unified API key 标签页中。](../images/keys.png)
+
+<sub>添加了一个自定义端点的 Keys 页面。统一 API 密钥在 Unified API key 标签页中。</sub>
+
 ## 更新源码安装
 
 ```bash

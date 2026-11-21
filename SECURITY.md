@@ -45,7 +45,7 @@ In scope:
 - The desktop apps, the Android app, and their local data.
 - The Docker image and packaging (`Dockerfile`, `docker-compose.yml`), including secrets leaking
   into image layers or logs.
-- Premium license validation and the signed catalog feed.
+- License-key validation and the signed catalog feed.
 
 Out of scope:
 

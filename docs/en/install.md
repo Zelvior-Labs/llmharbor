@@ -82,6 +82,10 @@ it in a `.encryption-key` file next to the database. See [Configuration](configu
 The desktop app signs in to its own dashboard automatically. A device reaching the desktop app over
 LAN access still sees the sign-in form.
 
+![The Keys page with one custom endpoint added. The unified API key is under the Unified API key tab.](../images/keys.png)
+
+<sub>The Keys page with one custom endpoint added. The unified API key is under the Unified API key tab.</sub>
+
 ## Updating a source install
 
 ```bash

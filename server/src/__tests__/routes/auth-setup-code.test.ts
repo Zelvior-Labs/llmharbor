@@ -91,7 +91,7 @@ describe('First-run setup code gate (FIX 1)', () => {
   });
 
   // The documented reverse-proxy deployment (Caddy/nginx/Traefik on the same
-  // host, docs/en/proxy/OVERVIEW.md) makes every request a loopback socket, so
+  // host, docs/en/networking.md) makes every request a loopback socket, so
   // the socket test alone said "local" for the entire internet and any visitor
   // could claim an unclaimed dashboard with no code. A forwarded hop can never
   // GRANT locality, but a non-loopback one withdraws it.

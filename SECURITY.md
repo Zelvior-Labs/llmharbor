@@ -1,91 +1,70 @@
 # Security Policy
 
-OSLLMAPI holds real credentials: your provider API keys (encrypted at rest in
-SQLite), a unified `/v1` bearer token, and a dashboard account. Bugs that expose
-any of those are taken seriously. Thanks for reporting them responsibly.
+LLMHarbor stores real credentials: your provider API keys (encrypted at rest in SQLite), the unified
+API key, client-profile keys and URL tokens, and a dashboard account. Bugs that expose any of these
+are taken seriously. Thank you for reporting them responsibly.
 
 ## Supported versions
 
-| Version | Supported |
-| ------- | --------- |
-| 0.13.x (current) | Yes — security fixes land here |
-| 0.12.x | Best effort; please upgrade |
-| 0.11.x and older | No |
-
-Fixes ship on the latest release line. There are no backported patch releases for
-older lines, so the fastest way to stay patched is to track `0.13.x` (Docker users:
-re-pull `:latest`).
+Fixes ship only on the latest release (currently the 0.16.x line, on
+[GitHub Releases](https://github.com/Zelvior-Labs/llmharbor/releases)). Older lines get no backported
+patch releases. To stay patched, update the desktop app, rebuild from the latest checkout, or pull
+the newest Docker image.
 
 ## Reporting a vulnerability
 
-**Preferred:** GitHub private vulnerability reporting — go to the
-[Security tab](https://github.com/tashfeenahmed/llmharbor/security) and click
-**Report a vulnerability**. That opens a private thread with the maintainer and
-keeps the details out of public issues.
-
-**Alternate:** email **support@llmharbor.co** with `[llmharbor security]` in the
-subject.
-
-Please do not open a public issue, PR, or discussion for a security bug until a
-fix is out.
+Email **support@llmharbor.co** with `[llmharbor security]` in the subject. Don't open a public issue,
+PR or discussion about a security bug until a fix is released.
 
 A useful report includes:
 
-- Affected version or commit, and how you run it (Docker, `npm run dev`, desktop app).
-- The impact — what an attacker gets (read keys, bypass auth, RCE, etc.).
-- Steps to reproduce: the exact request, config, or `.env` settings involved.
-  Redact your real provider keys.
+- The affected version or commit, and how you run it (Docker, source, desktop, Android).
+- The impact: what an attacker gains (reading keys, bypassing auth, code execution, …).
+- Steps to reproduce: the exact request, config or `.env` settings involved. Redact real provider
+  keys.
 - Server logs around the failing request, where you can share them.
 
 ## What to expect
 
-- **Acknowledgement:** within a few days. This is a hobby project maintained by
-  one person, so it is not a 24-hour SLA.
-- **Fix:** best effort, prioritised by severity. Expect a rough timeline in the
-  first reply, and progress updates on the same thread.
-- **Disclosure:** once a fix is released. You get credit in the release notes if
-  you want it — say so in your report, and tell me the name or handle to use.
-- **No bug bounty.** There is no money behind this project to pay one. Credit and
-  a genuine thank-you are what's on offer.
+- **Acknowledgement:** within a few days. This is a small project with no 24-hour SLA.
+- **Fix:** best effort, prioritised by severity.
+- **Disclosure:** after a fix is released. You are credited in the release notes if you want to be,
+  so tell us the name or handle to use.
+- **No bug bounty.**
 
 ## Scope
 
 In scope:
 
-- The router server and its `/v1` proxy, `/api/*` admin routes, and `/mcp` endpoint.
-- Dashboard authentication — the email + password account (scrypt, session tokens)
-  and the unified `llmharbor-…` API key.
-- Key handling: AES-256-GCM encryption at rest, `ENCRYPTION_KEY` usage, encrypted
-  DB backups, key import/export.
-- The Electron desktop app and its local data directory.
-- The Docker image and packaging (`Dockerfile`, `docker-compose.yml`, the install
-  script), including anything that leaks secrets into image layers or logs.
-- Premium license key validation and the signed catalog feed.
+- The server: `/v1`, `/v1beta`, the Ollama emulation under `/api/*`, the dashboard API under `/api/*`,
+  and `/mcp`.
+- Dashboard authentication (email and password account, session tokens, setup and reset codes) and
+  the API credentials listed above.
+- Key handling: AES-256-GCM encryption at rest, `ENCRYPTION_KEY` and the generated key file,
+  encrypted backups, key import and export.
+- The desktop apps, the Android app, and their local data.
+- The Docker image and packaging (`Dockerfile`, `docker-compose.yml`), including secrets leaking
+  into image layers or logs.
+- Premium license validation and the signed catalog feed.
 
 Out of scope:
 
-- Vulnerabilities in upstream LLM providers themselves. Report those to the
-  provider. Bugs in *how this router talks to them* are in scope.
-- Anything that requires the operator to deliberately expose the server to the
-  public internet. OSLLMAPI is a single-user, trusted-network tool: it binds
-  `127.0.0.1` by default, `HOST_BIND=0.0.0.0` is a documented opt-in with a
-  warning attached, and there is no multi-tenant auth by design. "I put it on a
-  public IP and someone used my quota" is expected behaviour, not a vulnerability.
-- Social engineering, phishing, physical access, or attacks that assume an
-  already-compromised host or user account.
-- Automated-scanner output with no demonstrated impact.
+- Vulnerabilities in the upstream LLM providers themselves. Report those to the provider. Bugs in
+  how this gateway talks to them are in scope.
+- Problems that require the operator to deliberately expose the server to the public internet.
+  LLMHarbor is a single-user, trusted-network tool with no multi-tenant auth.
+- Social engineering, phishing, physical access, and attacks that assume an already-compromised host
+  or account.
+- Automated scanner output with no demonstrated impact.
 
-## Hardening tips for self-hosters
+## Hardening tips
 
-- **Keep the localhost binding.** Only set `HOST_BIND=0.0.0.0` on a network you
-  trust, and put it behind a reverse proxy with TLS and auth if it must be
-  reachable more widely. Never expose it straight to the internet.
-- **Protect `ENCRYPTION_KEY` and `.env`.** They decrypt every provider key you
-  have stored. Keep them out of git, off shared drives, and backed up somewhere
-  safe — losing the key means losing the stored keys. In production always set
-  `ENCRYPTION_KEY` explicitly rather than relying on the generated dev fallback.
-- **Update.** Re-pull the Docker image (or `git pull` and rebuild) periodically;
-  dependency and router fixes ride along with feature releases.
-- **Rotate what leaks.** Regenerate the unified API key from the Keys page if a
-  client that held it is compromised, and swap out suspect provider keys — the
-  router falls over to sibling keys, so a rotation is not an outage.
+- **Keep it off the public internet.** Docker publishes on `127.0.0.1` by default. Change
+  `HOST_BIND` only on a network you trust. If remote access is unavoidable, put the server behind a
+  TLS reverse proxy with its own authentication. See [docs/en/networking.md](docs/en/networking.md).
+- **Protect `ENCRYPTION_KEY` and `.env`.** They decrypt every stored provider key. Keep them out of
+  git and backed up somewhere safe. Losing the key means losing the stored keys. In production, set
+  `ENCRYPTION_KEY` explicitly.
+- **Update regularly.** Dependency and security fixes ship with normal releases.
+- **Rotate what leaks.** Regenerate the unified API key on the Keys page if a client that held it is
+  compromised. Revoke URL tokens you no longer use. Replace suspect provider keys.

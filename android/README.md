@@ -13,7 +13,7 @@ opens in your phone's browser so uploads, downloads and the clipboard work norma
 Android refuses an APK whose CPUs do not match the device, so try `arm64-v8a` first on a modern
 phone and `armeabi-v7a` on an older or low-RAM one.
 
-1. Download the APK from the [Android releases](https://github.com/zelvior/llmharbor/releases?q=android).
+1. Download the APK from the [Android releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=android).
    Tap it, allow **Install unknown apps** for that browser or file manager if prompted, then install.
    You can turn that permission off again afterward.
 2. Open **LLMHarbor → Start gateway**. Wait for **Gateway running**, then tap **Show setup/reset code**
@@ -142,7 +142,7 @@ are checked for key and placeholder parity rather than compiled away: `python3 a
 Emulators still are not Android Go devices, so a self-hosted runner job
 (`.github/workflows/android-device.yml`) installs the same artifact on an attached arm64 phone and records
 `dumpsys meminfo` plus lowmemorykiller events; see
-[the device-runner guide](../docs/en/install/03-android-device-runner.md). `arm64-v8a` otherwise remains
+[the device-runner guide](../docs/en/android.md#device-test-runner-maintainers). `arm64-v8a` otherwise remains
 covered by packaging assertions (ELF class, ABI, manifest, signature) rather than a hosted device run.
 
 Runtime: the **full**, not lite, [nodejs-mobile v24.22.1-0 community build](https://github.com/fogtape/nodejs-mobile/releases/tag/v24.22.1-0).

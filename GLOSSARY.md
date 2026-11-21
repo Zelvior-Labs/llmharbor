@@ -1,117 +1,80 @@
 # Glossary
 
-Shared vocabulary for working in this repo. Read this before touching
-`server/src/services/router.ts`, `server/src/services/ratelimit.ts`,
-`server/src/lib/fallback-loop.ts`, `server/src/providers/*`, or anything
-under `server/src/services/model-*` / `custom-model-*`.
+Shared vocabulary for working in this repository, especially in `server/src/services/router.ts`,
+`server/src/services/ratelimit.ts`, `server/src/lib/fallback-loop.ts`, `server/src/providers/` and
+`server/src/services/model-*` / `custom-model-*`. For how the pieces fit together, see
+[docs/en/architecture.md](docs/en/architecture.md).
 
-Deep dives live under `docs/en/` — this file defines terms, it does not
-repeat implementation. When this file and a deep dive disagree, the deep
-dive wins; fix this file.
+## The product
 
-## What this thing is
+- **Gateway**: the whole product. A self-hosted proxy that puts many providers' free tiers behind
+  one API.
+- **Unified API key**: the single `llmharbor-…` bearer key that clients use for `/v1`, `/v1beta`,
+  `/api/*` (Ollama emulation) and `/mcp`.
+- **Client profile**: an extra API key with its own settings, created under **Keys → Unified API key**.
+- **URL token**: a revocable credential embedded in the URL path (`/v1/t/<token>/…`), for clients
+  that can't send an `Authorization` header.
 
-- **Gateway**: the whole product. One self-hosted proxy that stacks many
-  providers' free tiers behind one OpenAI-compatible endpoint.
-- **Pooled fallback chain**: the gateway's single logical model. Per request
-  the router walks an ordered chain of models until one answers or the
-  time budget runs out.
+## Four nouns that get mixed up
 
-## The four nouns agents mix up
-
-- **Platform**: a named upstream, e.g. `google`, `groq`, `openrouter`.
-  The closed list lives in `shared/types.ts` (`Platform`).
-- **Provider adapter**: the code file for a platform
-  (`server/src/providers/<platform>.ts`). Most extend
-  `OpenAICompatProvider`; a few with odd wire protocols extend
-  `BaseProvider` directly.
-- **Model row**: one routable `(platform, model_id)` entry in the DB,
-  plus its limits, capabilities, and score inputs.
-- **Key**: one stored upstream credential for a platform. A model routes
-  only when it has at least one healthy, under-limit key.
+- **Platform**: a named upstream such as `google`, `groq` or `openrouter`. The closed list is the
+  `Platform` union in `shared/types.ts`.
+- **Provider adapter**: the code for a platform (`server/src/providers/<platform>.ts`). Most extend
+  `OpenAICompatProvider`. A few with unusual wire protocols extend `BaseProvider` directly.
+- **Model row**: one routable `(platform, model_id)` entry in the database, with its limits,
+  capabilities and score inputs.
+- **Key**: one stored upstream credential for a platform. A model routes only when it has at least
+  one healthy key that is under its limits.
 
 ## Chains, pools, catalog
 
 - **Chain**: the ordered list of model rows tried for one request.
-  Source, in priority order: active profile → global fallback config →
-  `auto:` sort alias → profile by name.
-- **`auto:<name>`**: a named chain exposed as a selectable model
-  (`auto:fast`, `auto:smart`, …).
-- **Profile**: a named chain saved in the `profile_models` table
-  (e.g. "coding", "long-context").
-- **Pool key**: the shared quota bucket keys draw from
-  (e.g. `openrouter::free`). Keys in one pool share one allowance.
-- **Catalog model**: a row delivered by the signed catalog sync.
-- **Custom / relay model**: a row pointing at a user-supplied `base_url`
-  (`endpoint scope` `custom:<hash>`). Same `model_id` on two relays
-  is two different rows.
-- **Model-age gate**: new catalog rows serve as `premium` for 30 days,
-  then become `free` on the next signed sync.
-- **Tombstone / override / retirement**: the three ways a catalog row
-  goes away or is edited without editing the catalog: user-hidden,
-  upstream end-of-life, or a local field override.
+- **Fallback chain**: the user-editable default chain on the dashboard's Fallback page.
+- **`auto:<axis>`**: a sorted alias (`auto:smart`, `auto:fast`, `auto:reliable`, `auto:balanced`,
+  `auto:cheap`).
+- **Named chain / profile**: a saved chain in the `profile_models` table, selectable as
+  `auto:<name>`.
+- **Pool**: a shared quota bucket that several models draw from, for example a provider-wide daily
+  cap.
+- **Catalog**: the model list. The baseline comes from migrations, and the signed catalog sync adds
+  to it. New catalog entries reach the Premium (live) tier first. Free installs get them later
+  through the monthly snapshot.
+- **Custom model**: a row that points at a user-supplied `base_url`. The same `model_id` on two
+  endpoints is two different rows.
+- **Tombstone / override / retirement**: the ways a catalog row is hidden by the user, edited
+  locally, or retired upstream without the catalog itself changing.
 
 ## Routing and quota
 
-- **Router**: picks one `(platform, model, key)` per request. A
-  Thompson-sampling bandit over reliability / speed / intelligence,
-  multiplied by headroom guardrails — not round-robin.
-- **Strategy**: the weight preset (`balanced`, `smartest`, `fastest`,
-  `reliable`, `custom`, `priority`). Key selection (`auto` /
-  `least-remaining`) is independent of it.
-- **Headroom**: remaining quota as a 0–1 factor. Steers traffic away
-  before a cap hits; it never lets a request through a real limit.
-- **Quota windows**: RPM / TPM (sliding minute) and RPD / TPD (UTC day).
-  Plus provider-wide pools (one account-wide cap across many models)
-  and in-flight leases (in-flight requests count before they finish).
-- **Hard gate vs steering**: `canMakeRequest` / `canUseTokens` say
-  yes/no on the hot path. The 5-second usage snapshot only steers
-  ranking. Do not treat the snapshot as permission.
-- **Cooldown**: a benched `(model, key)` after 429/5xx/auth failures.
-  `heuristic` (our guess, probe-eligible) vs `authoritative` (provider
-  Retry-After) vs `credit` (402) vs `tier` (403). Escalates
-  2 min → 10 min → 1 h → 24 h.
-- **Fallback loop**: the shared retry driver every route uses
-  (`server/src/lib/fallback-loop.ts`). Up to ~20 attempts inside one
-  wall-clock budget; a stalled first byte cancels the attempt.
-- **Degraded mode**: quota exhausted at the top of the chain, so the
-  endpoint serves the next healthy tier instead of failing. Resets at
-  UTC midnight.
-- **Tool-call rescue**: models that emit tool calls as plain text are
-  converted to real `tool_calls`. Tool requests route only to models
-  that support tools.
-- **Health**: background probe keeping key status fresh. `UNKEYED` =
-  no key yet; `KEYED-NO-ROWS` = key stored but zero routable rows;
-  `serving` = key + rows + traffic.
-
-## Repo map
-
-- `server/` — Express proxy (`:3001`), router, quota, providers, DB.
-- `client/` — React + Vite dashboard.
-- `shared/` — `types.ts`, notably the `Platform` union.
-- `cli/`, `desktop/` — CLIs and desktop shell, not the hot path.
-- `docs/en/architecture/` — router, quota/cooldown, streaming,
-  degraded mode, catalog sync, observability.
-- `docs/en/providers/` — per-platform quotas, adding a provider.
-- `docs/en/glossary/01-glossary.md` — deeper term table with code refs.
-- `server/src/__tests__/` — unit + integration + route tests.
+- **Router**: picks a `(platform, model, key)` for each request. It uses a Thompson-sampling bandit
+  over reliability, speed and intelligence, multiplied by headroom guardrails. It is not
+  round-robin.
+- **Strategy**: the weight preset (`balanced`, `smartest`, `fastest`, `reliable`, `custom`,
+  `priority`). Key selection (`auto` or `least-remaining`) is a separate setting.
+- **Headroom**: remaining quota as a 0–1 factor. It steers traffic away before a cap is hit. It
+  never lets a request past a real limit.
+- **Quota windows**: RPM/TPM (sliding minute) and RPD/TPD (UTC day), plus provider-wide pools and
+  in-flight leases (in-flight requests count before they finish).
+- **Hard gate vs steering**: `canMakeRequest` / `canUseTokens` decide yes or no on the hot path. The
+  short-lived usage snapshot (5-second TTL) only affects ranking. Never treat the snapshot as
+  permission.
+- **Cooldown**: a benched `(model, key)` after a 429, a 5xx or an auth failure. The source is one of
+  `heuristic` (our own guess, eligible for early probing), `authoritative` (provider Retry-After or
+  a daily reset), `credit` (402), `tier` (403) or `checkin`. Repeated heuristic 429s escalate the
+  bench through 2 min → 10 min → 1 h → 24 h within a day.
+- **Fallback loop**: the shared retry driver used by every route (`server/src/lib/fallback-loop.ts`).
+  It allows up to 20 attempts within one time budget.
+- **Sticky session**: a conversation stays on its first model for up to 30 minutes.
+- **Tool-call rescue**: tool calls that a model emits as plain text are turned into real
+  `tool_calls` (`server/src/lib/tool-call-rescue.ts`).
 
 ## Confusables
 
-- Platform ≠ provider adapter ≠ model ≠ key.
-- Chain (ordered tries) ≠ pool (shared quota bucket).
-- Catalog listing (what exists) ≠ chain (what this request tries).
-- Custom model (user relay) ≠ premium model (new catalog row).
-- Cooldown (benched after failure) ≠ quota (allowance not yet spent).
+- Platform ≠ provider adapter ≠ model row ≠ key.
+- Chain (ordered attempts) ≠ pool (shared quota bucket).
+- Catalog (what exists) ≠ chain (what this request tries).
+- Custom model (your endpoint) ≠ Premium catalog entry.
+- Cooldown (benched after a failure) ≠ quota (allowance not yet spent).
 - Headroom (steering factor) ≠ reliability (bandit posterior).
-- Profile (saved chain) ≠ strategy (score weights).
-
-## Contributing pointers
-
-- One change per PR; keep `npm test` green; add a test with the fix.
-- Never invent provider limits, model ids, or endpoints — verify
-  against the provider.
-- Schema changes are file-per-migration under
-  `server/src/db/migrations/`; never edit an applied migration.
-- `client/src/i18n/locales/en.json` is the i18n source of truth
-  (`npm run check:i18n` in `client/`).
+- Named chain (saved list of models) ≠ strategy (score weights).
+- Unified API key (clients) ≠ dashboard session token (dashboard and `npm run cli -- keys`).

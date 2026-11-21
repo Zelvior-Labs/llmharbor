@@ -1,6 +1,6 @@
 services:
   llmharbor:
-    image: ghcr.io/tashfeenahmed/llmharbor:latest
+    image: ghcr.io/zelvior-labs/llmharbor:latest
     build:
       context: .
       dockerfile: Dockerfile

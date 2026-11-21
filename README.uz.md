@@ -73,7 +73,8 @@ Panelning lokal yig'ilmasidan olingan; so'rovlar lokal OpenAI-mos test serveriga
 | Platforma | Yuklab olish | Qo'llanma |
 | --- | --- | --- |
 | Windows 10/11, macOS 12+, Linux x64/arm64 | [Oxirgi reliz](https://github.com/Zelvior-Labs/llmharbor/releases/latest) (`v*`) | [Desktop](docs/en/desktop.md) |
-| Windows 7 / 8 / 8.1 | [`v*` relizlaridagi](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-windows-legacy-*` o'rnatuvchi yoki ko'chma ZIP | [desktop/win7](desktop/win7/README.md) |
+| Windows 7 / 8 / 8.1 · 32-bit | [`v*` relizlaridagi](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-windows-x86-*` o'rnatuvchi yoki ko'chma ZIP — x86 fayllar legacy nashrida, Windows 7/8/8.1 da ishlaydi | [desktop/win7](desktop/win7/README.md) |
+| Windows 7 / 8 / 8.1 · 64-bit | [`v*` relizlaridagi](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-windows-legacy-x64-*` o'rnatuvchi yoki ko'chma ZIP | [desktop/win7](desktop/win7/README.md) |
 | Linux Legacy (x86/x64, Node.js 18+) | [`v*` relizlaridagi](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-linux-legacy-*` .deb, AppImage yoki ko'chma arxiv | [desktop/linux-browser](desktop/linux-browser/README.md) |
 | Android 8.0+ | [`v*` relizlaridagi](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-android-*.apk` | [Android](docs/en/android.md) |
 | Docker | Ushbu repozitoriydan yig'ing yoki `ghcr.io/zelvior-labs/llmharbor` | [Docker](docs/en/docker.md) |

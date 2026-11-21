@@ -2,8 +2,13 @@ name: Release
 
 # ONE workflow builds, tests, renames and publishes every LLMHarbor download:
 #
-#   Windows 10/11   x64 + x86 NSIS installers (auto-update feeds) and portable ZIPs
-#   Windows 7/8/8.1 x64 + x86 per-user installers and portable ZIPs (Electron-Legacy)
+#   Windows 10/11   x64 NSIS installer (auto-update feed) and portable ZIP
+#   Windows 32-bit  x86 per-user installer and portable ZIP (Electron-Legacy, so
+#                   the plain x86 files load on Windows 7/8/8.1 too — modern
+#                   Electron binaries are linked for Windows 10+, and the loader
+#                   on older Windows rejects them with "is not a valid Win32
+#                   application")
+#   Windows 7/8/8.1 x64 per-user installer and portable ZIP (Electron-Legacy)
 #   macOS           Apple silicon + Intel DMG/ZIP (signed when the Apple secrets exist)
 #   Linux           x64 + arm64 desktop AppImage, .deb, .rpm, .tar.xz
 #   Linux Legacy    x86 + x64 .deb, AppImage and portable tar.gz (system Node.js 18+)
@@ -129,16 +134,6 @@ jobs:
               desktop/dist-electron/*.zip
               desktop/dist-electron/*.blockmap
               desktop/dist-electron/latest.yml
-          - os: windows-2022
-            label: windows-2022, x86
-            arch: ia32
-            ebArgs: --win nsis zip --ia32 --config electron-builder.ia32.yml
-            artifact: windows-installer-ia32
-            glob: |
-              desktop/dist-electron/ia32/*-windows-x86-setup.exe
-              desktop/dist-electron/ia32/*-windows-x86.zip
-              desktop/dist-electron/ia32/*-windows-x86-setup.exe.blockmap
-              desktop/dist-electron/ia32/latest-ia32.yml
           - os: macos-latest
             arch: arm64
             ebArgs: --mac --arm64
@@ -213,18 +208,9 @@ jobs:
         shell: bash
         run: bash desktop/scripts/retry-network-step.sh npm ci
 
-      # Build the dashboard on the runner's native Node: its Vite/Tailwind
-      # toolchain has no Windows ia32 binaries. The resulting assets are JS/CSS.
+      # Build the dashboard before packaging; the resulting assets are JS/CSS.
       - name: Build client
         run: npm run build -w client
-
-      # Install desktop dependencies under the target runtime so npm selects
-      # the x86 sharp binary and electron-builder rebuilds SQLite for x86.
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        if: matrix.arch == 'ia32'
-        with:
-          node-version: '20'
-          architecture: x86
 
       # `npm ci` rather than `install`: install rewrites desktop/package-lock.json
       # in place, which would quietly repair a stale lockfile version before the
@@ -457,18 +443,6 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: ./desktop/scripts/smoke-win-gpu-sandbox.ps1 desktop/dist-electron ${{ matrix.arch }}
-
-      - name: Verify Windows x86 ZIP and update feed
-        if: matrix.arch == 'ia32'
-        shell: pwsh
-        env:
-          ELECTRON_RUN_AS_NODE: '1'
-        run: |
-          $dist = 'desktop/dist-electron/ia32'
-          $app = Join-Path $env:RUNNER_TEMP 'x86-zip'
-          Expand-Archive -Path "$dist/*-windows-x86.zip" -DestinationPath $app
-          & (Join-Path $app 'LLMHarbor.exe') desktop/scripts/smoke-win-ia32.mjs $dist | Out-Host
-          exit $LASTEXITCODE
 
       - name: Smoke-test packaged macOS backend
         if: runner.os == 'macOS'

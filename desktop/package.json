@@ -1,6 +1,6 @@
 {
   "name": "llmharbor-desktop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "LLMHarbor desktop — local OpenAI-compatible LLM router",
   "author": {
     "name": "tashfeenahmed",
@@ -26,7 +26,6 @@
     "dist": "npm run build:all && npm run stage:client && electron-builder --mac --arm64 --publish never",
     "dist:mac:x64": "npm run build:all && npm run stage:client && electron-builder --mac --x64 --publish never",
     "dist:win": "npm run build:all && npm run stage:client && electron-builder --win --x64 --publish never",
-    "dist:win:ia32": "npm run build:all && npm run stage:client && electron-builder --win nsis zip --ia32 --config electron-builder.ia32.yml --publish never",
     "dist:linux": "npm run build:all && npm run stage:client && electron-builder --linux --x64 --publish never",
     "test": "vitest run",
     "test:agent-setup": "node scripts/smoke-agent-setup.mjs",

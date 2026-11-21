@@ -73,7 +73,8 @@ LLMHarbor — модифицированная версия [freellmapi](https:/
 | Платформа | Загрузка | Руководство |
 | --- | --- | --- |
 | Windows 10/11, macOS 12+, Linux x64/arm64 | [Последний релиз](https://github.com/Zelvior-Labs/llmharbor/releases/latest) (`v*`) | [Desktop](docs/en/desktop.md) |
-| Windows 7 / 8 / 8.1 | установщик или портативный ZIP `-windows-legacy-*` в [релизах `v*`](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [desktop/win7](desktop/win7/README.md) |
+| Windows 7 / 8 / 8.1 · 32 бита | установщик или портативный ZIP `-windows-x86-*` в [релизах `v*`](https://github.com/Zelvior-Labs/llmharbor/releases/latest) — x86-файлы собраны в legacy-редакции, поэтому запускаются на Windows 7/8/8.1 | [desktop/win7](desktop/win7/README.md) |
+| Windows 7 / 8 / 8.1 · 64 бита | установщик или портативный ZIP `-windows-legacy-x64-*` в [релизах `v*`](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [desktop/win7](desktop/win7/README.md) |
 | Linux Legacy (x86/x64, Node.js 18+) | `-linux-legacy-*` .deb, AppImage или портативный архив в [релизах `v*`](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [desktop/linux-browser](desktop/linux-browser/README.md) |
 | Android 8.0+ | `-android-*.apk` в [релизах `v*`](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [Android](docs/en/android.md) |
 | Docker | Сборка из этого репозитория или `ghcr.io/zelvior-labs/llmharbor` | [Docker](docs/en/docker.md) |

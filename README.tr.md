@@ -72,7 +72,8 @@ Panelin yerel bir derlemesinden alındı; istekler yerel, OpenAI uyumlu bir test
 | Platform | İndirme | Kılavuz |
 | --- | --- | --- |
 | Windows 10/11, macOS 12+, Linux x64/arm64 | [Son sürüm](https://github.com/Zelvior-Labs/llmharbor/releases/latest) (`v*`) | [Desktop](docs/en/desktop.md) |
-| Windows 7 / 8 / 8.1 | [`v*` sürümlerindeki](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-windows-legacy-*` yükleyici veya taşınabilir ZIP | [desktop/win7](desktop/win7/README.md) |
+| Windows 7 / 8 / 8.1 · 32 bit | [`v*` sürümlerindeki](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-windows-x86-*` yükleyici veya taşınabilir ZIP — x86 dosyaları legacy sürümüdür, Windows 7/8/8.1'de açılır | [desktop/win7](desktop/win7/README.md) |
+| Windows 7 / 8 / 8.1 · 64 bit | [`v*` sürümlerindeki](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-windows-legacy-x64-*` yükleyici veya taşınabilir ZIP | [desktop/win7](desktop/win7/README.md) |
 | Linux Legacy (x86/x64, Node.js 18+) | [`v*` sürümlerindeki](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-linux-legacy-*` .deb, AppImage veya taşınabilir arşiv | [desktop/linux-browser](desktop/linux-browser/README.md) |
 | Android 8.0+ | [`v*` sürümlerindeki](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-android-*.apk` | [Android](docs/en/android.md) |
 | Docker | Bu depodan derleyin veya `ghcr.io/zelvior-labs/llmharbor` | [Docker](docs/en/docker.md) |

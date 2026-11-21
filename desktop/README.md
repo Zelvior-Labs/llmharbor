@@ -43,23 +43,23 @@ Build on the matching architecture so `better-sqlite3` is rebuilt natively. Loca
 don't carry the macOS quarantine attribute or Windows Mark-of-the-Web, so they launch without
 Gatekeeper or SmartScreen warnings.
 
-### 32-bit Windows
+### 32-bit Windows (x86)
 
-Use a 64-bit Windows host. Build the dashboard with x64 Node, then switch to **x86 Node 20.x** before
-installing the desktop dependencies so npm picks the x86 native modules:
+The `windows-x86` release files are the **Electron-Legacy edition** (the same pipeline as the
+Windows 7/8/8.1 builds — see [win7/README.md](win7/README.md)), because modern Electron binaries
+are linked for Windows 10+ and the loader on older Windows rejects them with "is not a valid Win32
+application". Build them on a modern 64-bit host with Node.js 22, npm and Python 3.9+:
 
-```powershell
-# x64 Node
-npm ci
-npm run build -w client
-
-# x86 Node 20.x (node -p process.arch prints ia32)
-npm --prefix desktop ci
-npm --prefix desktop run dist:win:ia32
+```bash
+npm ci --ignore-scripts
+npm --prefix desktop ci --ignore-scripts
+npm run build -w client -- --mode win7 --outDir ../desktop/dist-electron/windows7/client --emptyOutDir
+npm --prefix desktop run bundle:win7
+python desktop/win7/package.py x86
 ```
 
-Output goes to `desktop/dist-electron/ia32/`. Rerun `npm --prefix desktop ci` under x64 Node before
-going back to x64 work.
+Output: `desktop/dist-electron/windows7/LLMHarbor-<version>-windows7-x86.zip`. The release workflow
+publishes it as `LLMHarbor-<version>-windows-x86-portable.zip` plus an NSIS installer.
 
 ### Linux Legacy package (x86 and x64)
 

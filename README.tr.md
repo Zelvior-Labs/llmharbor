@@ -71,10 +71,10 @@ Panelin yerel bir derlemesinden alındı; istekler yerel, OpenAI uyumlu bir test
 
 | Platform | İndirme | Kılavuz |
 | --- | --- | --- |
-| Windows 10/11, macOS 12+, Linux x64 | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases) (`v*`) | [Desktop](docs/en/desktop.md) |
-| Windows 7 SP1 | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=win7) (`win7-v*`, ön sürüm) | [desktop/win7](desktop/win7/README.md) |
-| 32 bit Intel Linux | `v*` sürümlerindeki `-linux-i686-server.tar.gz` | [desktop/linux-browser](desktop/linux-browser/README.md) |
-| Android 8.0+ | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=android) (`android-v*`, ön sürüm) | [Android](docs/en/android.md) |
+| Windows 10/11, macOS 12+, Linux x64/arm64 | [Son sürüm](https://github.com/Zelvior-Labs/llmharbor/releases/latest) (`v*`) | [Desktop](docs/en/desktop.md) |
+| Windows 7 / 8 / 8.1 | [`v*` sürümlerindeki](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-windows-legacy-*` yükleyici veya taşınabilir ZIP | [desktop/win7](desktop/win7/README.md) |
+| Linux Legacy (x86/x64, Node.js 18+) | [`v*` sürümlerindeki](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-linux-legacy-*` .deb, AppImage veya taşınabilir arşiv | [desktop/linux-browser](desktop/linux-browser/README.md) |
+| Android 8.0+ | [`v*` sürümlerindeki](https://github.com/Zelvior-Labs/llmharbor/releases/latest) `-android-*.apk` | [Android](docs/en/android.md) |
 | Docker | Bu depodan derleyin veya `ghcr.io/zelvior-labs/llmharbor` | [Docker](docs/en/docker.md) |
 | Node.js (kaynak) | `git clone` | [Install](docs/en/install.md) |
 

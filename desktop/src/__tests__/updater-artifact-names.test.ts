@@ -47,6 +47,13 @@ describe('updater artifact names', () => {
     expect(expand(config.nsis.artifactName)).toBe('LLMHarbor-1.2.3-windows-x64-setup.exe');
   });
 
+  it('names the Linux arm64 desktop files by architecture in their own folder', () => {
+    const arm = yaml.load(readFileSync(join(desktopRoot, 'electron-builder.arm64.yml'), 'utf8'));
+    expect(arm.extends).toBe('./electron-builder.yml');
+    expect(arm.directories.output).toBe('dist-electron/arm64');
+    expect(expand(arm.linux.artifactName, 'arm64', 'AppImage')).toBe('LLMHarbor-1.2.3-linux-arm64.AppImage');
+  });
+
   it.each(['arm64', 'x64'])('identifies macOS %s downloads by platform and architecture', (arch) => {
     for (const ext of ['zip', 'dmg']) {
       expect(expand(config.mac.artifactName, arch, ext)).toBe(`LLMHarbor-1.2.3-macos-${arch}.${ext}`);

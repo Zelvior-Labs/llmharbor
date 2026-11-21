@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Self-update from the project's GitHub pre-releases. An APK is only offered
+ * Self-update from the project's GitHub releases. An APK is only offered
  * when Android could actually install it: same package name and the same
  * signing certificate as the running app. Version-locked previews therefore
  * report "install the newer build manually" instead of downloading a file that
@@ -115,8 +115,12 @@ final class UpdateChecker {
             JSONObject release = releases.getJSONObject(i);
             if (release.optBoolean("draft")) continue;
             String tag = release.optString("tag_name");
-            if (!tag.startsWith("android-v")) continue;
-            String version = tag.substring("android-v".length());
+            // Older previews were tagged android-v<version>; the unified
+            // release workflow publishes every platform under v<x.y.z>.
+            String version;
+            if (tag.startsWith("android-v")) version = tag.substring("android-v".length());
+            else if (tag.matches("^v\\d+\\.\\d+\\.\\d+$")) version = tag.substring(1);
+            else continue;
             long code = versionCode(version);
             if (code <= bestCode) continue;
             JSONArray assets = release.optJSONArray("assets");

@@ -8,19 +8,23 @@ in-process on your machine. The source is in [`desktop/`](../../desktop). Build 
 
 ## Downloads
 
-Releases are published on
-[GitHub Releases](https://github.com/Zelvior-Labs/llmharbor/releases) by the
-`desktop-release.yml` workflow when a `v*` tag is pushed. Pick the file by its suffix:
+Every platform is published together in one
+[GitHub Release](https://github.com/Zelvior-Labs/llmharbor/releases/latest) per `v*` tag by the
+`release.yml` workflow (started by hand from **Actions → Release → Run workflow**). Pick the file by
+its suffix:
 
 | System | File suffix |
 | --- | --- |
-| Windows 10/11, 64-bit | `-windows-x64-setup.exe` (installer) or `-windows-x64.zip` (portable) |
-| Windows 10/11, 32-bit | `-windows-x86-setup.exe` or `-windows-x86.zip` |
+| Windows 10/11, 64-bit | `-windows-x64-setup.exe` (installer) or `-windows-x64-portable.zip` |
+| Windows 10/11, 32-bit | `-windows-x86-setup.exe` or `-windows-x86-portable.zip` |
+| Windows 7 / 8 / 8.1 | `-windows-legacy-x86-setup.exe` / `-windows-legacy-x64-setup.exe` (per-user installer) or `-windows-legacy-{x86,x64}-portable.zip`. See [desktop/win7/README.md](../../desktop/win7/README.md). |
 | macOS 12+, Apple Silicon | `-macos-arm64.dmg` or `.zip` |
 | macOS 12+, Intel | `-macos-x64.dmg` or `.zip` |
 | Linux x64 | `-linux-x64.AppImage`, `.deb`, `.rpm` or `.tar.xz` |
-| 32-bit Intel Linux | `-linux-i686-server.tar.gz`. This is the server and browser dashboard, not Electron. See [desktop/linux-browser/README.md](../../desktop/linux-browser/README.md). |
-| Windows 7 SP1 | `-windows7-x86.zip` / `-windows7-x64.zip`, published separately under `win7-v*` tags. See [desktop/win7/README.md](../../desktop/win7/README.md). |
+| Linux arm64 | `-linux-arm64.AppImage`, `.deb`, `.rpm` or `.tar.xz` |
+| Linux Legacy (x86 or x64, Node.js 18+) | `-linux-legacy-{x86,x64}.deb`, `.AppImage` or `-portable.tar.gz`. This is the server and browser dashboard, not Electron. See [desktop/linux-browser/README.md](../../desktop/linux-browser/README.md). |
+
+`SHA256SUMS.txt` in the same release lists a checksum for every file.
 
 ## How it runs
 

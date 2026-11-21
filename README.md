@@ -69,10 +69,10 @@ Captured from a local build of the dashboard, routing to a local OpenAI-compatib
 
 | Platform | Download | Guide |
 | --- | --- | --- |
-| Windows 10/11, macOS 12+, Linux x64 | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases) (`v*`) | [Desktop](docs/en/desktop.md) |
-| Windows 7 SP1 | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=win7) (`win7-v*`, pre-release) | [desktop/win7](desktop/win7/README.md) |
-| 32-bit Intel Linux | `-linux-i686-server.tar.gz` in the `v*` releases | [desktop/linux-browser](desktop/linux-browser/README.md) |
-| Android 8.0+ | [Releases](https://github.com/Zelvior-Labs/llmharbor/releases?q=android) (`android-v*`, pre-release) | [Android](docs/en/android.md) |
+| Windows 10/11, macOS 12+, Linux x64/arm64 | [Latest release](https://github.com/Zelvior-Labs/llmharbor/releases/latest) (`v*`) | [Desktop](docs/en/desktop.md) |
+| Windows 7 / 8 / 8.1 | `-windows-legacy-*` installer or portable ZIP in the [`v*` releases](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [desktop/win7](desktop/win7/README.md) |
+| Linux Legacy (x86/x64, Node.js 18+) | `-linux-legacy-*` .deb, AppImage or portable in the [`v*` releases](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [desktop/linux-browser](desktop/linux-browser/README.md) |
+| Android 8.0+ | `-android-*.apk` in the [`v*` releases](https://github.com/Zelvior-Labs/llmharbor/releases/latest) | [Android](docs/en/android.md) |
 | Docker | Build from this repo, or `ghcr.io/zelvior-labs/llmharbor` | [Docker](docs/en/docker.md) |
 | Node.js (source) | `git clone` | [Install](docs/en/install.md) |
 

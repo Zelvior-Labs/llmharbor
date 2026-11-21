@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       run_id:
-        description: Run id of a successful "Android standalone preview" build to install
+        description: Run id of a successful "Release" workflow run (android-apks artifact) to install
         required: true
       abi:
         description: APK to install

@@ -1,10 +1,12 @@
 // Electron has no linux-ia32 build. Package the normal server entry and the
-// already-built browser dashboard instead. No native npm addons from the build
+// already-built browser dashboard instead ("Linux Legacy"). The archive is
+// architecture-neutral; desktop/linux-browser/package-legacy.sh turns it into
+// the x86/x64 portable, .deb and AppImage release files. No native npm addons from the build
 // host may land in this archive; the only runtime dependencies are distro Node
 // and the bundled pure-WebAssembly SQLite (node-sqlite3-wasm), so the bundle
 // runs on any Node.js 18+ without node:sqlite.
 import { execFileSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { chmodSync, cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,8 +14,8 @@ import { build } from 'esbuild';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const { version } = JSON.parse(readFileSync(join(root, 'desktop/package.json'), 'utf8'));
-const name = `LLMHarbor-${version}-linux-i686-server`;
-const out = join(root, 'desktop/dist-electron/browser');
+const name = `LLMHarbor-${version}-linux-legacy`;
+const out = join(root, 'desktop/dist-electron/linux-legacy');
 const temp = mkdtempSync(join(tmpdir(), 'llmharbor-package-'));
 const directory = join(temp, name);
 try {
@@ -41,6 +43,8 @@ try {
   // Fail at build time if the dashboard wasn't actually built.
   readFileSync(join(directory, 'dashboard/index.html'));
   cpSync(join(root, 'desktop/linux-browser/start.mjs'), join(directory, 'start.mjs'));
+  cpSync(join(root, 'desktop/linux-browser/llmharbor-legacy'), join(directory, 'llmharbor-legacy'));
+  chmodSync(join(directory, 'llmharbor-legacy'), 0o755);
   cpSync(join(root, 'desktop/linux-browser/README.md'), join(directory, 'README.md'));
   cpSync(join(root, 'LICENSE'), join(directory, 'LICENSE'));
   mkdirSync(out, { recursive: true });

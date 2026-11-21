@@ -9,8 +9,8 @@ Android 应用是一个独立 APK，支持 Android 8.0（API 26）及以上。�
 
 ## 安装
 
-1. 从 [Android 发布页](https://github.com/Zelvior-Labs/llmharbor/releases?q=android)下载 APK（以 `android-v*` 标签作为
-   预发布版发布），选择与设备匹配的 ABI：
+1. 从[最新发布](https://github.com/Zelvior-Labs/llmharbor/releases/latest)下载 APK（`LLMHarbor-<version>-android-<abi>.apk`）。每个
+   `v*` 发布都包含全部三个 ABI，较早的预览版在 `android-v*` 标签下。选择与设备匹配的 ABI：
    - `arm64-v8a`：目前大多数手机。
    - `armeabi-v7a`：32 位 ARM 手机。
    - `x86_64`：模拟器和 x86 设备。
@@ -45,7 +45,7 @@ Android 应用是一个独立 APK，支持 Android 8.0（API 26）及以上。�
 **手机：**打开 USB 调试和 **Stay awake while charging**（充电时保持唤醒），并设置屏幕锁（测试会确认设置码提示）。如果为
 应用开启了厂商电池管理豁免，请记录下来，因为该机型的用户也需要相同设置。
 
-**运行：**使用一次已完成的 `Android standalone preview` 工作流的运行 id：
+**运行：**使用一次已完成的 `Release` 工作流运行的 id（其中的 `android-apks` 产物）：
 
 ```sh
 gh workflow run android-device.yml -f run_id=<run_id> -f abi=arm64-v8a -f note="Android Go 2 GB"

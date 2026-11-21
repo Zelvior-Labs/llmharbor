@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=LLMHarbor Legacy
+Comment=Local OpenAI-compatible LLM router with a browser dashboard
+Exec=llmharbor-legacy --open
+Icon=llmharbor-legacy
+Terminal=true
+Categories=Development;Utility;
